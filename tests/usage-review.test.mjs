@@ -9,6 +9,7 @@ import {createService} from '../server/service.mjs';
 import {dayAt,addDays,units} from '../server/common.mjs';
 import {forecast} from '../server/forecast.mjs';
 import {screenUsage} from '../server/ml/usage-anomalies.mjs';
+import {screenDrift} from '../server/ml/usage-drift.mjs';
 
 const registration=extra=>({businessName:'Isolated review',communityName:'Isolated review group',email:randomUUID()+'@example.test',password:'Review-contract-only-456',...extra});
 function fixture(t){
@@ -28,7 +29,8 @@ test('bootstrap exposes the actual screening contract without changing existing 
   const before=f.snapshot(),recommendation=f.service.bootstrap(f.owner).recommendations[0];
   assert.deepEqual(recommendation.usageScreening,screenUsage(history,{asOf,unit:'kg'}));
   assert.equal(recommendation.usageScreening.summary.reviewCandidates,1);
-  const {productId,usageScreening,...existing}=recommendation;
+  assert.deepEqual(recommendation.driftScreening,screenDrift(history,{asOf,unit:'kg'}));
+  const {productId,usageScreening,driftScreening,...existing}=recommendation;
   assert.equal(productId,f.ingredient.id);assert.deepEqual(existing,forecast(history,0,asOf,2,'kg'));
   assert.deepEqual(f.snapshot(),before);
 });

@@ -11,6 +11,7 @@ import { forecast } from './forecast.mjs';
 import { optimize } from './optimizer.mjs';
 import {createForecastRegistry} from './forecast-registry.mjs';
 import {screenUsage} from './ml/usage-anomalies.mjs';
+import {screenDrift} from './ml/usage-drift.mjs';
 import {createUsageDecisions} from './usage-decisions.mjs';
 
 export function createService(store) {
@@ -57,7 +58,8 @@ export function createService(store) {
         .map(i => ({ date: i.date, qty: quantity(i.quantity) }));
       return { productId: p.id, ...forecast(history, availableStock[p.id], asOf, 2, p.unit,
         models.get({workspaceId:s.workspace_id,businessId:s.business_id,productId:p.id,unit:p.unit})),
-        usageScreening: screenUsage(history, {asOf, unit:p.unit}) };
+        usageScreening: screenUsage(history, {asOf, unit:p.unit}),
+        driftScreening: screenDrift(history, {asOf, unit:p.unit}) };
     });
     const ownDemand = get('SELECT * FROM demands WHERE workspace_id=? AND business_id=?', ...scope(s));
     const offers = surplus.offers(s);

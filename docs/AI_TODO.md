@@ -1,3 +1,11 @@
+# Lanjutan v0.46 — pemantauan perubahan pola pemakaian (drift)
+
+- [x] Aturan tinjauan drift (`median-level-shift-review-v1`) di `server/ml/usage-drift.mjs`: membandingkan median jendela terakhir (14 hari) dengan baseline sebelumnya (28 hari) secara robust (median+MAD, ambang modified-z 3,5 dan lantai relatif 25%), sehingga lonjakan satu hari tidak memicu sinyal. Bukan model terlatih, tanpa atribusi sebab (libur/cuaca), tanpa koreksi/retraining otomatis.
+- [x] Jendela berlubang / histori kurang / tanpa histori tetap "belum tersedia" (status eksplisit), tidak menebak; tanggal masa depan/berjalan dikecualikan; baris duplikat/tak valid ditolak.
+- [x] Terintegrasi ke `recommendations[].driftScreening` dan ditampilkan di panel Periksa pemakaian: notifikasi ringkas tingkat-panel ("N bahan menunjukkan perubahan pola"), tag "Perubahan pola" dan penjelasan baseline→terbaru per bahan. Panduan kulakan diperbarui; cache shell `v45-usage-drift`.
+- [x] Catatan: ini menjawab sebagian item AI "pemantauan perubahan pola" dan "notifikasi otomatis" sebagai aturan statistik yang disurface; **validasi lapangan pada data berlabel, deteksi anomali terlatih, fitur libur/cuaca, aktivasi Qwen, dan pelatihan/validasi dengan data usaha Indonesia berizin tetap terbuka** (dataset ML publik tidak ada di repo; Qwen menunggu akun berbayar).
+- [x] Regresi penuh **286 Node + 58 browser = 344 lulus**, exit 0. Ditambah empat tes backend drift dan satu tes browser sinyal perubahan pola.
+
 # Lanjutan v0.45 — pemulihan akun pemilik dengan kode pemulihan
 
 - [x] Pemilik membuat kode pemulihan sekali pakai (10 kode, hanya tersimpan sebagai hash SHA-256) dari Pengaturan → "Kode pemulihan akun"; ditampilkan sekali untuk disalin/disimpan, dengan Salin semua kode dan Sembunyikan kode. Membuat ulang mengganti seluruh batch lama.

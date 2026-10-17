@@ -4517,4 +4517,5 @@ form .notice {
 
 .kitchen-station>.button{white-space:normal;max-width:100%;overflow-wrap:anywhere;text-align:left}
 .stock-days{font-variant-numeric:tabular-nums}.stock-days.is-low{color:var(--warn);font-weight:700}
+.usage-drift{background:var(--warn-bg);color:var(--warn);border-radius:8px;padding:8px 10px;margin:8px 0}
 .recovery-result{border:1px solid var(--accent);border-radius:12px;padding:16px;margin:12px 0}.recovery-code-list{list-style:none;padding:0;margin:12px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.recovery-code-list code{display:block;padding:8px 10px;background:var(--accent-soft);color:var(--accent-ink);border-radius:8px;font-size:16px;letter-spacing:1px;text-align:center}

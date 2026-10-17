@@ -80,6 +80,21 @@ test('stock-days column shows the estimated days left and daily rate for an ingr
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
+test('a sustained usage level shift surfaces a pattern-change signal in the usage panel',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const {id,owner}=await setup(page);
+  for(let i=0;i<42;i++)app.store.run('INSERT INTO daily_usage VALUES(?,?,?,?,?)',owner.workspaceId,owner.business.id,id,addDays(dayAt(),i-42),units(i<28?10:25));
+  await page.reload();
+  await expect(panel(page)).toContainText('menunjukkan perubahan pola pemakaian');
+  await expect(panel(page).locator('.usage-drift')).toContainText('Pola pemakaian naik');
+  await expect(panel(page).getByText('Perubahan pola',{exact:true})).toBeVisible();
+  const drift=(await (await page.request.get(base+'/api/bootstrap')).json()).recommendations.find(r=>r.productId===id).driftScreening;
+  expect(drift.changed).toBe(true);expect(drift.direction).toBe('higher');
+  await page.setViewportSize({width:320,height:950});await capture(page,'usage-drift-mobile');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
+
 test('gaps remain unavailable and offline results are explicitly marked as stored',async({page,context})=>{
   await setup(page,{history:true,gap:true});
   await panel(page).locator('.usage-review-detail>summary').click();
