@@ -1,3 +1,15 @@
+# Gerai Kita — v0.36
+
+Validasi akhir: **271 tes lulus, `npm test` exit 0** (227 Node + 44 browser, satu worker, `PLAYWRIGHT_CHANNEL=chromium`). [Bukti rilis dan health](docs/evaluation/staff-release.json).
+
+Baru: **akun pemilik, kasir dan dapur** dengan pembatasan endpoint/tindakan di server. Pemilik membuka **Pengaturan akun → Akun kasir dan dapur** untuk membuat, mengubah peran atau menonaktifkan staf. Kasir menerima/menyerahkan pesanan; dapur mengatur tahap memasak. Data laporan, resep, pemasok dan pengaturan pemilik tidak dikirim ke staf.
+
+Jalankan `npm start`, buka **http://localhost:4174/#pengaturan**. Staf memakai **http://localhost:4174/api/staff/screen#dapur** pada profil browser/jendela privat tersendiri. Demo terpisah: `npm run start:demo`, port **4180**. Tidak ada staf atau isi usaha contoh otomatis.
+
+[Cara menggunakan dan matriks izin](docs/STAFF_ROLES.md) · [Progres/TODO](docs/AI_TODO.md) · [Bukti rilis](docs/evaluation/staff-release.json). `npm run test:staff` menguji akun/sesi/izin pada database sementara. Migrasi mempertahankan 25 tabel lama dan menambah dua tabel role/deduplikasi; akun lama menjadi pemilik. Panduan staf berpanah tersedia. Kapasitas alat/staf, waste sebagian, suara dua detik, pilot nyata dan deployment masih terbuka.
+
+Bagian versi sebelumnya berikut adalah riwayat pengembangan.
+
 # Gerai Kita — v0.35
 
 Validasi terbaru: **261 tes lulus dan `npm test` selesai normal** (220 Node + 41 browser). [Bukti rilis](docs/evaluation/display-release.json).

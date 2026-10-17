@@ -1,3 +1,7 @@
+# Prioritas lanjutan v0.36
+
+Role pemilik/kasir/dapur, pengelolaan staf, proyeksi API dan pencabutan sesi kini berfungsi. [Cara menggunakan dan batas](STAFF_ROLES.md). Tidak membuat staf/demo pada usaha asli. Berikutnya: kapasitas alat/staf, waste sebagian, suara terukur dalam kondisi lapangan dan deployment/HTTPS. Reset/transfer kepemilikan dan audit aktor menyeluruh masih terbuka. Bagian versi sebelumnya di bawah adalah riwayat.
+
 # Prioritas lanjutan v0.35
 
 Layar pelanggan kini memakai tautan baca terpisah yang dapat berakhir/dicabut; pemilik tidak perlu membagikan login. Fitur selesai sebagai alur mandiri, sedangkan peran kasir/dapur tetap belum dibuat. Berikutnya: RBAC staf, lalu kapasitas alat/waste sebagian, suara terukur dan deployment sesuai prioritas/data yang tersedia. [Cakupan layar pelanggan](CUSTOMER_DISPLAY.md).

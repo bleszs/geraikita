@@ -1,3 +1,13 @@
+# Tambahan arsitektur v0.36
+
+`roles.mjs` menambah `account_roles` dan `staff_actions` (total 27 tabel). Migrasi transaksional menurunkan satu owner dari setiap akun lama hanya saat tabel role pertama dibuat. Login/resolve bergabung ke role aktif yang sama workspace/business; role hilang tidak menjadi owner. Registrasi publik tetap membuat usaha baru beserta owner-nya.
+
+`identity.mjs` mengelola staf scoped, hash password scrypt, konfirmasi/revisi/idempotensi serta pencabutan semua sesi target. `http.mjs` memanggil authorize sebelum dispatch untuk semua API bersesi. Kasir hanya intake/complete/cancel; dapur hanya start/passive/resume/ready, resolver perintah dan transkripsi. Keduanya dapat membaca antrean, mengubah password sendiri dan logout; endpoint lain ditolak. Bootstrap/GET kitchen memakai proyeksi eksplisit tanpa ledger/resep/laporan. Model/benchmark tidak berubah.
+
+`staff-workspace.js` merender shell dua halaman per peran; `staff-management.js` berada di Pengaturan pemilik. `/api/staff/screen` dan `/api/staff-client/*.js` memakai no-store dan melewati worker navigasi lama. Shell v36 mencakup modul/CSS baru. Panduan v5: 18 topik/87 langkah; tur staf empat langkah. Scope IndexedDB staf menambahkan accountId/role/revision; snapshot terakhir dibersihkan saat login staf, bukti kirim hanya namespace sendiri. SSE menutup sesi tercabut dan frontend memeriksa otorisasi lagi. [API, pemulihan, matriks izin dan batas](STAFF_ROLES.md).
+
+Versi sebelumnya berikut merupakan riwayat.
+
 # Tambahan arsitektur v0.35
 
 `display-access.mjs` menambah satu tabel `display_access` dengan scope workspace/business, digest token, idempotensi, masa aktif dan pencabutan. Pemilik mengelola akses melalui sesi/CSRF; token layar tidak menjadi sesi akun. Bootstrap hanya mengirim metadata tanpa token/hash. Public projection query memilih hanya id/status dari antrean aktif dan mengubah ID menjadi kode delapan karakter, maksimum 200 baris.

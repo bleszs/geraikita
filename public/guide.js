@@ -80,7 +80,8 @@ export function createGuideController({getContext,navigate,notify,escape,storage
       if(actions)actions.insertAdjacentHTML('afterbegin',`<button type="button" class="guide-access" data-guide-open aria-label="Buka panduan penggunaan">${icon('info')}<span>Panduan</span></button>`);
       else main.insertAdjacentHTML('afterbegin',`<div class="guide-access-row"><button type="button" class="text-link" data-guide-open>${icon('info')} Panduan penggunaan</button></div>`);
     }
-    const pageTopic=context.signedIn?PAGE_TOPICS[context.route]:'akun';
+    const staffTopic=context.role==='cashier'?'staf-kasir':context.role==='kitchen'?'staf-dapur':null;
+    const pageTopic=context.signedIn?(staffTopic||PAGE_TOPICS[context.route]):'akun';
     if(context.route!=='panduan'&&!main.querySelector('.guide-context')){
       const title=main.querySelector('.page-title')||main.querySelector('.auth-intro');
       title?.insertAdjacentHTML('afterend',`<div class="guide-context"><button type="button" class="text-link" data-guide-topic="${e(pageTopic||'mulai')}">${icon('info')} Panduan halaman ini</button></div>`);
@@ -88,7 +89,7 @@ export function createGuideController({getContext,navigate,notify,escape,storage
     main.querySelector('.guide-welcome')?.remove();
     if(!progress.welcomeSeen&&!active&&context.route!=='panduan'){
       const anchor=main.querySelector('.guide-context')||main.querySelector('h1');
-      anchor?.insertAdjacentHTML('afterend',`<section class="guide-welcome" aria-labelledby="guide-welcome-title"><h2 id="guide-welcome-title">Baru mencoba Gerai Kita?</h2><p>Ikuti panah untuk mengenal aplikasi dan fitur-fiturnya satu per satu. Kamu bisa melewati tur dan membukanya lagi kapan saja.</p><div class="actions"><button type="button" class="button" data-guide-topic="${context.signedIn?'mulai':'akun'}">Mulai panduan</button><button type="button" class="button secondary" data-guide-action="dismiss">Lewati</button></div></section>`);
+      anchor?.insertAdjacentHTML('afterend',`<section class="guide-welcome" aria-labelledby="guide-welcome-title"><h2 id="guide-welcome-title">Baru mencoba Gerai Kita?</h2><p>Ikuti panah untuk mengenal aplikasi dan fitur-fiturnya satu per satu. Kamu bisa melewati tur dan membukanya lagi kapan saja.</p><div class="actions"><button type="button" class="button" data-guide-topic="${context.signedIn?(staffTopic||'mulai'):'akun'}">Mulai panduan</button><button type="button" class="button secondary" data-guide-action="dismiss">Lewati</button></div></section>`);
     }
     renderResume();renderTour();
   }
@@ -109,7 +110,7 @@ export function createGuideController({getContext,navigate,notify,escape,storage
   document.addEventListener('click',event=>{
     const button=event.target.closest?.('[data-guide-open],[data-guide-topic],[data-guide-action]');if(!button)return;
     event.preventDefault();
-    if(button.hasAttribute('data-guide-open')){if(active)stop('paused');navigate('panduan');return;}
+    if(button.hasAttribute('data-guide-open')){const context=getContext();if(context.role==='cashier'||context.role==='kitchen'){start(context.role==='cashier'?'staf-kasir':'staf-dapur');return;}if(active)stop('paused');navigate('panduan');return;}
     if(button.dataset.guideTopic){start(button.dataset.guideTopic);return;}
     const action=button.dataset.guideAction;
     if(action==='resume'){start(progress.topicId,true);return;}

@@ -1,3 +1,9 @@
+# Tambahan panduan v0.36
+
+Panduan versi **5** berjumlah **18 topik/87 langkah**. Tiga topik baru: pemilik mengelola staf (3 langkah), kasir menerima/menyerahkan pesanan (4), dapur mengatur tahap memasak (4). Tombol Panduan/Panduan halaman ini pada akun staf langsung membuka tur perannya, dengan Lanjut/Kembali/Lewati; langkah terakhir membuka Akun saya untuk password. Tur utama pemilik tetap 11 langkah. Tur tidak membuat staf, mengirim pesanan, mengganti password atau menyetujui izin otomatis. Progress mengikuti scope akun/peran/revisi. [Pembagian akses](STAFF_ROLES.md).
+
+Catatan versi sebelumnya di bawah adalah riwayat.
+
 # Tambahan panduan v0.35
 
 Panduan versi 4 menambah tiga langkah dalam topik Pengaturan: pembuatan akses layar, penyimpanan tautan sementara, dan pencabutan. Total menjadi **15 topik/76 langkah**, tur utama tetap 11. Panduan tidak membuat tautan atau menyetujui akses secara otomatis. Viewer pelanggan adalah layar mandiri dengan petunjuk langsung, tanpa bootstrap pemilik atau kebutuhan login.

@@ -1,3 +1,21 @@
+# Lanjutan v0.36 — akun staf
+
+- [x] Regresi akhir selesai normal: 227 Node + 44 browser = **271 lulus**, exit 0 pada browser Chromium terpisah. [Bukti rilis](evaluation/staff-release.json). Percobaan gagal/cleanup lama tetap dicatat, bukan dihitung sebagai run sukses.
+
+- [x] Review UI menilai dua perbaikan (fokus keyboard dan akses intake mobile) resolved; pemeriksaan desain mempertahankan kedua hash baseline. [Review](evaluation/STAFF_ROLES_UI_REVIEW.md) dan [catatan desain](evaluation/STAFF_ROLES_DESIGN_CHECK.md).
+
+- [x] Role owner/cashier/kitchen di database, akun lama menjadi owner pada migrasi pertama; role hilang selalu gagal autentikasi.
+- [x] Pemilik membuat akun staf nyata dalam usaha yang sama, mengubah peran dan mengaktifkan/menonaktifkan dengan konfirmasi/revisi/idempotensi.
+- [x] Server membatasi endpoint/tindakan dan data bootstrap; dapur tidak mendapat harga/laporan/resep, kasir mendapat harga/porsi untuk intake saja.
+- [x] Perubahan akses mencabut seluruh sesi target; SSE mendeteksi sesi hilang. Staf dapat mengubah password sendiri.
+- [x] Tampilan kasir/dapur, antrean bersama dan panduan per peran; jalur masuk melewati cache PWA lama.
+- [x] Namespace bukti kirim per akun/peran/revisi dan tanpa snapshot staf offline; draft pemilik tidak ditampilkan ke staf.
+- [x] Backup/migrasi main+demo: 25 tabel lama identik, dua tabel baru, hanya role owner turunan akun lama; tanpa staf/data contoh otomatis.
+
+[Cara memakai, batas dan pengujian](STAFF_ROLES.md). Tahap berikutnya: kapasitas alat/staf dan waste sebagian; kemudian pilot suara terukur serta deployment/HTTPS. Model/bobot/benchmark AI tidak berubah pada tahap ini.
+
+Checklist versi lama di bawah menjadi riwayat; rincian riset yang belum selesai tetap terbuka.
+
 # Lanjutan v0.35
 
 - [x] Regresi akhir 220 Node + 41 browser = 261 lulus, proses selesai normal; sesi hilang/pergantian akun dan tab tersembunyi mendapat tes regresi khusus. [Bukti](evaluation/display-release.json).
@@ -20,7 +38,7 @@ Pengguna memilih memprioritaskan fungsi SRS Smart Kitchen Command Center dan mem
 - [ ] Target voice-to-screen ≤2 detik: belum terpenuhi (rekaman saat ini empat detik), perlu streaming dan pengukuran nyata.
 - [ ] Validasi koki/pemilik, durasi masak aktual, kebisingan dan mikrofon lapangan; kestabilan Whisper masih terbuka.
 - [x] Layar pelanggan tanpa login pemilik: token baca terbatas/berakhir/dicabut, proyeksi kode-status, SSE, tidak menyimpan kunci asli atau transkrip. [Panduan](CUSTOMER_DISPLAY.md).
-- [ ] Peran kasir/dapur dengan pembatasan tindakan dan sesi di server. Layar pelanggan selesai sebagai alur terpisah; belum ada RBAC staf.
+- [x] Peran kasir/dapur dengan pembatasan tindakan/sesi server selesai pada v0.36. [Cakupan dan batas](STAFF_ROLES.md).
 - [ ] Kapasitas alat/staf, tahapan lebih rinci dan pencatatan waste sebagian.
 - [ ] Integrasi pemesanan/katalog ojol dan kanal eksternal; sumber saat ini dicatat manual.
 - [ ] Kesiapan deployment, HTTPS, pemantauan, backup produksi dan uji beban.

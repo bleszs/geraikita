@@ -21,7 +21,7 @@ async function transaction(name, mode, work) {
     work(tx.objectStore(name), value => { result = value; }, error => { failure = error; tx.abort(); });
   });
 }
-export const scopeOf = data => `${data.workspaceId}:${data.workspaceEpoch}:${data.business.id}`;
+export const scopeOf = data => `${data.workspaceId}:${data.workspaceEpoch}:${data.business.id}`+(data.account?.role&&data.account.role!=='owner'?`:${data.account.id}:${data.account.role}:${data.account.roleRevision}`:'');
 export const readSnapshot = () => transaction('snapshots', 'readonly', (store, done) => { store.get('latest').onsuccess = e => done(e.target.result); });
 export const saveSnapshot = data => transaction('snapshots', 'readwrite', store => { store.put({ data, savedAt: new Date().toISOString() }, 'latest'); });
 export const clearSnapshot = () => transaction('snapshots','readwrite',store=>{store.delete('latest');});

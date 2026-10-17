@@ -1,0 +1,150 @@
+{
+  "version": "0.36.0",
+  "checkedAt": "2026-10-17T12:24:33.744Z",
+  "tests": {
+    "command": "PLAYWRIGHT_CHANNEL=chromium npm test (PowerShell environment variable)",
+    "exitCode": 0,
+    "node": {
+      "tests": 227,
+      "pass": 227,
+      "fail": 0
+    },
+    "browser": {
+      "passed": 44,
+      "workers": 1,
+      "channel": "chromium"
+    },
+    "totalPassed": 271,
+    "log": "data/staff-npm-test-v036.log",
+    "logSha256": "ffee632600a0117afa2a53bf04da3952647c7902c7333ac0265439500e37f0fd"
+  },
+  "earlierAttempts": [
+    {
+      "log": "data/staff-browser-first.log",
+      "result": "2 passed, 1 focus assertion expected the second action instead of the actual first stage action"
+    },
+    {
+      "log": "data/staff-browser-second.log",
+      "result": "3 case results passed; cleanup hung and run cancelled, no exit-0 claim"
+    },
+    {
+      "log": "data/staff-npm-test-final.log",
+      "result": "226 Node passed; browser port collision from previous cleanup, exit 1"
+    },
+    {
+      "log": "data/staff-npm-test-release.log",
+      "result": "226 Node and first 33 browser cases passed; timeout creating the next browser page and cleanup hung; cancelled"
+    },
+    {
+      "log": "data/staff-browser-review.log",
+      "result": "first case failed mobile initial scroll assertion before its test reset and input target were corrected; two other case results passed; cancelled"
+    },
+    {
+      "log": "data/staff-npm-test-final-verified.log",
+      "result": "227 not yet included; 226 Node and 29 browser cases passed before a new three-order test assertion used a non-unique locator; corrected, cancelled"
+    },
+    {
+      "log": "data/staff-npm-test-verified.log",
+      "result": "guide coverage identified missing shortcut documentation; fixed, exit 1"
+    }
+  ],
+  "preservation": [
+    {
+      "report": "docs/evaluation/staff-data-preservation.json",
+      "all27TablesStillIdenticalToAfterMigration": true,
+      "integrity": "ok",
+      "foreignKeys": 0
+    },
+    {
+      "report": "docs/evaluation/staff-demo-preservation.json",
+      "all27TablesStillIdenticalToAfterMigration": true,
+      "integrity": "ok",
+      "foreignKeys": 0
+    }
+  ],
+  "design": {
+    "designSha256": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    "sidecarSha256": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f",
+    "detector": "data/staff-detector.json",
+    "finding": "Cream palette is the explicitly pinned user direction; no second detector."
+  },
+  "health": [
+    {
+      "base": "http://127.0.0.1:4174",
+      "results": [
+        {
+          "path": "/api/health",
+          "status": 200,
+          "storage": "sqlite",
+          "mode": "live"
+        },
+        {
+          "path": "/api/staff/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/app.js",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/staff-workspace.js",
+          "status": 200
+        },
+        {
+          "path": "/staff.css",
+          "status": 200
+        },
+        {
+          "path": "/api/bootstrap",
+          "status": 401
+        }
+      ]
+    },
+    {
+      "base": "http://127.0.0.1:4180",
+      "results": [
+        {
+          "path": "/api/health",
+          "status": 200,
+          "storage": "sqlite",
+          "mode": "live"
+        },
+        {
+          "path": "/api/staff/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/app.js",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/staff-workspace.js",
+          "status": 200
+        },
+        {
+          "path": "/staff.css",
+          "status": 200
+        },
+        {
+          "path": "/api/bootstrap",
+          "status": 401
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Technical role/access tests only, not a production security audit or field pilot.",
+    "No model/benchmark/weights changed or retrained.",
+    "No staff or synthetic business data inserted automatically in main/demo by migration.",
+    "Capacity equipment/staff, partial waste, voice <=2s and production deployment remain open."
+  ],
+  "uiReview": {
+    "report": "docs/evaluation/STAFF_ROLES_UI_REVIEW.md",
+    "disposition": "ship",
+    "scope": "Verdict pass for the two original material fixes only; both resolved."
+  },
+  "designDocumentation": {
+    "report": "docs/evaluation/STAFF_ROLES_DESIGN_CHECK.md",
+    "outcome": "Incumbent design files preserved byte-for-byte; observed pre-existing navigation documentation drift recorded without repair."
+  }
+}

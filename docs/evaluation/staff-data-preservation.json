@@ -1,0 +1,296 @@
+{
+  "version": "0.36.0",
+  "checkedAt": "2026-10-17T12:07:03.563Z",
+  "baseline": "data/backups/gerai-kita-live-2026-10-17T11-54-05-676Z-35aa61f4.sqlite",
+  "filename": "data/gerai-kita-live.sqlite",
+  "originalTablesPreserved": true,
+  "addedTables": [
+    {
+      "name": "account_roles",
+      "count": 2,
+      "hash": "cbd5cdd6d22fad3d6b5bf3fb05ed8f586888a0ad363e03b8887c69442661b1a0"
+    },
+    {
+      "name": "staff_actions",
+      "count": 0,
+      "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "ownersMatchExistingAccounts": true,
+  "staffCount": 0,
+  "actionCount": 0,
+  "integrity": "ok",
+  "foreignKeys": [],
+  "before": {
+    "tables": [
+      {
+        "name": "account_sessions",
+        "count": 3,
+        "hash": "b21a9f161bf1fd8ad1cdf041123967860e308d5be2fe8db253449615cb785015"
+      },
+      {
+        "name": "accounts",
+        "count": 2,
+        "hash": "f2712a71442f3231caec128cf49da079d34f67fe0ef5933e946abb88d7a9a340"
+      },
+      {
+        "name": "audit",
+        "count": 3,
+        "hash": "f7dd592f74a220ef3a7a48f9e622cf104dcaf20e035a0bc24aa247296f6ac6d7"
+      },
+      {
+        "name": "business_state",
+        "count": 2,
+        "hash": "415361e057ad6660ec0dba9ed7c800dcc6caf7755aa5a6aad42cba2000a416e8"
+      },
+      {
+        "name": "businesses",
+        "count": 2,
+        "hash": "4bba458b4e1ba166edd15e96385af4d09a8dcaa1d472b643072f796bd0c34d6b"
+      },
+      {
+        "name": "collective_cycles",
+        "count": 2,
+        "hash": "0cf0e8cd8e9e7ae9b5356c66edb8a2dfa318ec613818531e016b227256dd5fb2"
+      },
+      {
+        "name": "collective_orders",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "daily_usage",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "demands",
+        "count": 2,
+        "hash": "3345ea346098a11ac1e1193c2900c25e033ccdac3fe80df27e4e958ad04bd341"
+      },
+      {
+        "name": "display_access",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "ingredients",
+        "count": 1,
+        "hash": "5a98071e5f77905aa99bcde68f2523502926bb75458617b85faf4c2a542817d5"
+      },
+      {
+        "name": "inventory",
+        "count": 1,
+        "hash": "55189cd10959cebd847355ea6d84b0c01dc91d4a33334026097958349bee2045"
+      },
+      {
+        "name": "kitchen_actions",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_menus",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_orders",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_tasks",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "menus",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "movements",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "offers",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "sales",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "sessions",
+        "count": 3,
+        "hash": "344c6dddc1c32fd44d1ac41943258040d27de99d5ca0c5f13b98d6e9f888ed70"
+      },
+      {
+        "name": "stock_receipts",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "transfers",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "usage_review_decisions",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "workspaces",
+        "count": 2,
+        "hash": "9927cfbe24fd8532be87412f7fd2acb5d374710e7cd1fa56ff35b13f61512331"
+      }
+    ],
+    "integrity": "ok",
+    "foreignKeys": []
+  },
+  "after": {
+    "tables": [
+      {
+        "name": "account_roles",
+        "count": 2,
+        "hash": "cbd5cdd6d22fad3d6b5bf3fb05ed8f586888a0ad363e03b8887c69442661b1a0"
+      },
+      {
+        "name": "account_sessions",
+        "count": 3,
+        "hash": "b21a9f161bf1fd8ad1cdf041123967860e308d5be2fe8db253449615cb785015"
+      },
+      {
+        "name": "accounts",
+        "count": 2,
+        "hash": "f2712a71442f3231caec128cf49da079d34f67fe0ef5933e946abb88d7a9a340"
+      },
+      {
+        "name": "audit",
+        "count": 3,
+        "hash": "f7dd592f74a220ef3a7a48f9e622cf104dcaf20e035a0bc24aa247296f6ac6d7"
+      },
+      {
+        "name": "business_state",
+        "count": 2,
+        "hash": "415361e057ad6660ec0dba9ed7c800dcc6caf7755aa5a6aad42cba2000a416e8"
+      },
+      {
+        "name": "businesses",
+        "count": 2,
+        "hash": "4bba458b4e1ba166edd15e96385af4d09a8dcaa1d472b643072f796bd0c34d6b"
+      },
+      {
+        "name": "collective_cycles",
+        "count": 2,
+        "hash": "0cf0e8cd8e9e7ae9b5356c66edb8a2dfa318ec613818531e016b227256dd5fb2"
+      },
+      {
+        "name": "collective_orders",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "daily_usage",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "demands",
+        "count": 2,
+        "hash": "3345ea346098a11ac1e1193c2900c25e033ccdac3fe80df27e4e958ad04bd341"
+      },
+      {
+        "name": "display_access",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "ingredients",
+        "count": 1,
+        "hash": "5a98071e5f77905aa99bcde68f2523502926bb75458617b85faf4c2a542817d5"
+      },
+      {
+        "name": "inventory",
+        "count": 1,
+        "hash": "55189cd10959cebd847355ea6d84b0c01dc91d4a33334026097958349bee2045"
+      },
+      {
+        "name": "kitchen_actions",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_menus",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_orders",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_tasks",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "menus",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "movements",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "offers",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "sales",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "sessions",
+        "count": 3,
+        "hash": "344c6dddc1c32fd44d1ac41943258040d27de99d5ca0c5f13b98d6e9f888ed70"
+      },
+      {
+        "name": "staff_actions",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "stock_receipts",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "transfers",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "usage_review_decisions",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "workspaces",
+        "count": 2,
+        "hash": "9927cfbe24fd8532be87412f7fd2acb5d374710e7cd1fa56ff35b13f61512331"
+      }
+    ],
+    "integrity": "ok",
+    "foreignKeys": []
+  }
+}

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createStore } from './store.mjs';
 import {createIdentity} from './identity.mjs';
 import {createDisplayAccess} from './display-access.mjs';
+import {authorize,staffBootstrap} from './roles.mjs';
 import { createService } from './service.mjs';
 import { createExtractor } from './extractor.mjs';
 import {localTranscriber,MAX_AUDIO_BODY} from './transcriber.mjs';
@@ -23,12 +24,18 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
   const displays=createDisplayAccess(store);
   const failures=new Map();
   const kitchenStreams=new Set();
-  const stateOf=async s=>({...service.bootstrap(s),displays:displays.list(s),account:identity.details(s),ai:await extractor.status(),speech:await transcriber.status()});
+  const stateOf=async s=>s.role==='owner'?({...service.bootstrap(s),displays:displays.list(s),staff:identity.staff(s),account:identity.details(s),ai:await extractor.status(),speech:await transcriber.status()}):({...staffBootstrap(store,service,s,identity.details(s)),speech:s.role==='kitchen'?await transcriber.status():{available:false}});
   const server = http.createServer(async (request, response) => {
     const json = (value, status = 200) => { response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); response.end(JSON.stringify(value)); };
     try {
       const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
       requireValue(['localhost', '127.0.0.1'].includes((request.headers.host || '').split(':')[0]), 'Host tidak diizinkan.', 403);
+      const staffClient=pathname.match(/^\/api\/staff-client\/([a-z][a-z-]*\.js)$/);
+      if(request.method==='GET'&&(pathname==='/api/staff/screen'||staffClient)){
+        const file=staffClient?staffClient[1]:'index.html';let content=await readFile(path.join(root,file));
+        if(!staffClient)content=Buffer.from(content.toString('utf8').replace('src="/app.js"','src="/api/staff-client/app.js"'));
+        response.writeHead(200,{'Content-Type':staffClient?'text/javascript; charset=utf-8':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"});response.end(content);return;
+      }
       if(pathname==='/api/display/screen'&&request.method==='GET'){
         const content=await readFile(path.join(root,'display-screen.html'));
         response.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"});response.end(content);return;
@@ -59,6 +66,8 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         let session=identity.resolve(cookie);
         if(pathname==='/api/transcriptions')requireValue(session,'Masuk ke akun untuk memakai pencatatan suara.',401);
         const body=mutating ? await readBody(request,pathname==='/api/transcriptions'?MAX_AUDIO_BODY:65536) : null;
+        // A role/session may be revoked while a request body is still arriving.
+        session=identity.resolve(cookie);
         if(pathname==='/api/health' && request.method==='GET')return json({storage:'sqlite',mode:'live',ai:await extractor.status(),speech:await transcriber.status()});
         if(['/api/auth/register','/api/auth/login'].includes(pathname) && mutating){
           requireValue(!session,'Keluar dari akun aktif sebelum masuk dengan akun lain.',409);
@@ -70,6 +79,10 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         }
         requireValue(session, 'Masuk ke akun untuk membuka catatan usaha.', 401);
         if (mutating) requireValue(body.csrf === session.csrf, 'Sesi berubah. Muat ulang halaman.', 403);
+        authorize(session,pathname,request.method,body);
+        if(pathname==='/api/staff'&&mutating)return json(identity.createStaff(session,body),201);
+        const staffMatch=pathname.match(/^\/api\/staff\/([a-zA-Z0-9-]+)$/);
+        if(staffMatch&&mutating)return json(identity.updateStaff(session,staffMatch[1],body));
         if(pathname==='/api/displays'&&mutating)return json(displays.create(session,body),201);
         const displayMatch=pathname.match(/^\/api\/displays\/([a-zA-Z0-9-]+)\/revoke$/);
         if(displayMatch&&mutating)return json(displays.revoke(session,displayMatch[1]));
@@ -84,7 +97,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
           }catch{response.end();}};
           const interval=setInterval(tick,1000);response.once('close',()=>{clearInterval(interval);kitchenStreams.delete(response);});tick();return;
         }
-        if(pathname==='/api/kitchen'&&request.method==='GET')return json(service.kitchen.snapshot(session));
+        if(pathname==='/api/kitchen'&&request.method==='GET')return json(session.role==='owner'?service.kitchen.snapshot(session):staffBootstrap(store,service,session,identity.details(session)).kitchen);
         if(pathname==='/api/kitchen/orders'&&mutating)return json(service.kitchen.create(session,body),201);
         if(pathname==='/api/kitchen/commands'&&mutating)return json(service.kitchen.command(session,body));
         const kitchenMatch=pathname.match(/^\/api\/kitchen\/orders\/([a-zA-Z0-9-]+)\/actions$/);
@@ -102,7 +115,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         if(pathname==='/api/community/settings' && mutating)return json(identity.saveCommunity(session,body));
         if(pathname==='/api/community/invite' && mutating)return json(identity.rotateInvite(session,body));
         if(pathname==='/api/account/password' && mutating){
-          const key='password:'+session.workspace_id+':'+session.business_id,failed=failures.get(key);
+          const key='password:'+session.account_id,failed=failures.get(key);
           requireValue(!failed || failed.until<Date.now() || failed.count<8,'Terlalu banyak percobaan. Coba lagi dalam 10 menit.',429);
           try{const result=identity.changePassword(session,body);failures.delete(key);return json(result);}catch(error){if(error.code==='incorrect_password'){const old=failed && failed.until>Date.now()?failed:{count:0,until:Date.now()+600000};failures.set(key,{...old,count:old.count+1});}throw error;}
         }

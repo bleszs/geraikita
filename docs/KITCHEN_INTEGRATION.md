@@ -1,3 +1,7 @@
+# Pembaruan integrasi v0.36
+
+Akun kasir/dapur dan token layar pelanggan minimum kini tersedia. [Pembagian tugas, cara masuk dan batas](STAFF_ROLES.md), [layar pelanggan](CUSTOMER_DISPLAY.md). Kasir memasukkan/menyerahkan pesanan; dapur mengoperasikan tahap, dengan pembatasan di server. Layar layanan lama tetap untuk sesi pemilik; gunakan akun staf atau token pelanggan sesuai kebutuhan. Bagian v0.34 berikut merupakan riwayat implementasi awal.
+
 # Integrasi Smart Kitchen Command Center — v0.34
 
 Validasi akhir `npm test`: **215 Node + 35 browser = 250 lulus**, proses berakhir normal. Delapan tes domain/API dapur dan tiga browser dapur termasuk total tersebut. Tes suara memakai transkripsi/mikrofon tiruan untuk memeriksa alur dan pelepasan sumber daya; bukan pengukuran akurasi atau dua detik. [Bukti rilis](evaluation/kitchen-release.json), [preservasi data asli](evaluation/kitchen-data-preservation.json), [preservasi demo](evaluation/kitchen-demo-preservation.json), [review UI](evaluation/KITCHEN_UI_REVIEW.md), [konsistensi desain](evaluation/KITCHEN_DESIGN_CHECK.md).
@@ -37,7 +41,7 @@ Pola yang diterima: `mulai|pasif|lanjutkan|siap|selesai` + nama menu persis + la
 | F05 Dynamic BOM | Cadangan saat masuk, konsumsi saat selesai, menu tak cukup bahan tidak dapat dipilih | Katalog pemesanan publik dan sinkronisasi ojol belum ada |
 | NF01 ≤2 detik | Belum terpenuhi | Memerlukan desain streaming/latensi dan evaluasi terpisah |
 | NF02 UI/tema | Memakai sistem desain lama, tema manual dan mengikuti tema OS jika belum ada pilihan tersimpan | Tidak mengganti frontend ke React, sesuai keputusan pengguna |
-| NF03 Isolasi | Semua operasi dapur scoped `workspace_id` + `business_id`, sesi/CSRF, revisi dan idempotensi | Bukan jaminan audit keamanan produksi; peran staf/token layar publik belum tersedia |
+| NF03 Isolasi | Semua operasi dapur scoped `workspace_id` + `business_id`, sesi/CSRF, revisi dan idempotensi | Bukan jaminan audit keamanan produksi; role staf dan token layar publik ditambahkan pada v0.35–0.36 |
 
 ## Data dan kompatibilitas
 
@@ -49,7 +53,7 @@ Forecasting, kulakan bersama, surplus, audit pemakaian, offline draft, dan evalu
 
 - [ ] Uji tugas dapur dengan staf nyata, waktu masak aktual, suara bising dan mikrofon berizin.
 - [ ] Streaming/end-of-utterance serta pengukuran latency end-to-end terhadap target dua detik, sambil menyelesaikan kestabilan ASR.
-- [ ] Peran kasir/dapur dan token layar pelanggan dengan akses minimum.
+- [x] Peran kasir/dapur dan token layar pelanggan dengan akses minimum (v0.35–0.36).
 - [ ] Model kapasitas alat/staf, perubahan tahapan yang lebih rinci, pembatalan/waste sebagian.
 - [ ] Adaptor katalog/pemesanan kanal eksternal; label sumber saat ini masih input manual.
 - [ ] Hosting/HTTPS, kapasitas transaksi/layanan suara, backup produksi, pemantauan dan uji beban.

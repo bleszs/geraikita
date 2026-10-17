@@ -1,3 +1,9 @@
+# Pembaruan v0.36
+
+Gerai Kita kini membagi tugas lewat akun kasir dan dapur milik usaha yang sama. Pemilik mengelola staf di Pengaturan dengan konfirmasi dan pencabutan seluruh sesi saat akses berubah. Kasir menerima/menyerahkan pesanan, dapur mengerjakan tahapan dan kendali suara yang tersedia. Server membatasi API dan mengirim data operasional minimum; staf tidak mendapat laporan, resep, pemasok, kelompok atau kontrol pemilik. Panduan berpanah mengikuti peran, menu besar dan bahasa Indonesia mengikuti identitas visual lama. Offline tidak mengizinkan transaksi staf atau snapshot pemilik. Tidak ada staf/isi usaha sintetis otomatis. [Cakupan dan batas](docs/STAFF_ROLES.md).
+
+Kapasitas alat/staf, waste sebagian, pilot suara dua detik dan deployment masih terbuka. Bagian versi sebelumnya berikut adalah riwayat.
+
 # Pembaruan v0.35
 
 Lanjutan TODO dapur memisahkan layar pelanggan dari sesi pemilik. Pemilik membuat tautan baca yang bernama, berakhir dan dapat dicabut; viewer hanya menerima kode/status antrean, tanpa informasi menu/harga/label/catatan atau kontrol bisnis. Pembuatan link eksplisit, tersimpan hanya di memori pembuatan, SHA-256 di server, scope usaha tetap. Offline/revoked menyembunyikan kode. Identity visual lama dipertahankan; viewer tetap cream/terracotta/Nunito dengan tema sesuai sistem. Staff RBAC, deployment lintas perangkat, kapasitas alat dan suara dua detik masih terbuka. [Alur dan batas](docs/CUSTOMER_DISPLAY.md).

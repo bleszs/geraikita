@@ -20,7 +20,7 @@ test('every shipped page has a short replayable guide, with unique topics/steps 
 test('all named application actions have a documented topic, including conditional stock/voice/group actions',()=>{
   const source=readFileSync('public/live-views.js','utf8')+readFileSync('public/app.js','utf8');
   const documented=new Set(GUIDE_TOPICS.flatMap(t=>t.actions));
-  const actions=new Set([...source.matchAll(/button\('([a-z-]+)'/g),...source.matchAll(/action==='([a-z-]+)'/g)].map(m=>m[1]));
+  const actions=new Set([...source.matchAll(/button\('([a-z-]+)'/g),...source.matchAll(/(?<![.\w])action==='([a-z-]+)'/g)].map(m=>m[1]));
   const missing=[...actions].filter(action=>!documented.has(action));assert.deepEqual(missing,[],'Application actions need guide coverage');
   for(const label of ['Simpan bahan','Simpan barang masuk','Simpan menu dan resep','Susun rincian pesanan','Bagikan / perbarui kebutuhan','Simpan penawaran pemasok','Catat penerimaan bagianku','Terbitkan tawaran','Minta transfer','Konfirmasi pembatalan','Simpan kata sandi baru','Ganti kode undangan'])
     assert.ok(JSON.stringify(GUIDE_TOPICS).includes(label),label);

@@ -1,3 +1,15 @@
+# Perubahan terbaru v0.36 — akun staf
+
+**Regresi akhir selesai normal: 227 tes Node dan 44 browser = 271 lulus, exit 0.** Browser pengujian Chromium terpisah dipilih melalui PLAYWRIGHT_CHANNEL; Chrome tetap default bila variabel tidak diisi. Log final `data/staff-npm-test-v036.log` dan riwayat percobaan tersedia pada [bukti rilis](evaluation/staff-release.json). Main 4174 dan demo 4180 aktif pada server terbaru; halaman/modul staf 200 dan bootstrap tanpa sesi 401.
+
+Pemilik kini membuat akun kasir/dapur pada usaha yang sama melalui Pengaturan akun, lalu mengubah peran atau status dengan konfirmasi. Kasir menangani intake dan penyerahan, dapur menangani tahap/perintah memasak. Server memakai daftar izin eksplisit dan proyeksi data per peran; staf tidak menerima laporan, resep, pemasok, kelompok atau pengaturan pemilik.
+
+Penggantian akses mencabut semua sesi target, termasuk stream aktif; login berikutnya membaca role baru. Staf mempunyai Akun saya dan panduan Lanjut/Lewati. Prefiks API untuk halaman/modul staf melewati cache shell lama. Bukti kirim memakai namespace akun/peran/revisi; staf tidak menyimpan snapshot offline atau melihat draft pemilik.
+
+Schema **27 tabel**. [Usaha asli](evaluation/staff-data-preservation.json) dan [demo](evaluation/staff-demo-preservation.json): **25 tabel lama identik**, akun lama menjadi owner, nol staf/tindakan tambahan otomatis. Tidak ada data dummy pada akun asli atau perubahan model/benchmark AI. [Panduan lengkap](STAFF_ROLES.md), [bukti rilis](evaluation/staff-release.json), [review UI](evaluation/STAFF_ROLES_UI_REVIEW.md), [preservasi desain](evaluation/STAFF_ROLES_DESIGN_CHECK.md).
+
+Belum: reset/transfer pemilik, izin bebas, audit aktor terstruktur menyeluruh, kapasitas alat/staf, waste sebagian, SLA suara dua detik, pilot nyata dan deployment produksi. Catatan di bawah merupakan riwayat versi sebelumnya.
+
 # Perubahan terbaru v0.35 — akses khusus layar pelanggan
 
 **Validasi akhir: `npm test` selesai normal dengan exit 0 — 220 tes Node dan 41 browser, total 261 lulus.** Lima tes Node dan enam browser khusus akses layar termasuk total ini. Regresi memeriksa kedua temuan review: rahasia sementara dibersihkan saat sesi hilang/akun berganti, dan kode tab tersembunyi disembunyikan sampai otorisasi baru. [Bukti rilis](evaluation/display-release.json), log `data/display-npm-test-final.log`, [review dua perbaikan](evaluation/CUSTOMER_DISPLAY_UI_REVIEW.md), [preservasi desain](evaluation/CUSTOMER_DISPLAY_DESIGN_CHECK.md). Model/benchmark Python tidak diulang karena tidak berubah.

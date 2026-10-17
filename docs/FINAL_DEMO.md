@@ -1,3 +1,14 @@
+# Tambahan alur presentasi v0.36
+
+Pada **database demo terpisah**, masuk sebagai pemilik lalu buka **Pengaturan akun → Akun kasir dan dapur**. Buat dua akun presentasi dengan email unik dan password awal sendiri: satu Kasir, satu Dapur. Tidak ada kredensial staf bawaan. Buka **halaman masuk staf** di dua profil browser/jendela privat terpisah; pakai port **4180** untuk seluruh alur demo ini.
+
+1. Kasir memasukkan pesanan dari menu yang sudah diatur waktu/stasiunnya. Tunjukkan harga/porsi dan cadangan bahan, tanpa laporan usaha.
+2. Dapur mendapat item, catatan dan giliran tanpa harga/resep. Ikuti Mulai → tahap pasif bila perlu → Tandai siap. Panduan per peran dapat dibuka lewat Panduan.
+3. Kasir menyerahkan pesanan siap dan mencatat penjualan sekali. Pemilik melihat penjualan serta pengurangan stok.
+4. Pemilik menonaktifkan salah satu staf dengan konfirmasi; layar staf kembali ke login setelah pemeriksaan sesi. Aktifkan kembali lalu masuk ulang jika ingin melanjutkan.
+
+Jelaskan data demo sintetis dan akses masih lokal; akun asli tidak diisi contoh. [Cara memakai dan batas](STAFF_ROLES.md). Versi sebelumnya berikut adalah riwayat/alur pelengkap.
+
 # Tambahan alur presentasi v0.35
 
 Setelah pesanan dapur masuk, buka **Pengaturan akun → Layar pelanggan**, beri nama layar, pilih masa aktif dan buat tautan setelah konfirmasi. Buka tautan di jendela privat pada perangkat server yang sama. Tunjukkan kode/status tanpa menu/harga/catatan pelanggan, perubahan saat item siap, serta layar ditutup ketika akses dicabut. Jangan membagikan akun pemilik sebagai akses pelanggan. Link localhost belum menjangkau perangkat lain tanpa pengaturan jaringan/deployment.
