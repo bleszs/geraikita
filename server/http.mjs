@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createStore } from './store.mjs';
 import {createIdentity} from './identity.mjs';
+import {createDisplayAccess} from './display-access.mjs';
 import { createService } from './service.mjs';
 import { createExtractor } from './extractor.mjs';
 import {localTranscriber,MAX_AUDIO_BODY} from './transcriber.mjs';
@@ -19,14 +20,31 @@ async function readBody(request, limit=65536) {
 }
 export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-kita-live.sqlite', extractor = createExtractor(),transcriber=localTranscriber } = {}) {
   const store = createStore(filename); const service = createService(store),identity=createIdentity(store);
+  const displays=createDisplayAccess(store);
   const failures=new Map();
   const kitchenStreams=new Set();
-  const stateOf=async s=>({...service.bootstrap(s),account:identity.details(s),ai:await extractor.status(),speech:await transcriber.status()});
+  const stateOf=async s=>({...service.bootstrap(s),displays:displays.list(s),account:identity.details(s),ai:await extractor.status(),speech:await transcriber.status()});
   const server = http.createServer(async (request, response) => {
     const json = (value, status = 200) => { response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); response.end(JSON.stringify(value)); };
     try {
       const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
       requireValue(['localhost', '127.0.0.1'].includes((request.headers.host || '').split(':')[0]), 'Host tidak diizinkan.', 403);
+      if(pathname==='/api/display/screen'&&request.method==='GET'){
+        const content=await readFile(path.join(root,'display-screen.html'));
+        response.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"});response.end(content);return;
+      }
+      if(['/api/display/snapshot','/api/display/events'].includes(pathname)){
+        requireValue(request.method==='GET','Layar pelanggan hanya dapat membaca status.',405);
+        const access=displays.resolve(request.headers.authorization);
+        if(pathname.endsWith('/snapshot'))return json(displays.snapshot(access));
+        response.writeHead(200,{'Content-Type':'text/event-stream','Cache-Control':'no-store','Referrer-Policy':'no-referrer','Connection':'keep-alive','X-Accel-Buffering':'no'});
+        kitchenStreams.add(response);let fingerprint='',lastSent=0;
+        const tick=()=>{try{
+          const active=displays.resolve(request.headers.authorization),data=displays.snapshot(active),next=JSON.stringify([data.orders,data.hasMore]);
+          if(next!==fingerprint||Date.now()-lastSent>=5000){fingerprint=next;lastSent=Date.now();response.write(`data: ${JSON.stringify(data)}\n\n`);}
+        }catch{response.write('event: revoked\ndata: {}\n\n');response.end();}};
+        const interval=setInterval(tick,1000);response.once('close',()=>{clearInterval(interval);kitchenStreams.delete(response);});tick();return;
+      }
       // API prefix intentionally bypasses every legacy shell worker, including
       // versions whose startup error has no working update control.
       if(request.method==='GET' && ['/api/recovery','/api/recovery.js'].includes(pathname)){
@@ -52,6 +70,9 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         }
         requireValue(session, 'Masuk ke akun untuk membuka catatan usaha.', 401);
         if (mutating) requireValue(body.csrf === session.csrf, 'Sesi berubah. Muat ulang halaman.', 403);
+        if(pathname==='/api/displays'&&mutating)return json(displays.create(session,body),201);
+        const displayMatch=pathname.match(/^\/api\/displays\/([a-zA-Z0-9-]+)\/revoke$/);
+        if(displayMatch&&mutating)return json(displays.revoke(session,displayMatch[1]));
         if(pathname==='/api/kitchen/events'&&request.method==='GET'){
           response.writeHead(200,{'Content-Type':'text/event-stream','Cache-Control':'no-store','Connection':'keep-alive','X-Accel-Buffering':'no'});
           kitchenStreams.add(response);let revision='';

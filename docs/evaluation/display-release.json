@@ -1,0 +1,66 @@
+{
+  "version": "0.35.0",
+  "checkedAt": "2026-10-17T10:39:54.874Z",
+  "validation": {
+    "command": "npm test",
+    "exitCode": 0,
+    "nodeTests": 220,
+    "browserTests": 41,
+    "total": 261,
+    "workers": 1,
+    "log": "data/display-npm-test-final.log",
+    "domainDisplayTests": 5,
+    "browserDisplayTests": 6,
+    "guideSteps": 76
+  },
+  "preservation": {
+    "main": true,
+    "demo": true,
+    "originalTables": 24,
+    "addedTable": "display_access",
+    "addedRows": 0
+  },
+  "servers": [
+    {
+      "port": 4174,
+      "screen": 200,
+      "script": 200,
+      "style": 200,
+      "withoutToken": 401
+    },
+    {
+      "port": 4180,
+      "screen": 200,
+      "script": 200,
+      "style": 200,
+      "withoutToken": 401
+    }
+  ],
+  "review": {
+    "disposition": "ship",
+    "scope": "two material fixes scored resolved; valid recaptures"
+  },
+  "designHashes": {
+    "DESIGN.md": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    ".impeccable/design.json": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f"
+  },
+  "limitations": {
+    "staffRoles": false,
+    "twoSecondVoiceTargetMet": false,
+    "publicNetworkDeployment": false,
+    "fieldUsabilityValidated": false,
+    "newModelsTrained": false
+  },
+  "privacy": {
+    "publicFields": [
+      "orders.code",
+      "orders.status",
+      "hasMore",
+      "updatedAt"
+    ],
+    "rawTokensInDatabase": false,
+    "ownerCookiesRequiredForViewer": false,
+    "tokenInOwnerSnapshot": false,
+    "readOnlyViewer": true
+  }
+}

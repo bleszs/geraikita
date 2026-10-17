@@ -110,7 +110,7 @@ test('all fourteen topics and sixty-seven steps run end to end without posting b
     }
     await expect(tour(page)).toHaveCount(0);
   }
-  expect(visited).toBe(73);expect(posts).toBe(0);
+  expect(visited).toBe(76);expect(posts).toBe(0);
   const after=await state(page);for(const key of ['stock','catalog','menu','transactions','stockReceipts','offers','transfers'])expect(after[key]).toEqual(before[key]);
 });
 

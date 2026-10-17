@@ -1,3 +1,9 @@
+# Lanjutan v0.35
+
+- [x] Regresi akhir 220 Node + 41 browser = 261 lulus, proses selesai normal; sesi hilang/pergantian akun dan tab tersembunyi mendapat tes regresi khusus. [Bukti](evaluation/display-release.json).
+
+Pekerjaan berikutnya setelah modul dapur: layar pelanggan yang dapat dibuka tanpa membagikan akun pemilik. Implementasi dan uji akses/proyeksi/migrasi sudah tersedia; tautan dibuat pemilik sesuai kebutuhan, bukan diisi otomatis. Node.js/SQLite tetap; tidak melatih/mengaktifkan model baru. [Alur dan batas](CUSTOMER_DISPLAY.md). Prioritas sesudahnya adalah peran kasir/staf dapur; suara dua detik dan deployment tetap terbuka.
+
 # Prioritas integrasi SRS dapur — v0.34
 
 Pengguna memilih memprioritaskan fungsi SRS Smart Kitchen Command Center dan mempertahankan teknologi saat ini. [Pemetaan kebutuhan, cara mencoba dan batas](KITCHEN_INTEGRATION.md).
@@ -13,7 +19,8 @@ Pengguna memilih memprioritaskan fungsi SRS Smart Kitchen Command Center dan mem
 - [x] Regresi penuh selesai normal: 215 Node dan 35 browser lulus; worker browser tunggal, stream/idle connection ditutup saat shutdown. [Bukti rilis](evaluation/kitchen-release.json).
 - [ ] Target voice-to-screen ≤2 detik: belum terpenuhi (rekaman saat ini empat detik), perlu streaming dan pengukuran nyata.
 - [ ] Validasi koki/pemilik, durasi masak aktual, kebisingan dan mikrofon lapangan; kestabilan Whisper masih terbuka.
-- [ ] Peran kasir/dapur dan akses minimum untuk layar pelanggan publik.
+- [x] Layar pelanggan tanpa login pemilik: token baca terbatas/berakhir/dicabut, proyeksi kode-status, SSE, tidak menyimpan kunci asli atau transkrip. [Panduan](CUSTOMER_DISPLAY.md).
+- [ ] Peran kasir/dapur dengan pembatasan tindakan dan sesi di server. Layar pelanggan selesai sebagai alur terpisah; belum ada RBAC staf.
 - [ ] Kapasitas alat/staf, tahapan lebih rinci dan pencatatan waste sebagian.
 - [ ] Integrasi pemesanan/katalog ojol dan kanal eksternal; sumber saat ini dicatat manual.
 - [ ] Kesiapan deployment, HTTPS, pemantauan, backup produksi dan uji beban.

@@ -1,3 +1,7 @@
+# Prioritas lanjutan v0.35
+
+Layar pelanggan kini memakai tautan baca terpisah yang dapat berakhir/dicabut; pemilik tidak perlu membagikan login. Fitur selesai sebagai alur mandiri, sedangkan peran kasir/dapur tetap belum dibuat. Berikutnya: RBAC staf, lalu kapasitas alat/waste sebagian, suara terukur dan deployment sesuai prioritas/data yang tersedia. [Cakupan layar pelanggan](CUSTOMER_DISPLAY.md).
+
 # Prioritas terbaru v0.34
 
 SRS dapur menjadi prioritas fungsi. Modul Dapur/Layanan, SJF+aging, tahapan pasif, reservasi/penyelesaian bahan, SSE, kendali suara terbatas dan pengaturan menu sudah ditambahkan. Teknologi dipertahankan atas pilihan pengguna. [Cakupan dan pekerjaan yang belum terpenuhi](KITCHEN_INTEGRATION.md).

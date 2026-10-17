@@ -1,3 +1,11 @@
+# Tambahan arsitektur v0.35
+
+`display-access.mjs` menambah satu tabel `display_access` dengan scope workspace/business, digest token, idempotensi, masa aktif dan pencabutan. Pemilik mengelola akses melalui sesi/CSRF; token layar tidak menjadi sesi akun. Bootstrap hanya mengirim metadata tanpa token/hash. Public projection query memilih hanya id/status dari antrean aktif dan mengubah ID menjadi kode delapan karakter, maksimum 200 baris.
+
+`/api/display/screen` menyajikan HTML mandiri agar worker lama melewati navigasi. `/api/display/events` dan `/snapshot` hanya GET dengan bearer header, tanpa autentikasi cookie atau mutasi. SSE memeriksa validitas setiap detik, heartbeat ≤5 detik, dan memakai lifecycle shutdown stream lama. Viewer memakai credentials omit/no-referrer/no-store, watchdog 12 detik dan jeda reconnect ≤15 detik. Data tidak disimpan ke IndexedDB/localStorage; layar hilang koneksi/akses menyembunyikan kode.
+
+Frontend owner `display-management.js` memperluas Pengaturan. `display-screen.html/css/js` memakai token/style/font lama dalam dua lajur siap/disiapkan yang bertumpuk pada mobile. Cache shell v35 memuat helper owner/CSS. Panduan v4 memuat total 15 topik/76 langkah. [Detail dan batas](CUSTOMER_DISPLAY.md).
+
 # Arsitektur tambahan v0.34 — dapur
 
 `server/kitchen.mjs` memisahkan pesanan dapur dan task dari penjualan final. Empat tabel aditif menyimpan pengaturan menu, snapshot pesanan/cadangan integer berskala, task stasiun dan hasil tindakan idempoten. Scope memakai workspace/business dari sesi. `operations.available()` mengurangi cadangan dapur dan surplus; penjualan langsung, penerimaan dan layanan surplus memakai saldo tersedia yang sama. Selesai mengonsumsi snapshot resep awal dan menulis penjualan/pemakaian/ledger atomik; pembatalan penjualan lama menolak asal dapur.

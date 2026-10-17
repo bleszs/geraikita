@@ -1,3 +1,7 @@
+# Pembaruan v0.35
+
+Lanjutan TODO dapur memisahkan layar pelanggan dari sesi pemilik. Pemilik membuat tautan baca yang bernama, berakhir dan dapat dicabut; viewer hanya menerima kode/status antrean, tanpa informasi menu/harga/label/catatan atau kontrol bisnis. Pembuatan link eksplisit, tersimpan hanya di memori pembuatan, SHA-256 di server, scope usaha tetap. Offline/revoked menyembunyikan kode. Identity visual lama dipertahankan; viewer tetap cream/terracotta/Nunito dengan tema sesuai sistem. Staff RBAC, deployment lintas perangkat, kapasitas alat dan suara dua detik masih terbuka. [Alur dan batas](docs/CUSTOMER_DISPLAY.md).
+
 # Pembaruan v0.34
 
 Pengguna memprioritaskan fungsi SRS Smart Kitchen Command Center sambil mempertahankan teknologi. Operasional dapur menjadi halaman awal: antrean multi-item, SJF per stasiun dengan prioritas usia, tahap pasif, cadangan bahan dan konsumsi pada penyelesaian. Layar layanan terautentikasi mengikuti status dan memperingatkan ketika pembaruan terputus. Kendali suara opt-in menggunakan model lama, perintah terbatas dan rekaman empat detik. Tidak ada janji respons dua detik, akurasi lapangan, kapasitas alat otomatis atau kanal eksternal tersambung.

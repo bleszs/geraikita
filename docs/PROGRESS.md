@@ -1,3 +1,15 @@
+# Perubahan terbaru v0.35 — akses khusus layar pelanggan
+
+**Validasi akhir: `npm test` selesai normal dengan exit 0 — 220 tes Node dan 41 browser, total 261 lulus.** Lima tes Node dan enam browser khusus akses layar termasuk total ini. Regresi memeriksa kedua temuan review: rahasia sementara dibersihkan saat sesi hilang/akun berganti, dan kode tab tersembunyi disembunyikan sampai otorisasi baru. [Bukti rilis](evaluation/display-release.json), log `data/display-npm-test-final.log`, [review dua perbaikan](evaluation/CUSTOMER_DISPLAY_UI_REVIEW.md), [preservasi desain](evaluation/CUSTOMER_DISPLAY_DESIGN_CHECK.md). Model/benchmark Python tidak diulang karena tidak berubah.
+
+Pemilik kini dapat membuat tautan bernama dengan masa aktif dan pencabutan melalui **Pengaturan akun → Layar pelanggan**. Halaman pelanggan tidak memerlukan sesi pemilik, tidak memanggil bootstrap akun dan hanya menerima kode/status antrean usaha terkait. Tidak ada menu, harga, stok, resep, label pelanggan atau catatan pribadi di proyeksi API.
+
+Kunci acak hanya ada di memori pembuatan/fragment tautan. SQLite menyimpan SHA-256; daftar akses hanya metadata. Pembuatan ulang setelah respons hilang menggunakan kunci sama secara eksplisit. Pindah halaman/scope/logout/reload menghapus tautan sementara. Koneksi hilang/akses dicabut menyembunyikan kode dan tab kembali terbuka memeriksa otorisasi lagi. HTML melalui prefiks API melewati cache navigasi PWA lama.
+
+Schema menjadi 25 tabel. [Preservasi data asli](evaluation/display-data-preservation.json) dan [demo](evaluation/display-demo-preservation.json) membuktikan 24 tabel lama identik, tabel akses baru kosong. Tidak membuat tautan/akun/pesanan contoh pada data nyata. Belum ada peran kasir/dapur, deployment lintas perangkat, target suara dua detik atau validasi TV lapangan. [Cara memakai dan batas](CUSTOMER_DISPLAY.md).
+
+Regresi dan health v0.35 tersedia pada `evaluation/display-release.json`; server asli 4174 dan demo 4180 aktif pada kode terbaru. Bagian v0.34 dan sebelumnya di bawah merupakan riwayat.
+
 # Perubahan terbaru v0.34 — prioritas operasional dapur
 
 **Validasi akhir: `npm test` selesai normal dengan exit 0 — 215 tes Node dan 35 browser, total 250 lulus.** Browser dibatasi satu worker setelah percobaan paralel mengalami timeout karena perebutan sumber daya; log percobaan tetap disimpan. Server asli 4174 dan demo 4180 merespons health, aset dapur tersedia dan API tanpa sesi ditolak. [Bukti rilis](evaluation/kitchen-release.json), log `data/kitchen-npm-test-sequential.log`. Pemeriksaan UI `ship`, preservasi main/demo serta hash desain sudah dicatat. Tidak mengulang training/benchmark Python untuk integrasi ini dan tidak menyebut tes teknis sebagai akurasi lapangan.

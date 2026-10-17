@@ -1,3 +1,13 @@
+# Gerai Kita — v0.35
+
+Validasi terbaru: **261 tes lulus dan `npm test` selesai normal** (220 Node + 41 browser). [Bukti rilis](docs/evaluation/display-release.json).
+
+Baru: **Pengaturan akun → Layar pelanggan** membuat tautan baca terbatas untuk kode/status pesanan, tanpa login pemilik. Pilih masa aktif, simpan tautan sebelum meninggalkan halaman, dan cabut saat tidak dipakai. [Cara memakai, privasi dan batas](docs/CUSTOMER_DISPLAY.md).
+
+`npm start` → **http://localhost:4174/#pengaturan**. Database demo terpisah melalui `npm run start:demo` → **http://127.0.0.1:4180/#pengaturan**. Tautan localhost hanya bekerja pada perangkat server yang sama; akses perangkat lain memerlukan konfigurasi jaringan/HTTPS/deployment yang belum diselesaikan.
+
+`npm run test:display` menguji kontrak akses/proyeksi tanpa mengubah data usaha. Peran kasir/dapur, suara dua detik dan deployment tetap pekerjaan lanjutan. Catatan v0.34 berikut tetap menjadi panduan modul dapur.
+
 # Gerai Kita — tambahan operasional dapur v0.34
 
 SRS Smart Kitchen Command Center digabung dengan prioritas pada fungsi dapur; Node.js, SQLite dan frontend saat ini dipertahankan sesuai pilihan pengguna.

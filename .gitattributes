@@ -1,2 +1,2 @@
 # Frozen evaluations hash source and protocol bytes; preserve line endings exactly.
-* -text
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

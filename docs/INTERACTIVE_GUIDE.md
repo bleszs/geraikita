@@ -1,3 +1,7 @@
+# Tambahan panduan v0.35
+
+Panduan versi 4 menambah tiga langkah dalam topik Pengaturan: pembuatan akses layar, penyimpanan tautan sementara, dan pencabutan. Total menjadi **15 topik/76 langkah**, tur utama tetap 11. Panduan tidak membuat tautan atau menyetujui akses secara otomatis. Viewer pelanggan adalah layar mandiri dengan petunjuk langsung, tanpa bootstrap pemilik atau kebutuhan login.
+
 # Tambahan panduan v0.34
 
 Panduan versi 3 menambah topik **Operasional dapur dan layar layanan**, enam langkah tentang pemasukan multi-item, giliran stasiun, tahap pasif, penyelesaian/cadangan/waste, kendali suara dan layar kedua. **Panduan halaman ini** pada Dapur/Layanan membuka topik tersebut. Total menjadi 15 topik/73 langkah; tur umum tetap 11 langkah. Progress versi lama dipisahkan agar indeks tidak disalahartikan. Bukti browser terbaru memeriksa seluruh 73 langkah tanpa POST bisnis.

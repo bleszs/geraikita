@@ -1,3 +1,9 @@
+# Tambahan alur presentasi v0.35
+
+Setelah pesanan dapur masuk, buka **Pengaturan akun → Layar pelanggan**, beri nama layar, pilih masa aktif dan buat tautan setelah konfirmasi. Buka tautan di jendela privat pada perangkat server yang sama. Tunjukkan kode/status tanpa menu/harga/catatan pelanggan, perubahan saat item siap, serta layar ditutup ketika akses dicabut. Jangan membagikan akun pemilik sebagai akses pelanggan. Link localhost belum menjangkau perangkat lain tanpa pengaturan jaringan/deployment.
+
+Gunakan database demo dan jelaskan bahwa data presentasi sintetis. Tautan tidak diisi otomatis; salin sebelum berpindah halaman. [Panduan](CUSTOMER_DISPLAY.md).
+
 # Alur tambahan presentasi v0.34: operasional dapur
 
 Gunakan database demo terpisah dan data berlabel simulasi; akun utama tidak diisi contoh. Pada demo lama, konfigurasi waktu total/pasif dan stasiun di **Produk & stok → Ubah menu** terlebih dahulu.

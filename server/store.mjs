@@ -1,4 +1,5 @@
 import {migrateKitchen} from './kitchen.mjs';
+import {migrateDisplayAccess} from './display-access.mjs';
 import { DatabaseSync } from 'node:sqlite';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
@@ -94,6 +95,7 @@ export function createStore(filename = 'data/gerai-kita-live.sqlite') {
     }
   });
   migrateKitchen(db);
+  migrateDisplayAccess(db);
   function menus(s) { return all('SELECT id,name,aliases,price,recipe FROM menus WHERE workspace_id=? AND business_id=? ORDER BY rowid', s.workspace_id, s.business_id).map(m => ({ ...m, aliases: JSON.parse(m.aliases), recipe: JSON.parse(m.recipe) })); }
   function ingredients(s) { return all('SELECT id,name,unit,min_quantity,storage_note,shared FROM ingredients WHERE workspace_id=? AND business_id=? ORDER BY rowid',s.workspace_id,s.business_id).map(p=>({id:p.id,name:p.name,unit:p.unit,min:quantity(p.min_quantity),shelf:p.storage_note || 'Belum ada catatan',storageNote:p.storage_note,shared:!!p.shared})); }
   function session(business,workspace) {
