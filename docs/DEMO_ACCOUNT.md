@@ -1,3 +1,21 @@
+# Demo F&B terbaru — pemilik, kasir dan dapur
+
+Demo v0.41 tersedia di **http://127.0.0.1:4180**. Jalankan `npm run demo:setup`, lalu `npm run start:demo`. Untuk staf gunakan **http://127.0.0.1:4180/api/staff/screen#dapur**. Pada halaman awal pilih **Masuk ke akun**.
+
+| Peran | Email | Kata sandi khusus demo |
+| --- | --- | --- |
+| Pemilik | `demo@geraikita.test` | `GeraiKitaDemo2026!` |
+| Kasir | `kasir.demo@geraikita.test` | `KasirDemo2026!` |
+| Dapur | `dapur.demo@geraikita.test` | `DapurDemo2026!` |
+
+Ketiganya berada pada usaha **[DEMO] Kedai Bu Sari**. Gunakan profil browser berbeda untuk tiap peran, misalnya Chrome biasa, satu jendela Samaran dan browser lain. Tab dalam satu profil berbagi akun login.
+
+Demo ini melengkapi histori/kelompok/surplus sebelumnya dengan 9 bahan, 7 menu berwaktu/stasiun, kapasitas kompor, empat pesanan aktif (menunggu, pasif, siap, satu item terbuang), satu contoh penyerahan selesai dan status menu Tersedia/Hampir habis/Habis. Kasir melihat status saja; pemilik melihat angka dan identitas tindakan di Riwayat. Data simulasi ini memang dibuat untuk presentasi, tidak dimasukkan ke database usaha asli atau dipakai melatih model.
+
+Folder **data/demo/fnb-YYYY-MM-DD/** dipilih menurut tanggal Jakarta. Database ada di `history/gerai-kita-demo.sqlite`, manifest tiga peran di `fnb-account.json`. Menjalankan ulang pada tanggal yang sama mempertahankan pesanan/perubahan, tanpa reset atau perubahan kata sandi. Jika akun diubah sehingga kredensial demo tidak berlaku, setup melaporkan kegagalan; tidak menimpa akun diam-diam. Tanggal berbeda memakai folder baru, folder sebelumnya tetap ada.
+
+Demo lama satu akun tetap ada di folder presentation-YYYY-MM-DD, dengan perintah `npm run demo:setup:legacy` dan `npm run start:demo:legacy`; keduanya memakai port 4180 juga, jadi cukup jalankan salah satunya. Bagian berikut adalah dokumentasi demo satu akun sebelumnya; perintah standar di atas kini memilih demo F&B tiga peran.
+
 # Akun usaha untuk demo presentasi
 
 Atas permintaan pengguna, v0.33 menyediakan **satu akun login berisi data simulasi lengkap** pada database demo terpisah. Akun usaha asli tetap memakai database sebelumnya; registrasi biasa tetap dimulai kosong. Data contoh ini tidak dipasang sebagai fallback atau bawaan pada aplikasi utama.

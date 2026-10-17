@@ -1,3 +1,14 @@
+# Alur presentasi F&B v0.41
+
+1. Jalankan `npm run start:demo`, buka http://127.0.0.1:4180 dan masuk sebagai pemilik. [Kredensial tiga peran](DEMO_ACCOUNT.md).
+2. Buka Produk & stok untuk resep, ambang bahan dan pengaturan waktu; lalu Operasional dapur untuk kapasitas dan empat pesanan simulasi.
+3. Pada profil/browser berbeda, masuk sebagai kasir melalui /api/staff/screen#dapur. Perlihatkan menu Tersedia/Hampir habis/Habis. Pilih menu hampir habis untuk membaca petunjuk konfirmasi ke dapur. Tidak ada angka porsi tersisa atau resep pada akun kasir.
+4. Masuk sebagai dapur pada profil ketiga. Lanjutkan giliran/tahap pasif, lalu tandai item siap. Dapur tidak mempunyai harga dan laporan.
+5. Pada kasir, serahkan pesanan siap dengan Serahkan & catat penjualan. Pemilik membuka Riwayat → Jejak aktivitas untuk nama/peran pelaku. Demo juga sudah berisi contoh bahan terbuang sebagian oleh pemilik.
+6. Gunakan Ringkasan, Saran kulakan, kelompok dan surplus untuk penjelasan fitur usaha sebelumnya. Semua nilai berlabel simulasi, bukan hasil uji lapangan atau akurasi model.
+
+Aplikasi utama tetap di localhost:4174. Demo ini lokal; pairing, deployment/HTTPS dan pilot perangkat nyata masih pekerjaan lanjutan. Bagian versi lama di bawah dipertahankan sebagai riwayat.
+
 # Tambahan alur presentasi v0.40
 
 Gunakan database demo terpisah di port 4180, dengan menu yang waktu/stasiunnya sudah diatur oleh pemilik. Tunjukkan kapasitas dua staf dan satu alat pasif, jalankan dua item, lalu buka Catat item terbuang dan isi bahan yang benar-benar terpakai hanya jika memang terjadi dalam simulasi. Jelaskan sisa cadangan dilepas, stok berkurang sesuai isian dan item tersebut tidak dijual.

@@ -66,5 +66,5 @@ export function createDisplayAccess(store){
     const {orderEtas}=planKitchen(rows,tasks,[],capacities);
     return {orders:rows.slice(0,200).map(r=>({code:r.id.slice(0,8).toUpperCase(),status:r.status,etaMinutes:orderEtas.get(r.id)??null})),hasMore:rows.length>200,updatedAt:new Date().toISOString()};
   }
-  return {list,create,revoke,resolve,snapshot};
+  return store.attribute({list,create,revoke,resolve,snapshot});
 }

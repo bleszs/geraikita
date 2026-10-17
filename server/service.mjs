@@ -28,8 +28,8 @@ export function createService(store) {
   const cycles = createCollective(store, { group, bump, stockChanged, available:operations.available });
   const configuration=createConfiguration(store,{cycles,bump});
   const surplus = createSurplus(store, {cycles,available:operations.available});
-  const kitchen=createKitchen(store,{available:operations.available,stockChanged});
-  const requests=createOrderRequests(store,{kitchen});
+  const kitchen=store.attribute(createKitchen(store,{available:operations.available,stockChanged}));
+  const requests=store.attribute(createOrderRequests(store,{kitchen}));
   function receipts(s) {
     return all(`SELECT t.*,o.unit_price FROM transfers t JOIN offers o ON t.offer_id=o.id WHERE t.workspace_id=? AND t.receiver_id=? AND t.status='completed' AND t.cycle=?`, ...scope(s), cycles.context(s).id);
   }
@@ -62,7 +62,7 @@ export function createService(store) {
     const ownDemand = get('SELECT * FROM demands WHERE workspace_id=? AND business_id=?', ...scope(s));
     const offers = surplus.offers(s);
     const transfers = all('SELECT t.*,o.owner_id,o.unit_price,b.name AS receiver_name FROM transfers t JOIN offers o ON t.offer_id=o.id JOIN businesses b ON b.workspace_id=t.workspace_id AND b.id=t.receiver_id WHERE t.workspace_id=? AND (t.receiver_id=? OR o.owner_id=?) ORDER BY t.created_at DESC', ...scope(s), s.business_id);
-    const audit = all('SELECT message,created_at FROM audit WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC LIMIT 100', ...scope(s)).map(a => ({ ...a, time: new Date(a.created_at).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) }));
+    const audit = all('SELECT message,created_at,actor_id,actor_name,actor_role,actor_revision FROM audit WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC LIMIT 100', ...scope(s)).map(a => ({ ...a, actor:a.actor_id?{id:a.actor_id,name:a.actor_name,role:a.actor_role,revision:a.actor_revision}:null, time: new Date(a.created_at).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) }));
     const stockReceipts = all('SELECT * FROM stock_receipts WHERE workspace_id=? AND business_id=? ORDER BY created_at DESC', ...scope(s)).map(r => ({ ...r, qty: quantity(r.quantity) }));
     const movements = all('SELECT product_id,delta,reason,ref,created_at FROM movements WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC LIMIT 100', ...scope(s)).map(m => ({ ...m, qty: quantity(m.delta) }));
     const workspace = get('SELECT * FROM workspaces WHERE id=?', s.workspace_id);
@@ -197,5 +197,5 @@ export function createService(store) {
       return { duplicate: false };
     });
   }
-  return { kitchen, requests, bootstrap, saveUsageReview:usageDecisions.save, transaction, cancelSale, demand, group, approval, requestTransfer, transferDecision, ...operations, ...configuration, createOffer:surplus.create, withdrawOffer:surplus.withdraw, finalizeCollective:cycles.finalize, receiveCollective:cycles.receive, cancelCollectiveReceipt:cycles.cancelReceipt, cancelCollective:cycles.cancel, nextCycle:cycles.next };
+  return store.attribute({ kitchen, requests, bootstrap, saveUsageReview:usageDecisions.save, transaction, cancelSale, demand, group, approval, requestTransfer, transferDecision, ...operations, ...configuration, createOffer:surplus.create, withdrawOffer:surplus.withdraw, finalizeCollective:cycles.finalize, receiveCollective:cycles.receive, cancelCollectiveReceipt:cycles.cancelReceipt, cancelCollective:cycles.cancel, nextCycle:cycles.next });
 }

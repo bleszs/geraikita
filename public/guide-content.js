@@ -1,7 +1,7 @@
 // Product instructions only. No sample account, prices, stock or transactions.
 const step=(id,title,text,route,target,controls=[],hint='')=>({id,title,text,route,target,controls,hint});
 const topic=(id,title,description,steps,actions=[],ownerOnly=false)=>({id,title,description,steps,actions,ownerOnly});
-export const GUIDE_VERSION=6;
+export const GUIDE_VERSION=7;
 export const GUIDE_TOPICS=[
   topic('mulai','Kenali aplikasi dari awal','Tur berpanah yang memperkenalkan Gerai Kita dan fitur-fiturnya.',[
     step('kenalan','Selamat datang di Gerai Kita','Gerai Kita membantu mengatur antrean dapur, mencatat penjualan, menghitung stok dari resep, dan membeli bahan bersama. Buka topik Operasional dapur untuk panduan proses memasak. Mari kenali bagian-bagiannya satu per satu.','ringkasan','.page-title'),
@@ -31,7 +31,7 @@ export const GUIDE_TOPICS=[
     step('nonaktif','Hentikan akses staf yang tidak bertugas','Nonaktifkan menghentikan login dan sesi staf setelah konfirmasi. Aktifkan mengizinkan login baru, tanpa menghidupkan sesi lama. Akun pemilik tidak bisa diubah melalui formulir staf.','pengaturan','.staff-management',[['Nonaktifkan','Hentikan akses setelah pemeriksaan.'],['Aktifkan','Izinkan staf masuk lagi dengan kata sandinya.'],['Kembali','Tutup pemeriksaan tanpa mengubah akses.']])
   ],['staff-review','staff-cancel-review']),
   topic('staf-kasir','Petunjuk kasir','Terima pesanan dan serahkan setelah seluruh item siap.',[
-    step('masuk','Masukkan pesanan ke antrean','Gunakan Pesanan baru untuk langsung ke isian, termasuk saat antrean panjang di ponsel. Pilih label, sumber, menu dan porsi. Tambah item untuk menu lain. Masukkan ke antrean mencadangkan bahan, belum menjadi penjualan.','dapur','[data-form="kitchen-new"]',[['Pesanan baru','Langsung ke isian label tanpa melewati seluruh antrean.'],['Kembali ke antrean','Kembali ke judul antrean dan status pesanan.']]),
+    step('masuk','Masukkan pesanan ke antrean','Gunakan Pesanan baru untuk langsung ke isian, termasuk saat antrean panjang di ponsel. Pilih label, sumber, menu dan porsi. Hampir habis meminta konfirmasi ke dapur; Habis tidak bisa dipilih. Tambah item untuk menu lain. Masukkan ke antrean mencadangkan bahan, belum menjadi penjualan.','dapur','[data-form="kitchen-new"]',[['Pesanan baru','Langsung ke isian label tanpa melewati seluruh antrean.'],['Kembali ke antrean','Kembali ke judul antrean dan status pesanan.']]),
     step('katalog','Konfirmasi permintaan dari katalog web','Permintaan pelanggan dari katalog web belum masuk dapur dan belum mencadangkan bahan. Terima ke antrean membuat pesanan dapur bersumber web; Tolak meminta alasan yang terlihat oleh pelanggan. Permintaan kedaluwarsa setelah 30 menit; perubahan harga atau bahan tidak cukup membuat penerimaan ditolak.','dapur','.request-inbox',[['Terima ke antrean','Masukkan permintaan ke antrean dapur dan cadangkan bahan.'],['Tolak','Tolak permintaan dengan alasan untuk pelanggan.']],'Daftar muncul saat ada permintaan dari katalog web.'),
     step('pantau','Pantau kode dan status pesanan','Dapur mengatur tahap memasak. Cocokkan kode pesanan dengan pelanggan; kasir tidak menandai tahap memasak.','dapur','#kitchen-queue-title'),
     step('serahkan','Serahkan setelah seluruh item siap','Serahkan & catat penjualan tersedia saat seluruh item siap. Pembatalan hanya sebelum pengerjaan. Tindakan tertunda perlu diperiksa, tidak dikirim otomatis setelah online.','dapur','.kitchen-order'),

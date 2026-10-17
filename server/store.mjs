@@ -2,6 +2,7 @@ import {migrateKitchen} from './kitchen.mjs';
 import {migrateDisplayAccess} from './display-access.mjs';
 import {migrateOrderRequests} from './order-requests.mjs';
 import {migrateRoles} from './roles.mjs';
+import {migrateActivity,createActivity} from './activity.mjs';
 import { DatabaseSync } from 'node:sqlite';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
@@ -59,13 +60,14 @@ export function createStore(filename = 'data/gerai-kita-live.sqlite') {
   const run = (sql, ...args) => db.prepare(sql).run(...args);
   const get = (sql, ...args) => db.prepare(sql).get(...args);
   const all = (sql, ...args) => db.prepare(sql).all(...args);
+  const activity=createActivity({get});
   // Nested calls join the outer transaction through a savepoint so composite actions commit together.
   let depth = 0;
   function atomic(fn) {
     if (depth) { db.exec('SAVEPOINT nested'); depth++; try { const result = fn(); db.exec('RELEASE nested'); return result; } catch (error) { db.exec('ROLLBACK TO nested'); db.exec('RELEASE nested'); throw error; } finally { depth--; } }
     db.exec('BEGIN IMMEDIATE'); depth = 1; try { const result = fn(); db.exec('COMMIT'); return result; } catch (error) { db.exec('ROLLBACK'); throw error; } finally { depth = 0; }
   }
-  function log(workspace, business, message) { run('INSERT INTO audit VALUES(?,?,?,?,?)', randomUUID(), workspace, business, message, new Date().toISOString()); }
+  function log(workspace, business, message) { const a=activity.current(workspace,business);run('INSERT INTO audit(id,workspace_id,business_id,message,created_at,actor_id,actor_name,actor_role,actor_revision) VALUES(?,?,?,?,?,?,?,?,?)', randomUUID(), workspace, business, message, new Date().toISOString(),a?.id??null,a?.name??null,a?.role??null,a?.revision??null); }
   function movement(workspace, business, product, delta, reason, ref) { run('INSERT INTO movements VALUES(?,?,?,?,?,?,?,?)', randomUUID(), workspace, business, product, units(delta), reason, ref, new Date().toISOString()); }
   db.exec(`CREATE TABLE IF NOT EXISTS accounts(id TEXT PRIMARY KEY,email TEXT NOT NULL UNIQUE,password_hash TEXT NOT NULL,salt TEXT NOT NULL,workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,created_at TEXT NOT NULL,FOREIGN KEY(workspace_id,business_id) REFERENCES businesses(workspace_id,id) ON DELETE CASCADE);
     CREATE TABLE IF NOT EXISTS account_sessions(session_id TEXT PRIMARY KEY,account_id TEXT NOT NULL,FOREIGN KEY(session_id) REFERENCES sessions(id) ON DELETE CASCADE,FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE);`);
@@ -105,6 +107,7 @@ export function createStore(filename = 'data/gerai-kita-live.sqlite') {
   migrateDisplayAccess(db);
   migrateOrderRequests(db);
   migrateRoles(db);
+  atomic(()=>migrateActivity(db));
   function menus(s) { return all('SELECT id,name,aliases,price,recipe FROM menus WHERE workspace_id=? AND business_id=? ORDER BY rowid', s.workspace_id, s.business_id).map(m => ({ ...m, aliases: JSON.parse(m.aliases), recipe: JSON.parse(m.recipe) })); }
   function ingredients(s) { return all('SELECT id,name,unit,min_quantity,storage_note,shared FROM ingredients WHERE workspace_id=? AND business_id=? ORDER BY rowid',s.workspace_id,s.business_id).map(p=>({id:p.id,name:p.name,unit:p.unit,min:quantity(p.min_quantity),shelf:p.storage_note || 'Belum ada catatan',storageNote:p.storage_note,shared:!!p.shared})); }
   function session(business,workspace) {
@@ -112,5 +115,5 @@ export function createStore(filename = 'data/gerai-kita-live.sqlite') {
     const value={id:randomBytes(32).toString('hex'),workspace_id:workspace,business_id:business,csrf:randomBytes(24).toString('hex'),expires_at:Date.now()+30*86400000};
     run('INSERT INTO sessions VALUES(?,?,?,?,?)',value.id,workspace,business,value.csrf,value.expires_at);return value;
   }
-  return {db,run,get,all,atomic,log,movement,session,menus,ingredients,close:()=>db.close()};
+  return {db,run,get,all,atomic,log,movement,session,menus,ingredients,actorOf:activity.resolve,withActor:activity.run,attribute:activity.wrap,close:()=>db.close()};
 }

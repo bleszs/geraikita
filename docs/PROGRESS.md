@@ -1,3 +1,11 @@
+# Perubahan terbaru v0.41
+
+Pembaruan rahasiagelap2.0 sampai fe073d0 digabung. Kasir mendapat status menu tanpa jumlah porsi; ambang berasal dari bahan yang diisi pemilik dan memperhitungkan cadangan. Catatan baru menyimpan ID/nama/peran/revisi pelaku dari akun, sementara histori lama tetap tidak diketahui. Demo terpisah kini mempunyai pemilik/kasir/dapur, 9 bahan, 7 menu dan empat antrean aktif.
+
+Regresi akhir: **304 lulus**, 253 Node dan 51 browser, exit 0.
+
+[Detail](FNB_OPERATIONS.md) · [akun demo](DEMO_ACCOUNT.md) · [bukti rilis](evaluation/fnb-release.json). Schema 29 tabel dengan delapan kolom nullable tambahan, tanpa penambahan data pada usaha asli atau perubahan model. Pairing dan deployment masih terbuka. Catatan lama di bawah adalah riwayat.
+
 # Perubahan terbaru v0.40 — integrasi pekerjaan Claude
 
 Branch feat/kitchen-capacity-and-waste kini menggabungkan tiga commit Claude (v0.37 kapasitas/waste, v0.38 katalog, v0.39 ETA) dan origin/rahasiagelap2.0 (tampilan/panduan dari basis lebih lama). Role staf dan semua fitur baru dipertahankan. main tetap terpisah. [Pemeriksaan dan koreksi lengkap](BRANCH_INTEGRATION.md).

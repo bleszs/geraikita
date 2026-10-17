@@ -1,3 +1,9 @@
+# Penambahan v0.41
+
+`server/activity.mjs` menangani migrasi aktor dan konteks AsyncLocalStorage per store. Layanan, identitas dan pengelolaan layar membungkus pemanggilan publik dengan identitas dari account_roles/accounts; log hanya memakai aktor dengan scope usaha yang sesuai. Audit/aksi dapur menyimpan snapshot empat kolom, tanpa mengisi histori lama. `kitchen.snapshot` menghitung status dari stok tersedia dan minimum bahan; `staffBootstrap` memproyeksikan status kasir tanpa porsi. UI Jejak aktivitas menampilkan snapshot pelaku.
+
+Demo F&B opt-in berada di `scripts/fnb-demo.mjs`, membangun histori presentasi pada folder khusus lalu menambah peran dan skenario lewat layanan aplikasi. Entrypoint demo tidak dipakai server utama. [Perubahan dan batas](FNB_OPERATIONS.md). Bagian versi sebelumnya berikut adalah riwayat.
+
 # Tambahan arsitektur v0.40
 
 Schema 29 tabel mempertahankan migrasi aditif Claude: kitchen_stations, order_requests, snapshot item/waste dan jenis display/catalog. Store memakai SAVEPOINT untuk transaksi bersarang saat permintaan pelanggan diterima ke dapur. server/kitchen-schedule.mjs memusatkan SJF+aging, slot, dan ETA; kitchen.mjs/display-access.mjs memakai rencana yang sama, roles.mjs memproyeksikan angka tanpa resep/harga dapur. Perubahan ETA termasuk fingerprint SSE.

@@ -68,7 +68,7 @@ test('arrow introduction visits every main feature without creating transactions
   await page.setViewportSize({width:1440,height:1050});await capture(page,'guide-arrow-intro-desktop');
   await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
   await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();await expect(page).toHaveURL(/#stok$/);
-  await expect(page.locator('[data-action="new-ingredient"]')).toHaveClass(/guide-target/);
+  await expect(page.locator('[data-action="new-ingredient"]').first()).toHaveClass(/guide-target/);
   await expect(page.locator('.guide-arrow')).toBeVisible();
   await page.setViewportSize({width:1440,height:1050});await capture(page,'guide-tour-desktop');
   await page.setViewportSize({width:320,height:900});await capture(page,'guide-tour-mobile');

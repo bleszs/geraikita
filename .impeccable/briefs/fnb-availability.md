@@ -1,0 +1,9 @@
+# F&B availability, attribution and latest branch refinement
+
+Mode: Operate. Extend the incumbent application after merging origin/rahasiagelap2.0 fe073d0 into feat/kitchen-capacity-and-waste. User accepted the next feedback work and explicitly requested a separate demo account. Implement cashier status without portion counts, actor attribution for new actions, and a reusable opt-in F&B demo. Pairing/deployment are later tasks.
+
+Preserve warm cream/terracotta, local Nunito, semantic tokens, dark theme, existing role navigation, guide arrows, owner recipes/ledger, and actual data. Incoming source improves action buttons, empty states, logout icon and service notes; preserve these authored changes alongside recent kitchen features. This is a code-led extension of an established system, no new assets or visual direction. DESIGN.md/sidecar remain unchanged; inherited drift is reported.
+
+Cashier menu options label Tersedia/Hampir habis/Habis with no raw portions or ingredient data. A selected low menu gets a readable live explanation to check with the kitchen; it remains orderable. Out/unconfigured/unknown cannot be newly selected. Status is computed from real available stock after reservations and existing owner-entered ingredient minimums; no invented five-portion default. Owner retains exact numbers. New owner audit entries show actor name and role snapshot; unknown history is labeled honestly.
+
+Evidence matrix: cashier desktop/mobile (including dark), selected-low explanation and disabled-out option; owner activity desktop/mobile, adopted empty state and auth controls. Capture only isolated synthetic test data; actual demo stays separate from main. Review is usability and integration compatibility, not field validation or production security certification. One batched own inspection and one confirmation maximum, one detector, then fresh finish reviewer and documenter as required by the skill.

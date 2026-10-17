@@ -1,3 +1,7 @@
+# Panduan v0.41
+
+Guide versi **7**, tetap **18 topik / 89 langkah**. Petunjuk kasir menjelaskan status Hampir habis dan Habis; tur tetap berpanah dengan Lanjut/Kembali/Lewati. Pembaruan tombol/keadaan kosong fe073d0 tidak menghilangkan dukungan role atau perlindungan tur manual. Bagian berikut mencatat versi sebelumnya.
+
 # Pembaruan panduan v0.40
 
 Panduan versi 6 memuat **18 topik/89 langkah**. Pendaftaran melalui formulir UI mengaktifkan tur pertama tiap halaman; login tidak dinilai sebagai pendaftaran baru hanya karena umur akun singkat. Tur manual dapat melintasi halaman tanpa diganti otomatis. Navigasi pengguna ke halaman lain menjeda tur sebelumnya; Lewati melewati tur halaman saat ini. Bantuan tetap di navigasi atas, dengan topik kasir/dapur sesuai peran. Target antrean kosong memakai judul antrean yang selalu ada. Progress tetap terpisah per scope akun/peran; versi lama tidak dianggap punya indeks sama.

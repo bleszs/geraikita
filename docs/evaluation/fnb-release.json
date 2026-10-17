@@ -1,0 +1,122 @@
+{
+  "version": "0.41.0",
+  "checkedAt": "2026-10-17T16:47:58.325Z",
+  "branch": "feat/kitchen-capacity-and-waste",
+  "preMergeFeature": "84fed1e7eb314f3979ca61354b2dec3672a13586",
+  "incoming": "fe073d042d9eadf7048005682e574bf710d4d194",
+  "mainCommit": "8f9672ddc651f3ae4714089baf842aabd2f82148",
+  "mainUnchanged": true,
+  "tests": {
+    "command": "$env:PLAYWRIGHT_CHANNEL='chromium'; $env:CAPTURE_REVIEW='1'; npm test",
+    "exitCode": 0,
+    "exitEvidence": "Unified exec session 37060 completed normally with exit_code 0; full counters independently checked in log.",
+    "nodePassed": 253,
+    "browserPassed": 51,
+    "uniquePassed": 304,
+    "failed": 0,
+    "browser": "Playwright bundled Chromium, headless, one worker",
+    "log": "data/fnb-npm-test-final.log",
+    "logSha256": "99f81318fa03f579d05d5d85335d2d1b850d94a93db3c8e8ab439316d572f5aa",
+    "isolation": "Temporary Node databases and Playwright :memory: database at port4175; no production seeds",
+    "previousAttempts": [
+      {
+        "log": "data/fnb-browser-first.log",
+        "passed": 12,
+        "failed": 3,
+        "reason": "Option assertion used an unsuitable disabled matcher; upstream duplicated CTA required a scoped guide target; staff login helper must accept an already-open login form."
+      },
+      {
+        "log": "data/fnb-npm-test.log",
+        "nodePassed": 253,
+        "browserPassed": 49,
+        "browserFailed": 2,
+        "exitCode": 1,
+        "reason": "Upstream register button renamed; Unicode separator introduced by shell encoding. Both corrected before final suite."
+      }
+    ]
+  },
+  "runtime": {
+    "report": "docs/evaluation/fnb-runtime.json",
+    "reportSha256": "c255b3bc0a41930fc07132bde22e6b9797df97841a33ef7bc01cff6d81adcca0",
+    "anonymousChecks": 14,
+    "demoRolesChecked": 3,
+    "demoBusinessDataUnchanged": true
+  },
+  "preservation": [
+    {
+      "report": "docs/evaluation/fnb-data-preservation.json",
+      "sha256": "cfd0ed4424d3fdafd5df38c5ad593c0f52ab1a0534fa52380c42d8a2f7578036",
+      "passed": true
+    },
+    {
+      "report": "docs/evaluation/fnb-legacy-demo-preservation.json",
+      "sha256": "d6292583fe8f469485b8e4c15c3c6dcc10dadd8bca763f9b85d72115f62abe80",
+      "passed": true
+    }
+  ],
+  "designHashes": {
+    "DESIGN.md": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    ".impeccable/design.json": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f"
+  },
+  "ui": {
+    "review": "docs/evaluation/FNB_UI_REVIEW.md",
+    "designCheck": "docs/evaluation/FNB_DESIGN_CHECK.md",
+    "captures": ".impeccable/review/fnb",
+    "detector": "data/fnb-detector.json",
+    "scope": "Cashier statuses, actor history and upstream auth/empty-state integration, not production security or field validation",
+    "detectorRuns": 1,
+    "detectorSummary": {
+      "findings": 113,
+      "advisories": 112,
+      "creamPaletteWarnings": 1,
+      "interpretation": "User-pinned cream palette; inherited source values reviewed without replacing DESIGN.md or sidecar."
+    },
+    "disposition": "ship",
+    "openMaterialFindings": 0,
+    "designDocumentationComplete": true,
+    "reviewSha256": "fe3d37b4b2f2ddb92379d5c90eaa0cb67393106605de23fa40dc13c5e9c9ba63",
+    "designCheckSha256": "f978bd5b0b7d37ec27f7f439242cbe54e41383b179ece1e153c3cb1b8075cb80"
+  },
+  "demo": {
+    "asOf": "2026-10-17",
+    "synthetic": true,
+    "counts": {
+      "accounts": 3,
+      "roles": [
+        {
+          "role": "cashier",
+          "count": 1
+        },
+        {
+          "role": "kitchen",
+          "count": 1
+        },
+        {
+          "role": "owner",
+          "count": 1
+        }
+      ],
+      "ingredients": 9,
+      "menus": 7,
+      "activeOrders": 4,
+      "menuStatuses": [
+        "low",
+        "ok",
+        "out"
+      ],
+      "ledgerConsistent": true,
+      "foreignKeysValid": true,
+      "trainingAllowed": false
+    },
+    "accounts": "docs/DEMO_ACCOUNT.md",
+    "trainingAllowed": false,
+    "originalBusinessDataTouched": false
+  },
+  "limits": [
+    "Staff pairing not implemented; email/password entry retained",
+    "Server remains loopback/local; deployment/HTTPS and cross-device field validation pending",
+    "No new model training, weights, AI benchmarks or voice latency claim",
+    "Aging configuration, stock coverage days, cashier voice/direct-sale flow, fuzzy matching and field pilot remain open"
+  ],
+  "passed": true
+}

@@ -1,0 +1,2 @@
+import {prepareFnbDemo} from './fnb-demo.mjs';
+try{if(process.argv.length>2)throw Error('Demo F&B memilih folder terpisah otomatis; tidak menerima path database usaha.');const m=prepareFnbDemo();console.log(JSON.stringify({url:'http://127.0.0.1:4180',accounts:m.accounts,counts:m.counts,database:m.filename,note:'SIMULASI untuk presentasi, bukan data usaha asli.'},null,2));}catch(e){console.error(e.message);process.exitCode=1;}

@@ -30,7 +30,7 @@ export function createIdentity(store) {
       if(product){run('INSERT INTO ingredients VALUES(?,?,?,?,?,?,0,?,1)',workspace.id,business,product.id,product.name,product.name.normalize('NFKC').toLowerCase(),product.unit,'');run('INSERT INTO inventory VALUES(?,?,?,?,NULL)',workspace.id,business,product.id,0);}
       const account={id:randomUUID(),workspace_id:workspace.id,business_id:business};run('INSERT INTO accounts VALUES(?,?,?,?,?,?,?)',account.id,email,hash,salt,workspace.id,business,now);
       run("INSERT INTO account_roles(account_id,workspace_id,business_id,role,name) VALUES(?,?,?,'owner','Pemilik usaha')",account.id,workspace.id,business);
-      store.log(workspace.id,business,joining ? 'Usaha bergabung ke kelompok dengan kode undangan.' : 'Usaha dan kelompok dibuat oleh pemilik.');
+      store.withActor({...account,account_id:account.id},()=>store.log(workspace.id,business,joining ? 'Usaha bergabung ke kelompok dengan kode undangan.' : 'Usaha dan kelompok dibuat oleh pemilik.'));
       return issue(account);
     });
   }
@@ -111,5 +111,5 @@ export function createIdentity(store) {
     requireValue(typeof body.expectedCode==='string' && body.expectedCode.length<=64,'Kode undangan asal tidak valid.');
     return atomic(()=>{account(s);const w=get('SELECT owner_business_id,join_code FROM workspaces WHERE id=?',s.workspace_id);requireValue(w.owner_business_id===s.business_id,'Hanya pengelola kelompok dapat mengganti kode undangan.',403);requireValue(w.join_code===body.expectedCode,'Kode sudah berubah. Perbarui data untuk melihat kode terbaru.',409);const code=randomBytes(12).toString('hex');run('UPDATE workspaces SET join_code=? WHERE id=?',code,s.workspace_id);store.log(s.workspace_id,s.business_id,'Kode undangan diganti; kode sebelumnya tidak dapat dipakai bergabung.');return {saved:true};});
   }
-  return {register,login,resolve,details,staff,createStaff,updateStaff,saveBusiness,changePassword,saveCommunity,rotateInvite};
+  return store.attribute({register,login,resolve,details,staff,createStaff,updateStaff,saveBusiness,changePassword,saveCommunity,rotateInvite});
 }

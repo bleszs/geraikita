@@ -1,3 +1,11 @@
+# Gerai Kita — v0.41, perbaikan F&B
+
+Branch **feat/kitchen-capacity-and-waste** memuat pembaruan `rahasiagelap2.0` sampai **fe073d0**, status menu kasir tanpa jumlah porsi, identitas pelaku pada catatan baru, dan demo pemilik/kasir/dapur. [Perubahan dan batas](docs/FNB_OPERATIONS.md) · [TODO](docs/AI_TODO.md) · [bukti rilis](docs/evaluation/fnb-release.json).
+
+**304 tes lulus** (253 Node + 51 browser Chromium), `npm test` exit 0.
+
+Aplikasi asli: `npm start` → **http://localhost:4174**. Demo F&B terpisah: `npm run demo:setup`, lalu `npm run start:demo` → **http://127.0.0.1:4180**. [Akun demo](docs/DEMO_ACCOUNT.md). Akun asli tetap dimulai dari data yang dimasukkan pengguna. `main` terpisah; deployment publik dan pairing staf belum dikerjakan. Catatan versi berikut adalah riwayat.
+
 # Gerai Kita — v0.40, integrasi branch
 
 Branch **feat/kitchen-capacity-and-waste** menggabungkan kapasitas/waste, katalog pelanggan dan ETA dari Claude dengan tampilan/panduan **rahasiagelap2.0**. Akun pemilik/kasir/dapur serta fitur usaha sebelumnya tetap tersedia. **295 tes lulus**, `npm test` exit 0 (246 Node + 49 browser Chromium). [Bukti rilis](docs/evaluation/integration-release.json).

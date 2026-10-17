@@ -1,3 +1,7 @@
+# Perubahan staf v0.41
+
+Kasir kini mendapat status ok/low/out tanpa angka porsi tersisa. Peringatan mengikuti minimum bahan yang diisi pemilik dan stok setelah cadangan. Tindakan baru menyimpan snapshot pelaku untuk Jejak aktivitas pemilik; catatan lama tetap tanpa pelaku. Matriks akses lama tetap berlaku, ditambah aturan waste/katalog dari v0.37-v0.38. Pairing belum tersedia. [Detail terkini](FNB_OPERATIONS.md), [demo tiga peran](DEMO_ACCOUNT.md). Bagian di bawah adalah dokumentasi v0.36.
+
 # Akun pemilik, kasir dan dapur — v0.36
 
 Akun staf terhubung ke usaha pemilik yang membuatnya. Mendaftar usaha baru tetap menghasilkan akun pemilik untuk usaha baru, bukan akses staf ke usaha orang lain. Akun lama menjadi pemilik pada migrasi pertama; tidak ada akun staf yang dibuat otomatis.

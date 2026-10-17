@@ -24,6 +24,7 @@ const paths = {
   edit: '<path d="m15 4 5 5M3 21l5-1L21 7l-5-5L3 15v6Z"/>',
   warning: '<path d="m12 3 10 18H2L12 3ZM12 9v5M12 17h.01"/>',
   wallet: '<rect x="3" y="6" width="18" height="15" rx="2"/><path d="M3 6V4a1 1 0 0 1 1-1h13v3M16 12h5v4h-5v-4Z"/>',
-  receipt: '<path d="M5 3v18l3-2 4 2 4-2 3 2V3H5ZM9 7h6M9 11h6M9 15h3"/>'
+  receipt: '<path d="M5 3v18l3-2 4 2 4-2 3 2V3H5ZM9 7h6M9 11h6M9 15h3"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>'
 };
 export function icon(name, cls = '') { return `<svg class="icon ${cls}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.info}</svg>`; }

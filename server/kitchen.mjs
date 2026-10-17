@@ -47,7 +47,12 @@ export function createKitchen(store,{available,stockChanged}){
     const tasks=all('SELECT * FROM kitchen_tasks WHERE workspace_id=? AND business_id=?',...scope(s));
     const capacities=all('SELECT station,cooks,equipment,revision FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
     const {stations,next,taskEtas,orderEtas}=planKitchen(rows,tasks,settings,capacities);
-    const menus=store.menus(s).map(m=>({id:m.id,name:m.name,configured:settings.some(x=>x.menuId===m.id),portions:Math.max(0,Math.min(...Object.entries(m.recipe).map(([p,q])=>Math.floor(available(s,p)/units(q)))))}));
+    const ingredients=store.ingredients(s),stock=new Map(ingredients.map(p=>[p.id,available(s,p.id)]));
+    const menus=store.menus(s).map(m=>{
+      const portions=Math.max(0,Math.min(...Object.entries(m.recipe).map(([p,q])=>Math.floor((stock.get(p)||0)/units(q)))));
+      const low=Object.keys(m.recipe).some(p=>{const min=ingredients.find(i=>i.id===p)?.min||0;return min>0&&(stock.get(p)||0)<=units(min);});
+      return {id:m.id,name:m.name,configured:settings.some(x=>x.menuId===m.id),portions,status:portions<=0?'out':low?'low':'ok'};
+    });
     const orders=rows.map(o=>{const orderTasks=tasks.filter(t=>t.order_id===o.id).map(t=>({...t,usage:taskUsage(o,t),waste:t.waste_json?JSON.parse(t.waste_json):null,etaMinutes:taskEtas.has(t.id)?Math.ceil(taskEtas.get(t.id)):null}));return{...o,items:JSON.parse(o.items),usage:JSON.parse(o.usage_json),tasks:orderTasks,etaMinutes:orderEtas.get(o.id)};});
     // Pending web catalog requests share the kitchen revision so SSE clients see them immediately.
     const requests=pendingRequests(store,s);
@@ -145,7 +150,8 @@ export function createKitchen(store,{available,stockChanged}){
       if(closed.includes(status)){run("UPDATE kitchen_tasks SET status=? WHERE workspace_id=? AND business_id=? AND order_id=? AND status!='voided'",status,...scope(s),id);stockChanged(s);}
       log(...scope(s),`Dapur ${o.label}: ${b.action}${wasted&&Object.values(wasted).some(Boolean)?'; bahan terbuang dicatat':''}; versi ${o.revision+1}.`);
       const result={id,status,revision:o.revision+1,saleId};
-      run('INSERT INTO kitchen_actions VALUES(?,?,?,?,?)',...scope(s),b.idempotencyKey,fingerprint,JSON.stringify(result));return result;
+      const actor=store.actorOf(s);
+      run('INSERT INTO kitchen_actions(workspace_id,business_id,idem,fingerprint,result,actor_id,actor_name,actor_role,actor_revision) VALUES(?,?,?,?,?,?,?,?,?)',...scope(s),b.idempotencyKey,fingerprint,JSON.stringify(result),actor?.id??null,actor?.name??null,actor?.role??null,actor?.revision??null);return result;
     });
   }
   function saveStation(s,b){

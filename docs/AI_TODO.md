@@ -1,3 +1,18 @@
+# Lanjutan v0.41 — status kasir, pelaku tindakan dan demo F&B
+
+- [x] Ambil dan gabungkan perubahan terbaru origin/rahasiagelap2.0 (`fe073d0`): tombol, navigasi, ikon keluar, keadaan data kosong dan catatan layar layanan; fitur staf/kapasitas/waste/ETA tetap tersedia.
+- [x] Hitung `ok/low/out` dari stok tersedia setelah cadangan dan ambang bahan milik pemilik. Kasir hanya mendapat status; jumlah porsi dan bahan tidak dikirim. Menu hampir habis memunculkan petunjuk; menu habis tetap ditolak server.
+- [x] Simpan snapshot ID/nama/peran/revisi pelaku dari database pada catatan baru dan aksi dapur; tampilkan pada Jejak aktivitas. Histori lama tetap tanpa atribusi, payload tidak menentukan pelaku.
+- [x] Backup dan migrasi aditif delapan kolom pada 29 tabel asli/demo lama, dengan baris/kolom asal identik dan relasi/integritas OK.
+- [x] Siapkan demo F&B tiga peran pada database terpisah: 9 bahan, 7 menu, histori 84 hari, antrean pasif/siap/waste dan tiga status menu. Jalankan ulang mempertahankan data. [Akun](DEMO_ACCOUNT.md).
+- [x] Regresi penuh selesai normal: 253 Node + 51 browser = **304 lulus**, npm test exit 0. [Bukti rilis](evaluation/fnb-release.json).
+- [x] Review UI v0.41: ship, tanpa perbaikan material pada delapan capture. Catatan desain selesai; DESIGN.md dan sidecar tetap identik. [Review](evaluation/FNB_UI_REVIEW.md), [desain](evaluation/FNB_DESIGN_CHECK.md).
+- [ ] Berikutnya: pairing staf dengan kode sekali pakai, mempertahankan akun/email/kata sandi lama.
+- [ ] Deployment/HTTPS/origin/cookie, volume SQLite persisten, backup/restore dan uji antarperangkat.
+- [ ] Aging bisa diatur, hari stok tersisa, alur input suara/penjualan langsung kasir, fuzzy matching dan pilot nyata masih terbuka.
+
+[Perubahan v0.41](FNB_OPERATIONS.md). Checklist versi di bawah adalah riwayat; model/bobot/protokol evaluasi tidak diubah.
+
 # Lanjutan v0.40 — integrasi Claude dan rahasiagelap2.0
 
 - [x] Periksa tiga commit fitur Claude: kapasitas stasiun/waste sebagian, katalog pelanggan dengan konfirmasi, dan ETA; selaras dengan SRS/fungsi saat ini.

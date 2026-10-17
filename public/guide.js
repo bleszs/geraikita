@@ -87,7 +87,7 @@ export function createGuideController({getContext,navigate,notify,escape,consume
     if(!document.querySelector('[data-guide-open]')){
       const actions=document.querySelector('.topbar-actions');
       if(actions)actions.insertAdjacentHTML('afterbegin',`<button type="button" class="guide-access" data-guide-open aria-label="Buka panduan penggunaan">${icon('info')}<span>Panduan</span></button>`);
-      else main.insertAdjacentHTML('afterbegin',`<div class="guide-access-row"><button type="button" class="text-link" data-guide-open>${icon('info')} Panduan penggunaan</button></div>`);
+      else if(context.signedIn)main.insertAdjacentHTML('afterbegin',`<div class="guide-access-row"><button type="button" class="text-link" data-guide-open>${icon('info')} Panduan penggunaan</button></div>`);
     }
     const staffTopic=context.role==='cashier'?'staf-kasir':context.role==='kitchen'?'staf-dapur':null;
     const pageTopic=context.signedIn?(staffTopic||PAGE_TOPICS[context.route]):'akun';

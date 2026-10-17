@@ -23,7 +23,7 @@ test('login and registration can switch and remember light or dark mode',async({
   await expect(theme).toBeVisible();await theme.click();
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
   await expect(page.getByRole('button',{name:'Aktifkan mode terang'})).toBeVisible();
-  await page.getByRole('button',{name:'Masuk',exact:true}).click();
+  await page.locator('[data-action=show-login]').click();
   await expect(page.getByRole('button',{name:'Aktifkan mode terang'})).toBeVisible();
   await page.reload();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
 });
@@ -95,7 +95,7 @@ test('settings update entered names and invitation; members keep their own accou
 
 test('password form rejects mismatch and old credentials, keeps current login and revokes another browser session',async({page,browser})=>{
   const credentials=await register(page,'Usaha pengganti kata sandi'),c=await browser.newContext({baseURL:'http://127.0.0.1:4175'});
-  try{const other=await c.newPage();await other.goto('/');await other.getByRole('button',{name:'Masuk',exact:true}).click();await other.getByLabel('Email',{exact:true}).fill(credentials.email);await other.getByLabel('Kata sandi',{exact:true}).fill(password);await other.getByRole('button',{name:'Masuk',exact:true}).click();await expect(other.locator('.active-business')).toContainText('Usaha pengganti kata sandi');
+  try{const other=await c.newPage();await other.goto('/');await other.locator('[data-action=show-login]').click();await other.getByLabel('Email',{exact:true}).fill(credentials.email);await other.getByLabel('Kata sandi',{exact:true}).fill(password);await other.getByRole('button',{name:'Masuk',exact:true}).click();await expect(other.locator('.active-business')).toContainText('Usaha pengganti kata sandi');
     await page.goto('/#pengaturan');const next='New-browser-password-991';let posts=0;page.on('request',r=>{if(r.url().endsWith('/api/account/password')&&r.method()==='POST')posts++;});
     async function fill(current,repeat=next){await page.getByLabel('Kata sandi saat ini',{exact:true}).fill(current);await page.getByLabel('Kata sandi baru',{exact:true}).fill(next);await page.getByLabel('Ulangi kata sandi baru',{exact:true}).fill(repeat);await page.getByRole('button',{name:'Simpan kata sandi baru',exact:true}).click();}
     await fill(password,'Mismatch-password-991');await expect(page.locator('#password-form .form-error')).toContainText('belum sama');expect(posts).toBe(0);await fill('Incorrect-password-991');await expect(page.locator('#password-form .form-error')).toContainText('tidak sesuai');await expect(page.getByRole('heading',{name:'Atur akun dan kelompokmu.'})).toBeVisible();await fill(password);await expect(page.locator('#toast')).toContainText('1 sesi lain dikeluarkan');await expect(page.getByLabel('Kata sandi baru',{exact:true})).toHaveValue('');

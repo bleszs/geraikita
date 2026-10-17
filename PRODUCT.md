@@ -1,3 +1,7 @@
+# Konteks penambahan v0.41
+
+Perbaikan operasional F&B: kasir mengenali menu tersedia/hampir habis/habis tanpa angka stok/porsi; pemilik menelusuri pelaku tindakan baru pada Jejak aktivitas. Demo tiga peran dipisahkan dari usaha asli. Pembaruan tampilan fe073d0 dipertahankan pada dunia visual yang sama; DESIGN.md/sidecar tidak diganti. Pairing dan deployment masih tahap berikutnya. [Cakupan](docs/FNB_OPERATIONS.md).
+
 # Pembaruan v0.40
 
 Kapasitas stasiun dan pencatatan bahan terbuang sebagian melanjutkan tugas dapur. Katalog pelanggan mengirim permintaan yang harus diterima kasir/pemilik sebelum bahan dicadangkan; belum ada pembayaran daring atau sinkronisasi ojol. Estimasi waktu memakai durasi total/pasif dan kapasitas yang sama di layar pemilik/staf/pelanggan, masih heuristik tanpa validasi lapangan.
