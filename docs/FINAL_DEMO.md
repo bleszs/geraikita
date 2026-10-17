@@ -1,3 +1,9 @@
+# Tambahan alur presentasi v0.40
+
+Gunakan database demo terpisah di port 4180, dengan menu yang waktu/stasiunnya sudah diatur oleh pemilik. Tunjukkan kapasitas dua staf dan satu alat pasif, jalankan dua item, lalu buka Catat item terbuang dan isi bahan yang benar-benar terpakai hanya jika memang terjadi dalam simulasi. Jelaskan sisa cadangan dilepas, stok berkurang sesuai isian dan item tersebut tidak dijual.
+
+Pemilik dapat membuat tautan Katalog pesanan, pelanggan mengirim permintaan, kasir menerima ke antrean, dapur menyiapkan dan kasir menyerahkan sekali. Bandingkan ETA lintas layar; angka masih perkiraan. Ponsel di perangkat lain belum dapat memakai URL localhost otomatis. [Cara memakai, integrasi dan batas](BRANCH_INTEGRATION.md). Semua isi demo adalah simulasi, bukan validasi AI atau dapur lapangan.
+
 # Tambahan alur presentasi v0.36
 
 Pada **database demo terpisah**, masuk sebagai pemilik lalu buka **Pengaturan akun → Akun kasir dan dapur**. Buat dua akun presentasi dengan email unik dan password awal sendiri: satu Kasir, satu Dapur. Tidak ada kredensial staf bawaan. Buka **halaman masuk staf** di dua profil browser/jendela privat terpisah; pakai port **4180** untuk seluruh alur demo ini.

@@ -1,0 +1,606 @@
+{
+  "version": "0.40.0",
+  "checkedAt": "2026-10-17T15:53:37.859Z",
+  "branch": "feat/kitchen-capacity-and-waste",
+  "sourceFeature": "5318dfd5c4547f26a5a7ecaedd88c97393bc70cd",
+  "incoming": "b6bae4d346415dd24acc57a7bd9d731ecfc35dc4",
+  "mainUnchanged": true,
+  "mainCommit": "8f9672ddc651f3ae4714089baf842aabd2f82148",
+  "tests": {
+    "command": "$env:PLAYWRIGHT_CHANNEL='chromium'; $env:CAPTURE_REVIEW='1'; npm test",
+    "exitCode": 0,
+    "exitEvidence": "Unified exec session 34081 completed normally with exit_code 0; log independently confirms counters.",
+    "nodePassed": 246,
+    "browserPassed": 49,
+    "uniquePassed": 295,
+    "failed": 0,
+    "browser": "Playwright bundled Chromium, headless, one worker",
+    "log": "data/integration-npm-test-release.log",
+    "logSha256": "2245925f1b72d43769f6d91ca3734c2af87521313eb51d537e323934f2b2803a",
+    "isolatedFixture": "Playwright 127.0.0.1:4175 with DATABASE_PATH=:memory:, AI_PROVIDER=rules and SPEECH_PROVIDER=disabled",
+    "supplementary": {
+      "command": "PLAYWRIGHT_CHANNEL=chromium npx playwright test tests/real-kitchen.spec.js -g 'typed voice-controller'",
+      "passed": 1,
+      "exitCode": 0,
+      "scope": "After punctuation-only correction; not added to unique suite count",
+      "log": "data/integration-copy-check.log",
+      "logSha256": "e7b6385104befdee2cb8fa51b3c26deca60daf26e7e5b7ed1de31768c443e61e"
+    },
+    "backendCopyCheck": {
+      "command": "node --test tests/display-access.test.mjs tests/kitchen-capacity.test.mjs",
+      "passed": 12,
+      "exitCode": 0,
+      "log": "data/integration-validation-copy-check.log",
+      "logSha256": "0f3d5f94be548f9cf7e27308b922d5ce5b68650e4abf273fe39b53a6b83f99fd",
+      "scope": "After five validation range punctuation corrections; repeated cases not added to unique count"
+    },
+    "priorAttempts": [
+      {
+        "log": "data/integration-browser-first.log",
+        "passed": 8,
+        "failed": 5,
+        "reason": "Guide integration assumptions and autoplay interruption"
+      },
+      {
+        "log": "data/integration-browser-second.log",
+        "passed": 16,
+        "failed": 2,
+        "reason": "Empty-queue spotlight target and new-account progress expectation"
+      },
+      {
+        "log": "data/integration-npm-test-final.log",
+        "nodePassed": 246,
+        "result": "Cancelled diagnostic run after cache/onboarding expectation failures; not a pass"
+      },
+      {
+        "log": "data/integration-npm-test-verified.log",
+        "nodePassed": 246,
+        "browserPassed": 48,
+        "browserFailed": 1,
+        "reason": "Empty queue target conflict corrected before final release run"
+      }
+    ]
+  },
+  "runtime": [
+    {
+      "base": "http://localhost:4174",
+      "readOnly": true,
+      "checks": [
+        {
+          "path": "/",
+          "status": 200
+        },
+        {
+          "path": "/api/health",
+          "status": 200
+        },
+        {
+          "path": "/api/staff/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/app.js",
+          "status": 200,
+          "sourceHashMatches": true
+        },
+        {
+          "path": "/api/display/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/catalog/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/bootstrap",
+          "status": 401
+        }
+      ]
+    },
+    {
+      "base": "http://127.0.0.1:4180",
+      "readOnly": true,
+      "checks": [
+        {
+          "path": "/",
+          "status": 200
+        },
+        {
+          "path": "/api/health",
+          "status": 200
+        },
+        {
+          "path": "/api/staff/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/app.js",
+          "status": 200,
+          "sourceHashMatches": true
+        },
+        {
+          "path": "/api/display/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/catalog/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/bootstrap",
+          "status": 401
+        }
+      ]
+    }
+  ],
+  "migration": [
+    {
+      "report": "docs/evaluation/integration-data-preservation.json",
+      "reportSha256": "7677a896867604a1eb569f31176385e716ca4176ea91e2352c5ae57ce7fe190e",
+      "allOriginalRowsPreservedAtMigration": true,
+      "businessDataPreservedAfterRestart": true,
+      "allTablesIdenticalAfterRestart": false,
+      "sessionChanges": [
+        {
+          "table": "account_sessions",
+          "removed": 1,
+          "remainingRowsUnchanged": true
+        },
+        {
+          "table": "sessions",
+          "removed": 1,
+          "remainingRowsUnchanged": true
+        }
+      ],
+      "sessionChangeNote": "After migration and server restart, one session and its account-session link were absent on the running live database. All remaining session rows match backup; every business table is identical. Cause not asserted; no session restored. Migration-time report remains unchanged.",
+      "tableCount": 29,
+      "integrity": "ok",
+      "foreignKeyViolations": 0,
+      "tables": [
+        {
+          "table": "account_roles",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "cbd5cdd6d22fad3d6b5bf3fb05ed8f586888a0ad363e03b8887c69442661b1a0",
+          "preserved": true
+        },
+        {
+          "table": "account_sessions",
+          "count": 2,
+          "baselineCount": 3,
+          "hash": "391fddb7e75ea71ad10a7ecd46802dd00e54f21630dcc83ebd4d1656a2895402",
+          "preserved": false,
+          "sessionRemovalOnly": true
+        },
+        {
+          "table": "accounts",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "f2712a71442f3231caec128cf49da079d34f67fe0ef5933e946abb88d7a9a340",
+          "preserved": true
+        },
+        {
+          "table": "audit",
+          "count": 4,
+          "baselineCount": 4,
+          "hash": "29a9f5dbedac779703adda1172db57bd1f33300816e0e51f05f85a3f4311f603",
+          "preserved": true
+        },
+        {
+          "table": "business_state",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "347c3c231d6b09349782ff6a68538c99981c0b0edac50643fff8f7eabf0d46bb",
+          "preserved": true
+        },
+        {
+          "table": "businesses",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "4bba458b4e1ba166edd15e96385af4d09a8dcaa1d472b643072f796bd0c34d6b",
+          "preserved": true
+        },
+        {
+          "table": "collective_cycles",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "0cf0e8cd8e9e7ae9b5356c66edb8a2dfa318ec613818531e016b227256dd5fb2",
+          "preserved": true
+        },
+        {
+          "table": "collective_orders",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "daily_usage",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "demands",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "3345ea346098a11ac1e1193c2900c25e033ccdac3fe80df27e4e958ad04bd341",
+          "preserved": true
+        },
+        {
+          "table": "display_access",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "ingredients",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "ecbebee6a5c65a887d986b5f57b411078e8d67defe0ff1c2b25ebb7d00307cd3",
+          "preserved": true
+        },
+        {
+          "table": "inventory",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "ca13e0cc5bc967c166476d0fc861fade7b974106e9c44a4ce079452b97df2dde",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_actions",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_menus",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_orders",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_stations",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_tasks",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "menus",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "movements",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "offers",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "order_requests",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "sales",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "sessions",
+          "count": 2,
+          "baselineCount": 3,
+          "hash": "044a1570c65c218972ee646256d6521cbcaf062a4cad49c4917306c190151be7",
+          "preserved": false,
+          "sessionRemovalOnly": true
+        },
+        {
+          "table": "staff_actions",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "stock_receipts",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "transfers",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "usage_review_decisions",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "workspaces",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "9927cfbe24fd8532be87412f7fd2acb5d374710e7cd1fa56ff35b13f61512331",
+          "preserved": true
+        }
+      ]
+    },
+    {
+      "report": "docs/evaluation/integration-demo-preservation.json",
+      "reportSha256": "fb5ff74402c0362d32702db98e64a117a0e5f38ad41b1c77ec822eb9bb453ff9",
+      "allOriginalRowsPreservedAtMigration": true,
+      "businessDataPreservedAfterRestart": true,
+      "allTablesIdenticalAfterRestart": true,
+      "sessionChanges": [],
+      "tableCount": 29,
+      "integrity": "ok",
+      "foreignKeyViolations": 0,
+      "tables": [
+        {
+          "table": "account_roles",
+          "count": 1,
+          "baselineCount": 1,
+          "hash": "f164a04a135894cafad46dff675c7d9dc25ff6b0a4ca2f9fc16c505581d4f9c7",
+          "preserved": true
+        },
+        {
+          "table": "account_sessions",
+          "count": 3,
+          "baselineCount": 3,
+          "hash": "c964c5b250180c772714897faca9953bcc59b3e18690c1b26fdc346ac3ea4bf7",
+          "preserved": true
+        },
+        {
+          "table": "accounts",
+          "count": 1,
+          "baselineCount": 1,
+          "hash": "1063307095bcf6fe454e206e86eb7f4ea3dc86cb4dee5f2403f9ca66dfa71adf",
+          "preserved": true
+        },
+        {
+          "table": "audit",
+          "count": 342,
+          "baselineCount": 342,
+          "hash": "82e216e7b0aa9db99d5c9ddf35681b247fccf6a5d21d9507dc5b088ada952958",
+          "preserved": true
+        },
+        {
+          "table": "business_state",
+          "count": 3,
+          "baselineCount": 3,
+          "hash": "9332cc883522c5a9b3cb6491cdb04be33e590697fce06e0e66aa5611784b916e",
+          "preserved": true
+        },
+        {
+          "table": "businesses",
+          "count": 3,
+          "baselineCount": 3,
+          "hash": "03836004fedeced2677c473b61ff283aac16cd88e25bdef1f5634a4a2f535db4",
+          "preserved": true
+        },
+        {
+          "table": "collective_cycles",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "5935508885eef1283ff6ac363c37a5fe913a40b2e6ed8ed9d4034888282433a2",
+          "preserved": true
+        },
+        {
+          "table": "collective_orders",
+          "count": 1,
+          "baselineCount": 1,
+          "hash": "391a0dd81f70dfc022d77551b56c85317020abe73346be1648c9ef900f9c8d71",
+          "preserved": true
+        },
+        {
+          "table": "daily_usage",
+          "count": 680,
+          "baselineCount": 680,
+          "hash": "ae4e703a05acd0d4e355201bc366a3edff8bad5205472fd899a2df9b09dc8013",
+          "preserved": true
+        },
+        {
+          "table": "demands",
+          "count": 3,
+          "baselineCount": 3,
+          "hash": "1c87c1765e9051c9c8fc554a75d7908a8c90c942dc7db3bfd834cb17d4ff7740",
+          "preserved": true
+        },
+        {
+          "table": "display_access",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "ingredients",
+          "count": 10,
+          "baselineCount": 10,
+          "hash": "f29a0eaada851cfeddf1b514e7bda454a826a7026e57dfa9f9d409c5fa34edc4",
+          "preserved": true
+        },
+        {
+          "table": "inventory",
+          "count": 10,
+          "baselineCount": 10,
+          "hash": "ab61c57f76f5fe57ef336c2273cf1d59c514a237d30af670438250a2105e0716",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_actions",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_menus",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_orders",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_stations",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "kitchen_tasks",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "menus",
+          "count": 6,
+          "baselineCount": 6,
+          "hash": "97b04ac5d501e2849721385223bd8b6e9ee30237cc2cc8b8ba06c50e6c517944",
+          "preserved": true
+        },
+        {
+          "table": "movements",
+          "count": 979,
+          "baselineCount": 979,
+          "hash": "475b327b6d42277482433397048c89c862cbb92b762186bc24081bb61cd421aa",
+          "preserved": true
+        },
+        {
+          "table": "offers",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "6fcceb4771cbd7b9f356062c2112f3b771174bba29900a524cfcf74839f74037",
+          "preserved": true
+        },
+        {
+          "table": "order_requests",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "sales",
+          "count": 175,
+          "baselineCount": 175,
+          "hash": "8bbfec33605718317e32a594b76466985855cc21abe062c6a38da00679662b2f",
+          "preserved": true
+        },
+        {
+          "table": "sessions",
+          "count": 3,
+          "baselineCount": 3,
+          "hash": "e3545bd38fca86fc48d3ad400ee1fda0c8ea1cef0ff005bb2cfc732272d2923d",
+          "preserved": true
+        },
+        {
+          "table": "staff_actions",
+          "count": 0,
+          "baselineCount": 0,
+          "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "preserved": true
+        },
+        {
+          "table": "stock_receipts",
+          "count": 108,
+          "baselineCount": 108,
+          "hash": "ea2a2e951b81b12c6852261ba3eef1d4f4d827e52d18e039a487a7b6a36a1805",
+          "preserved": true
+        },
+        {
+          "table": "transfers",
+          "count": 3,
+          "baselineCount": 3,
+          "hash": "8793fddecf578a07ad1fe3d9ea0052fe3c469c6fa3715b3868e6d74cc22c1761",
+          "preserved": true
+        },
+        {
+          "table": "usage_review_decisions",
+          "count": 2,
+          "baselineCount": 2,
+          "hash": "165354ff2df7519698195a495912667b63765fb55d33108b0ec56e7e59e4693c",
+          "preserved": true
+        },
+        {
+          "table": "workspaces",
+          "count": 1,
+          "baselineCount": 1,
+          "hash": "e38e2695914d85d0743cbf9a51d101e7877e97d98e10fe3989547d594089662b",
+          "preserved": true
+        }
+      ]
+    }
+  ],
+  "designHashes": {
+    "DESIGN.md": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    ".impeccable/design.json": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f"
+  },
+  "uiReview": "docs/evaluation/INTEGRATION_UI_REVIEW.md",
+  "designCheck": "docs/evaluation/INTEGRATION_DESIGN_CHECK.md",
+  "captureDirectory": ".impeccable/review/integration",
+  "detector": {
+    "log": "data/integration-detector.json",
+    "runs": 1,
+    "total": 119,
+    "advisories": 117,
+    "warnings": 2,
+    "interpretation": "Pinned cream palette; numeric/color values traced to either source branch. See UI review."
+  },
+  "limits": [
+    "No public deployment or HTTPS/cross-device validation in this integration",
+    "No new model training, weights or AI evaluation claims",
+    "No real kitchen timing pilot; ETA remains a scheduling heuristic",
+    "Voice two-second streaming, shared equipment across stations, shifts, online payments and delivery adapters remain open"
+  ],
+  "passed": true
+}

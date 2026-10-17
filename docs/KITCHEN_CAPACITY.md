@@ -1,3 +1,9 @@
+# Pembaruan v0.40
+
+Estimasi waktu tunggu kini tersedia melalui `server/kitchen-schedule.mjs`, dipakai bersama oleh pemilik, staf dan layar pelanggan. Durasi **total per porsi** sudah termasuk pasif: total 10 menit dengan pasif 4 berarti aktif 6, bukan total 14. Estimasi mempertimbangkan slot staf/alat; staf yang menunggu alat pasif tetap menahan slot. Pengurangan kapasitas tidak membuat pekerjaan yang masih berjalan menghilang dari hitungan.
+
+Angka dibulatkan ke atas dan diperbarui saat revisi waktu berubah; snapshot lama tanpa ETA tidak menampilkan nilai buatan. Ini heuristik, bukan pengukuran waktu masak atau jaminan makanan siap. Staf tetap mengonfirmasi tahap. Resume memakai waktu fase terbaru, belum histori fase lengkap. [Integrasi, tes dan batas](BRANCH_INTEGRATION.md). Bagian v0.37 berikut menjadi dasar fungsi kapasitas/waste.
+
 # Kapasitas stasiun dan bahan terbuang sebagian — v0.37
 
 Lanjutan SRS REQ-F02/F03/F05. Node.js, SQLite dan frontend tetap. Tidak ada kapasitas, pesanan atau catatan terbuang yang dibuat otomatis.
@@ -46,6 +52,6 @@ Akun dapur tidak menerima resep, sehingga hanya dapat mencatat seluruh resep ite
 
 ## Belum selesai
 
-- Alat yang dipakai bersama lintas stasiun, jadwal shift staf, dan perkiraan waktu tunggu berdasarkan kapasitas.
+- Alat yang dipakai bersama lintas stasiun dan jadwal shift staf; ETA heuristik sudah tersedia, validasi lapangan belum.
 - Pencatatan terbuang di luar pesanan dapur (misalnya bahan rusak di gudang) tetap melalui fitur stok yang ada.
 - Target suara dua detik, pilot lapangan, integrasi ojol, deployment/HTTPS.

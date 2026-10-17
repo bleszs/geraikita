@@ -1,3 +1,13 @@
+# Gerai Kita — v0.40, integrasi branch
+
+Branch **feat/kitchen-capacity-and-waste** menggabungkan kapasitas/waste, katalog pelanggan dan ETA dari Claude dengan tampilan/panduan **rahasiagelap2.0**. Akun pemilik/kasir/dapur serta fitur usaha sebelumnya tetap tersedia. **295 tes lulus**, `npm test` exit 0 (246 Node + 49 browser Chromium). [Bukti rilis](docs/evaluation/integration-release.json).
+
+ETA memakai durasi total resep (pasif sudah termasuk), kapasitas dan antrean yang sama pada pemilik/staf/layar pelanggan. Panduan otomatis mengikuti pendaftaran UI dan tidak menimpa tur manual. Cache aplikasi tetap memuat semua modul staf/inbox. Data usaha asli tidak diisi contoh.
+
+[Hasil pemeriksaan dan perubahan](docs/BRANCH_INTEGRATION.md) · [TODO](docs/AI_TODO.md) · [Konteks untuk Claude](docs/CONTINUE_WITH_CLAUDE.md). `main` tetap terpisah; gunakan branch fitur untuk melanjutkan hasil integrasi.
+
+`npm start` → **http://localhost:4174**; `npm run start:demo` → **http://127.0.0.1:4180** pada database demo terpisah. Berikutnya: persiapan deployment/HTTPS dan uji antarperangkat. Layanan saat ini masih lokal. Catatan versi di bawah adalah riwayat.
+
 # Gerai Kita — v0.38
 
 Validasi akhir: **284 tes lulus, `npm test` exit 0** (238 Node + 46 browser, satu worker, `PLAYWRIGHT_CHANNEL=chromium`).

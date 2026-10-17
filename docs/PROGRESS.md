@@ -1,3 +1,13 @@
+# Perubahan terbaru v0.40 — integrasi pekerjaan Claude
+
+Branch feat/kitchen-capacity-and-waste kini menggabungkan tiga commit Claude (v0.37 kapasitas/waste, v0.38 katalog, v0.39 ETA) dan origin/rahasiagelap2.0 (tampilan/panduan dari basis lebih lama). Role staf dan semua fitur baru dipertahankan. main tetap terpisah. [Pemeriksaan dan koreksi lengkap](BRANCH_INTEGRATION.md).
+
+**Regresi akhir: 295 tes lulus, exit 0** — 246 Node dan 49 browser pada Chromium terpisah, satu worker. Log final `data/integration-npm-test-release.log`; [bukti rilis](evaluation/integration-release.json) mencatat juga percobaan yang gagal dan perbaikannya. [Data asli](evaluation/integration-data-preservation.json) dan [demo](evaluation/integration-demo-preservation.json): seluruh baris/kolom asal identik; schema 29 tabel. Tidak ada dummy pada akun nyata atau perubahan bobot/benchmark.
+
+Koreksi penting: ETA total/pasif dan slot alat/staf, satu perencana lintas layar, metadata ETA staf serta revisi SSE, tur manual yang tidak disela auto-page tour, target panduan antrean kosong, dan cache lengkap yang tidak tertimpa dokumen lain. [Review UI](evaluation/INTEGRATION_UI_REVIEW.md), [catatan desain](evaluation/INTEGRATION_DESIGN_CHECK.md). Kesiapan produksi/akurasi/latensi lapangan tidak diklaim.
+
+Berikutnya persiapan deployment dan uji antarperangkat; lalu pilot dapur/suara dan alat bersama/shift. [Konteks untuk Claude](CONTINUE_WITH_CLAUDE.md). Catatan versi di bawah adalah riwayat.
+
 # Perubahan terbaru v0.36 — akun staf
 
 **Regresi akhir selesai normal: 227 tes Node dan 44 browser = 271 lulus, exit 0.** Browser pengujian Chromium terpisah dipilih melalui PLAYWRIGHT_CHANNEL; Chrome tetap default bila variabel tidak diisi. Log final `data/staff-npm-test-v036.log` dan riwayat percobaan tersedia pada [bukti rilis](evaluation/staff-release.json). Main 4174 dan demo 4180 aktif pada server terbaru; halaman/modul staf 200 dan bootstrap tanpa sesi 401.

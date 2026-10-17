@@ -1,3 +1,9 @@
+# Pembaruan v0.40
+
+Kapasitas stasiun dan pencatatan bahan terbuang sebagian melanjutkan tugas dapur. Katalog pelanggan mengirim permintaan yang harus diterima kasir/pemilik sebelum bahan dicadangkan; belum ada pembayaran daring atau sinkronisasi ojol. Estimasi waktu memakai durasi total/pasif dan kapasitas yang sama di layar pemilik/staf/pelanggan, masih heuristik tanpa validasi lapangan.
+
+Tampilan/panduan rahasiagelap2.0 digabung pada branch fitur tanpa menghapus akun staf atau fungsi baru. Identitas krem/terakota/Nunito tetap. Panduan setelah pendaftaran UI mengenalkan tiap halaman, dapat dilewati/dijeda, dan tidak mengganti tur manual yang sedang berjalan. Akun nyata tidak diisi dummy; demo terpisah tetap simulasi. Deployment/HTTPS dan uji antarperangkat adalah prioritas berikutnya. [Cakupan integrasi](docs/BRANCH_INTEGRATION.md). Catatan berikut merupakan riwayat.
+
 # Pembaruan v0.36
 
 Gerai Kita kini membagi tugas lewat akun kasir dan dapur milik usaha yang sama. Pemilik mengelola staf di Pengaturan dengan konfirmasi dan pencabutan seluruh sesi saat akses berubah. Kasir menerima/menyerahkan pesanan, dapur mengerjakan tahapan dan kendali suara yang tersedia. Server membatasi API dan mengirim data operasional minimum; staf tidak mendapat laporan, resep, pemasok, kelompok atau kontrol pemilik. Panduan berpanah mengikuti peran, menu besar dan bahasa Indonesia mengikuti identitas visual lama. Offline tidak mengizinkan transaksi staf atau snapshot pemilik. Tidak ada staf/isi usaha sintetis otomatis. [Cakupan dan batas](docs/STAFF_ROLES.md).

@@ -1,3 +1,19 @@
+# Lanjutan v0.40 — integrasi Claude dan rahasiagelap2.0
+
+- [x] Periksa tiga commit fitur Claude: kapasitas stasiun/waste sebagian, katalog pelanggan dengan konfirmasi, dan ETA; selaras dengan SRS/fungsi saat ini.
+- [x] Merge branch tampilan lama ke feat/kitchen-capacity-and-waste tanpa kehilangan akun staf, kontrol role, inbox, kapasitas dan CSS fitur. main tidak diubah.
+- [x] Perbaiki ETA: durasi pasif tidak dihitung dua kali, alat penuh menahan slot staf, kapasitas yang diturunkan dihormati, satu perencana untuk owner/staf/pelanggan, dan pembaruan ETA masuk revisi SSE.
+- [x] Gabungkan panduan role-aware, pengenalan per halaman setelah pendaftaran UI, perlindungan tur manual, target antrean kosong dan cache v40 network-first/fallback offline.
+- [x] Backup dan migrasi main/demo: baris dan kolom lama identik, schema 29 tabel, integritas/relasi OK; tanpa seed bisnis baru.
+- [x] Regresi akhir selesai normal: **246 Node + 49 browser = 295 lulus**, exit 0. [Bukti](evaluation/integration-release.json). Model/bobot/hasil riset tidak diubah.
+- [x] Tulis hasil integrasi dan konteks lanjutan untuk Claude. [Perubahan](BRANCH_INTEGRATION.md), [handoff](CONTINUE_WITH_CLAUDE.md).
+- [x] Review UI integrasi: ship; catatan sistem desain selesai, DESIGN.md dan sidecar tetap identik. Koreksi tanda baca diverifikasi ulang (1 browser + 12 Node, kasus berulang, tidak menambah 295 tes unik).
+- [ ] Berikutnya: konfigurasi deployment/HTTPS/origin/cookie, volume SQLite persisten dan backup/restore; uji kasir/dapur/pelanggan dari perangkat berbeda.
+- [ ] Pilot dapur nyata untuk durasi fase, mutu ETA dan proses waste; alat bersama lintas stasiun dan shift masih terbuka.
+- [ ] Streaming suara dua detik, kestabilan ASR, pembayaran daring dan adaptor ojol belum selesai.
+
+Checklist versi di bawah adalah riwayat. [Cakupan, koreksi, bukti dan batas](BRANCH_INTEGRATION.md).
+
 # Lanjutan v0.38 — katalog pesanan pelanggan (REQ-F05)
 
 - [x] Tautan berjenis `catalog` terpisah dari layar status; token hanya membuka jenisnya sendiri.
@@ -14,7 +30,8 @@
 - [x] Izin: pemilik mengatur kapasitas dan jumlah sebagian; akun dapur membatalkan item dengan seluruh resep; kasir tidak membatalkan item. Server menolak jumlah per bahan dari staf.
 - [x] Migrasi aditif (`kitchen_stations`, `item_index`/`usage_json`/`waste_json`); pesanan lama multi-item menolak pembatalan per item dengan pesan jelas.
 - [x] Panduan dapur diperbarui (88 langkah). Regresi: 233 Node + 45 browser. [Panduan](KITCHEN_CAPACITY.md).
-- [ ] Alat bersama lintas stasiun, shift staf, perkiraan waktu tunggu dari kapasitas.
+- [x] Estimasi waktu tunggu dari kapasitas ditambahkan v0.39 dan dikoreksi v0.40.
+- [ ] Alat bersama lintas stasiun dan shift staf.
 # Lanjutan v0.36 — akun staf
 
 - [x] Regresi akhir selesai normal: 227 Node + 44 browser = **271 lulus**, exit 0 pada browser Chromium terpisah. [Bukti rilis](evaluation/staff-release.json). Percobaan gagal/cleanup lama tetap dicatat, bukan dihitung sebagai run sukses.
@@ -56,7 +73,7 @@ Pengguna memilih memprioritaskan fungsi SRS Smart Kitchen Command Center dan mem
 - [ ] Validasi koki/pemilik, durasi masak aktual, kebisingan dan mikrofon lapangan; kestabilan Whisper masih terbuka.
 - [x] Layar pelanggan tanpa login pemilik: token baca terbatas/berakhir/dicabut, proyeksi kode-status, SSE, tidak menyimpan kunci asli atau transkrip. [Panduan](CUSTOMER_DISPLAY.md).
 - [x] Peran kasir/dapur dengan pembatasan tindakan/sesi server selesai pada v0.36. [Cakupan dan batas](STAFF_ROLES.md).
-- [ ] Kapasitas alat/staf, tahapan lebih rinci dan pencatatan waste sebagian.
+- [x] Kapasitas per stasiun dan waste sebagian ditambahkan v0.37; alat bersama/shift dan tahap lebih rinci tetap terbuka.
 - [ ] Integrasi pemesanan/katalog ojol dan kanal eksternal; sumber saat ini dicatat manual.
 - [ ] Kesiapan deployment, HTTPS, pemantauan, backup produksi dan uji beban.
 

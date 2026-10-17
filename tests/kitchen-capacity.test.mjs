@@ -93,11 +93,11 @@ test('etaMinutes tracks remaining work and decreases as tasks advance through ph
  const {s,svc}=fresh(t);configure(svc,s,'nasi',8,'dapur',5);// 8 min active, 5 min passive
  const o=enter(svc,s,'ETA test',[{id:'nasi',qty:2}]);
  let order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
- assert.equal(order.tasks[0].etaMinutes,(8+5)*2,'queued: (active+passive)×qty');
- assert.equal(order.etaMinutes,(8+5)*2,'order ETA=task ETA');
+ assert.equal(order.tasks[0].etaMinutes,8*2,'queued: (active+passive)×qty');
+ assert.equal(order.etaMinutes,8*2,'order ETA=task ETA');
  step(svc,s,o.id,'start',order.tasks[0].id);
  order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
- assert.ok(order.tasks[0].etaMinutes<=(8+5)*2,'active ETA ≤ queued ETA');
+ assert.ok(order.tasks[0].etaMinutes<=8*2,'active ETA ≤ queued ETA');
  assert.ok(order.tasks[0].etaMinutes>=0,'ETA non-negative');
  step(svc,s,o.id,'passive',order.tasks[0].id);
  order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
@@ -114,8 +114,8 @@ test('etaMinutes accounts for tasks ahead in queue at single-worker station',t=>
  const firstId=snap.next.find(n=>n.station==='dapur').taskIds[0];
  const first=snap.orders.find(o=>o.tasks.some(t=>t.id===firstId));
  const second=snap.orders.find(o=>[o1.id,o2.id].includes(o.id)&&o.id!==first.id);
- assert.equal(first.tasks[0].etaMinutes,8+5,'first task: 8 active + 5 passive');
- assert.equal(second.tasks[0].etaMinutes,8+8+5,'second waits for first active phase: 8+8+5');
+ assert.equal(first.tasks[0].etaMinutes,8,'first task: total 8 includes passive 5');
+ assert.equal(second.tasks[0].etaMinutes,11,'second starts after first active phase 3, then takes total 8');
  assert.equal(first.etaMinutes,first.tasks[0].etaMinutes);
  assert.equal(second.etaMinutes,second.tasks[0].etaMinutes);
 });
@@ -135,7 +135,7 @@ test('HTTP: owner sets capacity; kitchen voids with full waste only; cashier can
  const {id}=await(await post(cashier,'/kitchen/orders',{label:'Meja 1',channel:'dine_in',items:[{id:m.id,qty:1},{id:m.id,qty:2}],catalogRevision:3,idempotencyKey:prefix(cashier)+randomUUID()})).json();
  const k=await(await fetch(base+'/api/bootstrap',{headers:{cookie:kitchen.cookie}})).json(),o=k.kitchen.orders.find(o=>o.id===id);
  assert.deepEqual(k.kitchen.stations.map(c=>[c.station,c.cooks,c.equipment,'revision' in c]),[['oven',2,3,false]]);assert.equal(k.kitchen.next[0].taskIds.length,2);
- assert.equal('usage' in o.tasks[0],false);assert.equal(JSON.stringify(k).includes('Tepung'),false);
+ assert.equal(o.etaMinutes,svc.kitchen.snapshot(s).orders.find(x=>x.id===id).etaMinutes);assert.equal(o.tasks[0].etaMinutes,4);assert.equal('usage' in o.tasks[0],false);assert.equal(JSON.stringify(k).includes('Tepung'),false);
  const [a,b]=o.tasks;
  assert.equal((await post(cashier,`/kitchen/orders/${id}/actions`,{action:'void',taskId:a.id,revision:1,idempotencyKey:prefix(cashier)+randomUUID()})).status,403);
  assert.equal((await post(kitchen,`/kitchen/orders/${id}/actions`,{action:'start',taskId:a.id,revision:1,idempotencyKey:prefix(kitchen)+randomUUID()})).status,200);

@@ -28,9 +28,9 @@ test('all named application actions have a documented topic, including condition
 
 test('storage preserves only validated progress fields and separates guest/account/epoch keys',()=>{
   const values=new Map(),storage=()=>({getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)});
-  const progress={version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:1,password:'must not persist',businessName:'must not persist'};
+  const progress={version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:1,autoPageGuides:true,seenPages:['dapur','stok','<script>'],password:'must not persist',businessName:'must not persist'};
   assert.equal(writeGuideProgress(storage,'workspace:epoch:owner',progress),true);
-  assert.deepEqual(readGuideProgress(storage,'workspace:epoch:owner').progress,{version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:1});
+  assert.deepEqual(readGuideProgress(storage,'workspace:epoch:owner').progress,{version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:1,autoPageGuides:true,seenPages:['dapur','stok']});
   assert.deepEqual(readGuideProgress(storage,'workspace:epoch:member').progress,emptyGuideProgress());
   assert.notEqual(guideKey('guest'),guideKey('workspace:epoch:owner'));assert.notEqual(guideKey('workspace:epoch:owner'),guideKey('workspace:new-epoch:owner'));
   assert.equal([...values.values()][0].includes('must not persist'),false);
@@ -41,7 +41,8 @@ test('corrupt, unknown and out-of-range saved progress never drives navigation o
     {version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'<script>',step:0},
     {version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:99},
     {version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:-1},
-    {version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:0.5}])assert.deepEqual(validateGuideProgress(value),emptyGuideProgress());
+    {version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:0.5},
+    {version:GUIDE_VERSION,welcomeSeen:true,status:'paused',topicId:'menu',step:0,autoPageGuides:'yes',seenPages:[]}])assert.deepEqual(validateGuideProgress(value),emptyGuideProgress());
   assert.deepEqual(readGuideProgress(()=>({getItem:()=>'{broken'}),'guest').progress,emptyGuideProgress());
 });
 
@@ -49,7 +50,7 @@ test('storage refusals are recoverable and all guide completion states round-tri
   const denied=()=>{throw new Error('Storage blocked');};
   assert.equal(readGuideProgress(denied,'guest').available,false);assert.equal(writeGuideProgress(denied,'guest',emptyGuideProgress()),false);
   for(const status of ['in_progress','paused','skipped','completed']){
-    const value={version:GUIDE_VERSION,welcomeSeen:true,status,topicId:'mulai',step:2};assert.deepEqual(validateGuideProgress(value),value);
+    const value={version:GUIDE_VERSION,welcomeSeen:true,status,topicId:'mulai',step:2,autoPageGuides:false,seenPages:[]};assert.deepEqual(validateGuideProgress(value),value);
   }
 });
 

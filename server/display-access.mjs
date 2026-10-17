@@ -1,5 +1,6 @@
 import {randomUUID,createHash} from 'node:crypto';
 import {requireValue} from './common.mjs';
+import {planKitchen} from './kitchen-schedule.mjs';
 
 export function migrateDisplayAccess(db){
   db.exec(`CREATE TABLE IF NOT EXISTS display_access(
@@ -59,22 +60,11 @@ export function createDisplayAccess(store){
     return row;
   }
   function snapshot(s){
-    const rows=all("SELECT id,status FROM kitchen_orders WHERE workspace_id=? AND business_id=? AND status IN ('queued','preparing','ready') ORDER BY created_at,id LIMIT 201",...scope(s));
-    const pending=all("SELECT order_id,status,minutes,qty,passive_minutes,phase_started_at FROM kitchen_tasks WHERE workspace_id=? AND business_id=? AND status IN ('queued','active','passive')",...scope(s));
-    const nowMs=Date.now();
-    const orderEta={};
-    for(const r of rows){
-      const ts=pending.filter(t=>t.order_id===r.id);
-      if(!ts.length){orderEta[r.id]=0;continue;}
-      let max=0;
-      for(const t of ts){
-        const ph=t.phase_started_at?Math.max(0,(nowMs-Date.parse(t.phase_started_at))/60000):0;
-        const e=t.status==='queued'?(t.minutes*t.qty+t.passive_minutes*t.qty):t.status==='active'?Math.max(0,t.minutes*t.qty-ph)+t.passive_minutes*t.qty:Math.max(0,t.passive_minutes*t.qty-ph);
-        if(e>max)max=e;
-      }
-      orderEta[r.id]=Math.round(max);
-    }
-    return {orders:rows.slice(0,200).map(r=>({code:r.id.slice(0,8).toUpperCase(),status:r.status,etaMinutes:orderEta[r.id]??null})),hasMore:rows.length>200,updatedAt:new Date().toISOString()};
+    const rows=all("SELECT id,status,created_at FROM kitchen_orders WHERE workspace_id=? AND business_id=? AND status IN ('queued','preparing','ready') ORDER BY created_at,id",...scope(s));
+    const tasks=all('SELECT id,order_id,status,minutes,qty,passive_minutes,phase_started_at,station FROM kitchen_tasks WHERE workspace_id=? AND business_id=?',...scope(s));
+    const capacities=all('SELECT station,cooks,equipment,revision FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
+    const {orderEtas}=planKitchen(rows,tasks,[],capacities);
+    return {orders:rows.slice(0,200).map(r=>({code:r.id.slice(0,8).toUpperCase(),status:r.status,etaMinutes:orderEtas.get(r.id)??null})),hasMore:rows.length>200,updatedAt:new Date().toISOString()};
   }
   return {list,create,revoke,resolve,snapshot};
 }

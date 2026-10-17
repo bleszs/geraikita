@@ -1,3 +1,9 @@
+# Tambahan arsitektur v0.40
+
+Schema 29 tabel mempertahankan migrasi aditif Claude: kitchen_stations, order_requests, snapshot item/waste dan jenis display/catalog. Store memakai SAVEPOINT untuk transaksi bersarang saat permintaan pelanggan diterima ke dapur. server/kitchen-schedule.mjs memusatkan SJF+aging, slot, dan ETA; kitchen.mjs/display-access.mjs memakai rencana yang sama, roles.mjs memproyeksikan angka tanpa resep/harga dapur. Perubahan ETA termasuk fingerprint SSE.
+
+Merge tampilan mempertahankan ES modules/Node/SQLite, modul staf dan inbox, CSS fitur, API bypass dan cache shell v40. Panduan v6 menyimpan auto-page/seenPages dalam scope akun/peran; tur manual tetap berjalan lintas halaman. Tidak ada perubahan model/benchmark. [Rincian dan batas](BRANCH_INTEGRATION.md). Catatan berikut merupakan riwayat.
+
 # Tambahan arsitektur v0.36
 
 `roles.mjs` menambah `account_roles` dan `staff_actions` (total 27 tabel). Migrasi transaksional menurunkan satu owner dari setiap akun lama hanya saat tabel role pertama dibuat. Login/resolve bergabung ke role aktif yang sama workspace/business; role hilang tidak menjadi owner. Registrasi publik tetap membuat usaha baru beserta owner-nya.

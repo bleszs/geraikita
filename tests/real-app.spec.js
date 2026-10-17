@@ -1,26 +1,41 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs/promises';
 
-test('recovery bypasses a stale cached startup error and preserves device drafts',async({page})=>{
+test('recovery bypasses a stale cached startup error and preserves device drafts',async({page,context})=>{
   await page.goto('/');await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();
   await page.evaluate(async()=>{
     const names=await caches.keys(),name=names.find(n=>n.startsWith('gerai-kita-shell-'));const cache=await caches.open(name);
     await cache.put('/index.html',new Response('<!doctype html><title>Versi lama</title><h1>Aplikasi belum terhubung.</h1>',{headers:{'content-type':'text/html'}}));
     const {putDraft}=await import('/offline.js');await putDraft({id:'recovery-preserved-draft',scope:'isolated-recovery-test',status:'draft',payload:{items:[]}});
   });
-  await page.reload();await expect(page.getByRole('heading',{name:'Aplikasi belum terhubung.'})).toBeVisible();
+  await page.reload();await expect(page.getByRole('heading',{name:'Mulai dari usahamu sendiri.'})).toBeVisible();
+  await page.evaluate(async()=>{const cache=await caches.open((await caches.keys()).find(n=>n.startsWith('gerai-kita-shell-')));await cache.put('/index.html',new Response('<!doctype html><title>Versi lama</title><h1>Aplikasi belum terhubung.</h1>',{headers:{'content-type':'text/html'}}));});
+  await context.setOffline(true);await page.reload();await expect(page.getByRole('heading',{name:'Aplikasi belum terhubung.'})).toBeVisible();await context.setOffline(false);
   await page.goto('/api/recovery');await page.getByRole('button',{name:'Perbarui & buka aplikasi'}).click();await expect(page.getByRole('heading',{name:'Mulai dari usahamu sendiri.'})).toBeVisible();
   expect(await page.evaluate(async()=>{const {listDrafts}=await import('/offline.js');return (await listDrafts()).some(d=>d.id==='recovery-preserved-draft');})).toBe(true);
 });
 const password='Only-for-browser-tests-775';
 const uniqueEmail=()=>crypto.randomUUID()+'@example.test';
 
+test('login and registration can switch and remember light or dark mode',async({page})=>{
+  await page.goto('/');
+  const theme=page.getByRole('button',{name:'Aktifkan mode gelap'});
+  await expect(theme).toBeVisible();await theme.click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+  await expect(page.getByRole('button',{name:'Aktifkan mode terang'})).toBeVisible();
+  await page.getByRole('button',{name:'Masuk',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Aktifkan mode terang'})).toBeVisible();
+  await page.reload();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+});
+
 test('restock distinguishes an untrained model from an unavailable estimate without inventing metrics',async({page})=>{
   await register(page);await addIngredient(page);await page.goto('/#restock');await expect(page.locator('#main table')).toContainText('Model terlatih belum aktif');await expect(page.locator('#main table')).toContainText('Belum cukup histori');await expect(page.locator('#main table')).toContainText('Estimasi belum tersedia');expect((await state(page)).recommendations[0].trainedModel.status).toBe('not_trained');
   await page.setViewportSize({width:1440,height:1000});await capture(page,'forecast-status-desktop');await page.setViewportSize({width:320,height:900});await capture(page,'forecast-status-mobile');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 async function state(page){const r=await page.request.get('/api/bootstrap');expect(r.status()).toBe(200);return r.json();}
-async function register(page,name='Usaha yang didaftarkan',inviteCode){await page.goto('/');await page.getByLabel('Nama usaha',{exact:true}).fill(name);if(inviteCode){await page.getByRole('button',{name:'Pakai kode kelompok',exact:true}).click();await page.getByLabel('Kode kelompok',{exact:true}).fill(inviteCode);}else await page.getByLabel('Nama kelompok',{exact:true}).fill('Komunitas dari formulir');const email=uniqueEmail();await page.getByLabel('Email',{exact:true}).fill(email);await page.getByLabel('Kata sandi',{exact:true}).fill(password);await page.getByRole('button',{name:'Daftarkan usaha',exact:true}).click();await page.goto('/#ringkasan');await expect(page.getByRole('heading',{name:'Catatan nyata, keputusan lebih jelas.'})).toBeVisible();return {email,password};}
+async function register(page,name='Usaha yang didaftarkan',inviteCode){await page.goto('/');await page.getByLabel('Nama usaha',{exact:true}).fill(name);if(inviteCode){await page.getByRole('button',{name:'Pakai kode kelompok',exact:true}).click();await page.getByLabel('Kode kelompok',{exact:true}).fill(inviteCode);}else await page.getByLabel('Nama kelompok',{exact:true}).fill('Komunitas dari formulir');const email=uniqueEmail();await page.getByLabel('Email',{exact:true}).fill(email);await page.getByLabel('Kata sandi',{exact:true}).fill(password);await page.getByRole('button',{name:'Daftarkan usaha',exact:true}).click();await page.goto('/#ringkasan');await expect(page.getByRole('heading',{name:'Catatan nyata, keputusan lebih jelas.'})).toBeVisible();
+// These tests exercise bookkeeping. Onboarding itself has its own browser suite.
+await page.evaluate(async()=>{const {guideKey,emptyGuideProgress}=await import('/guide-state.js');const {scopeOf}=await import('/offline.js');const account=await fetch('/api/bootstrap').then(r=>r.json());localStorage.setItem(guideKey(scopeOf(account)),JSON.stringify({...emptyGuideProgress(),welcomeSeen:true,autoPageGuides:false}));});await page.reload();await expect(page.getByRole('heading',{name:'Catatan nyata, keputusan lebih jelas.'})).toBeVisible();return {email,password};}
 async function capture(page,name){if(!process.env.CAPTURE_REVIEW)return;await fs.mkdir('.impeccable/review',{recursive:true});await page.evaluate(()=>{document.activeElement?.blur();document.querySelector('#toast').hidden=true;scrollTo(0,0);});await page.screenshot({path:`.impeccable/review/${name}.png`,fullPage:false});}
 async function addIngredient(page){await page.goto('/#stok');await page.getByRole('button',{name:'Tambah bahan',exact:true}).click();await page.getByLabel('Nama bahan',{exact:true}).fill('Tepung dibuat pengguna');await page.getByLabel('Satuan bahan',{exact:true}).selectOption('gram');await page.getByLabel('Ambang stok menipis',{exact:true}).fill('100');await page.getByLabel('Catatan penyimpanan',{exact:true}).fill('Disimpan dalam wadah tertutup');await page.getByRole('button',{name:'Simpan bahan',exact:true}).click();await expect(page.locator('.inventory-editor')).toHaveCount(0);return (await state(page)).catalog[0];}
 async function fillReceipt(page,product){await page.getByRole('button',{name:'Catat barang masuk',exact:true}).click();await page.getByLabel('Bahan',{exact:true}).selectOption(product.id);await page.getByLabel('Satuan diterima',{exact:true}).selectOption('kg');await page.getByLabel('Jumlah diterima',{exact:true}).fill('1.5');await page.getByLabel('Harga per satuan diterima (Rp)',{exact:true}).fill('17000');await page.getByLabel('Pemasok (opsional)',{exact:true}).fill('Pemasok yang dimasukkan pengguna');}

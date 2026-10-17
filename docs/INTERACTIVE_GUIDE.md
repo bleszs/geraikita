@@ -1,3 +1,9 @@
+# Pembaruan panduan v0.40
+
+Panduan versi 6 memuat **18 topik/89 langkah**. Pendaftaran melalui formulir UI mengaktifkan tur pertama tiap halaman; login tidak dinilai sebagai pendaftaran baru hanya karena umur akun singkat. Tur manual dapat melintasi halaman tanpa diganti otomatis. Navigasi pengguna ke halaman lain menjeda tur sebelumnya; Lewati melewati tur halaman saat ini. Bantuan tetap di navigasi atas, dengan topik kasir/dapur sesuai peran. Target antrean kosong memakai judul antrean yang selalu ada. Progress tetap terpisah per scope akun/peran; versi lama tidak dianggap punya indeks sama.
+
+[Integrasi, pengujian dan batas](BRANCH_INTEGRATION.md). Tidak ada pengiriman data bisnis otomatis oleh panduan. Catatan berikut merupakan riwayat.
+
 # Tambahan panduan v0.36
 
 Panduan versi **5** berjumlah **18 topik/87 langkah**. Tiga topik baru: pemilik mengelola staf (3 langkah), kasir menerima/menyerahkan pesanan (4), dapur mengatur tahap memasak (4). Tombol Panduan/Panduan halaman ini pada akun staf langsung membuka tur perannya, dengan Lanjut/Kembali/Lewati; langkah terakhir membuka Akun saya untuk password. Tur utama pemilik tetap 11 langkah. Tur tidak membuat staf, mengirim pesanan, mengganti password atau menyetujui izin otomatis. Progress mengikuti scope akun/peran/revisi. [Pembagian akses](STAFF_ROLES.md).

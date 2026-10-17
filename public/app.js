@@ -21,7 +21,7 @@ function clearVoice(){kitchenVoiceEpoch++;clearTimeout(kitchenVoiceTimer);ui.kit
 const isStaff=()=>!!state?.account?.role&&state.account.role!=='owner';
 const kitchenKey=()=>isStaff()?state.account.id+':'+state.account.roleRevision+':'+crypto.randomUUID():crypto.randomUUID();
 const route=()=>isStaff()?(location.hash==='#pengaturan'?'pengaturan':'dapur'):routes.some(r=>r[0]===location.hash.slice(1))?location.hash.slice(1):'dapur';
-const guide=createGuideController({getContext:()=>({scope:state?scopeOf(state):'guest',signedIn:!!state,role:state?.account?.role||'owner',route:route()}),navigate:page=>{location.hash=page;},notify,escape:e});
+const guide=createGuideController({getContext:()=>({scope:state?scopeOf(state):'guest',signedIn:!!state,role:state?.account?.role||'owner',route:route(),newAccount:Boolean(ui.guideAutoplayRequested)}),consumeNewAccount:()=>{ui.guideAutoplayRequested=false;},navigate:page=>{location.hash=page;},notify,escape:e});
 function notify(message){const box=document.querySelector('#toast');box.textContent=message;box.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>box.hidden=true,7000);}
 function showUpdatePrompt(){
   if(!registration?.waiting || document.querySelector('[data-action="update-app"]'))return;
@@ -148,7 +148,7 @@ document.addEventListener('submit',async event=>{
   const f=event.target.closest('[data-form]');if(!f)return;event.preventDefault();if(busy)return;const kind=f.dataset.form,b=Object.fromEntries(new FormData(f));let payload,error='';
   if(kind==='auth'){
     busy=true;f.querySelector('button[type=submit]').disabled=true;
-    try{const result=await request(ui.auth==='register'?'/auth/register':'/auth/login',b);values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
+    try{const registering=ui.auth==='register',result=await request(registering?'/auth/register':'/auth/login',b);ui.guideAutoplayRequested=registering;values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
   }
   if(!state||!connected||pendingAction||(kind==='extract'&&voice.active))return;busy=true;lockControls();
   try{
@@ -210,7 +210,7 @@ document.addEventListener('click',async event=>{
   }
   if(action==='show-login'||action==='show-register'){ui.auth=action==='show-login'?'login':'register';ui.error='';render();return;}
   if(action==='create-community'||action==='join-community'){ui.joining=action==='join-community';render();return;}
-  if(action==='theme'){const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('gerai-theme',theme);}catch{}return;}
+  if(action==='theme'){const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('gerai-theme',theme);}catch{}if(!state)render();return;}
   if(action==='staff-review'){
     const target=state?.staff?.find(a=>a.id===b.dataset.id);if(!target)return;
     ui.staffEdit={id:target.id,revision:target.revision,action:b.dataset.step,idempotencyKey:crypto.randomUUID()};render();document.querySelector('[data-form="staff-update"] input[name="confirmed"]')?.focus();return;

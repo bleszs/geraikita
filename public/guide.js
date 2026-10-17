@@ -3,7 +3,7 @@ import {GUIDE_TOPICS,PAGE_TOPICS,findTopic} from './guide-content.js';
 import {emptyGuideProgress,readGuideProgress,writeGuideProgress} from './guide-state.js';
 import {guideLayout} from './guide-layout.js';
 
-export function createGuideController({getContext,navigate,notify,escape,storage=()=>window.localStorage}){
+export function createGuideController({getContext,navigate,notify,escape,consumeNewAccount=()=>{},storage=()=>window.localStorage}){
   const root=document.createElement('div');root.id='guide-root';document.body.append(root);
   const memory=new Map();let scope=null,progress=emptyGuideProgress(),active=false,highlight=null,lastStep='',storageWarned=false,frame=0;
   const e=escape;
@@ -20,13 +20,18 @@ export function createGuideController({getContext,navigate,notify,escape,storage
     frame=0;if(!active)return;
     const panel=root.querySelector('.guide-tour'),overlay=root.querySelector('.guide-overlay');if(!panel||!overlay)return;
     const mobile=innerWidth<=760,context=getContext();
-    const viewport={width:innerWidth,height:innerHeight,topInset:context.signedIn?82:12,bottomInset:mobile&&context.signedIn?88:12};
+    const vw=document.documentElement.clientWidth||innerWidth,vh=document.documentElement.clientHeight||innerHeight;
+    const isButton=Boolean(highlight?.matches('button,[role="button"],.icon-button,.guide-access'));
+    const viewport={width:vw,height:vh,topInset:context.signedIn?82:12,bottomInset:mobile&&context.signedIn?88:12,focusPadding:isButton?2:6};
     const size=panel.getBoundingClientRect(),layout=guideLayout(pointRect(),{width:size.width,height:size.height},viewport);
     for(const [property,value] of Object.entries({left:layout.x+'px',top:layout.y+'px',width:layout.width+'px',maxHeight:layout.maxHeight+'px'}))if(panel.style[property]!==value)panel.style[property]=value;
-    panel.dataset.placement=layout.side;overlay.setAttribute('viewBox',`0 0 ${innerWidth} ${innerHeight}`);
-    const outer=`M 0 0 H ${innerWidth} V ${innerHeight} H 0 Z`;
-    const r=layout.focus,hole=r?` M ${r.left} ${r.top} V ${r.bottom} H ${r.right} V ${r.top} Z`:'';
-    overlay.innerHTML=`<defs><marker id="guide-arrow-tip" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto" markerUnits="userSpaceOnUse"><path d="M 1 1 L 10 6 L 1 11" class="guide-arrow-tip"/></marker></defs><path class="guide-dim" fill-rule="evenodd" d="${outer+hole}"/>${r?`<rect class="guide-spotlight" x="${r.left}" y="${r.top}" width="${r.width}" height="${r.height}" rx="8"/>`:''}${layout.arrow?`<path class="guide-arrow-halo" d="${layout.arrow.d}"/><path class="guide-arrow" data-end-x="${layout.arrow.end.x}" data-end-y="${layout.arrow.end.y}" d="${layout.arrow.d}" marker-end="url(#guide-arrow-tip)"/>`:''}`;
+    panel.dataset.placement=layout.side;overlay.setAttribute('viewBox',`0 0 ${vw} ${vh}`);
+    const outer=`M 0 0 H ${vw} V ${vh} H 0 Z`;
+    const r=layout.focus;
+    const rx=isButton?10:8;
+    const safeRx=r?Math.min(rx,Math.floor(r.width/2),Math.floor(r.height/2)):0;
+    const hole=r?(safeRx>0?` M ${r.left+safeRx} ${r.top} H ${r.right-safeRx} A ${safeRx} ${safeRx} 0 0 1 ${r.right} ${r.top+safeRx} V ${r.bottom-safeRx} A ${safeRx} ${safeRx} 0 0 1 ${r.right-safeRx} ${r.bottom} H ${r.left+safeRx} A ${safeRx} ${safeRx} 0 0 1 ${r.left} ${r.bottom-safeRx} V ${r.top+safeRx} A ${safeRx} ${safeRx} 0 0 1 ${r.left+safeRx} ${r.top} Z`:` M ${r.left} ${r.top} V ${r.bottom} H ${r.right} V ${r.top} Z`):'';
+    overlay.innerHTML=`<defs><marker id="guide-arrow-tip" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto" markerUnits="userSpaceOnUse"><path d="M 1 1 L 10 6 L 1 11" class="guide-arrow-tip"/></marker></defs><path class="guide-dim" fill-rule="evenodd" d="${outer+hole}"/>${r?`<rect class="guide-spotlight" x="${r.left}" y="${r.top}" width="${r.width}" height="${r.height}" rx="${safeRx||rx}"/>`:''}${layout.arrow?`<path class="guide-arrow-halo" d="${layout.arrow.d}"/><path class="guide-arrow" data-end-x="${layout.arrow.end.x}" data-end-y="${layout.arrow.end.y}" d="${layout.arrow.d}" marker-end="url(#guide-arrow-tip)"/>`:''}`;
     const hint=root.querySelector('.guide-reveal');if(hint)hint.hidden=Boolean(layout.arrow)||!highlight;
   }
   function schedulePosition(){if(active&&!frame)frame=requestAnimationFrame(positionTour);}
@@ -44,6 +49,10 @@ export function createGuideController({getContext,navigate,notify,escape,storage
     if(next===scope)return;
     clearHighlight();active=false;lastStep='';root.replaceChildren();scope=next;
     progress=memory.get(scope)||readGuideProgress(storage,scope).progress;
+    if(getContext().newAccount){
+      if(!progress.autoPageGuides){progress={...progress,welcomeSeen:true,autoPageGuides:true};save();}
+      consumeNewAccount();
+    }
   }
   function renderResume(){
     const slot=document.querySelector('.guide-resume-slot'),topic=findTopic(progress.topicId);if(!slot)return;
@@ -82,13 +91,24 @@ export function createGuideController({getContext,navigate,notify,escape,storage
     }
     const staffTopic=context.role==='cashier'?'staf-kasir':context.role==='kitchen'?'staf-dapur':null;
     const pageTopic=context.signedIn?(staffTopic||PAGE_TOPICS[context.route]):'akun';
-    if(context.route!=='panduan'&&!main.querySelector('.guide-context')){
-      const title=main.querySelector('.page-title')||main.querySelector('.auth-intro');
-      title?.insertAdjacentHTML('afterend',`<div class="guide-context"><button type="button" class="text-link" data-guide-topic="${e(pageTopic||'mulai')}">${icon('info')} Panduan halaman ini</button></div>`);
-    }
     main.querySelector('.guide-welcome')?.remove();
-    if(!progress.welcomeSeen&&!active&&context.route!=='panduan'){
-      const anchor=main.querySelector('.guide-context')||main.querySelector('h1');
+    const stepRoute=findTopic(progress.topicId)?.steps[progress.step]?.route;
+    if(active&&context.signedIn&&stepRoute&&stepRoute!==context.route){
+      active=false;progress={...progress,status:'paused'};save();renderTour();
+    }
+    if(active&&context.signedIn&&progress.autoPageGuides&&context.route!=='panduan'&&!progress.seenPages.includes(context.route)){
+      progress={...progress,seenPages:[...progress.seenPages,context.route]};save();
+    }
+    if(!active&&context.signedIn&&progress.autoPageGuides&&context.route&&context.route!=='panduan'){
+      if(!progress.seenPages.includes(context.route)){
+        progress={...progress,welcomeSeen:true,seenPages:[...progress.seenPages,context.route]};
+        save();
+        start(pageTopic);
+        return;
+      }
+    }
+    if(!context.signedIn&&!progress.welcomeSeen&&!active&&context.route!=='panduan'){
+      const anchor=main.querySelector('h1');
       anchor?.insertAdjacentHTML('afterend',`<section class="guide-welcome" aria-labelledby="guide-welcome-title"><h2 id="guide-welcome-title">Baru mencoba Gerai Kita?</h2><p>Ikuti panah untuk mengenal aplikasi dan fitur-fiturnya satu per satu. Kamu bisa melewati tur dan membukanya lagi kapan saja.</p><div class="actions"><button type="button" class="button" data-guide-topic="${context.signedIn?(staffTopic||'mulai'):'akun'}">Mulai panduan</button><button type="button" class="button secondary" data-guide-action="dismiss">Lewati</button></div></section>`);
     }
     renderResume();renderTour();
