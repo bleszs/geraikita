@@ -16,6 +16,8 @@ export function migrateKitchen(db){
   if(!columns.includes('item_index'))db.exec('ALTER TABLE kitchen_tasks ADD COLUMN item_index INTEGER');
   if(!columns.includes('usage_json'))db.exec('ALTER TABLE kitchen_tasks ADD COLUMN usage_json TEXT');
   if(!columns.includes('waste_json'))db.exec('ALTER TABLE kitchen_tasks ADD COLUMN waste_json TEXT');
+  const stationColumns=db.prepare('PRAGMA table_info(kitchen_stations)').all().map(c=>c.name);
+  if(!stationColumns.includes('aging_minutes'))db.exec('ALTER TABLE kitchen_stations ADD COLUMN aging_minutes INTEGER NOT NULL DEFAULT 15 CHECK(aging_minutes BETWEEN 1 AND 120)');
 }
 const closed=['completed','cancelled','discarded'];
 const scope=s=>[s.workspace_id,s.business_id];
@@ -45,7 +47,7 @@ export function createKitchen(store,{available,stockChanged}){
     const settings=all('SELECT menu_id AS menuId,minutes,station,passive_minutes AS passiveMinutes FROM kitchen_menus WHERE workspace_id=? AND business_id=?',...scope(s));
     const rows=all('SELECT * FROM kitchen_orders WHERE workspace_id=? AND business_id=? ORDER BY created_at DESC,rowid DESC',...scope(s));
     const tasks=all('SELECT * FROM kitchen_tasks WHERE workspace_id=? AND business_id=?',...scope(s));
-    const capacities=all('SELECT station,cooks,equipment,revision FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
+    const capacities=all('SELECT station,cooks,equipment,revision,aging_minutes AS agingMinutes FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
     const {stations,next,taskEtas,orderEtas}=planKitchen(rows,tasks,settings,capacities);
     const ingredients=store.ingredients(s),stock=new Map(ingredients.map(p=>[p.id,available(s,p.id)]));
     const menus=store.menus(s).map(m=>{
@@ -159,14 +161,16 @@ export function createKitchen(store,{available,stockChanged}){
     requireValue(Number.isInteger(b.cooks)&&b.cooks>=1&&b.cooks<=20,'Isi jumlah staf aktif 1–20 per stasiun.');
     requireValue(b.equipment===null||Number.isInteger(b.equipment)&&b.equipment>=1&&b.equipment<=50,'Isi kapasitas alat 1–50 atau kosongkan jika tidak dibatasi.');
     requireValue(Number.isInteger(b.revision)&&b.revision>=0,'Versi stasiun tidak valid.');
+    requireValue(b.agingMinutes===undefined||Number.isInteger(b.agingMinutes)&&b.agingMinutes>=1&&b.agingMinutes<=120,'Isi batas tunggu 1–120 menit, tanpa pecahan.');
     const station=b.station.trim().normalize('NFKC').toLowerCase();
     return atomic(()=>{
       requireValue(get('SELECT 1 FROM kitchen_menus WHERE workspace_id=? AND business_id=? AND station=?',...scope(s),station),'Stasiun belum dipakai menu mana pun. Atur menu di Produk & stok terlebih dahulu.',404);
-      const current=get('SELECT revision FROM kitchen_stations WHERE workspace_id=? AND business_id=? AND station=?',...scope(s),station)?.revision??0;
+      const previous=get('SELECT revision,aging_minutes FROM kitchen_stations WHERE workspace_id=? AND business_id=? AND station=?',...scope(s),station),current=previous?.revision??0;
+      const agingMinutes=b.agingMinutes??previous?.aging_minutes??15;
       requireValue(current===b.revision,'Kapasitas stasiun berubah di perangkat lain. Perbarui data dan periksa kembali.',409);
-      run('INSERT INTO kitchen_stations VALUES(?,?,?,?,?,?,?) ON CONFLICT(workspace_id,business_id,station) DO UPDATE SET cooks=excluded.cooks,equipment=excluded.equipment,revision=excluded.revision,updated_at=excluded.updated_at',...scope(s),station,b.cooks,b.equipment,current+1,new Date().toISOString());
-      log(...scope(s),`Kapasitas stasiun ${station}: ${b.cooks} staf aktif, alat tahap pasif ${b.equipment??'tidak dibatasi'}.`);
-      return {station,cooks:b.cooks,equipment:b.equipment,revision:current+1};
+      run('INSERT INTO kitchen_stations(workspace_id,business_id,station,cooks,equipment,revision,updated_at,aging_minutes) VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(workspace_id,business_id,station) DO UPDATE SET cooks=excluded.cooks,equipment=excluded.equipment,revision=excluded.revision,updated_at=excluded.updated_at,aging_minutes=excluded.aging_minutes',...scope(s),station,b.cooks,b.equipment,current+1,new Date().toISOString(),agingMinutes);
+      log(...scope(s),`Kapasitas stasiun ${station}: ${b.cooks} staf aktif, alat tahap pasif ${b.equipment??'tidak dibatasi'}, batas tunggu ${agingMinutes} menit.`);
+      return {station,cooks:b.cooks,equipment:b.equipment,agingMinutes,revision:current+1};
     });
   }
   function command(s,b){

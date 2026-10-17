@@ -31,7 +31,7 @@ export function forecast(series, stock, asOf, horizon = 2, unit = 'butir', train
   const history = [];
   for (let date = completed[0]?.date; date && date < asOf; date = addDays(date, 1)) history.push({ date, qty: values.get(date) || 0 });
   let modelStatus={status:trained?.status || 'not_trained',reason:trained?.reason || 'Belum ada model terlatih yang diaktifkan untuk bahan ini.'};
-  if(history.length<7)return {method:null,predicted:null,amount:null,low:null,high:null,horizon,confidence:'Belum cukup histori',metrics:backtest(history),observations:history.length,dataFrom:history[0]?.date || null,dataTo:history.at(-1)?.date || null,asOf,stock,incoming:0,safetyStock:0,historyQuality,trainedModel:{...modelStatus,status:trained?.artifact?'insufficient_history':modelStatus.status}};
+  if(history.length<7)return {method:null,predicted:null,amount:null,low:null,high:null,horizon,confidence:'Belum cukup histori',metrics:backtest(history),observations:history.length,dataFrom:history[0]?.date || null,dataTo:history.at(-1)?.date || null,asOf,stock,incoming:0,safetyStock:0,dailyUsage:null,daysRemaining:null,historyQuality,trainedModel:{...modelStatus,status:trained?.artifact?'insufficient_history':modelStatus.status}};
   const metrics = backtest(history);
   let method = 'moving_average_7';
   const evaluated = Object.entries(metrics).filter(([, value]) => value.mae !== null);
@@ -50,7 +50,9 @@ export function forecast(series, stock, asOf, horizon = 2, unit = 'butir', train
     }catch{modelStatus={status:'unavailable',reason:'Artefak model tidak valid; baseline tetap dipakai.'};}
   }
   const amount = round(predicted - stock);
-  return { method, predicted: round(predicted), amount, low: round(predicted - spread - stock), high: round(predicted + spread - stock), horizon,
+  // Days of stock left at the same daily rate the forecast implies; null when there is no recorded usage to divide by.
+  const perDay = predicted / horizon, dailyUsage = round(perDay), daysRemaining = perDay > 0 ? Math.floor(Math.max(0, stock) / perDay) : null;
+  return { method, predicted: round(predicted), amount, low: round(predicted - spread - stock), high: round(predicted + spread - stock), horizon, dailyUsage, daysRemaining,
     confidence: method==='ridge_two_day'?'model terlatih · evaluasi internal':history.length < 14 ? 'rendah · histori terbatas' : 'berdasarkan histori pencatatan', metrics,trainedModel:modelStatus,historyQuality,
     observations: history.length, dataFrom: history[0]?.date || null, dataTo: history.at(-1)?.date || null,
     asOf, stock, incoming: 0, safetyStock: 0, spreadMethod: method==='ridge_two_day'?'MAE validasi target dua hari; rentang heuristik, bukan interval terkalibrasi':'MAE backtesting × horizon; rentang heuristik, bukan interval terkalibrasi', dataset: 'pencatatan-usaha' };

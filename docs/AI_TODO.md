@@ -1,3 +1,24 @@
+# Lanjutan v0.45 — pemulihan akun pemilik dengan kode pemulihan
+
+- [x] Pemilik membuat kode pemulihan sekali pakai (10 kode, hanya tersimpan sebagai hash SHA-256) dari Pengaturan → "Kode pemulihan akun"; ditampilkan sekali untuk disalin/disimpan, dengan Salin semua kode dan Sembunyikan kode. Membuat ulang mengganti seluruh batch lama.
+- [x] Lupa kata sandi: dari halaman masuk "Lupa kata sandi?" → email + satu kode + kata sandi baru. Kode dikonsumsi, kata sandi diganti, seluruh sesi lama akun dikeluarkan, lalu langsung masuk. Tanpa ketergantungan email eksternal (konsisten dengan desain kode masuk staf).
+- [x] Email/kode salah memberi satu pesan generik "Email atau kode pemulihan tidak sesuai" (anti-enumerasi); rate-limit per alamat+email; percobaan gagal tidak mengonsumsi kode. Akun kode-only (staf) tidak memiliki kode pemulihan; `details.recoveryCodes` null untuknya.
+- [x] Migrasi aditif tabel `account_recovery_codes` (hash unik, FK cascade); schema 30 → 31 tabel, backup/restore membandingkan 31 tabel, snapshot migrasi lama tetap identik.
+- [x] Panduan pengaturan v8 diperbarui (langkah kata sandi mencakup kode pemulihan + "Lupa kata sandi?"); cache shell `v44-aging-stock-recovery`.
+- [x] Regresi penuh **282 Node + 57 browser = 339 lulus**, exit 0. Ditambah tiga tes backend pemulihan dan satu tes browser alur lupa-sandi (buat kode, reset, kode bekas ditolak, sandi lama gagal).
+- [ ] Verifikasi email dan pemulihan untuk akun staf berpassword belum tersedia (pemilik memulihkan/menerbitkan ulang untuk staf). Pilot usaha nyata tetap terbuka.
+
+# Lanjutan v0.44 — batas tunggu dapur yang dapat diatur
+
+- [x] Pemilik mengatur batas tunggu (aging) per stasiun 1–120 menit, bawaan 15; bilangan bulat, divalidasi server dan dijaga revisi. Sebelum batas, tugas tercepat didahulukan; setelah batas, pesanan menunggu terlama didahulukan. Tugas yang sedang dikerjakan tidak pernah diinterupsi.
+- [x] Satu perencana dipakai owner/staf/pelanggan untuk giliran dan ETA; layar layanan memakai batas per stasiun yang sama.
+- [x] Migrasi aditif `kitchen_stations.aging_minutes` (DEFAULT 15, CHECK 1–120); seluruh nilai stasiun lama dipertahankan, klien lama tanpa field tetap menyimpan kapasitas memakai batas sebelumnya.
+- [x] UI kapasitas menambah isian batas tunggu beserta bantuan; konflik revisi mempertahankan isian tiap stasiun dan menyediakan "Muat pengaturan terbaru" dengan fokus. Panduan dapur diperbarui, cache shell `v44-kitchen-aging`.
+- [x] Perkiraan hari stok tersisa per bahan di panel Saran kulakan: stok tersedia dibagi pemakaian harian dari estimasi yang sama (baseline/model terlatih), ditampilkan hanya saat histori cukup (≥7 hari) dan ada pemakaian tercatat; bahan ≤2 hari ditandai. Panduan kulakan diperbarui.
+- [x] Regresi penuh **279 Node + 56 browser = 335 lulus**, exit 0. Ditambah dua tes kapasitas, tiga tes penjadwalan dan satu tes browser batas tunggu; satu tes backend dan satu tes browser hari stok tersisa.
+- [ ] Review UI berpanduan Impeccable (capture `.impeccable/review`) belum dijalankan; perubahan ini perluasan biasa form kapasitas dan tabel saran tanpa mengubah canon desain (cream/terracotta/Nunito/dark).
+- [ ] Alur suara/penjualan langsung kasir, fuzzy matching dan pilot usaha nyata tetap terbuka.
+
 # Lanjutan v0.43 - Railway dan AI cloud
 
 - [x] Sambungkan akun Railway yang diminta; buat proyek, domain HTTPS dan volume SQLite `/data`, satu replika di Singapura.

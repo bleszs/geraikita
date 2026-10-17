@@ -29,7 +29,7 @@ test('download verification restores actual WAL-backed account data through stor
     const snapshot=backupDatabase(source,path.join(directory,'export'));
     const output=saveVerifiedBackup(envelope(readFileSync(snapshot.filename)),path.join(directory,'download'));
     assert.equal(output.integrity,'ok');assert.equal(output.foreignKeys,'ok');
-    assert.deepEqual(output.restore,{applicationStoreOpened:true,tablesCompared:30,allRowsEqual:true});
+    assert.deepEqual(output.restore,{applicationStoreOpened:true,tablesCompared:31,allRowsEqual:true});
     assert.equal(output.productionRestorePerformed,false);
     const restored=new DatabaseSync(output.filename,{readOnly:true});
     try{assert.equal(restored.prepare('SELECT COUNT(*) n FROM accounts').get().n,1);assert.equal(restored.prepare('SELECT name FROM businesses').get().name,'Usaha uji restore');}finally{restored.close();}

@@ -109,6 +109,15 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
           response.setHeader('Set-Cookie',deployment.sessionCookie(session.id));
           return json(await stateOf(session));
         }
+        if(pathname==='/api/auth/recover'&&mutating){
+          requireValue(!session,'Keluar dari akun aktif sebelum memulihkan kata sandi.',409);
+          const key='recover:'+deployment.clientAddress(request)+':'+String(body.email||'').toLowerCase(),failed=failures.get(key),current=failed&&failed.until>Date.now()?failed:{count:0,until:Date.now()+600000};
+          requireValue(current.count<8,'Terlalu banyak percobaan pemulihan. Coba lagi dalam 10 menit.',429);
+          let result;try{result=identity.recover(body);failures.delete(key);}catch(error){if(error.status===401||error.status===400)failures.set(key,{...current,count:current.count+1});throw error;}
+          session=result.session;
+          response.setHeader('Set-Cookie',deployment.sessionCookie(session.id));
+          return json(await stateOf(session));
+        }
         requireValue(session, 'Masuk ke akun untuk membuka catatan usaha.', 401);
         if (mutating) requireValue(body.csrf === session.csrf, 'Sesi berubah. Muat ulang halaman.', 403);
         authorize(session,pathname,request.method,body);
@@ -157,6 +166,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
           requireValue(!failed || failed.until<Date.now() || failed.count<8,'Terlalu banyak percobaan. Coba lagi dalam 10 menit.',429);
           try{const result=identity.changePassword(session,body);failures.delete(key);return json(result);}catch(error){if(error.code==='incorrect_password'){const old=failed && failed.until>Date.now()?failed:{count:0,until:Date.now()+600000};failures.set(key,{...old,count:old.count+1});}throw error;}
         }
+        if(pathname==='/api/account/recovery-codes' && mutating)return json(identity.generateRecoveryCodes(session,body),201);
 
         if (pathname === '/api/extractions' && mutating) {
           const catalogRevision = store.get('SELECT catalog_revision FROM business_state WHERE workspace_id=? AND business_id=?', session.workspace_id, session.business_id).catalog_revision;

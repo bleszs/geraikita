@@ -64,3 +64,37 @@ test('station capacity opens parallel turns, limits passive equipment and record
  await expect(page.locator('.kitchen-task.is-voided')).toContainText('Terbuang: 20 gram Tepung uji dapur');
  const data=await page.evaluate(()=>fetch('/api/bootstrap').then(r=>r.json()));expect(data.stock[state.product]).toBe(980);expect(data.availableStock[state.product]).toBe(955);expect(data.kitchen.orders[0].total).toBe(7000);expect(errors).toEqual([]);
 });
+
+test('station waiting limit persists and a conflicting second station preserves only its own edits',async({page})=>{
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));const data=await setup(page);
+ const first=page.locator('[data-form="kitchen-station"]').filter({has:page.locator('input[name="station"][value="pemanggang"]')});
+ await expect(first.getByLabel('Batas tunggu pemanggang (menit)',{exact:true})).toHaveValue('15');
+ await first.getByLabel('Batas tunggu pemanggang (menit)',{exact:true}).fill('5');
+ await first.getByRole('button',{name:'Simpan kapasitas pemanggang',exact:true}).click();
+ await expect.poll(async()=>{const s=await (await page.request.get('/api/bootstrap')).json();return s.kitchen.stations[0].agingMinutes;}).toBe(5);
+ await page.reload();await expect(first.getByLabel('Batas tunggu pemanggang (menit)',{exact:true})).toHaveValue('5');
+ const station='minuman hangat untuk pesanan pelanggan';let s=await (await page.request.get('/api/bootstrap')).json();
+ const create=await page.request.post('/api/menus',{data:{csrf:s.csrf,name:'Minuman uji kedua',price:3000,aliases:[],recipe:{[data.product]:10},catalogRevision:s.catalogRevision,preparation:{minutes:2,passiveMinutes:0,station}}});expect(create.status()).toBe(201);
+ await page.reload();
+ const second=page.locator('[data-form="kitchen-station"]').filter({has:page.locator('input[name="station"][value="'+station+'"]')});
+ const label='Batas tunggu '+station+' (menit)';await second.getByLabel(label,{exact:true}).fill('8');
+ const outside=await page.request.post('/api/kitchen/stations',{data:{csrf:s.csrf,station,cooks:1,equipment:null,agingMinutes:30,revision:0}});expect(outside.status()).toBe(200);
+ await second.getByRole('button',{name:'Simpan kapasitas '+station,exact:true}).click();
+ await expect(second.locator('.form-error')).toContainText('berubah di perangkat lain');
+ await expect(second.getByLabel(label,{exact:true})).toHaveValue('8');await expect(first.getByLabel('Batas tunggu pemanggang (menit)',{exact:true})).toHaveValue('5');
+ await expect(first.locator('.form-error')).toBeEmpty();
+ const capture=async(name,width,dark=false)=>{
+  if(!process.env.CAPTURE_REVIEW)return;await mkdir('.impeccable/review',{recursive:true});await page.setViewportSize({width,height:1000});
+  if(dark)await page.getByRole('button',{name:'Ubah tema',exact:true}).click();
+  await page.evaluate(async()=>{document.activeElement?.blur();scrollTo(0,0);await document.fonts.ready;});await page.mouse.move(width-1,1);
+  await page.screenshot({path:'.impeccable/review/'+name+'.png',fullPage:true,animations:'disabled'});
+  const box=await page.locator('.kitchen-capacity').boundingBox();await page.screenshot({path:'.impeccable/review/'+name+'-panel.png',clip:box,animations:'disabled'});
+ };
+ await capture('aging-conflict-desktop',1440);await capture('aging-conflict-mobile-dark',320,true);
+ await second.getByRole('button',{name:'Muat pengaturan terbaru '+station,exact:true}).click();
+ await expect(second.getByLabel(label,{exact:true})).toHaveValue('30');await expect(second.getByLabel(label,{exact:true})).toBeFocused();
+ await expect(second.locator('.form-error')).toBeEmpty();expect(errors).toEqual([]);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await capture('aging-saved-mobile-dark',320);await page.getByRole('button',{name:'Ubah tema',exact:true}).click();await capture('aging-saved-desktop',1440);
+ s=await (await page.request.get('/api/bootstrap')).json();expect(s.transactions).toEqual([]);expect(s.stock[data.product]).toBe(1000);
+});

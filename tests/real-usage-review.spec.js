@@ -65,6 +65,21 @@ test('actual isolated ledger renders two review dates and eight earlier referenc
   expect(app.store.get('SELECT COUNT(*) AS n,SUM(quantity) AS total FROM daily_usage WHERE workspace_id=? AND business_id=? AND product_id=?',owner.workspaceId,owner.business.id,id)).toEqual(before);
 });
 
+test('stock-days column shows the estimated days left and daily rate for an ingredient with recorded usage',async({page})=>{
+  const {id,owner}=await setup(page,{history:true});
+  const receipt=await page.request.post(base+'/api/stock-receipts',{data:{productId:id,qty:40,unitPrice:1000,supplier:'',idempotencyKey:crypto.randomUUID(),csrf:owner.csrf}});
+  expect(receipt.status()).toBe(201);
+  await page.reload();
+  const r=(await (await page.request.get(base+'/api/bootstrap')).json()).recommendations.find(x=>x.productId===id);
+  expect(Number.isInteger(r.daysRemaining)).toBe(true);expect(r.dailyUsage).toBeGreaterThan(0);
+  await expect(page.locator('#main table .stock-days')).toContainText(r.daysRemaining+' hari');
+  await expect(page.locator('#main table').first()).toContainText('kg/hari');
+  if(r.daysRemaining<=2)await expect(page.locator('#main table .stock-days')).toHaveClass(/is-low/);
+  await page.setViewportSize({width:1440,height:1050});await capture(page,'stock-days-desktop');
+  await page.setViewportSize({width:320,height:950});await capture(page,'stock-days-mobile');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
 test('gaps remain unavailable and offline results are explicitly marked as stored',async({page,context})=>{
   await setup(page,{history:true,gap:true});
   await panel(page).locator('.usage-review-detail>summary').click();

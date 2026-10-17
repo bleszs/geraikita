@@ -62,7 +62,7 @@ export function createDisplayAccess(store){
   function snapshot(s){
     const rows=all("SELECT id,status,created_at FROM kitchen_orders WHERE workspace_id=? AND business_id=? AND status IN ('queued','preparing','ready') ORDER BY created_at,id",...scope(s));
     const tasks=all('SELECT id,order_id,status,minutes,qty,passive_minutes,phase_started_at,station FROM kitchen_tasks WHERE workspace_id=? AND business_id=?',...scope(s));
-    const capacities=all('SELECT station,cooks,equipment,revision FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
+    const capacities=all('SELECT station,cooks,equipment,revision,aging_minutes AS agingMinutes FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
     const {orderEtas}=planKitchen(rows,tasks,[],capacities);
     return {orders:rows.slice(0,200).map(r=>({code:r.id.slice(0,8).toUpperCase(),status:r.status,etaMinutes:orderEtas.get(r.id)??null})),hasMore:rows.length>200,updatedAt:new Date().toISOString()};
   }

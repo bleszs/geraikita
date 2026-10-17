@@ -253,6 +253,17 @@ test('forecast excludes partial and future data, fills zero days, and zero-deman
   assert.equal(forecast(series, 8, '2026-10-01').observations, 30);
   const zero = backtest(series.map(p => ({ ...p, qty: 0 }))); assert.equal(zero.naive.wape, null); assert.equal(zero.naive.mae, 0);
 });
+test('days-of-stock indicator divides available stock by the forecast daily rate and needs both history and usage', () => {
+  const steady = Array.from({ length: 28 }, (_, i) => ({ date: addDays('2026-09-01', i), qty: 10 }));
+  const plenty = forecast(steady, 25, '2026-09-29');
+  assert.equal(plenty.dailyUsage, 10); assert.equal(plenty.daysRemaining, 2);
+  assert.equal(forecast(steady, 8, '2026-09-29').daysRemaining, 0);
+  assert.equal(forecast(steady, 0, '2026-09-29').daysRemaining, 0);
+  const idle = forecast(steady.map(p => ({ ...p, qty: 0 })), 50, '2026-09-29');
+  assert.equal(idle.dailyUsage, 0); assert.equal(idle.daysRemaining, null);
+  const sparse = forecast([26, 27, 28].map(d => ({ date: '2026-09-' + d, qty: 10 })), 50, '2026-09-29');
+  assert.equal(sparse.observations, 3); assert.equal(sparse.dailyUsage, null); assert.equal(sparse.daysRemaining, null);
+});
 test('parser supports aliases and spelled quantities, refuses negation, fractions, duplicates and unknown products', () => {
   assert.deepEqual(parseOrder('dua nasgor, es teh 3', menu).map(i => [i.id, i.qty]), [['nasi', 2], ['teh', 3]]);
   assert.deepEqual(parseOrder('ayam geprek 1\nes teh 2', menu).map(i => [i.id, i.qty]), [['ayam', 1], ['teh', 2]]);

@@ -1,4 +1,6 @@
 const closed=new Set(['completed','cancelled','discarded']);
+export const DEFAULT_AGING_MINUTES=15;
+const agingMinutes=c=>Number.isInteger(c?.agingMinutes)&&c.agingMinutes>=1&&c.agingMinutes<=120?c.agingMinutes:DEFAULT_AGING_MINUTES;
 const elapsed=(t,now)=>t.phase_started_at?Math.max(0,(now-Date.parse(t.phase_started_at))/60000):0;
 const slots=(times,count)=>{const result=[...times].sort((a,b)=>a-b);while(result.length<count)result.unshift(0);return result.slice(-count);};
 
@@ -34,13 +36,14 @@ export function estimateWaits(stations,active,passive,queued,now){
 export function planKitchen(rows,tasks,settings,capacities,now=Date.now()){
   const byId=new Map(rows.map(o=>[o.id,o]));
   const open=tasks.filter(t=>t.status!=='voided'&&byId.has(t.order_id)&&!closed.has(byId.get(t.order_id).status));
+  const agingByStation=new Map(capacities.map(c=>[c.station,agingMinutes(c)]));
   const waiting=open.filter(t=>t.status==='queued').sort((a,b)=>{
-    const age=t=>now-Date.parse(byId.get(t.order_id).created_at),lateA=age(a)>=900000,lateB=age(b)>=900000;
+    const age=t=>now-Date.parse(byId.get(t.order_id).created_at),late=t=>age(t)>=(agingByStation.get(t.station)??DEFAULT_AGING_MINUTES)*60000,lateA=late(a),lateB=late(b);
     return Number(lateB)-Number(lateA)||(lateA&&lateB?age(b)-age(a):a.minutes*a.qty-b.minutes*b.qty)||a.id.localeCompare(b.id);
   });
   const stations=[...new Set([...settings.map(s=>s.station),...open.map(t=>t.station)])].sort().map(station=>{
     const c=capacities.find(c=>c.station===station);
-    return {station,cooks:c?.cooks??1,equipment:c?.equipment??null,revision:c?.revision??0,active:open.filter(t=>t.station===station&&t.status==='active').length,passive:open.filter(t=>t.station===station&&t.status==='passive').length};
+    return {station,cooks:c?.cooks??1,equipment:c?.equipment??null,agingMinutes:agingMinutes(c),revision:c?.revision??0,active:open.filter(t=>t.station===station&&t.status==='active').length,passive:open.filter(t=>t.station===station&&t.status==='passive').length};
   });
   const next=stations.filter(c=>open.some(t=>t.station===c.station)).map(c=>{const taskIds=waiting.filter(t=>t.station===c.station).slice(0,Math.max(0,c.cooks-c.active)).map(t=>t.id);return {station:c.station,taskId:taskIds[0]||null,taskIds};});
   const taskEtas=estimateWaits(stations,open.filter(t=>t.status==='active'),open.filter(t=>t.status==='passive'),waiting,now);

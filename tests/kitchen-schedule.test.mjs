@@ -35,3 +35,28 @@ test('aging priority is shared with estimates and honors explicit multiple cook 
  const plan=planKitchen(rows,tasks,[],[station(2)],now);
  assert.deepEqual(plan.next[0].taskIds,['old','short']);assert.equal(plan.orderEtas.get('last'),5);
 });
+
+test('a configurable waiting limit changes the next task and its ETA exactly at the boundary',()=>{
+ const rows=[{id:'old',status:'queued',created_at:new Date(now-5*60000).toISOString()},{id:'short',status:'queued',created_at:new Date(now).toISOString()}],tasks=[task('old',10,0),task('short',2,0)];
+ const early=planKitchen(rows,tasks,[],[{...station(),agingMinutes:5}],now-1);
+ assert.equal(early.next[0].taskId,'short');assert.equal(early.orderEtas.get('old'),12);
+ const at=planKitchen(rows,tasks,[],[{...station(),agingMinutes:5}],now);
+ assert.equal(at.next[0].taskId,'old');assert.equal(at.orderEtas.get('old'),10);assert.equal(at.orderEtas.get('short'),12);
+ const delayed=planKitchen(rows,tasks,[],[{...station(),agingMinutes:30}],now);
+ assert.equal(delayed.next[0].taskId,'short');
+});
+
+test('each station uses its own waiting limit and overdue tasks remain oldest-first',()=>{
+ const rows=[['old',8],['older',10],['short',0],['drink-old',8],['drink-short',0]].map(([id,age])=>({id,status:'queued',created_at:new Date(now-age*60000).toISOString()}));
+ const tasks=[task('old',10,0),task('older',12,0),task('short',1,0),task('drink-old',8,0,{station:'minuman'}),task('drink-short',1,0,{station:'minuman'})];
+ const p=planKitchen(rows,tasks,[],[{...station(),agingMinutes:5},{station:'minuman',cooks:1,equipment:null,agingMinutes:30}],now);
+ assert.equal(p.next.find(s=>s.station==='dapur').taskId,'older');assert.equal(p.next.find(s=>s.station==='minuman').taskId,'drink-short');
+ assert.equal(p.orderEtas.get('old'),22);assert.equal(p.orderEtas.get('short'),23);
+});
+
+test('changing the waiting limit never interrupts active tasks or exceeds cook capacity',()=>{
+ const rows=['running','old','short'].map((id,i)=>({id,status:i?'queued':'preparing',created_at:new Date(now-10*60000).toISOString()}));
+ const tasks=[task('running',6,0,{status:'active',phase_started_at:new Date(now).toISOString()}),task('old',10,0),task('short',1,0)];
+ const p=planKitchen(rows,tasks,[],[{...station(),agingMinutes:1}],now);
+ assert.deepEqual(p.next[0].taskIds,[]);assert.equal(p.taskEtas.get('running'),6);assert.equal(p.orderEtas.get('old'),16);
+});

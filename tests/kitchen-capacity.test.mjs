@@ -8,12 +8,39 @@ import {createStore} from './fixtures/store.mjs';
 import {createStore as emptyStore} from '../server/store.mjs';
 import {createService} from '../server/service.mjs';
 import {createApp} from '../server/http.mjs';
+import {migrateKitchen} from '../server/kitchen.mjs';
 const fresh=(t,file=':memory:')=>{const store=createStore(file);t.after(()=>{try{store.close();}catch{}});const s=store.session(),svc=createService(store);return {store,s,svc};};
 function configure(svc,s,id,minutes,station,passiveMinutes){const state=svc.bootstrap(s),m=state.menu.find(m=>m.id===id);svc.saveMenu(s,id,{...m,catalogRevision:state.catalogRevision,preparation:{minutes,station,passiveMinutes}});}
 function enter(svc,s,label,items){return svc.kitchen.create(s,{label,channel:'dine_in',items,catalogRevision:svc.bootstrap(s).catalogRevision,idempotencyKey:randomUUID()});}
 const find=(svc,s,id)=>svc.kitchen.snapshot(s).orders.find(o=>o.id===id);
 function step(svc,s,id,action,taskId,extra={}){return svc.kitchen.change(s,id,{action,taskId,revision:find(svc,s,id).revision,idempotencyKey:randomUUID(),...extra});}
 const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} != ${b}`);
+
+test('station waiting limits are validated, scoped, revision guarded and preserved for older clients',t=>{
+ const {s,svc,store}=fresh(t);configure(svc,s,'nasi',5,'dapur',2);
+ assert.equal(svc.kitchen.snapshot(s).stations[0].agingMinutes,15);
+ for(const agingMinutes of [0,121,1.5,'5',null])assert.throws(()=>svc.kitchen.saveStation(s,{station:'dapur',cooks:1,equipment:null,revision:0,agingMinutes}),/batas tunggu/);
+ const saved=svc.kitchen.saveStation(s,{station:'dapur',cooks:1,equipment:null,revision:0,agingMinutes:5});assert.equal(saved.agingMinutes,5);
+ const previous=svc.kitchen.snapshot(s).revision;
+ assert.throws(()=>svc.kitchen.saveStation(s,{station:'dapur',cooks:1,equipment:null,revision:0,agingMinutes:30}),/berubah/);
+ assert.equal(svc.kitchen.snapshot(s).revision,previous);
+ const older=svc.kitchen.saveStation(s,{station:'dapur',cooks:2,equipment:null,revision:1});assert.equal(older.agingMinutes,5);
+ const changed=svc.kitchen.saveStation(s,{station:'dapur',cooks:2,equipment:null,revision:2,agingMinutes:30});assert.equal(changed.agingMinutes,30);
+ assert.notEqual(svc.kitchen.snapshot(s).revision,previous);
+ const other=store.session('budi',s.workspace_id);assert.equal(svc.kitchen.snapshot(other).stations.find(c=>c.station==='dapur'),undefined);
+ assert.throws(()=>svc.kitchen.saveStation(other,{station:'dapur',cooks:1,equipment:null,revision:0,agingMinutes:1}),/belum dipakai/);
+});
+
+test('legacy station migration adds default waiting minutes while preserving every existing station value',t=>{
+ const {store,s,svc}=fresh(t);configure(svc,s,'nasi',5,'dapur',2);
+ svc.kitchen.saveStation(s,{station:'dapur',cooks:2,equipment:1,revision:0});
+ store.db.exec('ALTER TABLE kitchen_stations DROP COLUMN aging_minutes');
+ const before=store.all('SELECT * FROM kitchen_stations');
+ const legacyColumns=Object.keys(before[0]);
+ migrateKitchen(store.db);
+ assert.deepEqual(store.all('SELECT '+legacyColumns.join(',')+' FROM kitchen_stations'),before);
+ assert.equal(store.get('SELECT aging_minutes FROM kitchen_stations').aging_minutes,15);
+});
 
 test('station capacity opens one priority slot per cook and limits passive equipment',t=>{
  const {s,svc}=fresh(t);configure(svc,s,'nasi',5,'dapur',2);

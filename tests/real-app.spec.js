@@ -28,6 +28,54 @@ test('login and registration can switch and remember light or dark mode',async({
   await page.reload();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
 });
 
+test('owner creates recovery codes and resets a forgotten password with one unused code',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await register(page);
+  const email=(await state(page)).account.email;
+  await page.goto('/#pengaturan');
+  const section=page.locator('#recovery-section');
+  await expect(section).toContainText('Sisa kode belum terpakai: 0');
+  await section.getByRole('checkbox').check();
+  await section.getByRole('button',{name:'Buat kode pemulihan',exact:true}).click();
+  const codes=section.locator('.recovery-code-list code');
+  await expect(codes).toHaveCount(10);
+  const code=(await codes.first().innerText()).trim();
+  await capture(page,'recovery-codes-desktop');
+  expect((await state(page)).account.recoveryCodes).toBe(10);
+  await section.getByRole('button',{name:'Sembunyikan kode',exact:true}).click();
+  await expect(section.locator('.recovery-code-list')).toHaveCount(0);
+  await expect(section).toContainText('Sisa kode belum terpakai: 10');
+  await page.getByRole('button',{name:'Keluar akun',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Kembali ke catatan usahamu.'})).toBeVisible();
+  await page.getByRole('button',{name:'Lupa kata sandi?',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Pulihkan akses akunmu.'})).toBeVisible();
+  await page.getByLabel('Email akun',{exact:true}).fill(email);
+  await page.getByLabel('Kode pemulihan',{exact:true}).fill(code);
+  await page.getByLabel('Kata sandi baru',{exact:true}).fill('Fresh-recovered-pass-2026');
+  await page.getByLabel('Ulangi kata sandi baru',{exact:true}).fill('Fresh-recovered-pass-2026');
+  await capture(page,'recovery-reset-desktop');
+  await page.getByRole('button',{name:'Pulihkan & masuk',exact:true}).click();
+  await page.goto('/#ringkasan');await expect(page.getByRole('heading',{name:'Catatan nyata, keputusan lebih jelas.'})).toBeVisible();
+  expect((await state(page)).account.recoveryCodes).toBe(9);
+  await page.getByRole('button',{name:'Keluar akun',exact:true}).click();
+  await page.getByRole('button',{name:'Lupa kata sandi?',exact:true}).click();
+  await page.getByLabel('Email akun',{exact:true}).fill(email);
+  await page.getByLabel('Kode pemulihan',{exact:true}).fill(code);
+  await page.getByLabel('Kata sandi baru',{exact:true}).fill('Another-attempt-pass-2026');
+  await page.getByLabel('Ulangi kata sandi baru',{exact:true}).fill('Another-attempt-pass-2026');
+  await page.getByRole('button',{name:'Pulihkan & masuk',exact:true}).click();
+  await expect(page.locator('#auth-form .form-error')).toContainText('tidak sesuai');
+  await page.getByRole('button',{name:'Kembali ke halaman masuk',exact:true}).click();
+  await page.getByLabel('Email',{exact:true}).fill(email);
+  await page.getByLabel('Kata sandi',{exact:true}).fill(password);
+  await page.getByRole('button',{name:'Masuk',exact:true}).click();
+  await expect(page.locator('#auth-form .form-error')).toContainText('tidak sesuai');
+  await page.getByLabel('Kata sandi',{exact:true}).fill('Fresh-recovered-pass-2026');
+  await page.getByRole('button',{name:'Masuk',exact:true}).click();
+  await page.goto('/#ringkasan');await expect(page.getByRole('heading',{name:'Catatan nyata, keputusan lebih jelas.'})).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
 test('restock distinguishes an untrained model from an unavailable estimate without inventing metrics',async({page})=>{
   await register(page);await addIngredient(page);await page.goto('/#restock');await expect(page.locator('#main table')).toContainText('Model terlatih belum aktif');await expect(page.locator('#main table')).toContainText('Belum cukup histori');await expect(page.locator('#main table')).toContainText('Estimasi belum tersedia');expect((await state(page)).recommendations[0].trainedModel.status).toBe('not_trained');
   await page.setViewportSize({width:1440,height:1000});await capture(page,'forecast-status-desktop');await page.setViewportSize({width:320,height:900});await capture(page,'forecast-status-mobile');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
