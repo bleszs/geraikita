@@ -1,3 +1,6 @@
+# Pembaruan v0.37
+
+Kapasitas staf/alat per stasiun dan pencatatan bahan terbuang sebagian kini tersedia. Batas "satu tugas aktif per stasiun" dan "belum ada waste sebagian" pada bagian v0.34 di bawah sudah tidak berlaku. [Cara memakai dan batas](KITCHEN_CAPACITY.md).
 # Pembaruan integrasi v0.36
 
 Akun kasir/dapur dan token layar pelanggan minimum kini tersedia. [Pembagian tugas, cara masuk dan batas](STAFF_ROLES.md), [layar pelanggan](CUSTOMER_DISPLAY.md). Kasir memasukkan/menyerahkan pesanan; dapur mengoperasikan tahap, dengan pembatasan di server. Layar layanan lama tetap untuk sesi pemilik; gunakan akun staf atau token pelanggan sesuai kebutuhan. Bagian v0.34 berikut merupakan riwayat implementasi awal.

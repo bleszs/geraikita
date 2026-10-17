@@ -1,3 +1,12 @@
+# Lanjutan v0.37 — kapasitas dan bahan terbuang sebagian
+
+- [x] Kapasitas per stasiun: staf aktif 1–20 membuka beberapa giliran SJF+aging sekaligus; alat tahap pasif 1–50 atau tidak dibatasi. Revisi mencegah penimpaan dari perangkat lain; bawaan sama dengan v0.36.
+- [x] Pembatalan per item: item belum dikerjakan melepas cadangan item saja; item yang sudah dimulai mencatat `kitchen_waste` sesuai jumlah per bahan, sisa cadangan kembali tersedia. Total dan penjualan akhir tidak memuat item yang dibatalkan.
+- [x] Penutupan seluruh pesanan menerima jumlah per bahan (bawaan seluruh cadangan).
+- [x] Izin: pemilik mengatur kapasitas dan jumlah sebagian; akun dapur membatalkan item dengan seluruh resep; kasir tidak membatalkan item. Server menolak jumlah per bahan dari staf.
+- [x] Migrasi aditif (`kitchen_stations`, `item_index`/`usage_json`/`waste_json`); pesanan lama multi-item menolak pembatalan per item dengan pesan jelas.
+- [x] Panduan dapur diperbarui (88 langkah). Regresi: 233 Node + 45 browser. [Panduan](KITCHEN_CAPACITY.md).
+- [ ] Alat bersama lintas stasiun, shift staf, perkiraan waktu tunggu dari kapasitas.
 # Lanjutan v0.36 — akun staf
 
 - [x] Regresi akhir selesai normal: 227 Node + 44 browser = **271 lulus**, exit 0 pada browser Chromium terpisah. [Bukti rilis](evaluation/staff-release.json). Percobaan gagal/cleanup lama tetap dicatat, bukan dihitung sebagai run sukses.

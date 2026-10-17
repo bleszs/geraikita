@@ -7,12 +7,34 @@ export function migrateKitchen(db){
     CREATE TABLE IF NOT EXISTS kitchen_orders(id TEXT PRIMARY KEY,workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,idem TEXT NOT NULL,fingerprint TEXT NOT NULL,label TEXT NOT NULL,channel TEXT NOT NULL,status TEXT NOT NULL,revision INTEGER NOT NULL,items TEXT NOT NULL,usage_json TEXT NOT NULL,total INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,sale_id TEXT,UNIQUE(workspace_id,business_id,idem));
     CREATE TABLE IF NOT EXISTS kitchen_tasks(id TEXT PRIMARY KEY,workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,order_id TEXT NOT NULL,menu_id TEXT NOT NULL,name TEXT NOT NULL,qty INTEGER NOT NULL,note TEXT NOT NULL,station TEXT NOT NULL,minutes INTEGER NOT NULL,passive_minutes INTEGER NOT NULL,status TEXT NOT NULL,phase_started_at TEXT,FOREIGN KEY(order_id) REFERENCES kitchen_orders(id));
     CREATE TABLE IF NOT EXISTS kitchen_actions(workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,idem TEXT NOT NULL,fingerprint TEXT NOT NULL,result TEXT NOT NULL,PRIMARY KEY(workspace_id,business_id,idem));
-    CREATE INDEX IF NOT EXISTS kitchen_scope ON kitchen_orders(workspace_id,business_id,status);`);
+    CREATE INDEX IF NOT EXISTS kitchen_scope ON kitchen_orders(workspace_id,business_id,status);
+    CREATE TABLE IF NOT EXISTS kitchen_stations(workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,station TEXT NOT NULL,cooks INTEGER NOT NULL,equipment INTEGER,revision INTEGER NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(workspace_id,business_id,station));`);
+  // Additive columns: legacy tasks keep NULL and fall back to whole-order usage.
+  const columns=db.prepare('PRAGMA table_info(kitchen_tasks)').all().map(c=>c.name);
+  if(!columns.includes('item_index'))db.exec('ALTER TABLE kitchen_tasks ADD COLUMN item_index INTEGER');
+  if(!columns.includes('usage_json'))db.exec('ALTER TABLE kitchen_tasks ADD COLUMN usage_json TEXT');
+  if(!columns.includes('waste_json'))db.exec('ALTER TABLE kitchen_tasks ADD COLUMN waste_json TEXT');
 }
+const closed=['completed','cancelled','discarded'];
 const scope=s=>[s.workspace_id,s.business_id];
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex');
 export function kitchenReserved(store,s,product){
   return store.all("SELECT usage_json FROM kitchen_orders WHERE workspace_id=? AND business_id=? AND status NOT IN ('completed','cancelled','discarded')",...scope(s)).reduce((sum,r)=>sum+(JSON.parse(r.usage_json)[product]||0),0);
+}
+// Per-item reservation in integer units; legacy single-item orders use the order total.
+function taskUsage(o,t){
+  if(t.usage_json)return JSON.parse(t.usage_json);
+  return JSON.parse(o.items).length===1?JSON.parse(o.usage_json):null;
+}
+// Validates an owner-entered waste map against reserved units; omitted products count as fully used.
+function wasteOf(reserved,given){
+  if(given===undefined||given===null)return {...reserved};
+  requireValue(typeof given==='object'&&!Array.isArray(given)&&Object.keys(given).every(p=>p in reserved),'Bahan terbuang harus berasal dari resep item ini.');
+  return Object.fromEntries(Object.entries(reserved).map(([p,max])=>{
+    const q=given[p]===undefined?quantity(max):given[p];
+    requireValue(typeof q==='number'&&Number.isFinite(q)&&q>=0&&Math.abs(q-quantity(units(q)))<1e-9&&units(q)<=max,'Jumlah bahan terbuang harus 0 sampai jumlah yang dicadangkan, maksimal empat angka desimal.');
+    return [p,units(q)];
+  }));
 }
 export function createKitchen(store,{available,stockChanged}){
   const {get,all,run,atomic,log,movement}=store;
@@ -21,17 +43,32 @@ export function createKitchen(store,{available,stockChanged}){
     const settings=all('SELECT menu_id AS menuId,minutes,station,passive_minutes AS passiveMinutes FROM kitchen_menus WHERE workspace_id=? AND business_id=?',...scope(s));
     const rows=all('SELECT * FROM kitchen_orders WHERE workspace_id=? AND business_id=? ORDER BY created_at DESC,rowid DESC',...scope(s));
     const tasks=all('SELECT * FROM kitchen_tasks WHERE workspace_id=? AND business_id=?',...scope(s));
-    const waiting=tasks.filter(t=>t.status==='queued');
+    const capacities=all('SELECT station,cooks,equipment,revision FROM kitchen_stations WHERE workspace_id=? AND business_id=?',...scope(s));
+    const open=tasks.filter(t=>t.status!=='voided'&&!closed.includes(rows.find(o=>o.id===t.order_id).status));
+    const waiting=open.filter(t=>t.status==='queued');
     waiting.sort((a,b)=>{
       const age=t=>Date.now()-Date.parse(rows.find(o=>o.id===t.order_id).created_at);
       const overdueA=age(a)>=900000,overdueB=age(b)>=900000;
       return Number(overdueB)-Number(overdueA)||(overdueA&&overdueB?age(b)-age(a):a.minutes*a.qty-b.minutes*b.qty)||a.id.localeCompare(b.id);
     });
-    const stations=[...new Set(tasks.filter(t=>!['completed','cancelled','discarded'].includes(rows.find(o=>o.id===t.order_id).status)).map(t=>t.station))];
-    const next=stations.map(station=>({station,taskId:tasks.some(t=>t.station===station&&t.status==='active')?null:waiting.find(t=>t.station===station)?.id||null}));
+    const stations=[...new Set([...settings.map(x=>x.station),...open.map(t=>t.station)])].sort().map(station=>{
+      const c=capacities.find(c=>c.station===station);
+      return {station,cooks:c?.cooks??1,equipment:c?.equipment??null,revision:c?.revision??0,active:open.filter(t=>t.station===station&&t.status==='active').length,passive:open.filter(t=>t.station===station&&t.status==='passive').length};
+    });
+    // Each free cook slot at a station receives the next task in SJF+aging order.
+    const next=stations.filter(c=>open.some(t=>t.station===c.station)).map(c=>{const taskIds=waiting.filter(t=>t.station===c.station).slice(0,Math.max(0,c.cooks-c.active)).map(t=>t.id);return {station:c.station,taskId:taskIds[0]||null,taskIds};});
     const menus=store.menus(s).map(m=>({id:m.id,name:m.name,configured:settings.some(x=>x.menuId===m.id),portions:Math.max(0,Math.min(...Object.entries(m.recipe).map(([p,q])=>Math.floor(available(s,p)/units(q)))))}));
-    const orders=rows.map(o=>({...o,items:JSON.parse(o.items),usage:JSON.parse(o.usage_json),tasks:tasks.filter(t=>t.order_id===o.id)}));
-    return {settings,orders,next,menus,recentActions:all('SELECT idem FROM kitchen_actions WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC',...scope(s)).map(x=>x.idem),revision:hash([rows.map(o=>[o.id,o.revision]),menus,settings,next])};
+    const orders=rows.map(o=>({...o,items:JSON.parse(o.items),usage:JSON.parse(o.usage_json),tasks:tasks.filter(t=>t.order_id===o.id).map(t=>({...t,usage:taskUsage(o,t),waste:t.waste_json?JSON.parse(t.waste_json):null}))}));
+    return {settings,stations,orders,next,menus,recentActions:all('SELECT idem FROM kitchen_actions WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC',...scope(s)).map(x=>x.idem),revision:hash([rows.map(o=>[o.id,o.revision]),menus,settings,stations,next])};
+  }
+  function consume(s,used,reason,ref,date){
+    for(const [p,q] of Object.entries(used)){
+      if(!q)continue;
+      requireValue(get('SELECT quantity FROM inventory WHERE workspace_id=? AND business_id=? AND product_id=?',...scope(s),p)?.quantity>=q,'Saldo stok tidak cukup. Periksa ledger.',409);
+      run('UPDATE inventory SET quantity=quantity-? WHERE workspace_id=? AND business_id=? AND product_id=?',q,...scope(s),p);
+      run('INSERT INTO daily_usage VALUES(?,?,?,?,?) ON CONFLICT(workspace_id,business_id,product_id,date) DO UPDATE SET quantity=quantity+excluded.quantity',...scope(s),p,date,q);
+      movement(...scope(s),p,-quantity(q),reason,ref);
+    }
   }
   function create(s,b){
     requireValue(typeof b.idempotencyKey==='string'&&b.idempotencyKey.length>=8&&b.idempotencyKey.length<=100,'Kunci pesanan tidak valid.');
@@ -50,7 +87,7 @@ export function createKitchen(store,{available,stockChanged}){
       for(const [p,q] of Object.entries(used))requireValue(available(s,p)>=units(q),'Bahan tidak cukup atau sedang dicadangkan untuk pesanan/surplus lain.',409);
       const id=randomUUID(),now=new Date().toISOString(),total=items.reduce((v,i)=>v+i.unitPrice*i.qty,0);
       run('INSERT INTO kitchen_orders VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL)',id,...scope(s),b.idempotencyKey,fingerprint,b.label.trim(),b.channel,'queued',1,JSON.stringify(items),JSON.stringify(Object.fromEntries(Object.entries(used).map(([p,q])=>[p,units(q)]))),total,now,now);
-      for(const i of items)run('INSERT INTO kitchen_tasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,NULL)',randomUUID(),...scope(s),id,i.id,i.name,i.qty,i.note,i.preparation.station,i.preparation.minutes,i.preparation.passiveMinutes,'queued');
+      items.forEach((i,index)=>run('INSERT INTO kitchen_tasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,NULL,?,?,NULL)',randomUUID(),...scope(s),id,i.id,i.name,i.qty,i.note,i.preparation.station,i.preparation.minutes,i.preparation.passiveMinutes,'queued',index,JSON.stringify(Object.fromEntries(Object.entries(usage([i],menus)).map(([p,q])=>[p,units(q)])))));
       stockChanged(s);log(...scope(s),`Pesanan dapur ${b.label.trim()} masuk; bahan dicadangkan, belum menjadi penjualan.`);
       return {id,duplicate:false};
     });
@@ -58,45 +95,80 @@ export function createKitchen(store,{available,stockChanged}){
   function change(s,id,b){
     requireValue(typeof b.idempotencyKey==='string'&&b.idempotencyKey.length>=8&&b.idempotencyKey.length<=100,'Kunci tindakan tidak valid.');
     requireValue(Number.isInteger(b.revision),'Versi pesanan tidak valid.');
-    requireValue(['start','passive','resume','ready','complete','cancel','discard'].includes(b.action),'Tindakan dapur tidak valid.');
-    const fingerprint=hash([id,b.action,b.taskId||null,b.revision,b.confirmed===true]);
+    requireValue(['start','passive','resume','ready','complete','cancel','discard','void'].includes(b.action),'Tindakan dapur tidak valid.');
+    const fingerprint=hash([id,b.action,b.taskId||null,b.revision,b.confirmed===true,...(b.wasted!==undefined?[b.wasted]:[])]);
     return atomic(()=>{
       const prev=get('SELECT * FROM kitchen_actions WHERE workspace_id=? AND business_id=? AND idem=?',...scope(s),b.idempotencyKey);
       if(prev){requireValue(prev.fingerprint===fingerprint,'Kunci tindakan dipakai untuk tindakan berbeda.',409);return {...JSON.parse(prev.result),duplicate:true};}
       const o=order(s,id);requireValue(o.revision===b.revision,'Pesanan berubah di perangkat lain. Perbarui data dan periksa statusnya.',409);
-      requireValue(!['completed','cancelled','discarded'].includes(o.status),'Pesanan sudah ditutup.',409);
-      const tasks=all('SELECT * FROM kitchen_tasks WHERE workspace_id=? AND business_id=? AND order_id=?',...scope(s),id),now=new Date().toISOString();
-      let status=o.status,saleId=null;
+      requireValue(!closed.includes(o.status),'Pesanan sudah ditutup.',409);
+      const tasks=all('SELECT * FROM kitchen_tasks WHERE workspace_id=? AND business_id=? AND order_id=?',...scope(s),id),live=tasks.filter(t=>t.status!=='voided'),now=new Date().toISOString(),date=dayAt();
+      let status=o.status,saleId=null,wasted=null;
       if(['complete','cancel','discard'].includes(b.action)){
-        if(b.action==='cancel'){requireValue(tasks.every(t=>t.status==='queued'),'Pesanan sudah dikerjakan. Gunakan penutupan bahan terpakai, bukan pengembalian stok.',409);status='cancelled';}
-        else {
-          if(b.action==='complete')requireValue(tasks.every(t=>t.status==='ready'),'Selesaikan semua item sebelum menyerahkan pesanan.',409);
-          else requireValue(b.confirmed===true&&tasks.some(t=>t.status!=='queued'),'Konfirmasi bahwa seluruh bahan pesanan akan dicatat terpakai tanpa penjualan.',409);
-          status=b.action==='complete'?'completed':'discarded';saleId=status==='completed'?randomUUID():null;
-          const used=JSON.parse(o.usage_json),date=dayAt();
-          for(const [p,q] of Object.entries(used)){
-            requireValue(get('SELECT quantity FROM inventory WHERE workspace_id=? AND business_id=? AND product_id=?',...scope(s),p)?.quantity>=q,'Saldo stok tidak cukup. Periksa ledger.',409);
-            run('UPDATE inventory SET quantity=quantity-? WHERE workspace_id=? AND business_id=? AND product_id=?',q,...scope(s),p);
-            run('INSERT INTO daily_usage VALUES(?,?,?,?,?) ON CONFLICT(workspace_id,business_id,product_id,date) DO UPDATE SET quantity=quantity+excluded.quantity',...scope(s),p,date,q);
-            movement(...scope(s),p,-quantity(q),status==='completed'?'sale':'kitchen_waste',saleId||id);
-          }
-          if(saleId)run('INSERT INTO sales(id,workspace_id,business_id,idem,fingerprint,items,total,date,created_at,cancelled_at,usage_snapshot) VALUES(?,?,?,?,?,?,?,?,?,NULL,?)',saleId,...scope(s),'kitchen:'+id,o.fingerprint,o.items,o.total,date,now,JSON.stringify(Object.fromEntries(Object.entries(used).map(([p,q])=>[p,quantity(q)]))));
+        const used=JSON.parse(o.usage_json);
+        if(b.action==='cancel'){
+          requireValue(live.every(t=>t.status==='queued'),'Pesanan sudah dikerjakan. Gunakan penutupan bahan terpakai, bukan pengembalian stok.',409);
+          requireValue(b.wasted===undefined,'Pembatalan sebelum dikerjakan tidak mencatat bahan terbuang.');
+          status='cancelled';
+        }else if(b.action==='complete'){
+          requireValue(b.wasted===undefined,'Penyelesaian memakai resep pesanan; catat bahan terbuang per item.');
+          requireValue(live.every(t=>t.status==='ready'),'Selesaikan semua item sebelum menyerahkan pesanan.',409);
+          status='completed';saleId=randomUUID();consume(s,used,'sale',saleId,date);
+          const items=JSON.parse(o.items).filter(i=>!i.voided);
+          run('INSERT INTO sales(id,workspace_id,business_id,idem,fingerprint,items,total,date,created_at,cancelled_at,usage_snapshot) VALUES(?,?,?,?,?,?,?,?,?,NULL,?)',saleId,...scope(s),'kitchen:'+id,o.fingerprint,JSON.stringify(items),o.total,date,now,JSON.stringify(Object.fromEntries(Object.entries(used).map(([p,q])=>[p,quantity(q)]))));
+        }else{
+          requireValue(b.confirmed===true&&live.some(t=>t.status!=='queued'),'Konfirmasi bahwa bahan pesanan akan dicatat terpakai tanpa penjualan.',409);
+          // Reserved units not recorded as waste are released with the reservation.
+          wasted=wasteOf(used,b.wasted);status='discarded';consume(s,wasted,'kitchen_waste',id,date);
         }
+      }else if(b.action==='void'){
+        const t=live.find(t=>t.id===b.taskId);requireValue(t,'Item dapur tidak ditemukan atau sudah dibatalkan.',404);
+        requireValue(live.length>1,'Ini item terakhir. Gunakan pembatalan atau penutupan pesanan.',409);
+        const items=JSON.parse(o.items),index=t.item_index??(items.length===1?0:null),reserved=taskUsage(o,t);
+        requireValue(index!==null&&reserved,'Pesanan lama belum menyimpan bahan per item. Tutup seluruh pesanan sebagai bahan terpakai.',409);
+        if(t.status==='queued'){requireValue(b.wasted===undefined,'Item belum dikerjakan; bahan dikembalikan tanpa catatan terbuang.');wasted={};}
+        else{requireValue(b.confirmed===true,'Konfirmasi bahan item yang terbuang terlebih dahulu.',409);wasted=wasteOf(reserved,b.wasted);consume(s,wasted,'kitchen_waste',id,date);}
+        const remaining=Object.fromEntries(Object.entries(JSON.parse(o.usage_json)).map(([p,q])=>[p,q-(reserved[p]||0)]).filter(([,q])=>q>0));
+        items[index]={...items[index],voided:true};
+        run('UPDATE kitchen_tasks SET status=?,phase_started_at=?,waste_json=? WHERE workspace_id=? AND business_id=? AND id=?','voided',now,JSON.stringify(wasted),...scope(s),t.id);
+        run('UPDATE kitchen_orders SET items=?,usage_json=?,total=total-? WHERE workspace_id=? AND business_id=? AND id=?',JSON.stringify(items),JSON.stringify(remaining),items[index].unitPrice*items[index].qty,...scope(s),id);
+        const rest=live.filter(x=>x.id!==t.id);
+        status=rest.every(x=>x.status==='ready')?'ready':o.status==='queued'&&rest.every(x=>x.status==='queued')?'queued':'preparing';
+        stockChanged(s);
       }else{
-        const t=tasks.find(t=>t.id===b.taskId);requireValue(t,'Item dapur tidak ditemukan.',404);
+        const t=live.find(t=>t.id===b.taskId);requireValue(t,'Item dapur tidak ditemukan.',404);
         const target={start:'active',passive:'passive',resume:'active',ready:'ready'}[b.action];
         requireValue(({start:['queued'],passive:['active'],resume:['passive'],ready:['active','passive']})[b.action].includes(t.status),'Tahap item sudah berubah atau tindakan tidak sesuai.',409);
-        if(target==='active')requireValue(!all("SELECT id FROM kitchen_tasks WHERE workspace_id=? AND business_id=? AND station=? AND status='active'",...scope(s),t.station).length,'Stasiun masih mengerjakan item aktif. Tandai pasif atau siap terlebih dahulu.',409);
-        if(b.action==='start')requireValue(snapshot(s).next.find(n=>n.station===t.station)?.taskId===t.id,'Ada item yang lebih dahulu diprioritaskan pada stasiun ini.',409);
-        if(target==='passive')requireValue(t.passive_minutes>0,'Menu ini tidak mempunyai tahap pasif. Atur untuk pesanan berikutnya.',409);
+        const state=snapshot(s),capacity=state.stations.find(c=>c.station===t.station);
+        if(target==='active')requireValue(capacity.active<capacity.cooks,capacity.cooks===1?'Stasiun masih mengerjakan item aktif. Tandai pasif atau siap terlebih dahulu.':`Stasiun sudah memakai ${capacity.cooks} staf aktif. Tandai pasif atau siap terlebih dahulu.`,409);
+        if(b.action==='start')requireValue(state.next.find(n=>n.station===t.station)?.taskIds.includes(t.id),'Ada item yang lebih dahulu diprioritaskan pada stasiun ini.',409);
+        if(target==='passive'){
+          requireValue(t.passive_minutes>0,'Menu ini tidak mempunyai tahap pasif. Atur untuk pesanan berikutnya.',409);
+          requireValue(capacity.equipment===null||capacity.passive<capacity.equipment,`Alat tahap pasif stasiun ini penuh (${capacity.equipment}). Tandai item pasif lain siap terlebih dahulu.`,409);
+        }
         run('UPDATE kitchen_tasks SET status=?,phase_started_at=? WHERE workspace_id=? AND business_id=? AND id=?',target,now,...scope(s),t.id);
-        status=tasks.every(x=>x.id===t.id?target==='ready':x.status==='ready')?'ready':'preparing';
+        status=live.every(x=>x.id===t.id?target==='ready':x.status==='ready')?'ready':'preparing';
       }
       run('UPDATE kitchen_orders SET status=?,revision=revision+1,updated_at=?,sale_id=? WHERE workspace_id=? AND business_id=? AND id=?',status,now,saleId,...scope(s),id);
-      if(['cancelled','completed','discarded'].includes(status)){run('UPDATE kitchen_tasks SET status=? WHERE workspace_id=? AND business_id=? AND order_id=?',status,...scope(s),id);stockChanged(s);}
-      log(...scope(s),`Dapur ${o.label}: ${b.action}; versi ${o.revision+1}.`);
+      if(closed.includes(status)){run("UPDATE kitchen_tasks SET status=? WHERE workspace_id=? AND business_id=? AND order_id=? AND status!='voided'",status,...scope(s),id);stockChanged(s);}
+      log(...scope(s),`Dapur ${o.label}: ${b.action}${wasted&&Object.values(wasted).some(Boolean)?'; bahan terbuang dicatat':''}; versi ${o.revision+1}.`);
       const result={id,status,revision:o.revision+1,saleId};
       run('INSERT INTO kitchen_actions VALUES(?,?,?,?,?)',...scope(s),b.idempotencyKey,fingerprint,JSON.stringify(result));return result;
+    });
+  }
+  function saveStation(s,b){
+    requireValue(typeof b.station==='string'&&b.station.trim().length>=2&&b.station.trim().length<=40,'Pilih stasiun yang sudah dipakai menu.');
+    requireValue(Number.isInteger(b.cooks)&&b.cooks>=1&&b.cooks<=20,'Isi jumlah staf aktif 1–20 per stasiun.');
+    requireValue(b.equipment===null||Number.isInteger(b.equipment)&&b.equipment>=1&&b.equipment<=50,'Isi kapasitas alat 1–50 atau kosongkan jika tidak dibatasi.');
+    requireValue(Number.isInteger(b.revision)&&b.revision>=0,'Versi stasiun tidak valid.');
+    const station=b.station.trim().normalize('NFKC').toLowerCase();
+    return atomic(()=>{
+      requireValue(get('SELECT 1 FROM kitchen_menus WHERE workspace_id=? AND business_id=? AND station=?',...scope(s),station),'Stasiun belum dipakai menu mana pun. Atur menu di Produk & stok terlebih dahulu.',404);
+      const current=get('SELECT revision FROM kitchen_stations WHERE workspace_id=? AND business_id=? AND station=?',...scope(s),station)?.revision??0;
+      requireValue(current===b.revision,'Kapasitas stasiun berubah di perangkat lain. Perbarui data dan periksa kembali.',409);
+      run('INSERT INTO kitchen_stations VALUES(?,?,?,?,?,?,?) ON CONFLICT(workspace_id,business_id,station) DO UPDATE SET cooks=excluded.cooks,equipment=excluded.equipment,revision=excluded.revision,updated_at=excluded.updated_at',...scope(s),station,b.cooks,b.equipment,current+1,new Date().toISOString());
+      log(...scope(s),`Kapasitas stasiun ${station}: ${b.cooks} staf aktif, alat tahap pasif ${b.equipment??'tidak dibatasi'}.`);
+      return {station,cooks:b.cooks,equipment:b.equipment,revision:current+1};
     });
   }
   function command(s,b){
@@ -106,10 +178,10 @@ export function createKitchen(store,{available,stockChanged}){
     const match=text.match(/^(mulai|pasif|lanjutkan|siap|selesai)\s+(.+)$/);requireValue(match,'Gunakan: mulai/pasif/lanjutkan/siap diikuti nama menu dan label pesanan.',409);
     const state=snapshot(s),action={mulai:'start',pasif:'passive',lanjutkan:'resume',siap:'ready',selesai:'ready'}[match[1]];
     const normalize=v=>v.normalize('NFKC').toLowerCase().trim().replace(/\b(satu|dua|tiga|empat|lima|enam|tujuh|delapan|sembilan|sepuluh)\b/g,w=>({satu:'1',dua:'2',tiga:'3',empat:'4',lima:'5',enam:'6',tujuh:'7',delapan:'8',sembilan:'9',sepuluh:'10'})[w]).replace(/\s+/g,' ');
-    const candidates=state.orders.filter(o=>!['completed','cancelled','discarded'].includes(o.status)).flatMap(o=>o.tasks.filter(t=>normalize(match[2])===normalize(t.name+' '+o.label)).map(t=>({o,t})));
+    const candidates=state.orders.filter(o=>!closed.includes(o.status)).flatMap(o=>o.tasks.filter(t=>t.status!=='voided'&&normalize(match[2])===normalize(t.name+' '+o.label)).map(t=>({o,t})));
     requireValue(candidates.length===1,'Perintah belum cocok dengan tepat satu item. Sebut nama menu dan label pesanan lengkap.',409);
     const {o,t}=candidates[0];requireValue(b.revisions?.[o.id]===o.revision,'Pesanan berubah sejak perintah dimulai. Perbarui dan ucapkan kembali.',409);
     return {id:o.id,action,taskId:t.id,revision:o.revision,label:o.label,menu:t.name};
   }
-  return {snapshot,create,change,command};
+  return {snapshot,create,change,command,saveStation};
 }

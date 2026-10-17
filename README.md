@@ -1,3 +1,10 @@
+# Gerai Kita — v0.37
+
+Validasi akhir: **278 tes lulus, `npm test` exit 0** (233 Node + 45 browser, satu worker, `PLAYWRIGHT_CHANNEL=chromium`).
+
+Baru: **kapasitas stasiun dan bahan terbuang sebagian**. Di **Operasional dapur → Kapasitas stasiun**, pemilik mengatur jumlah staf aktif (giliran paralel) dan alat tahap pasif per stasiun; bawaannya tetap satu staf dan alat tidak dibatasi. Item dapat dibatalkan satu per satu: item yang belum dikerjakan melepas cadangan, item yang sudah dimulai mencatat bahan yang benar-benar terpakai dan mengembalikan sisanya. Penutupan seluruh pesanan juga menerima jumlah per bahan. Akun dapur hanya dapat mencatat seluruh resep item karena tidak menerima resep.
+
+[Cara memakai, izin dan batas](docs/KITCHEN_CAPACITY.md). Migrasi aditif: satu tabel `kitchen_stations` dan tiga kolom `kitchen_tasks`; data lama tetap, tanpa data contoh. Suara dua detik, pilot nyata, integrasi ojol dan deployment masih terbuka.
 # Gerai Kita — v0.36
 
 Validasi akhir: **271 tes lulus, `npm test` exit 0** (227 Node + 44 browser, satu worker, `PLAYWRIGHT_CHANNEL=chromium`). [Bukti rilis dan health](docs/evaluation/staff-release.json).

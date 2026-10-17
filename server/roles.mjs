@@ -16,7 +16,7 @@ export function authorize(s,path,method,body){
   let allowed=reading&&['/api/bootstrap','/api/kitchen','/api/kitchen/events'].includes(path);
   if(method==='POST'){
     allowed=['/api/auth/logout','/api/account/password'].includes(path)||s.role==='cashier'&&path==='/api/kitchen/orders'||s.role==='kitchen'&&['/api/kitchen/commands','/api/transcriptions'].includes(path);
-    if(actions)allowed=(s.role==='cashier'?['complete','cancel']:['start','passive','resume','ready']).includes(body.action);
+    if(actions)allowed=(s.role==='cashier'?['complete','cancel']:['start','passive','resume','ready','void']).includes(body.action)&&body.wasted===undefined;
   }
   requireValue(allowed,'Peran akun ini tidak memiliki akses ke tindakan tersebut.',403,'role_forbidden');
   if(method==='POST'&&(path==='/api/kitchen/orders'||actions))requireValue(typeof body.idempotencyKey==='string'&&body.idempotencyKey.startsWith(staffPrefix(s)),'Kunci tindakan harus berasal dari akun dan versi peran saat ini.',409);
@@ -25,9 +25,9 @@ export function staffBootstrap(store,service,s,account){
   const source=service.kitchen.snapshot(s),cashier=s.role==='cashier',prefix=staffPrefix(s);
   const orders=source.orders.filter(o=>!['completed','cancelled','discarded'].includes(o.status)||o.idem.startsWith(prefix)).map(o=>({id:o.id,label:o.label,channel:o.channel,status:o.status,revision:o.revision,created_at:o.created_at,
     ...(o.idem.startsWith(prefix)?{idem:o.idem}:{}),...(cashier?{total:o.total}:{}),
-    items:o.items.map(i=>({id:i.id,name:i.name,qty:i.qty,note:i.note,...(cashier?{unitPrice:i.unitPrice}:{})})),
+    items:o.items.map(i=>({id:i.id,name:i.name,qty:i.qty,note:i.note,...(i.voided?{voided:true}:{}),...(cashier?{unitPrice:i.unitPrice}:{})})),
     tasks:o.tasks.map(t=>({id:t.id,name:t.name,qty:t.qty,note:t.note,station:t.station,minutes:t.minutes,passive_minutes:t.passive_minutes,status:t.status,phase_started_at:t.phase_started_at}))}));
   const row=store.get('SELECT id,name,letter FROM businesses WHERE workspace_id=? AND id=?',s.workspace_id,s.business_id),epoch=store.get('SELECT created_at FROM workspaces WHERE id=?',s.workspace_id).created_at;
   return {mode:'live',workspaceId:s.workspace_id,workspaceEpoch:epoch,business:row,account,csrf:s.csrf,menu:cashier?store.menus(s).map(m=>({id:m.id,name:m.name,price:m.price})):[],catalogRevision:store.get('SELECT catalog_revision FROM business_state WHERE workspace_id=? AND business_id=?',s.workspace_id,s.business_id).catalog_revision,
-    kitchen:{orders,next:source.next,menus:cashier?source.menus:[],recentActions:source.recentActions.filter(k=>k.startsWith(prefix)),revision:source.revision},offlineRestricted:true};
+    kitchen:{orders,next:source.next,stations:source.stations.map(({revision,...c})=>c),menus:cashier?source.menus:[],recentActions:source.recentActions.filter(k=>k.startsWith(prefix)),revision:source.revision},offlineRestricted:true};
 }

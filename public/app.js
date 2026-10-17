@@ -179,7 +179,9 @@ document.addEventListener('submit',async event=>{
     }
     else if(kind==='kitchen-new'){ui.kitchenFocus={queue:true};await durable('kitchenCreate','/kitchen/orders',{label:b.label,channel:b.channel,items:Array.from({length:Math.min(20,Number(b.itemCount)||1)},(_,i)=>({id:b['menuId-'+i],qty:Number(b['qty-'+i]),note:b['note-'+i]||''})),catalogRevision:state.catalogRevision,idempotencyKey:kitchenKey()},'Pesanan dapur: '+b.label);}
     else if(kind==='kitchen-command'){ui.kitchenFocus={command:true};await runKitchenCommand(b.text);values['kitchen-command']={};}
-    else if(kind==='kitchen-discard'){ui.kitchenFocus={queue:true};await durable('kitchenChange',`/kitchen/orders/${b.orderId}/actions`,{action:'discard',revision:Number(b.revision),confirmed:b.confirmed==='on',idempotencyKey:crypto.randomUUID()},'Penutupan bahan terpakai');ui.kitchenDiscard=null;}
+    else if(kind==='kitchen-discard'){ui.kitchenFocus={queue:true};await durable('kitchenChange',`/kitchen/orders/${b.orderId}/actions`,{action:'discard',revision:Number(b.revision),confirmed:b.confirmed==='on',...kitchenWaste(b),idempotencyKey:crypto.randomUUID()},'Penutupan bahan terpakai');ui.kitchenDiscard=null;}
+    else if(kind==='kitchen-void'){ui.kitchenFocus={order:b.orderId};await durable('kitchenChange',`/kitchen/orders/${b.orderId}/actions`,{action:'void',taskId:b.taskId,revision:Number(b.revision),confirmed:b.confirmed==='on',...kitchenWaste(b),idempotencyKey:kitchenKey()},'Pencatatan item terbuang');ui.kitchenVoid=null;}
+    else if(kind==='kitchen-station'){await request('/kitchen/stations',{station:b.station,cooks:Number(b.cooks),equipment:b.equipment===''?null:Number(b.equipment),revision:Number(b.revision)},state.csrf);await refresh();notify('Kapasitas stasiun '+b.station+' tersimpan. Giliran antrean mengikuti kapasitas baru.');}
     else if(kind==='usage-decision'){const editor=ui.usageReview;if(!editor)throw new Error('Buka kembali pemeriksaan dari tanggal yang dipilih.');await request('/usage-reviews',{...editor,decision:b.decision,note:b.note||'',confirmed:b.confirmed==='on'},state.csrf);await refresh();ui.usageReview=null;values['usage-decision']={};notify('Hasil pemeriksaan tersimpan. Stok dan transaksi tidak diubah.');}
     else if(kind==='profile'){await request('/account/profile',{businessName:b.businessName},state.csrf);await refresh();values.profile={};notify('Nama usaha tersimpan.');}
     else if(kind==='password'){if(b.newPassword!==b.repeatPassword)throw new Error('Ulangan kata sandi baru belum sama.');const result=await request('/account/password',{currentPassword:b.currentPassword,newPassword:b.newPassword},state.csrf);await refresh();notify(`Kata sandi tersimpan. ${result.revokedSessions} sesi lain dikeluarkan.`);}
@@ -222,12 +224,14 @@ document.addEventListener('click',async event=>{
   if(!state)return;
   if(action==='kitchen-add-item'||action==='kitchen-remove-item'){ui.kitchenItemCount=Math.max(1,Math.min(20,(ui.kitchenItemCount||1)+(action==='kitchen-add-item'?1:-1)));ui.kitchenFocus={field:'menuId-'+(ui.kitchenItemCount-1)};render();return;}
   if(action==='kitchen-close-discard'){ui.kitchenFocus={order:ui.kitchenDiscard};ui.kitchenDiscard=null;render();return;}
+  if(action==='kitchen-close-void'){ui.kitchenFocus={order:ui.kitchenVoid?.order,task:ui.kitchenVoid?.task};ui.kitchenVoid=null;render();return;}
   if(action==='kitchen-listen'){
     if(ui.kitchenHandsfree){clearVoice();render();return;}
     if(!connected||pendingAction||route()!=='dapur')return;
     ui.kitchenHandsfree=true;ui.kitchenCommandResult='Kendali suara aktif. Ucapkan satu perintah tiap rekaman.';await voice.start();return;
   }
-  if(action==='kitchen-action'&&b.dataset.step==='open-discard'){ui.kitchenDiscard=b.dataset.id;ui.kitchenFocus={discard:true};render();return;}
+  if(action==='kitchen-action'&&b.dataset.step==='open-discard'){ui.kitchenDiscard=b.dataset.id;ui.kitchenVoid=null;ui.kitchenFocus={discard:true};render();return;}
+  if(action==='kitchen-action'&&b.dataset.step==='open-void'){ui.kitchenVoid={order:b.dataset.id,task:b.dataset.task};ui.kitchenDiscard=null;ui.kitchenFocus={void:true};render();return;}
   if(action.startsWith('voice-')){
     if(action==='voice-cancel'){voice.cancel();notify('Suara dibatalkan. Catatan yang kamu ketik tetap tersedia.');return;}
     if(action==='voice-stop'){voice.stop();return;}
@@ -301,10 +305,13 @@ function restoreKitchenFocus(){
   if(focus.command)target=document.querySelector('[data-form="kitchen-command"] [name="text"]');
   else if(focus.field)target=document.querySelector(`[data-form="kitchen-new"] [name="${CSS.escape(focus.field)}"]`);
   else if(focus.discard)target=document.querySelector('[data-form="kitchen-discard"] [name="confirmed"]');
+  else if(focus.void)target=document.querySelector('[data-form="kitchen-void"] input:not([type="hidden"])');
   else if(focus.task){const task=document.querySelector(`[data-kitchen-task="${CSS.escape(focus.task)}"]`);target=task?.querySelector('button:not(:disabled)')||task?.querySelector('strong');}
   if(!target&&focus.order)target=document.querySelector(`[data-kitchen-order="${CSS.escape(focus.order)}"] h3`);
   (target||document.querySelector('#kitchen-queue-title'))?.focus({preventScroll:true});
 }
+// Owner forms send per-ingredient amounts; staff forms have no inputs and record the full item.
+function kitchenWaste(b){const entries=Object.entries(b).filter(([k])=>k.startsWith('waste-')).map(([k,v])=>[k.slice(6),Number(v)]);return entries.length?{wasted:Object.fromEntries(entries)}:{};}
 async function runKitchenCommand(text,revisions=Object.fromEntries((state.kitchen?.orders||[]).map(o=>[o.id,o.revision])),voiceEpoch=null){
   const commandScope=scopeOf(state);
   const resolved=await request('/kitchen/commands',{text,revisions},state.csrf);
@@ -329,7 +336,7 @@ function syncKitchenEvents(){
   stream.onerror=()=>{if(isStaff())request('/bootstrap').then(async data=>{await adopt(data);render();}).catch(error=>{if(error.status===401){clearDisplaySecrets();clearVoice();state=null;values={};pendingAction=null;ui.auth='login';ui.error='Akses staf berakhir atau berubah. Masuk lagi atau hubungi pemilik.';render();}else if(error.transport){connected=false;clearVoice();render();}});ui.kitchenLive=false;const el=document.querySelector('#kitchen-live-status');if(el)el.textContent='Pembaruan terputus · status mungkin lama. Mencoba terhubung; gunakan Perbarui status atau Perbarui data.';};
   stream.onmessage=async event=>{
     if(busy||voice.active||pendingAction||kitchenUpdating||!state||scopeOf(state)!==key)return;
-    const canRender=['dapur','layanan'].includes(route())&&!document.querySelector('#main input:focus,#main select:focus,#main textarea:focus')&&!ui.kitchenDiscard;
+    const canRender=['dapur','layanan'].includes(route())&&!document.querySelector('#main input:focus,#main select:focus,#main textarea:focus')&&!ui.kitchenDiscard&&!ui.kitchenVoid;
     const data=JSON.parse(event.data);if(data.revision===state.kitchen?.revision){if(kitchenRenderPending&&canRender){kitchenRenderPending=false;render();}return;}
     kitchenUpdating=true;
     try{await refresh();kitchenRenderPending=true;if(canRender){kitchenRenderPending=false;render();}}catch(error){if(error.status===401){clearDisplaySecrets();clearVoice();state=null;ui.auth='login';kitchenEvents?.close();kitchenEvents=null;kitchenEventScope='';render();}}finally{kitchenUpdating=false;}

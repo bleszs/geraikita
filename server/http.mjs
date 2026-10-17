@@ -99,6 +99,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         }
         if(pathname==='/api/kitchen'&&request.method==='GET')return json(session.role==='owner'?service.kitchen.snapshot(session):staffBootstrap(store,service,session,identity.details(session)).kitchen);
         if(pathname==='/api/kitchen/orders'&&mutating)return json(service.kitchen.create(session,body),201);
+        if(pathname==='/api/kitchen/stations'&&mutating)return json(service.kitchen.saveStation(session,body));
         if(pathname==='/api/kitchen/commands'&&mutating)return json(service.kitchen.command(session,body));
         const kitchenMatch=pathname.match(/^\/api\/kitchen\/orders\/([a-zA-Z0-9-]+)\/actions$/);
         if(kitchenMatch&&mutating)return json(service.kitchen.change(session,kitchenMatch[1],body));
