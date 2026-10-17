@@ -1,0 +1,79 @@
+{
+  "version": "0.27.0",
+  "checkedAt": "2026-10-15T18:48:35.016Z",
+  "asOf": "2026-10-16",
+  "tests": {
+    "node": 168,
+    "browser": 20,
+    "total": 188,
+    "pythonSuitesRerun": false,
+    "logSha256": "f03d656b51101511deb7766405279fca074faaa1b3077cdbe1d1a3fb64d4e9cf"
+  },
+  "integration": {
+    "authenticatedBootstrap": true,
+    "sessionScoped": true,
+    "forecastUnchanged": true,
+    "readSideLedgerWrites": false,
+    "screenRuleUnchanged": true,
+    "storedAndLegacyStates": true,
+    "uiReviewDisposition": "ship",
+    "liveDefaultSpeechModel": "whisper-tiny"
+  },
+  "liveSummary": {
+    "ingredients": 1,
+    "withoutHistory": 1,
+    "screenedDays": 0,
+    "reviewCandidates": 0
+  },
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T18-36-03-699Z-a9a2d088.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true,
+    "tableCounts": {
+      "account_sessions": 2,
+      "accounts": 1,
+      "audit": 2,
+      "business_state": 1,
+      "businesses": 1,
+      "collective_cycles": 1,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 1,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 2,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "workspaces": 1
+    }
+  },
+  "healthReady": true,
+  "sourceHashes": {
+    "server/service.mjs": "a14f21e09d7507d7ea652c8d90d5cc1903ac544b1e46edf78f77db787d130374",
+    "public/live-views.js": "54bbdf493655d44a540ac053769dedfb3f01f964151ea9ac75abd95e56f413f2",
+    "public/styles.css": "e6ea240f4283d46089f01c497983a6e2a587f3e334fa2df5fccf57b879beeec0",
+    "public/sw.js": "bc9b50c14aa20fe44bd9b4e98ed49658a38c7f1dac97c854b5bf626793cc9c55",
+    "tests/usage-review.test.mjs": "250b28a118c2319c6a87b9a7ba8b9de757821b2f48ebdf4384bf8ed3ece8b3fe",
+    "tests/real-usage-review.spec.js": "95058042944b9bbfeb2504e8593e2ac2e496d7b0b01d1cfffb5a1d392e18633c"
+  },
+  "screenshots": {
+    ".impeccable/review/usage-review-desktop.png": "a25f9e931a63925747f9e863a55380ae1ba13082f83dfcb8331c65c69f96ba13",
+    ".impeccable/review/usage-review-mobile.png": "19e9b2d285d63baea038dbb61b3536feb0628ab40c41cd40491ea5d1031738a3",
+    ".impeccable/review/usage-review-mobile-dark.png": "96a3d7528c124a2d89e0c56a43d95f8ae06ca74950fd50843ff90b517cb00d54",
+    ".impeccable/review/usage-empty-desktop.png": "5dc05054991d54ba2d8e0ff315e95ae5b8abcfabd7d7a48a8bc52da48a82230e",
+    ".impeccable/review/usage-empty-mobile.png": "f4c83ee0e6a5e208c25385ccd26b6baf7fad5352cfc76ccce923ba56ac89b71c",
+    ".impeccable/review/usage-review-mobile-all-dates.png": "926127d4f41ff10d6a33f0a858b972448ae7077b40d199c6ed90a968d7595901"
+  },
+  "priorASRSourceHashesPreserved": 17,
+  "priorScreeningSourceHashesPreserved": 5,
+  "newTraining": false,
+  "fieldValidated": false,
+  "accuracyMetrics": null,
+  "automaticActions": false,
+  "limitations": "Software and isolated fixture integration passed. Live account has no daily usage history; no anomaly precision/recall, field completeness, holiday/weather attribution or ASR fix is established."
+}

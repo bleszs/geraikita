@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-15T22:03:47.544Z",
+  "ready": true,
+  "checks": [
+    {
+      "name": "Node.js",
+      "status": "pass",
+      "detail": "24.9.0"
+    },
+    {
+      "name": "SQLite",
+      "status": "pass",
+      "detail": {
+        "integrity": "ok",
+        "foreignKeys": "ok",
+        "namespaces": 1
+      }
+    },
+    {
+      "name": "Aplikasi lokal",
+      "status": "pass",
+      "detail": {
+        "origin": "http://localhost:4174",
+        "checkedAssets": 16
+      }
+    },
+    {
+      "name": "AI lokal",
+      "status": "pass",
+      "detail": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b",
+        "available": true
+      }
+    },
+    {
+      "name": "Suara lokal",
+      "status": "pass",
+      "detail": {
+        "available": true,
+        "model": "whisper-tiny",
+        "engine": "faster-whisper",
+        "compute": "cpu-int8",
+        "pretrained": true,
+        "language": "id",
+        "maxSeconds": 30,
+        "maxBytes": 1048576,
+        "reason": "Ucapan diproses di laptop. Rekaman tidak disimpan.",
+        "source": "server_health",
+        "localModelVerified": true
+      }
+    }
+  ],
+  "scope": "Pemeriksaan read-only file SQLite, aset aplikasi dan ketersediaan model. Tidak membuat sesi atau transaksi; bukan pengujian alur penuh atau pemasangan OS."
+}

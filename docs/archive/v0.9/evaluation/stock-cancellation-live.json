@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-15T02:53:52.810Z",
+  "version": "0.9.0",
+  "passed": true,
+  "storage": "actual preview SQLite; Chrome fresh isolated namespace",
+  "checks": [
+    "explicit-reason-and-confirmation",
+    "metric-canonical-stock-reversed",
+    "committed-cancellation-response-lost",
+    "immutable-reason-after-offline-reload",
+    "overview-links-to-recovery",
+    "reconnect-reconciles-without-POST",
+    "proof-cleared-after-history-match",
+    "same-reason-retry-once",
+    "different-reason-rejected",
+    "reason-persists-on-reopen"
+  ],
+  "cancellationPostAttemptsBeforeReconciliation": 1,
+  "reversalMovements": 1,
+  "receipt": {
+    "canonicalQty": 0.25,
+    "unit": "kg",
+    "inputQty": 250,
+    "inputUnit": "gram",
+    "originalTotal": 3250,
+    "cancelReasonPreserved": true
+  },
+  "stockBefore": 2.75,
+  "stockAfter": 2.5,
+  "preservation": {
+    "tablesCompared": 17,
+    "previousRowsUnchanged": true,
+    "backup": "data/backups/gerai-kita-2026-10-15T02-48-32-941Z-2b94d5af.sqlite"
+  },
+  "testNamespaceRemoved": true
+}

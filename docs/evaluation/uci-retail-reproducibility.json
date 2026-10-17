@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-15T06:31:26.513Z",
+  "runId": "2026-10-15T06-29-42-482Z-b034a708",
+  "passed": true,
+  "inputContentChecksumsVerified": true,
+  "allPreparationFileHashesIdentical": true,
+  "selectionAndNormalizationIdentical": true,
+  "retrainedModelsWithIdenticalWeightsAndScalers": 4,
+  "identicalExternalPredictions": 76,
+  "normalizedAndRawMetricsRecomputed": true,
+  "note": "Fixed-protocol repeat, not a new independent test. Re-run prepare:uci first to verify workbook aggregation as well."
+}

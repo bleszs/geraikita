@@ -1,0 +1,149 @@
+{
+  "checkedAt": "2026-10-15T05:17:06.236Z",
+  "version": "0.13.0",
+  "tests": {
+    "backendAndMl": 70,
+    "browser": 12,
+    "passed": 82,
+    "mlTests": 11
+  },
+  "publicTraining": {
+    "dataset": "Dingdong-Inc/FreshRetailNet-50K",
+    "revision": "c374e85975c82816c495acfa904cc55ab14a47d3",
+    "verifiedArtifacts": 500,
+    "rawSourceFiles": {
+      "train.parquet": {
+        "bytes": 106436287,
+        "sha256": "6706832db892bbae4969c19d87e07975d2543d2ba7d7d4756360654785de5a3d"
+      },
+      "eval.parquet": {
+        "bytes": 8440124,
+        "sha256": "1b118840664280c6b88bffc84c80ee1f54c05d911e354b7599e5da10995e960e"
+      }
+    },
+    "syntheticRows": 0,
+    "imputedRows": 0,
+    "externalMetrics": {
+      "ridge": {
+        "mae": 0.8685388729380723,
+        "wape": 0.3564737857195538,
+        "observations": 1500
+      },
+      "naive": {
+        "mae": 0.9088200000000023,
+        "wape": 0.37300633976430564,
+        "observations": 1500
+      },
+      "moving_average_7": {
+        "mae": 0.6549819047619042,
+        "wape": 0.2688237526760968,
+        "observations": 1500
+      }
+    },
+    "qualifiedInternally": 179
+  },
+  "reproducibility": {
+    "checkedAt": "2026-10-15T05:15:29.169Z",
+    "protocolVersion": "gerai-freshretailnet-v1",
+    "firstRun": "D:\\INFEST_FIX\\models\\benchmarks\\freshretailnet\\2026-10-15T05-10-34-412Z-3bae6b0c",
+    "repeatedRun": "D:\\INFEST_FIX\\models\\benchmarks\\freshretailnet\\2026-10-15T05-14-08-079Z-70b4caa7",
+    "matchingModels": 500,
+    "scalersWeightsSelectionsAndPredictionsIdentical": true,
+    "timestampsAndPathsExpectedToDiffer": true,
+    "newHyperparameterTuning": false,
+    "sourceFiles": {
+      "train.parquet": {
+        "bytes": 106436287,
+        "sha256": "6706832db892bbae4969c19d87e07975d2543d2ba7d7d4756360654785de5a3d"
+      },
+      "eval.parquet": {
+        "bytes": 8440124,
+        "sha256": "1b118840664280c6b88bffc84c80ee1f54c05d911e354b7599e5da10995e960e"
+      }
+    }
+  },
+  "application": {
+    "userModelsActive": 0,
+    "publicModelsActivatedForUsers": 0,
+    "readOnlyComparedTo": "data/backups/gerai-kita-live-2026-10-15T05-15-30-687Z-6b034f83.sqlite",
+    "preserved": [
+      {
+        "table": "workspaces",
+        "unchanged": true
+      },
+      {
+        "table": "businesses",
+        "unchanged": true
+      },
+      {
+        "table": "inventory",
+        "unchanged": true
+      },
+      {
+        "table": "sales",
+        "unchanged": true
+      },
+      {
+        "table": "movements",
+        "unchanged": true
+      },
+      {
+        "table": "daily_usage",
+        "unchanged": true
+      },
+      {
+        "table": "demands",
+        "unchanged": true
+      },
+      {
+        "table": "offers",
+        "unchanged": true
+      },
+      {
+        "table": "transfers",
+        "unchanged": true
+      },
+      {
+        "table": "audit",
+        "unchanged": true
+      },
+      {
+        "table": "sessions",
+        "unchanged": true
+      },
+      {
+        "table": "business_state",
+        "unchanged": true
+      },
+      {
+        "table": "menus",
+        "unchanged": true
+      },
+      {
+        "table": "ingredients",
+        "unchanged": true
+      },
+      {
+        "table": "stock_receipts",
+        "unchanged": true
+      },
+      {
+        "table": "collective_cycles",
+        "unchanged": true
+      },
+      {
+        "table": "collective_orders",
+        "unchanged": true
+      },
+      {
+        "table": "accounts",
+        "unchanged": true
+      },
+      {
+        "table": "account_sessions",
+        "unchanged": true
+      }
+    ]
+  },
+  "scope": "Real public dataset training and external evaluation completed. User SQLite records preserved. Benchmark does not establish performance on Indonesian UMKM or fine-tune Qwen."
+}

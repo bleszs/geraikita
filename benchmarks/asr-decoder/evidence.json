@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "directory": "models/benchmarks/asr-decoder/2026-10-15T22-09-19-911Z-29fe892c",
+  "runId": "2026-10-15T22-09-19-911Z-29fe892c",
+  "protocolSha256": "85d2a6141300d27fc61f6e34a741e5121549e4d886e84015e0953cc6bd78a5f7",
+  "tracesSha256": "0633babd64e0e6208e11b88d9134f867bf54cad28b98b2327ff910704e8cec0a",
+  "summarySha256": "a4f2eacf1b9581d2a59a7e1726301f380012b9b76ce8d09cc67191b6fcc6ea84",
+  "report": "docs/evaluation/asr-decoder-results.json",
+  "reportSha256": "adb0be180512cd8e16226ac44fa079a1a5f741aee41e5303e21edd26424d0cf8",
+  "policy": "Explicit frozen diagnostic evidence. Historical failures and fixed-profile plain variation retained; no latest pointer or automatic promotion."
+}

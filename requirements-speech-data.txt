@@ -1,0 +1,2 @@
+# Public ASR dataset preparation only. Does not change forecasting/ASR environments.
+pyarrow==26.0.0

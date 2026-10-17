@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-15T06:52:38.523052+00:00",
+  "runId": "2026-10-15T06-43-36Z-fc59f6b9",
+  "passed": true,
+  "sourceChecksumsVerified": true,
+  "targetAggregatesRecomputedFromWorkbook": true,
+  "targetCountries": 10,
+  "previouslyScoredGroupOverlap": 0,
+  "sourceOnlyRefitCorrectionsIdentical": true,
+  "sourceOnlyRefitLearnedInferenceStateIdentical": true,
+  "learnedInferenceStateSha256": "48d4ff2328235435a5b97cfd814699cb3f6404b1c6f1895b97065a4952315d17",
+  "identicalExternalPredictions": 190,
+  "allReportedMetricsRecomputed": true,
+  "targetFittingPerformed": false,
+  "note": "Same-test reproducibility only; poor transfer results preserved, no parameter search or retuning."
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "policy": "Preserve historical failures and both complete follow-up runs; known clip only, no promotion.",
+  "previousEvidenceSha256": {
+    "benchmarks/asr-stability/evidence.json": "55ba2fdbec13a82de403aaae7ae63ac5ea21ebc91c133118f2e4b366fde1bbd6",
+    "docs/evaluation/asr-stability-results.json": "3da04d31c914e8f8e917bbdd12f3372913c73112af5a0399469d4f05e4615595",
+    "docs/evaluation/asr-stability-release.json": "8fea15b454203470c8371056dfe59b7314a68d82a80199f8818d8db21a7fc1a9",
+    "docs/evaluation/asr-comparison-reproducibility.json": "3852a0f37a79a5037a73c5be746dd43de5bbfe9c06fa40c9f6748cd7224f4305"
+  },
+  "experiments": [
+    {
+      "directory": "models/benchmarks/asr-deferred/2026-10-15T09-23-00-122Z-6ddf4525",
+      "runId": "2026-10-15T09-23-00-122Z-6ddf4525",
+      "protocolSha256": "7c8079a006dda2b23d3518f3a0d631451a1074232346189f3c7cab0dc981fee0",
+      "tracesSha256": "91a6a2b773665f237fb9eae0b2a1ca71bca814f1bdc91c0f4edf897246517639",
+      "id": "deferred"
+    },
+    {
+      "directory": "models/benchmarks/asr-alignment/2026-10-15T09-24-33-684Z-75e65d73",
+      "runId": "2026-10-15T09-24-33-684Z-75e65d73",
+      "protocolSha256": "99d29ee589f12540a7ff55a947383a88f03620e1d85a641da90cce1464d041f7",
+      "tracesSha256": "f74682b33dee3f73f335786c855930b4cb5e0b7ed424d3f5d4246fa560923a95",
+      "id": "alignment"
+    }
+  ]
+}

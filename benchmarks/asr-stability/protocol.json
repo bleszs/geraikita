@@ -1,0 +1,13 @@
+{
+  "schemaVersion":1,
+  "experiment":"asr-stage-stability-v1",
+  "purpose":"Diagnose repeat differences, not tune WER or create a new accuracy test.",
+  "previousRun":"models/benchmarks/asr-comparison/2026-10-15T08-17-56-627Z-20faa6f2",
+  "selection":"First two test clips in frozen comparison order: the same clips used by its repeat verifier. Retain every run, including failed inference.",
+  "models":["tiny","base"],
+  "repeats":3,
+  "profiles":["baseline","one_thread","seed_zero","avx2_controlled"],
+  "changes":{"baseline":"Current production CPU int8, 2 threads, no new environment overrides","one_thread":"Only Whisper CPU thread count is changed from 2 to 1","seed_zero":"Only CTranslate2 random seed is explicitly set to zero","avx2_controlled":"AVX2 dispatch, one Whisper/BLAS/OMP thread, MKL AVX2 reproducibility mode, MKL packed GEMM disabled; a combined control profile, not a single-factor cause claim"},
+  "instrumentation":"Production bounded PCM decoder and transcribe function imported unchanged; transparent model proxy records PCM, VAD-input, feature and encoder buffer hashes plus segment tokens. No reference text passed as prompt. Cold subprocess per inference.",
+  "policy":"Preserve previous artifacts/scores and all diagnostic attempts. Do not replace active model or claim historical cause unless data localizes/supports it. Diagnostics on seen clips are not an independent ASR accuracy benchmark."
+}

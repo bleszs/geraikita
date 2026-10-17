@@ -1,0 +1,96 @@
+{
+  "checkedAt": "2026-10-15T17:55:13.208Z",
+  "version": "0.25.0",
+  "runId": "2026-10-15T17-54-53-527Z-e7e5f98e",
+  "runDirectory": "models\\benchmarks\\runtime-speech\\2026-10-15T17-54-53-527Z-e7e5f98e",
+  "protocolSha256": "e1a40fbe1e937c6bf4d66e4bf2148232cabf77492dbf3e2b8a8832807b156cd8",
+  "firstEvidenceSha256": "aa7459023ed0b72d5861a4824c88293cb56554b5111289ff7cbc6b8cfc6664c1",
+  "passed": true,
+  "realCliHttpPythonInference": true,
+  "isolatedTemporaryDatabases": true,
+  "publicSourceRun": "2026-10-15T17-28-28-568Z-4cbb5be2",
+  "cases": [
+    {
+      "profile": "legacy-default",
+      "cliStartup": true,
+      "healthModel": "whisper-tiny",
+      "unauthenticatedStatus": 401,
+      "missingCsrfStatus": 403,
+      "wrongOriginStatus": 403,
+      "tablesCompared": 19,
+      "applicationDataUnchanged": true,
+      "runs": [
+        {
+          "filename": "18345425441689740856.wav",
+          "audioSha256": "4ab83763e85bad5cc5258b1bafcd86e8ca6af97e3a8b628cbbef9df0ffe33b24",
+          "httpStatus": 200,
+          "model": "whisper-tiny",
+          "profile": null,
+          "transcriptSha256": "930b3a5bd8474c71c12dcd6f7db1363b8d646b077c3d8f84b79bb42d0d5a1a85",
+          "identicalToFrozenPrediction": false,
+          "elapsedMs": 2803
+        }
+      ],
+      "doctorCheck": null
+    },
+    {
+      "profile": "base-pinned",
+      "cliStartup": true,
+      "healthModel": "whisper-base",
+      "unauthenticatedStatus": 401,
+      "missingCsrfStatus": 403,
+      "wrongOriginStatus": 403,
+      "tablesCompared": 19,
+      "applicationDataUnchanged": true,
+      "runs": [
+        {
+          "filename": "18345425441689740856.wav",
+          "audioSha256": "4ab83763e85bad5cc5258b1bafcd86e8ca6af97e3a8b628cbbef9df0ffe33b24",
+          "httpStatus": 200,
+          "model": "whisper-base",
+          "profile": "base-pinned",
+          "transcriptSha256": "ca9b06214d7a8279b77a40ee17583958e154028b408d5e4e755c181ae10eeb76",
+          "identicalToFrozenPrediction": true,
+          "elapsedMs": 4314
+        },
+        {
+          "filename": "14837807713644458039.wav",
+          "audioSha256": "5040e611baf23bfe5863098bb090af2db78ccd8e7de4a6442da6cc2500cbf591",
+          "httpStatus": 200,
+          "model": "whisper-base",
+          "profile": "base-pinned",
+          "transcriptSha256": "df58badd22aa1f0714d42446b663f8c8ec158db48cd383cece1fa6cbfcac201f",
+          "identicalToFrozenPrediction": false,
+          "elapsedMs": 3862
+        }
+      ],
+      "doctorCheck": {
+        "passed": true,
+        "model": "whisper-base",
+        "localModelVerified": true,
+        "wrongExpectedProfileRejected": true
+      }
+    }
+  ],
+  "variations": [
+    {
+      "profile": "legacy-default",
+      "filename": "18345425441689740856.wav",
+      "audioSha256": "4ab83763e85bad5cc5258b1bafcd86e8ca6af97e3a8b628cbbef9df0ffe33b24",
+      "expectedHypothesis": "Rekan Rekan berkulat pun memberikan penghormatan kepada Luna",
+      "actualHypothesis": "Rekan Rekan berkulat pun memberikan penghormatan kepada Luna.",
+      "scope": "Post-hoc HTTP parity check, not a new accuracy score or modification of frozen predictions."
+    },
+    {
+      "profile": "base-pinned",
+      "filename": "14837807713644458039.wav",
+      "audioSha256": "5040e611baf23bfe5863098bb090af2db78ccd8e7de4a6442da6cc2500cbf591",
+      "expectedHypothesis": "Namun setelah kehilangan gawang Captain, India hanya membuat 30-66 kebobolan 7 juga wang saat mengakhiri ining tersebut.",
+      "actualHypothesis": "Namun, setelah kehilangan gawang Captain, India hanya membuat 30-66 kebobolan 7 gawang saat mengakhiri ining tersebut.",
+      "scope": "Post-hoc HTTP parity check, not a new accuracy score or modification of frozen predictions."
+    }
+  ],
+  "accuracyBenchmark": false,
+  "defaultModelChanged": false,
+  "scope": "Actual startup and authenticated HTTP transport on already-seen public clips, with test identities in temporary databases only. No user database, training, promotion or new accuracy/stability claim."
+}

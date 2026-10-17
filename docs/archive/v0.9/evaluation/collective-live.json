@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-14T19:49:18.002Z",
+  "runtime": "localhost:4174 / migrated persistent SQLite",
+  "cycle1": {
+    "supplierOrder": 40,
+    "status": "completed",
+    "sariReceived": 12,
+    "sariSurplus": 10,
+    "sariSupplierCost": 16200,
+    "duplicateReceipt": true
+  },
+  "cycle2": {
+    "id": 2,
+    "initialParticipants": 0,
+    "retainedSariStock": 30,
+    "retainedHistory": 1,
+    "newSupplierOrder": 30,
+    "priorSurplusDeducted": 0
+  }
+}

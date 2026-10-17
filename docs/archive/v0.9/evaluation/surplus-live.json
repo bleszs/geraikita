@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-14T23:16:23.853Z",
+  "version": "0.6.0",
+  "origin": "http://localhost:4174",
+  "migrationPreserved": {
+    "inventory": 160,
+    "sales": 98,
+    "movements": 20,
+    "sessions": 24,
+    "demands": 32,
+    "stock_receipts": 0,
+    "collective_orders": 0,
+    "offers": 8
+  },
+  "createRetryStoredOnce": true,
+  "multiOfferReservation": {
+    "stockBefore": 8,
+    "requested": 8,
+    "available": 0,
+    "excessRequestRejected": true
+  },
+  "transfer": {
+    "qty": 6,
+    "unitPrice": 500,
+    "ownerAfter": 2,
+    "receiverBefore": 30,
+    "receiverAfter": 36,
+    "completedSnapshotPreservedAfterWithdrawal": true
+  },
+  "pendingWithdrawalRejected": true,
+  "withdrawalPersisted": true,
+  "ownerKeyHiddenFromReceivers": true,
+  "testNamespaceReset": true
+}

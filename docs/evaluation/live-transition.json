@@ -1,0 +1,143 @@
+{
+  "checkedAt": "2026-10-15T04:19:41.341Z",
+  "version": "0.10.0",
+  "origin": "http://localhost:4174",
+  "liveDatabase": {
+    "filename": "data/gerai-kita-live.sqlite",
+    "readOnlyVerified": true,
+    "counts": {
+      "workspaces": 0,
+      "businesses": 0,
+      "inventory": 0,
+      "sales": 0,
+      "movements": 0,
+      "daily_usage": 0,
+      "demands": 0,
+      "offers": 0,
+      "transfers": 0,
+      "audit": 0,
+      "sessions": 0,
+      "business_state": 0,
+      "menus": 0,
+      "ingredients": 0,
+      "stock_receipts": 0,
+      "collective_cycles": 0,
+      "collective_orders": 0,
+      "accounts": 0,
+      "account_sessions": 0
+    }
+  },
+  "legacyDatabase": {
+    "filename": "data/gerai-kita.sqlite",
+    "comparisonBackup": "data/backups/gerai-kita-2026-10-15T02-48-32-941Z-2b94d5af.sqlite",
+    "preserved": [
+      {
+        "table": "workspaces",
+        "records": 11,
+        "unchanged": true
+      },
+      {
+        "table": "businesses",
+        "records": 44,
+        "unchanged": true
+      },
+      {
+        "table": "inventory",
+        "records": 220,
+        "unchanged": true
+      },
+      {
+        "table": "sales",
+        "records": 134,
+        "unchanged": true
+      },
+      {
+        "table": "movements",
+        "records": 20,
+        "unchanged": true
+      },
+      {
+        "table": "daily_usage",
+        "records": 6385,
+        "unchanged": true
+      },
+      {
+        "table": "demands",
+        "records": 44,
+        "unchanged": true
+      },
+      {
+        "table": "offers",
+        "records": 11,
+        "unchanged": true
+      },
+      {
+        "table": "transfers",
+        "records": 0,
+        "unchanged": true
+      },
+      {
+        "table": "audit",
+        "records": 9,
+        "unchanged": true
+      },
+      {
+        "table": "sessions",
+        "records": 34,
+        "unchanged": true
+      },
+      {
+        "table": "business_state",
+        "records": 44,
+        "unchanged": true
+      },
+      {
+        "table": "menus",
+        "records": 132,
+        "unchanged": true
+      },
+      {
+        "table": "stock_receipts",
+        "records": 0,
+        "unchanged": true
+      },
+      {
+        "table": "collective_cycles",
+        "records": 12,
+        "unchanged": true
+      },
+      {
+        "table": "collective_orders",
+        "records": 0,
+        "unchanged": true
+      },
+      {
+        "table": "ingredients",
+        "records": 220,
+        "unchanged": true
+      }
+    ]
+  },
+  "checks": {
+    "unauthenticatedBootstrap": 401,
+    "healthMode": "live",
+    "backendTests": 55,
+    "browserTests": 7
+  },
+  "localModelSmoke": {
+    "ai": {
+      "provider": "ollama",
+      "model": "qwen2.5:1.5b",
+      "available": true
+    },
+    "mode": "ollama",
+    "latencyMs": 3986,
+    "expectedQuantity": 3,
+    "actualQuantity": 3,
+    "scope": "One isolated in-memory extraction; no live records written and no accuracy claim."
+  },
+  "limits": [
+    "No real business dataset supplied.",
+    "Localhost runtime only; public deployment and physical devices not tested."
+  ]
+}

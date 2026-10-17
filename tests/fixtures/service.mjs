@@ -1,0 +1,2 @@
+import {createService as liveService} from '../../server/service.mjs';
+export function createService(store){const service=liveService(store);return {...service,reset(s){store.atomic(()=>{const sessions=store.all('SELECT * FROM sessions WHERE workspace_id=?',s.workspace_id);store.run('DELETE FROM workspaces WHERE id=?',s.workspace_id);store.seed(s.workspace_id);for(const t of sessions)store.run('INSERT INTO sessions VALUES(?,?,?,?,?)',t.id,t.workspace_id,t.business_id,t.csrf,t.expires_at);});}};}

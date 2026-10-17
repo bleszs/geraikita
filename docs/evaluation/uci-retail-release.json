@@ -1,0 +1,39 @@
+{
+  "version": "0.17.0",
+  "checkedAt": "2026-10-15T06:36:24.837Z",
+  "runId": "2026-10-15T06-29-42-482Z-b034a708",
+  "observedTests": {
+    "backend": 92,
+    "browser": 12,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "totalUnique": 116,
+    "uciNodeAlreadyIncludedInBackend": 3
+  },
+  "readOnlyDatabaseComparison": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T05-55-00-039Z-710586d6.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "userDataPreserved": true
+  },
+  "artifacts": {
+    "validatedModels": 4,
+    "externalTargets": 76,
+    "publicBenchmarkOnly": true,
+    "automaticActivation": false
+  },
+  "reproduction": {
+    "checkedAt": "2026-10-15T06:31:26.513Z",
+    "runId": "2026-10-15T06-29-42-482Z-b034a708",
+    "passed": true,
+    "inputContentChecksumsVerified": true,
+    "allPreparationFileHashesIdentical": true,
+    "selectionAndNormalizationIdentical": true,
+    "retrainedModelsWithIdenticalWeightsAndScalers": 4,
+    "identicalExternalPredictions": 76,
+    "normalizedAndRawMetricsRecomputed": true,
+    "note": "Fixed-protocol repeat, not a new independent test. Re-run prepare:uci first to verify workbook aggregation as well."
+  },
+  "health": true,
+  "limits": "Research method replication, not field validation or fixed boosting-weight transfer. No private account training or fabricated transactions."
+}

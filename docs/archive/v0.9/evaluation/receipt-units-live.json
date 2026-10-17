@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-15T00:54:47.974Z",
+  "version": "0.8.0",
+  "passed": true,
+  "storage": "actual preview SQLite; fresh isolated namespace",
+  "migration": {
+    "tablesCompared": 17,
+    "previousRowsUnchanged": true,
+    "backup": "data/backups/gerai-kita-2026-10-15T00-49-46-505Z-04a93d6e.sqlite"
+  },
+  "cases": [
+    {
+      "input": "250 gram at Rp13/gram",
+      "canonical": "0.25 kg",
+      "total": 3250,
+      "stockBefore": 2.5,
+      "stockAfter": 2.75
+    },
+    {
+      "input": "125 ml at Rp21/ml",
+      "canonical": "0.125 liter",
+      "total": 2625,
+      "stockBefore": 3,
+      "stockAfter": 3.125
+    },
+    {
+      "input": "1.5 kg at Rp10500/kg",
+      "canonical": "1500 gram",
+      "canonicalUnitPrice": 10.5,
+      "total": 15750,
+      "recipeAfterTwoPortions": 1450
+    }
+  ],
+  "checks": [
+    "concurrent-retry-once",
+    "incompatible-unit-rejected",
+    "unrepresentable-precision-rejected",
+    "historical-input-persists-on-reopen",
+    "recipe-uses-canonical-quantity",
+    "reversal-and-cancelled-replay-keep-stock"
+  ],
+  "testNamespaceRemoved": true
+}

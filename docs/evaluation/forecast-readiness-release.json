@@ -1,0 +1,35 @@
+{
+  "version": "0.16.0",
+  "checkedAt": "2026-10-15T05:56:22.923Z",
+  "backup": "data/backups/gerai-kita-live-2026-10-15T05-55-00-039Z-710586d6.sqlite",
+  "tablesCompared": 19,
+  "userDataPreserved": true,
+  "changedTables": [],
+  "sourceSha256": {
+    "server/ml/history-quality.mjs": "0678dca6dd8c4c7c21db3f88ffe586b95b262fd20ca5cfc01b4fa68402d372a0",
+    "server/forecast.mjs": "5f2c930d7bf68206267692f1a8de58e59886bfe93e6f8711a56c533d8c0e0637",
+    "scripts/forecast-readiness.mjs": "b0f708a55f4173226c12a49ab30ccbf895b796adf9adb74b0a65495159ce41b8",
+    "scripts/forecast.mjs": "e4c1c3c24083b721d51f1e6db054c121a126c00fe9a5c3e2daf67bce52a4b411"
+  },
+  "tests": {
+    "backend": 89,
+    "browser": 12,
+    "python": 7,
+    "total": 108,
+    "readinessTestsIncludedInBackend": 9
+  },
+  "forecastReadiness": {
+    "checkedAt": "2026-10-15T05:53:10.853Z",
+    "asOf": "2026-10-15",
+    "readOnly": true,
+    "summary": {
+      "ingredients": 1,
+      "withoutHistory": 1,
+      "insufficientCalendarSpan": 0,
+      "awaitingPermissionAndCompleteness": 0,
+      "activeRegistryModels": 0,
+      "recentWindowsWithAssumedZeros": 0
+    }
+  },
+  "limitations": "Observed verification, not field validation. Completeness remains unverified; no personal training or automatic drift classification was performed."
+}

@@ -1,0 +1,270 @@
+{
+  "analyzedAt": "2026-10-15T08:28:38.437Z",
+  "runId": "2026-10-15T08-17-56-627Z-20faa6f2",
+  "postHocDescriptiveOnly": true,
+  "trainingPerformed": false,
+  "retunedAfterTest": false,
+  "auditPassed": true,
+  "inferenceRepeatPassed": false,
+  "repeatTranscriptsChanged": 3,
+  "repeatCount": 4,
+  "readyForPromotion": false,
+  "selection": {
+    "decidedAt": "2026-10-15T08:18:44.179Z",
+    "runId": "2026-10-15T08-17-56-627Z-20faa6f2",
+    "selectedModel": "base",
+    "source": "validation_only",
+    "thresholds": {
+      "relativeWerReduction": 0.1,
+      "maxP95Ms": 15000
+    },
+    "relativeWerReduction": 0.4385964912280702,
+    "gates": {
+      "wordErrorImproved": true,
+      "noBaseInfrastructureErrors": true,
+      "noExtraRejections": true,
+      "latencyWithinBound": true
+    },
+    "validation": {
+      "tiny": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 347,
+        "referenceCharacters": 2016,
+        "wordErrors": 228,
+        "characterErrors": 715,
+        "substitutions": 123,
+        "deletions": 74,
+        "insertions": 31,
+        "hits": 150,
+        "exactMatches": 0,
+        "wer": 0.6570605187319885,
+        "cer": 0.35466269841269843,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 1206,
+          "p95": 2208
+        },
+        "realTimeFactor": {
+          "p50": 0.10629800307219661,
+          "p95": 0.15442477876106192
+        }
+      },
+      "base": {
+        "observations": 16,
+        "accepted": 16,
+        "rejected": 0,
+        "errors": 0,
+        "referenceWords": 347,
+        "referenceCharacters": 2016,
+        "wordErrors": 128,
+        "characterErrors": 248,
+        "substitutions": 106,
+        "deletions": 4,
+        "insertions": 18,
+        "hits": 237,
+        "exactMatches": 1,
+        "wer": 0.3688760806916426,
+        "cer": 0.12301587301587301,
+        "exactMatchRate": 0.0625,
+        "latencyMs": {
+          "p50": 1662,
+          "p95": 1985
+        },
+        "realTimeFactor": {
+          "p50": 0.1357142857142857,
+          "p95": 0.23082595870206488
+        }
+      }
+    },
+    "validationPredictionsSha256": "1cf7bb2730379235edd8e1fe6e0a5f7f5767cce60d569a8014cce90fef3ef445"
+  },
+  "pairedTest": {
+    "clips": 48,
+    "baseFewerErrors": 43,
+    "tinyFewerErrors": 1,
+    "ties": 4
+  },
+  "testRelativeWerReduction": 0.45671641791044776,
+  "policyLimits": {
+    "validation": {
+      "over30Seconds": 0,
+      "over1MiB": 0,
+      "preparationErrors": 0
+    },
+    "test": {
+      "over30Seconds": 0,
+      "over1MiB": 0,
+      "preparationErrors": 0
+    }
+  },
+  "failureCounts": {
+    "validation": {
+      "tiny": {
+        "http_422": 2
+      },
+      "base": {}
+    },
+    "test": {
+      "tiny": {
+        "http_422": 4
+      },
+      "base": {
+        "http_422": 2
+      }
+    }
+  },
+  "largestRegressions": [
+    {
+      "filename": "5391610382088254398.wav",
+      "sentenceId": 1879,
+      "tinyWordErrors": 3,
+      "baseWordErrors": 8,
+      "baseMinusTiny": 5
+    },
+    {
+      "filename": "18047620031436021096.wav",
+      "sentenceId": 1970,
+      "tinyWordErrors": 7,
+      "baseWordErrors": 7,
+      "baseMinusTiny": 0
+    },
+    {
+      "filename": "3847795109135951088.wav",
+      "sentenceId": 1805,
+      "tinyWordErrors": 12,
+      "baseWordErrors": 12,
+      "baseMinusTiny": 0
+    },
+    {
+      "filename": "4600139786023009708.wav",
+      "sentenceId": 1870,
+      "tinyWordErrors": 8,
+      "baseWordErrors": 8,
+      "baseMinusTiny": 0
+    },
+    {
+      "filename": "8467235396572034984.wav",
+      "sentenceId": 1927,
+      "tinyWordErrors": 18,
+      "baseWordErrors": 18,
+      "baseMinusTiny": 0
+    },
+    {
+      "filename": "14496880555594414124.wav",
+      "sentenceId": 1823,
+      "tinyWordErrors": 7,
+      "baseWordErrors": 6,
+      "baseMinusTiny": -1
+    },
+    {
+      "filename": "14558356872710198155.wav",
+      "sentenceId": 1918,
+      "tinyWordErrors": 13,
+      "baseWordErrors": 12,
+      "baseMinusTiny": -1
+    },
+    {
+      "filename": "1799385846660421241.wav",
+      "sentenceId": 1664,
+      "tinyWordErrors": 8,
+      "baseWordErrors": 7,
+      "baseMinusTiny": -1
+    },
+    {
+      "filename": "10767369870409762683.wav",
+      "sentenceId": 1715,
+      "tinyWordErrors": 8,
+      "baseWordErrors": 6,
+      "baseMinusTiny": -2
+    },
+    {
+      "filename": "11314714857215564898.wav",
+      "sentenceId": 1739,
+      "tinyWordErrors": 4,
+      "baseWordErrors": 2,
+      "baseMinusTiny": -2
+    }
+  ],
+  "largestImprovements": [
+    {
+      "filename": "1767434013363970481.wav",
+      "sentenceId": 1843,
+      "tinyWordErrors": 73,
+      "baseWordErrors": 17,
+      "baseMinusTiny": -56
+    },
+    {
+      "filename": "13299890908430723483.wav",
+      "sentenceId": 1924,
+      "tinyWordErrors": 57,
+      "baseWordErrors": 14,
+      "baseMinusTiny": -43
+    },
+    {
+      "filename": "7070659208363049647.wav",
+      "sentenceId": 1847,
+      "tinyWordErrors": 29,
+      "baseWordErrors": 15,
+      "baseMinusTiny": -14
+    },
+    {
+      "filename": "4058971635921749658.wav",
+      "sentenceId": 1723,
+      "tinyWordErrors": 19,
+      "baseWordErrors": 6,
+      "baseMinusTiny": -13
+    },
+    {
+      "filename": "482339159245872117.wav",
+      "sentenceId": 1759,
+      "tinyWordErrors": 24,
+      "baseWordErrors": 11,
+      "baseMinusTiny": -13
+    },
+    {
+      "filename": "16614073994242155585.wav",
+      "sentenceId": 1782,
+      "tinyWordErrors": 26,
+      "baseWordErrors": 14,
+      "baseMinusTiny": -12
+    },
+    {
+      "filename": "17476279973670140232.wav",
+      "sentenceId": 1841,
+      "tinyWordErrors": 20,
+      "baseWordErrors": 9,
+      "baseMinusTiny": -11
+    },
+    {
+      "filename": "15094520801066785034.wav",
+      "sentenceId": 1882,
+      "tinyWordErrors": 12,
+      "baseWordErrors": 3,
+      "baseMinusTiny": -9
+    },
+    {
+      "filename": "9485984081064467567.wav",
+      "sentenceId": 1771,
+      "tinyWordErrors": 11,
+      "baseWordErrors": 2,
+      "baseMinusTiny": -9
+    },
+    {
+      "filename": "1391217803693020353.wav",
+      "sentenceId": 1995,
+      "tinyWordErrors": 14,
+      "baseWordErrors": 6,
+      "baseMinusTiny": -8
+    }
+  ],
+  "limitations": [
+    "New unscored sentence groups, not an independent dataset or an independently audited speaker split.",
+    "Public read speech does not measure menu/quantity/negation safety, owner microphones or noisy kedai use.",
+    "The old FLEURS sample and Tiny failure are known. Pretraining overlap cannot be ruled out.",
+    "Small validation/test samples, no claim of statistical significance or general production accuracy.",
+    "Once scored, these groups are observed and cannot be recycled as untouched tests for tuning."
+  ]
+}

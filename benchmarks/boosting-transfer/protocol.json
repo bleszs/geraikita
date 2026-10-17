@@ -1,0 +1,50 @@
+{
+  "protocolVersion": "gerai-boosting-sales-only-transfer-v1",
+  "purpose": "Train one sales-only residual boosting model on FreshRetailNet development records and transfer its fixed learned weights to previously unscored UCI country groups. No target-domain fitting or tuning.",
+  "priorKnowledge": "FreshRetailNet v1/v2 outcomes and UCI Ridge outcomes for EIRE, France, Germany and United Kingdom are known. UCI calendar conditions and publisher records have been available. This is a prespecified test on previously unscored groups, not a fully blind calendar/domain replication.",
+  "source": {
+    "dataset": "Dingdong-Inc/FreshRetailNet-50K",
+    "manifest": "datasets/public/freshretailnet/processed/index.json",
+    "protocol": "benchmarks/freshretailnet/protocol.json",
+    "revision": "c374e85975c82816c495acfa904cc55ab14a47d3",
+    "development": "Exactly the previous 500 ID-selected series and publisher train split only, through 2024-06-25. Publisher eval records are not read for fitting or selection."
+  },
+  "target": {
+    "dataset": "UCI Online Retail",
+    "protocol": "benchmarks/uci-online-retail/protocol.json",
+    "sourceLock": "benchmarks/uci-online-retail/source-lock.json",
+    "excludedPreviouslyScoredCountries": ["EIRE", "France", "Germany", "United Kingdom"],
+    "selection": "Every other country with at least 20 positive-sales dates, at least 1000 gross units and positive first-84-day mean within 2010-12-02 through 2011-10-31. Thresholds use context dates only; do not relax if no countries qualify. Unspecified remains excluded by the original aggregation protocol.",
+    "minimumActiveDates": 20,
+    "minimumUnits": 1000,
+    "observations": "Reuse the locked UCI invoice filtering/calendar event-SUM definition. Use raw positive invoiced units directly for inference; do not train or fit a target normalization/scaler. Earlier observed dates provide context only.",
+    "test": "19 non-overlapping two-day targets per selected country from 2011-11-01 through 2011-12-08. Earlier actual target-domain test days may enter later lags; the learned model never refits."
+  },
+  "features": {
+    "policy": "14 past quantity lags divided by mean14 (floor 1e-6); relative mean3/7, median7, std7, trend7, zero fraction7, prior-week two-day total. Calendar variant adds weekday sin/cos and known upcoming weekend-day count.",
+    "removed": ["past stockout fraction: not observed in UCI, never fabricated as zero", "log absolute sales level: source/target sales units differ"],
+    "compatibility": "A new feature-compatible model is trained. Original v2 artifact has required stockout features and is not directly applied to UCI. Relative features aim for multiplicative scale equivariance above the numerical floor; this does not establish domain invariance."
+  },
+  "fitting": {
+    "estimator": "HistGradientBoostingRegressor",
+    "loss": "absolute_error",
+    "learning_rate": 0.05,
+    "max_iter": 150,
+    "min_samples_leaf": 50,
+    "l2_regularization": 10,
+    "max_leaf_nodes": [7, 15],
+    "variants": ["lags", "calendar"],
+    "residualWeights": [0, 0.25, 0.5, 1],
+    "random_state": 26015,
+    "early_stopping": false,
+    "threads": 2,
+    "target": "(next_two_day_quantity - 2*mean7) / max(mean14,1e-6)",
+    "sampleWeight": "source history mean14 scale"
+  },
+  "selection": "Source-only validation MAE: train origins 14,16,...,74; validate 76,78,...,88 on each 90-day FreshRetailNet series. Four tree configurations times four residual weights. Tie-break lower weight, fewer leaves, lags. Weight zero retains MA7. Refit selected tree configuration on source origins 14,16,...,88 only.",
+  "freezing": "Save protocol/source hashes, all validation scores, selected parameters, learned joblib artifact and checksum before parsing target workbook or scoring target records. Save all selected groups/targets; any pipeline failure fails the run. No retuning after scores.",
+  "comparators": ["boosting", "2*last_day", "2*mean_last_7", "2*mean_last_14", "last_week_same_two_days"],
+  "primaryMetric": "Equal-country mean WAPE on the new UCI groups. Report undefined-zero-target country count; retain those countries in pooled MAE/WAPE and all predictions.",
+  "secondaryMetrics": "Pooled raw-unit MAE/WAPE, per-country MAE/WAPE, per-origin scores, target volume shares and count of countries beating each baseline. No numeric comparison against older different samples as if paired.",
+  "limitations": "Known UCI calendar, one gift/wholesale retailer, correlated country groups and sparse event totals. Only a new sales-only boosting variant's fixed weights are transferred. No claim about original v2 weights, latent demand, ingredient usage, Indonesian field performance, calibrated uncertainty, public-model activation or Qwen fine-tuning. Repetition after this first score is reproducibility, not independent evaluation."
+}

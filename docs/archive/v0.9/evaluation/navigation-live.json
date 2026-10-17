@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-14T23:58:08.419Z",
+  "version": "0.6.1",
+  "origin": "http://localhost:4174",
+  "usedFreshDemoNamespace": true,
+  "viewports": [
+    {
+      "width": 320,
+      "quickNavigation": true,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1024,
+      "quickNavigation": false,
+      "horizontalOverflow": false
+    },
+    {
+      "width": 1440,
+      "quickNavigation": false,
+      "horizontalOverflow": false
+    }
+  ],
+  "activeProfileVisible": true,
+  "keyboardFocusReturned": true,
+  "enteredChatPreservedAcrossNavigation": true,
+  "salesAndInventoryUnchanged": true,
+  "initialEggs": 8,
+  "finalEggs": 8,
+  "offlineSnapshotQualified": true,
+  "offlineMutationsDisabled": true,
+  "cache": "gerai-kita-shell-v11",
+  "attentionModuleCached": true,
+  "apiResponsesNotCached": true,
+  "pageErrors": []
+}

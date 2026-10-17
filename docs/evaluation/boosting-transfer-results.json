@@ -1,0 +1,1472 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-15T06:44:00.446522+00:00",
+  "runId": "2026-10-15T06-43-36Z-fc59f6b9",
+  "directory": "models/benchmarks/boosting-transfer/2026-10-15T06-43-36Z-fc59f6b9",
+  "protocolVersion": "gerai-boosting-sales-only-transfer-v1",
+  "model": {
+    "modelKind": "gerai-sales-only-residual-hgb-transfer-v1",
+    "usage": "public_benchmark_only",
+    "trainingDataset": {
+      "dataset": "Dingdong-Inc/FreshRetailNet-50K",
+      "manifest": "datasets/public/freshretailnet/processed/index.json",
+      "protocol": "benchmarks/freshretailnet/protocol.json",
+      "revision": "c374e85975c82816c495acfa904cc55ab14a47d3",
+      "development": "Exactly the previous 500 ID-selected series and publisher train split only, through 2024-06-25. Publisher eval records are not read for fitting or selection."
+    },
+    "sourceSeries": 500,
+    "sourceTrainingTargets": 19000,
+    "sourceTrainingThrough": "2024-06-25",
+    "features": [
+      "lag1_relative",
+      "lag2_relative",
+      "lag3_relative",
+      "lag4_relative",
+      "lag5_relative",
+      "lag6_relative",
+      "lag7_relative",
+      "lag8_relative",
+      "lag9_relative",
+      "lag10_relative",
+      "lag11_relative",
+      "lag12_relative",
+      "lag13_relative",
+      "lag14_relative",
+      "mean3_relative",
+      "mean7_relative",
+      "median7_relative",
+      "std7_relative",
+      "trend7_relative",
+      "zero_fraction7",
+      "weekly_two_day_relative",
+      "weekday_sin",
+      "weekday_cos",
+      "weekend_days"
+    ],
+    "selected": {
+      "variant": "calendar",
+      "maxLeafNodes": 15,
+      "residualWeight": 1,
+      "mae": 0.5754910369096132,
+      "wape": 0.2512810799252384,
+      "observations": 3500
+    },
+    "fitting": {
+      "estimator": "HistGradientBoostingRegressor",
+      "loss": "absolute_error",
+      "learning_rate": 0.05,
+      "max_iter": 150,
+      "min_samples_leaf": 50,
+      "l2_regularization": 10,
+      "max_leaf_nodes": [
+        7,
+        15
+      ],
+      "variants": [
+        "lags",
+        "calendar"
+      ],
+      "residualWeights": [
+        0,
+        0.25,
+        0.5,
+        1
+      ],
+      "random_state": 26015,
+      "early_stopping": false,
+      "threads": 2,
+      "target": "(next_two_day_quantity - 2*mean7) / max(mean14,1e-6)",
+      "sampleWeight": "source history mean14 scale"
+    },
+    "artifactSha256": "6f22045aeec3f10c531e840c1b8fef9fee914f48a70fcd4e4c0b06fe31d8e143",
+    "protocolSha256": "2b5eba4bf7f8fbcde3c785ab281e768bbc04700995ca2c54aee5f0352345d3de",
+    "targetFittingPerformed": false,
+    "frozenBeforeTargetParsingAt": "2026-10-15T06:43:46.156990+00:00",
+    "environment": {
+      "python": "3.13.7",
+      "numpy": "2.5.4",
+      "sklearn": "1.7.2",
+      "joblib": "1.5.3"
+    }
+  },
+  "validation": {
+    "selected": {
+      "variant": "calendar",
+      "maxLeafNodes": 15,
+      "residualWeight": 1,
+      "mae": 0.5754910369096132,
+      "wape": 0.2512810799252384,
+      "observations": 3500
+    },
+    "candidates": [
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.25,
+        "mae": 0.6048545769596978,
+        "wape": 0.2641023083736184,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.5,
+        "mae": 0.5997533232869066,
+        "wape": 0.26187490872764807,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 1,
+        "mae": 0.5975240742956675,
+        "wape": 0.2609015345862385,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.25,
+        "mae": 0.6047858232987426,
+        "wape": 0.26407228793356713,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.5,
+        "mae": 0.5996815096043221,
+        "wape": 0.2618435521668055,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 1,
+        "mae": 0.5982458637126765,
+        "wape": 0.2612166950536519,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.25,
+        "mae": 0.5988133973112736,
+        "wape": 0.26146450161605317,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.5,
+        "mae": 0.589067540131581,
+        "wape": 0.25720909300002825,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 1,
+        "mae": 0.582358096741931,
+        "wape": 0.254279497102754,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.25,
+        "mae": 0.5970487238264666,
+        "wape": 0.2606939786529868,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.5,
+        "mae": 0.5856361045722008,
+        "wape": 0.2557107988863871,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 1,
+        "mae": 0.5754910369096132,
+        "wape": 0.2512810799252384,
+        "observations": 3500
+      }
+    ]
+  },
+  "targetSelection": {
+    "selected": [
+      {
+        "country": "Australia",
+        "selected": true,
+        "developmentActiveDates": 37,
+        "developmentUnits": 79692,
+        "earlyScale84": 172.22619047619048
+      },
+      {
+        "country": "Belgium",
+        "selected": true,
+        "developmentActiveDates": 72,
+        "developmentUnits": 19340,
+        "earlyScale84": 41.726190476190474
+      },
+      {
+        "country": "Finland",
+        "selected": true,
+        "developmentActiveDates": 27,
+        "developmentUnits": 9189,
+        "earlyScale84": 23.928571428571427
+      },
+      {
+        "country": "Italy",
+        "selected": true,
+        "developmentActiveDates": 26,
+        "developmentUnits": 5972,
+        "earlyScale84": 17.964285714285715
+      },
+      {
+        "country": "Netherlands",
+        "selected": true,
+        "developmentActiveDates": 52,
+        "developmentUnits": 173556,
+        "earlyScale84": 517.9047619047619
+      },
+      {
+        "country": "Norway",
+        "selected": true,
+        "developmentActiveDates": 20,
+        "developmentUnits": 11709,
+        "earlyScale84": 24.095238095238095
+      },
+      {
+        "country": "Portugal",
+        "selected": true,
+        "developmentActiveDates": 34,
+        "developmentUnits": 13516,
+        "earlyScale84": 41.48809523809524
+      },
+      {
+        "country": "Spain",
+        "selected": true,
+        "developmentActiveDates": 63,
+        "developmentUnits": 23974,
+        "earlyScale84": 66.05952380952381
+      },
+      {
+        "country": "Sweden",
+        "selected": true,
+        "developmentActiveDates": 27,
+        "developmentUnits": 34039,
+        "earlyScale84": 86.8452380952381
+      },
+      {
+        "country": "Switzerland",
+        "selected": true,
+        "developmentActiveDates": 42,
+        "developmentUnits": 26757,
+        "earlyScale84": 46.51190476190476
+      }
+    ],
+    "developmentEligibility": [
+      {
+        "country": "Australia",
+        "selected": true,
+        "developmentActiveDates": 37,
+        "developmentUnits": 79692,
+        "earlyScale84": 172.22619047619048
+      },
+      {
+        "country": "Austria",
+        "selected": false,
+        "developmentActiveDates": 13,
+        "developmentUnits": 3974,
+        "earlyScale84": 4.619047619047619
+      },
+      {
+        "country": "Bahrain",
+        "selected": false,
+        "developmentActiveDates": 3,
+        "developmentUnits": 314,
+        "earlyScale84": 0.6428571428571429
+      },
+      {
+        "country": "Belgium",
+        "selected": true,
+        "developmentActiveDates": 72,
+        "developmentUnits": 19340,
+        "earlyScale84": 41.726190476190474
+      },
+      {
+        "country": "Brazil",
+        "selected": false,
+        "developmentActiveDates": 1,
+        "developmentUnits": 353,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Canada",
+        "selected": false,
+        "developmentActiveDates": 5,
+        "developmentUnits": 2762,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Channel Islands",
+        "selected": false,
+        "developmentActiveDates": 16,
+        "developmentUnits": 8712,
+        "earlyScale84": 15.154761904761905
+      },
+      {
+        "country": "Cyprus",
+        "selected": false,
+        "developmentActiveDates": 12,
+        "developmentUnits": 6059,
+        "earlyScale84": 38.69047619047619
+      },
+      {
+        "country": "Czech Republic",
+        "selected": false,
+        "developmentActiveDates": 2,
+        "developmentUnits": 670,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Denmark",
+        "selected": false,
+        "developmentActiveDates": 15,
+        "developmentUnits": 6484,
+        "earlyScale84": 7.9523809523809526
+      },
+      {
+        "country": "EIRE",
+        "selected": true,
+        "developmentActiveDates": 134,
+        "developmentUnits": 126000,
+        "earlyScale84": 241.6904761904762
+      },
+      {
+        "country": "European Community",
+        "selected": false,
+        "developmentActiveDates": 3,
+        "developmentUnits": 490,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Finland",
+        "selected": true,
+        "developmentActiveDates": 27,
+        "developmentUnits": 9189,
+        "earlyScale84": 23.928571428571427
+      },
+      {
+        "country": "France",
+        "selected": true,
+        "developmentActiveDates": 171,
+        "developmentUnits": 89247,
+        "earlyScale84": 215.64285714285714
+      },
+      {
+        "country": "Germany",
+        "selected": true,
+        "developmentActiveDates": 171,
+        "developmentUnits": 100537,
+        "earlyScale84": 227.33333333333334
+      },
+      {
+        "country": "Greece",
+        "selected": false,
+        "developmentActiveDates": 4,
+        "developmentUnits": 1317,
+        "earlyScale84": 6.261904761904762
+      },
+      {
+        "country": "Hong Kong",
+        "selected": false,
+        "developmentActiveDates": 7,
+        "developmentUnits": 4768,
+        "earlyScale84": 13.345238095238095
+      },
+      {
+        "country": "Iceland",
+        "selected": false,
+        "developmentActiveDates": 6,
+        "developmentUnits": 2266,
+        "earlyScale84": 7.5476190476190474
+      },
+      {
+        "country": "Israel",
+        "selected": false,
+        "developmentActiveDates": 7,
+        "developmentUnits": 4409,
+        "earlyScale84": 4.595238095238095
+      },
+      {
+        "country": "Italy",
+        "selected": true,
+        "developmentActiveDates": 26,
+        "developmentUnits": 5972,
+        "earlyScale84": 17.964285714285715
+      },
+      {
+        "country": "Japan",
+        "selected": false,
+        "developmentActiveDates": 16,
+        "developmentUnits": 21766,
+        "earlyScale84": 84.42857142857143
+      },
+      {
+        "country": "Lebanon",
+        "selected": false,
+        "developmentActiveDates": 1,
+        "developmentUnits": 386,
+        "earlyScale84": 4.595238095238095
+      },
+      {
+        "country": "Lithuania",
+        "selected": false,
+        "developmentActiveDates": 2,
+        "developmentUnits": 640,
+        "earlyScale84": 7.619047619047619
+      },
+      {
+        "country": "Malta",
+        "selected": false,
+        "developmentActiveDates": 4,
+        "developmentUnits": 779,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Netherlands",
+        "selected": true,
+        "developmentActiveDates": 52,
+        "developmentUnits": 173556,
+        "earlyScale84": 517.9047619047619
+      },
+      {
+        "country": "Norway",
+        "selected": true,
+        "developmentActiveDates": 20,
+        "developmentUnits": 11709,
+        "earlyScale84": 24.095238095238095
+      },
+      {
+        "country": "Poland",
+        "selected": false,
+        "developmentActiveDates": 15,
+        "developmentUnits": 2722,
+        "earlyScale84": 8.630952380952381
+      },
+      {
+        "country": "Portugal",
+        "selected": true,
+        "developmentActiveDates": 34,
+        "developmentUnits": 13516,
+        "earlyScale84": 41.48809523809524
+      },
+      {
+        "country": "RSA",
+        "selected": false,
+        "developmentActiveDates": 1,
+        "developmentUnits": 351,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Saudi Arabia",
+        "selected": false,
+        "developmentActiveDates": 1,
+        "developmentUnits": 80,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "Singapore",
+        "selected": false,
+        "developmentActiveDates": 4,
+        "developmentUnits": 5234,
+        "earlyScale84": 12.988095238095237
+      },
+      {
+        "country": "Spain",
+        "selected": true,
+        "developmentActiveDates": 63,
+        "developmentUnits": 23974,
+        "earlyScale84": 66.05952380952381
+      },
+      {
+        "country": "Sweden",
+        "selected": true,
+        "developmentActiveDates": 27,
+        "developmentUnits": 34039,
+        "earlyScale84": 86.8452380952381
+      },
+      {
+        "country": "Switzerland",
+        "selected": true,
+        "developmentActiveDates": 42,
+        "developmentUnits": 26757,
+        "earlyScale84": 46.51190476190476
+      },
+      {
+        "country": "USA",
+        "selected": false,
+        "developmentActiveDates": 3,
+        "developmentUnits": 1854,
+        "earlyScale84": 0.0
+      },
+      {
+        "country": "United Arab Emirates",
+        "selected": false,
+        "developmentActiveDates": 2,
+        "developmentUnits": 981,
+        "earlyScale84": 5.904761904761905
+      },
+      {
+        "country": "United Kingdom",
+        "selected": true,
+        "developmentActiveDates": 270,
+        "developmentUnits": 3690508,
+        "earlyScale84": 9539.654761904761
+      }
+    ],
+    "excludedPreviouslyScoredCountries": [
+      "EIRE",
+      "France",
+      "Germany",
+      "United Kingdom"
+    ],
+    "accounting": {
+      "sourceRows": 541909,
+      "acceptedRows": 522219,
+      "excludedRows": {
+        "outside_fixed_calendar": 4740,
+        "cancelled_invoice": 9255,
+        "nonproduct_stock_code": 2742,
+        "nonpositive_quantity_or_price": 2507,
+        "excluded_country": 446
+      }
+    },
+    "sourceLock": {
+      "lockedAt": "2026-10-15T06:29:03.134658+00:00",
+      "downloadUrl": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+      "files": {
+        "archiveSha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+        "workbookSha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+        "workbookContentSha1": "4d584293831862e8584967b6f25243f86defe77b",
+        "archiveBytes": 23715478,
+        "workbookBytes": 23715344
+      },
+      "policy": "Locally computed before parsing records. Not a publisher-supplied checksum. SHA1 is a content revision, not a Git commit."
+    },
+    "calendar": {
+      "from": "2010-12-02",
+      "developmentThrough": "2011-10-31",
+      "externalFrom": "2011-11-01",
+      "externalThrough": "2011-12-08",
+      "boundaryPolicy": "Exclude both publisher coverage boundary dates, 2010-12-01 and 2011-12-09, because completeness of each boundary day is not assured. Use source local calendar dates as published; do not relabel as Asia/Jakarta."
+    }
+  },
+  "external": {
+    "targets": 190,
+    "countries": 10,
+    "pooledRawUnitMetrics": {
+      "boosting": {
+        "mae": 490.4789387622927,
+        "wape": 1.7498356716457106,
+        "observations": 190
+      },
+      "naive": {
+        "mae": 535.8578947368421,
+        "wape": 1.911729913438609,
+        "observations": 190
+      },
+      "ma7": {
+        "mae": 463.09248120300754,
+        "wape": 1.6521315776061631,
+        "observations": 190
+      },
+      "ma14": {
+        "mae": 437.6443609022557,
+        "wape": 1.5613427074643442,
+        "observations": 190
+      },
+      "weekly": {
+        "mae": 494.4894736842105,
+        "wape": 1.7641436806429203,
+        "observations": 190
+      }
+    },
+    "primaryMacroCountry": {
+      "boosting": {
+        "meanCountryWape": 1.7299558318012498,
+        "definedCountries": 10,
+        "undefinedCountries": 0
+      },
+      "naive": {
+        "meanCountryWape": 2.049925864700536,
+        "definedCountries": 10,
+        "undefinedCountries": 0
+      },
+      "ma7": {
+        "meanCountryWape": 1.6512260348135954,
+        "definedCountries": 10,
+        "undefinedCountries": 0
+      },
+      "ma14": {
+        "meanCountryWape": 1.565111314357978,
+        "definedCountries": 10,
+        "undefinedCountries": 0
+      },
+      "weekly": {
+        "meanCountryWape": 1.755016780991746,
+        "definedCountries": 10,
+        "undefinedCountries": 0
+      }
+    },
+    "perCountry": {
+      "Australia": {
+        "boosting": {
+          "mae": 420.6361655958144,
+          "wape": 1.9502408849000668,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 251.89473684210526,
+          "wape": 1.1678867740361152,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 405.7293233082707,
+          "wape": 1.8811266820051593,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 393.35338345864665,
+          "wape": 1.8237467754305237,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 431.36842105263156,
+          "wape": 2.0,
+          "observations": 19
+        }
+      },
+      "Belgium": {
+        "boosting": {
+          "mae": 298.1586936420123,
+          "wape": 1.6622697122060544,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 426.2105263157895,
+          "wape": 2.376173708920188,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 279.8045112781955,
+          "wape": 1.5599429912810197,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 245.1503759398496,
+          "wape": 1.3667421193829643,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 316.6842105263158,
+          "wape": 1.7655516431924883,
+          "observations": 19
+        }
+      },
+      "Finland": {
+        "boosting": {
+          "mae": 129.1311828948068,
+          "wape": 1.7326924258483964,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 133.78947368421052,
+          "wape": 1.7951977401129944,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 128.2857142857143,
+          "wape": 1.7213478611783701,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 108.61654135338347,
+          "wape": 1.4574253430185633,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 115.0,
+          "wape": 1.5430790960451977,
+          "observations": 19
+        }
+      },
+      "Italy": {
+        "boosting": {
+          "mae": 171.6442027728923,
+          "wape": 1.5566777339784983,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 165.42105263157896,
+          "wape": 1.5002386634844869,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 155.40601503759396,
+          "wape": 1.4094101602454823,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 206.26315789473685,
+          "wape": 1.8706443914081146,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 216.3684210526316,
+          "wape": 1.962291169451074,
+          "observations": 19
+        }
+      },
+      "Netherlands": {
+        "boosting": {
+          "mae": 2434.577132833841,
+          "wape": 1.7385915028130112,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 2451.684210526316,
+          "wape": 1.7508080884011126,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 2264.9172932330825,
+          "wape": 1.617433232031443,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 2161.248120300752,
+          "wape": 1.5434005219016118,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 2368.5789473684213,
+          "wape": 1.6914605728031271,
+          "observations": 19
+        }
+      },
+      "Norway": {
+        "boosting": {
+          "mae": 372.7970188660793,
+          "wape": 2.0359710717032216,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 464.89473684210526,
+          "wape": 2.5389479735556195,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 374.3834586466166,
+          "wape": 2.044635157886092,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 310.8270676691729,
+          "wape": 1.6975321315648992,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 407.57894736842104,
+          "wape": 2.2259269905145156,
+          "observations": 19
+        }
+      },
+      "Portugal": {
+        "boosting": {
+          "mae": 180.85250499439186,
+          "wape": 1.3030707602933052,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 331.5263157894737,
+          "wape": 2.3886992794842623,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 170.89473684210526,
+          "wape": 1.2313234736442928,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 153.28571428571428,
+          "wape": 1.1044476948913808,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 137.8421052631579,
+          "wape": 0.9931740614334471,
+          "observations": 19
+        }
+      },
+      "Spain": {
+        "boosting": {
+          "mae": 272.7573156117552,
+          "wape": 1.3793955274483227,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 298.2631578947368,
+          "wape": 1.508384349214799,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 259.3157894736842,
+          "wape": 1.3114186851211074,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 263.2932330827067,
+          "wape": 1.3315335183847292,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 332.05263157894734,
+          "wape": 1.679265371306894,
+          "observations": 19
+        }
+      },
+      "Sweden": {
+        "boosting": {
+          "mae": 177.11274894076033,
+          "wape": 1.6800510383796536,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 282.57894736842104,
+          "wape": 2.6804792810783824,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 167.40601503759402,
+          "wape": 1.5879751800870125,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 170.15037593984962,
+          "wape": 1.6140075600884387,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 125.89473684210526,
+          "wape": 1.1942086869695456,
+          "observations": 19
+        }
+      },
+      "Switzerland": {
+        "boosting": {
+          "mae": 447.122421470574,
+          "wape": 2.2605976604419658,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 552.3157894736842,
+          "wape": 2.792442788717403,
+          "observations": 19
+        },
+        "ma7": {
+          "mae": 424.78195488721803,
+          "wape": 2.147646924655972,
+          "observations": 19
+        },
+        "ma14": {
+          "mae": 364.25563909774445,
+          "wape": 1.8416330875085536,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 493.5263157894737,
+          "wape": 2.4952102182011706,
+          "observations": 19
+        }
+      }
+    },
+    "targetVolumeShare": {
+      "Australia": 0.07694763129729425,
+      "Belgium": 0.06399158796026813,
+      "Finland": 0.026588054152505775,
+      "Italy": 0.03933755187111553,
+      "Netherlands": 0.49957752032596653,
+      "Norway": 0.06532474604277372,
+      "Portugal": 0.04951461779672156,
+      "Spain": 0.07054471712638714,
+      "Sweden": 0.037610079426178715,
+      "Switzerland": 0.07056349400078862
+    },
+    "byOrigin": {
+      "2011-11-01": {
+        "boosting": {
+          "mae": 459.0675270952438,
+          "wape": 1.5322681144701062,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 346.4,
+          "wape": 1.156208277703605,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 337.4285714285714,
+          "wape": 1.1262635895479685,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 268.9714285714286,
+          "wape": 0.8977684531756628,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 567.5,
+          "wape": 1.894192256341789,
+          "observations": 10
+        }
+      },
+      "2011-11-03": {
+        "boosting": {
+          "mae": 545.8598165665509,
+          "wape": 2.403609936444522,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 739.9,
+          "wape": 3.2580361074416557,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 437.04285714285714,
+          "wape": 1.924451154305844,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 633.7142857142858,
+          "wape": 2.790463609486067,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 927.4,
+          "wape": 4.0836635843240865,
+          "observations": 10
+        }
+      },
+      "2011-11-05": {
+        "boosting": {
+          "mae": 593.6965267421955,
+          "wape": 1.7379874904631016,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 689.6,
+          "wape": 2.018735362997658,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 538.8857142857144,
+          "wape": 1.577534292405487,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 512.2285714285715,
+          "wape": 1.4994981599197057,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 502.2,
+          "wape": 1.4701405152224825,
+          "observations": 10
+        }
+      },
+      "2011-11-07": {
+        "boosting": {
+          "mae": 235.65201178064507,
+          "wape": 2.5420928994675847,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 775.9,
+          "wape": 8.370010787486516,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 266.2714285714286,
+          "wape": 2.8723994452149793,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 314.35714285714283,
+          "wape": 3.391123439667129,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 91.9,
+          "wape": 0.9913700107874865,
+          "observations": 10
+        }
+      },
+      "2011-11-09": {
+        "boosting": {
+          "mae": 874.264573671096,
+          "wape": 1.0619027980943714,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 829.3,
+          "wape": 1.0072877444430948,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 901.9285714285716,
+          "wape": 1.09550415574951,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 811.9857142857143,
+          "wape": 0.9862573961930211,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 602.8,
+          "wape": 0.7321753917162638,
+          "observations": 10
+        }
+      },
+      "2011-11-11": {
+        "boosting": {
+          "mae": 493.8660796685177,
+          "wape": 13.240377471005836,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 1683.9,
+          "wape": 45.14477211796247,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 399.9,
+          "wape": 10.72117962466488,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 298.6571428571429,
+          "wape": 8.006893910379166,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 211.3,
+          "wape": 5.664879356568365,
+          "observations": 10
+        }
+      },
+      "2011-11-13": {
+        "boosting": {
+          "mae": 517.6485193959853,
+          "wape": 3.6173900726483947,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 143.1,
+          "wape": 1.0,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 457.35714285714295,
+          "wape": 3.196066686632725,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 389.5857142857143,
+          "wape": 2.722471797943496,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 397.3,
+          "wape": 2.776380153738644,
+          "observations": 10
+        }
+      },
+      "2011-11-15": {
+        "boosting": {
+          "mae": 554.2510313752429,
+          "wape": 1.6584411471431564,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 607.2,
+          "wape": 1.8168761220825853,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 592.257142857143,
+          "wape": 1.7721638026844493,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 551.2142857142857,
+          "wape": 1.6493545353509447,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 382.1,
+          "wape": 1.1433273488928786,
+          "observations": 10
+        }
+      },
+      "2011-11-17": {
+        "boosting": {
+          "mae": 627.8975337658369,
+          "wape": 1.9851328920829492,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 339.1,
+          "wape": 1.072083465064812,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 653.6714285714286,
+          "wape": 2.066618490583081,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 423.05714285714294,
+          "wape": 1.3375186305948243,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 1067.9,
+          "wape": 3.376225102750553,
+          "observations": 10
+        }
+      },
+      "2011-11-19": {
+        "boosting": {
+          "mae": 308.3570814913761,
+          "wape": 4.122420875553156,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 393.0,
+          "wape": 5.254010695187166,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 237.8571428571429,
+          "wape": 3.179908326967151,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 284.1285714285714,
+          "wape": 3.798510313216195,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 74.8,
+          "wape": 1.0,
+          "observations": 10
+        }
+      },
+      "2011-11-21": {
+        "boosting": {
+          "mae": 264.0128495281782,
+          "wape": 1.397632872039059,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 191.9,
+          "wape": 1.0158814187400742,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 256.1285714285715,
+          "wape": 1.3558950313847087,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 207.2857142857143,
+          "wape": 1.097330409135597,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 615.6,
+          "wape": 3.2588671254632082,
+          "observations": 10
+        }
+      },
+      "2011-11-23": {
+        "boosting": {
+          "mae": 849.7021470910425,
+          "wape": 0.8760719116311398,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 899.7,
+          "wape": 0.9276214042684813,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 887.0714285714287,
+          "wape": 0.9146009161474674,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 819.4571428571428,
+          "wape": 0.844888280087785,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 943.6,
+          "wape": 0.9728838024538612,
+          "observations": 10
+        }
+      },
+      "2011-11-25": {
+        "boosting": {
+          "mae": 495.4272925598174,
+          "wape": 8.454390658017362,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 209.8,
+          "wape": 3.580204778156997,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 448.4857142857142,
+          "wape": 7.653339834227205,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 346.8428571428571,
+          "wape": 5.918820087762067,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 189.6,
+          "wape": 3.2354948805460753,
+          "observations": 10
+        }
+      },
+      "2011-11-27": {
+        "boosting": {
+          "mae": 411.6812948388698,
+          "wape": null,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 0.0,
+          "wape": null,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 369.2,
+          "wape": null,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 297.97142857142865,
+          "wape": null,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 168.8,
+          "wape": null,
+          "observations": 10
+        }
+      },
+      "2011-11-29": {
+        "boosting": {
+          "mae": 525.7045335841281,
+          "wape": 1.7617444154964077,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 298.4,
+          "wape": 1.0,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 534.6285714285714,
+          "wape": 1.791650708540789,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 484.1857142857143,
+          "wape": 1.6226062811183455,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 1206.4,
+          "wape": 4.042895442359249,
+          "observations": 10
+        }
+      },
+      "2011-12-01": {
+        "boosting": {
+          "mae": 288.79186273386165,
+          "wape": 1.541045158665217,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 640.2,
+          "wape": 3.416221985058698,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 263.9142857142857,
+          "wape": 1.4082939472480562,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 394.5571428571428,
+          "wape": 2.1054276566549777,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 230.4,
+          "wape": 1.2294557097118464,
+          "observations": 10
+        }
+      },
+      "2011-12-03": {
+        "boosting": {
+          "mae": 235.97408650623396,
+          "wape": null,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 331.6,
+          "wape": null,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 138.8,
+          "wape": null,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 253.99999999999994,
+          "wape": null,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 0.0,
+          "wape": null,
+          "observations": 10
+        }
+      },
+      "2011-12-05": {
+        "boosting": {
+          "mae": 121.19895266790563,
+          "wape": 1.0659538493219494,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 113.7,
+          "wape": 1.0,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 139.32857142857145,
+          "wape": 1.2254052016585,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 226.07142857142858,
+          "wape": 1.9883151149641916,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 124.3,
+          "wape": 1.0932277924362357,
+          "observations": 10
+        }
+      },
+      "2011-12-07": {
+        "boosting": {
+          "mae": 916.0461154208348,
+          "wape": 1.118766628506149,
+          "observations": 10
+        },
+        "naive": {
+          "mae": 948.6,
+          "wape": 1.1585246702491452,
+          "observations": 10
+        },
+        "ma7": {
+          "mae": 938.5999999999998,
+          "wape": 1.1463116756228624,
+          "observations": 10
+        },
+        "ma14": {
+          "mae": 796.9714285714285,
+          "wape": 0.9733407774443436,
+          "observations": 10
+        },
+        "weekly": {
+          "mae": 1091.4,
+          "wape": 1.3329262335124572,
+          "observations": 10
+        }
+      }
+    },
+    "countriesBeatingMA7": 1,
+    "countriesBeatingWeekly": 6
+  },
+  "checks": {
+    "targetFitOrTuning": false,
+    "previouslyScoredGroupOverlap": 0,
+    "savedModelReloadPredictionsIdentical": true,
+    "artifactUnchangedAfterTargetEvaluation": true,
+    "failedOrDroppedCountries": [],
+    "userDatabaseAccess": false
+  },
+  "limitations": "Known UCI calendar, one gift/wholesale retailer, correlated country groups and sparse event totals. Only a new sales-only boosting variant's fixed weights are transferred. No claim about original v2 weights, latent demand, ingredient usage, Indonesian field performance, calibrated uncertainty, public-model activation or Qwen fine-tuning. Repetition after this first score is reproducibility, not independent evaluation.",
+  "priorKnowledge": "FreshRetailNet v1/v2 outcomes and UCI Ridge outcomes for EIRE, France, Germany and United Kingdom are known. UCI calendar conditions and publisher records have been available. This is a prespecified test on previously unscored groups, not a fully blind calendar/domain replication."
+}

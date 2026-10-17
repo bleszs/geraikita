@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "previousRun": "models/benchmarks/asr-comparison/2026-10-15T08-17-56-627Z-20faa6f2",
+  "previousRepeatReport": "docs/evaluation/asr-comparison-reproducibility.json",
+  "previousRepeatSha256": "3852a0f37a79a5037a73c5be746dd43de5bbfe9c06fa40c9f6748cd7224f4305",
+  "policy": "All three completed diagnostic runs retained. Known seen clips only; no model promotion, training or new accuracy test.",
+  "experiments": [
+    {
+      "id": "stage_trace",
+      "directory": "models/benchmarks/asr-stability/2026-10-15T08-33-12-700Z-2caec43a",
+      "resultsFile": "traces.json",
+      "traced": true,
+      "protocolSha256": "eb685ceee2ae86774efbbaebb9b423f2cba5a5f751aa5dcb639b9d85d274288a",
+      "resultsSha256": "64520caea088cba985455c6d4383e28a6f53a35330c54a0e26629366e1fe5904"
+    },
+    {
+      "id": "import_order",
+      "directory": "models/benchmarks/asr-import-order/2026-10-15T08-35-30-970Z-77ab9c5b",
+      "resultsFile": "results.json",
+      "traced": false,
+      "protocolSha256": "505becd12213168413cd33017db4bd573950c039a2608d2b0b5fb9c388e2bb93",
+      "resultsSha256": "c8c86018535bea026c70ea9e952f98b6b0c5ef8a0e1b8173c3be7e0631377e21"
+    },
+    {
+      "id": "single_factor",
+      "directory": "models/benchmarks/asr-numerics/2026-10-15T08-41-22-343Z-96b875f2",
+      "resultsFile": "traces.json",
+      "traced": true,
+      "protocolSha256": "434e39e3d0ebebd621cfe40e64a354f83b49e04a3d0bbfeeee0f9687fd2fea72",
+      "resultsSha256": "16162d442ea01c01a1682e93d0c4e78df4ba64869912ad4259e1059056a8fa48"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "version": "0.15.0",
+  "checkedAt": "2026-10-15T05:45:49.985Z",
+  "backup": "data/backups/gerai-kita-live-2026-10-15T05-44-59-652Z-36c8633e.sqlite",
+  "readOnly": true,
+  "tablesCompared": 19,
+  "userDataPreserved": true,
+  "changedTables": [],
+  "verification": {
+    "backendTestsPassed": 80,
+    "browserTestsPassed": 12,
+    "pooledPythonTestsPassed": 7,
+    "total": 99,
+    "chatTestsIncludedInBackend": 10,
+    "chatFieldEvaluation": "not_evaluated_no_consented_labeled_dataset",
+    "note": "Counts from commands executed in this session; contract fixtures are isolated and do not represent model accuracy."
+  }
+}

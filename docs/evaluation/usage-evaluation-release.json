@@ -1,0 +1,79 @@
+{
+  "version": "0.30.0",
+  "checkedAt": "2026-10-15T22:04:18.103Z",
+  "status": "evaluation_tooling_complete_field_collection_pending",
+  "features": {
+    "scopedReadOnlyExport": true,
+    "permissionReferenceRequired": true,
+    "allTargetDatesRetained": true,
+    "missingDatesNeverImputed": true,
+    "blindWorksheetWithoutPredictions": true,
+    "protocolBeforeAnnotations": true,
+    "observationAndSourceHashesChecked": true,
+    "chronologicalSplits": true,
+    "humanCompletenessAndEvidenceRequired": true,
+    "confusionMatrixPrecisionRecallF1": true,
+    "coverageAndAbstention": true,
+    "endToEndRecall": true,
+    "actualReviewBurden": true,
+    "zeroDenominatorsNull": true,
+    "existingOutputsNeverOverwritten": true
+  },
+  "tests": {
+    "newContractTests": 13,
+    "node": 189,
+    "browser": 28,
+    "total": 217,
+    "pythonSuitesRerun": false,
+    "logSha256": "0ed068e6e047cf249bb6fefd13893c9448e6491346fbe47873b8842462f6e60b"
+  },
+  "activeEvaluation": {
+    "status": "not_run_no_usage_history_or_human_labels",
+    "metrics": null,
+    "fieldValidated": false
+  },
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T21-59-09-747Z-de2bcf4f.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true,
+    "tableCounts": {
+      "account_sessions": 2,
+      "accounts": 1,
+      "audit": 2,
+      "business_state": 1,
+      "businesses": 1,
+      "collective_cycles": 1,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 1,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 2,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "workspaces": 1
+    }
+  },
+  "healthReady": true,
+  "preview": "http://localhost:4174",
+  "unchangedGuideSources": 8,
+  "unchangedPriorSpeechSources": 17,
+  "unchangedScreeningSources": 5,
+  "sourceHashes": {
+    "scripts/usage-evaluation.mjs": "a1374747f4d9ecc1c77a6efdeeb3923a87f658a9dfcd66526f99a4a410697569",
+    "scripts/usage-evaluation-data.mjs": "00aff3185407dd133f32fd86d9b9df285a5346475ca40baa5f6eb1618caa50cf",
+    "scripts/evaluate-usage.mjs": "a9f47e8f20518c05dffb7e256772c39e21b69633fdbc6b3934ba6b431d8de6f6",
+    "tests/usage-evaluation.test.mjs": "ddbcf13c75e28fcbadfff093f9498fe25775c266533299b500e9ef74dbf13eac",
+    "datasets/templates/usage-review-labels.json": "3f508009c9b2b2fd4ea033e2cf39523dab0b8d1f91178c1696b0f9db2a8da757",
+    "docs/USAGE_EVALUATION.md": "f89820f2d7d9da1528a7339d54004d14b6f4aeb5e5d8f1bcb1e124123e0b627f"
+  },
+  "newTraining": false,
+  "publicModelActivated": false,
+  "automaticBusinessActions": false,
+  "limitations": "Contract fixtures and software checks only. No real annotated usage dataset, field accuracy, measured novice comprehension, threshold tuning or ASR stability fix is claimed."
+}

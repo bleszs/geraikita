@@ -1,0 +1,744 @@
+{
+  "checkedAt": "2026-10-15T08:48:35.296Z",
+  "version": "0.22.0",
+  "registrySha256": "55ba2fdbec13a82de403aaae7ae63ac5ea21ebc91c133118f2e4b366fde1bbd6",
+  "auditPassed": true,
+  "inferences": 136,
+  "experiments": [
+    {
+      "id": "stage_trace",
+      "directory": "models/benchmarks/asr-stability/2026-10-15T08-33-12-700Z-2caec43a",
+      "protocolSha256": "eb685ceee2ae86774efbbaebb9b423f2cba5a5f751aa5dcb639b9d85d274288a",
+      "resultsSha256": "64520caea088cba985455c6d4383e28a6f53a35330c54a0e26629366e1fe5904",
+      "traced": true,
+      "inferences": 48,
+      "groups": [
+        {
+          "profile": "baseline",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "baseline",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "baseline",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "baseline",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "one_thread",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "one_thread",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "one_thread",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "one_thread",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "seed_zero",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "seed_zero",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "seed_zero",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "seed_zero",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "avx2_controlled",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "avx2_controlled",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "avx2_controlled",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "avx2_controlled",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 3,
+          "accepted": 3,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        }
+      ],
+      "groupsWithTextVariation": 0,
+      "allObservedRepeatsMatch": true
+    },
+    {
+      "id": "import_order",
+      "directory": "models/benchmarks/asr-import-order/2026-10-15T08-35-30-970Z-77ab9c5b",
+      "protocolSha256": "505becd12213168413cd33017db4bd573950c039a2608d2b0b5fb9c388e2bb93",
+      "resultsSha256": "c8c86018535bea026c70ea9e952f98b6b0c5ef8a0e1b8173c3be7e0631377e21",
+      "traced": false,
+      "inferences": 40,
+      "groups": [
+        {
+          "profile": "production",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "production",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "production",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 2,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": false
+        },
+        {
+          "profile": "production",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "ct2_first",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 2,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": false
+        },
+        {
+          "profile": "ct2_first",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "ct2_first",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 2,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": false
+        },
+        {
+          "profile": "ct2_first",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_first",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_first",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_first",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_first",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_then_ct2",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_then_ct2",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "numpy_then_ct2",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 2,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": false
+        },
+        {
+          "profile": "numpy_then_ct2",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "av_then_ct2",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "av_then_ct2",
+          "model": "tiny",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "av_then_ct2",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "av_then_ct2",
+          "model": "base",
+          "filename": "16274568817512201809.wav",
+          "repeats": 2,
+          "accepted": 2,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": null,
+            "vad": null,
+            "features": null,
+            "encoder": null
+          },
+          "observedRepeatMatch": true
+        }
+      ],
+      "groupsWithTextVariation": 4,
+      "allObservedRepeatsMatch": false
+    },
+    {
+      "id": "single_factor",
+      "directory": "models/benchmarks/asr-numerics/2026-10-15T08-41-22-343Z-96b875f2",
+      "protocolSha256": "434e39e3d0ebebd621cfe40e64a354f83b49e04a3d0bbfeeee0f9687fd2fea72",
+      "resultsSha256": "16162d442ea01c01a1682e93d0c4e78df4ba64869912ad4259e1059056a8fa48",
+      "traced": true,
+      "inferences": 48,
+      "groups": [
+        {
+          "profile": "baseline",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "baseline",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "openblas_one",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "openblas_one",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "unpacked_gemm",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        },
+        {
+          "profile": "unpacked_gemm",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "vad": 1,
+            "features": 1,
+            "encoder": 1
+          },
+          "observedRepeatMatch": true
+        }
+      ],
+      "groupsWithTextVariation": 0,
+      "allObservedRepeatsMatch": true
+    }
+  ],
+  "singleFactorComparisons": [
+    {
+      "model": "tiny",
+      "filename": "9485984081064467567.wav",
+      "baseline": "baseline",
+      "profile": "openblas_one",
+      "samePcm": true,
+      "sameVad": true,
+      "sameMelFilters": true,
+      "sameFeatures": false,
+      "sameEncoder": false,
+      "sameTranscript": false
+    },
+    {
+      "model": "base",
+      "filename": "9485984081064467567.wav",
+      "baseline": "baseline",
+      "profile": "openblas_one",
+      "samePcm": true,
+      "sameVad": true,
+      "sameMelFilters": true,
+      "sameFeatures": false,
+      "sameEncoder": false,
+      "sameTranscript": true
+    },
+    {
+      "model": "tiny",
+      "filename": "9485984081064467567.wav",
+      "baseline": "baseline",
+      "profile": "unpacked_gemm",
+      "samePcm": true,
+      "sameVad": true,
+      "sameMelFilters": true,
+      "sameFeatures": true,
+      "sameEncoder": true,
+      "sameTranscript": true
+    },
+    {
+      "model": "base",
+      "filename": "9485984081064467567.wav",
+      "baseline": "baseline",
+      "profile": "unpacked_gemm",
+      "samePcm": true,
+      "sameVad": true,
+      "sameMelFilters": true,
+      "sameFeatures": true,
+      "sameEncoder": true,
+      "sameTranscript": true
+    }
+  ],
+  "historicalRepeat": {
+    "auditPassed": true,
+    "inferenceRepeatPassed": false,
+    "changed": 3,
+    "total": 4
+  },
+  "causeEstablished": false,
+  "fixValidated": false,
+  "readyForPromotion": false,
+  "activeModel": "whisper-tiny",
+  "runtimeChanged": false,
+  "trainingPerformed": false,
+  "newAccuracyBenchmark": false,
+  "limitations": [
+    "Already-seen diagnostic clips; no new test accuracy or owner-microphone validation.",
+    "Instrumentation changes import/allocation/copy timing; stable instrumented groups do not establish stability of uninstrumented production.",
+    "A single-factor BLAS setting changes features on the known clip. This does not prove the cause of historical within-configuration variation.",
+    "All attempts and historical failures are retained; there is no retry-until-pass promotion rule."
+  ]
+}

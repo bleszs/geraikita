@@ -1,0 +1,630 @@
+{
+  "generatedAt": "2026-10-13T18:47:22.441Z",
+  "fixtureVersion": "gerai-chat-fixtures-v1",
+  "source": "Kalimat sintetis buatan proyek; bukan chat pelanggan nyata.",
+  "interpretation": "Uji regresi kecil pada data sintetis; bukan benchmark UMKM nyata atau bukti generalisasi. Mode fallback dihitung terpisah dari keberhasilan model.",
+  "ai": {
+    "provider": "ollama",
+    "model": "qwen2.5:1.5b",
+    "available": true
+  },
+  "extraction": {
+    "passed": 26,
+    "total": 26,
+    "parserPassed": 26,
+    "modelAccepted": 12,
+    "fallback": 1,
+    "manualReview": 13,
+    "cases": [
+      {
+        "id": "quantity-after",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 3
+          },
+          {
+            "id": "nasi",
+            "qty": 1
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 3
+          },
+          {
+            "id": "nasi",
+            "qty": 1
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 2582,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "quantity-before",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 3
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 3
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1407,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "alias-nasgor",
+        "expected": [
+          {
+            "id": "nasi",
+            "qty": 4
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "nasi",
+            "qty": 4
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1487,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "alias-geprek",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 1
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 1
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1515,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "word-number",
+        "expected": [
+          {
+            "id": "nasi",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 3
+          }
+        ],
+        "actual": [
+          {
+            "id": "nasi",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 3
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1888,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "colon",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 1
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "teh",
+            "qty": 1
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1701,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "times",
+        "expected": [
+          {
+            "id": "nasi",
+            "qty": 3
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "nasi",
+            "qty": 3
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1559,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "portions",
+        "expected": [
+          {
+            "id": "nasi",
+            "qty": 3
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "nasi",
+            "qty": 3
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1677,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "multiline",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 1
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 1
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1604,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "uppercase",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "nasi",
+            "qty": 1
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 2
+          },
+          {
+            "id": "nasi",
+            "qty": 1
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 1569,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "variation",
+        "expected": [
+          {
+            "id": "ayam",
+            "qty": 3
+          },
+          {
+            "id": "nasi",
+            "qty": 1
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "ayam",
+            "qty": 3
+          },
+          {
+            "id": "nasi",
+            "qty": 1
+          },
+          {
+            "id": "teh",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 2193,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "note",
+        "expected": [
+          {
+            "id": "nasi",
+            "qty": 2
+          }
+        ],
+        "actual": [
+          {
+            "id": "nasi",
+            "qty": 2
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "fallback",
+        "latencyMs": 1456,
+        "error": null,
+        "reason": "Hasil AI berbeda dari bukti chat. Parser lokal dipakai; periksa jumlah dan variasi."
+      },
+      {
+        "id": "single",
+        "expected": [
+          {
+            "id": "teh",
+            "qty": 1
+          }
+        ],
+        "actual": [
+          {
+            "id": "teh",
+            "qty": 1
+          }
+        ],
+        "pass": true,
+        "parserPass": true,
+        "mode": "ollama",
+        "latencyMs": 861,
+        "error": null,
+        "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli."
+      },
+      {
+        "id": "cancel",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Pesan memuat pembatalan atau perubahan jumlah. Periksa lewat formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "dont",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Pesan memuat pembatalan atau perubahan jumlah. Periksa lewat formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "change",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Pesan memuat pembatalan atau perubahan jumlah. Periksa lewat formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "unknown",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Ada item di luar katalog atau angka yang belum jelas. Periksa seluruh pesanan secara manual.",
+        "reason": null
+      },
+      {
+        "id": "unknown-same-clause",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Ada angka yang belum jelas. Gunakan formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "missing-qty",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Jumlah Ayam geprek belum jelas. Gunakan formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "duplicate",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Menu disebut berulang. Periksa total jumlah lewat formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "fraction",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Jumlah pecahan atau penulisan angka belum jelas. Gunakan formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "zero",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Jumlah per menu harus 1–99 porsi.",
+        "reason": null
+      },
+      {
+        "id": "too-many",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Jumlah per menu harus 1–99 porsi.",
+        "reason": null
+      },
+      {
+        "id": "empty",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Isi pesanannya dulu, atau gunakan formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "noise",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 11,
+        "error": "Menu atau jumlah belum dikenali. Gunakan formulir manual.",
+        "reason": null
+      },
+      {
+        "id": "adversarial",
+        "expected": "manual_review",
+        "actual": null,
+        "pass": true,
+        "parserPass": true,
+        "mode": "manual_review",
+        "latencyMs": 0,
+        "error": "Pesan mengandung instruksi yang bukan pesanan. Gunakan formulir manual.",
+        "reason": null
+      }
+    ]
+  },
+  "forecast": {
+    "dataset": "gerai-demo-v2",
+    "evaluation": "Rolling one-day holdout, last seven complete dates; model selection uses only earlier history; zero safety stock and incoming",
+    "from": "2026-10-07",
+    "to": "2026-10-13",
+    "metrics": {
+      "selected": {
+        "mae": 0.5714285714285714,
+        "wape": 0.037383177570093455,
+        "observations": 7
+      },
+      "naive": {
+        "mae": 2.7142857142857144,
+        "wape": 0.17757009345794392,
+        "observations": 7
+      },
+      "moving_average_7": {
+        "mae": 2.9591836734693877,
+        "wape": 0.19359145527369828,
+        "observations": 7
+      }
+    },
+    "rows": [
+      {
+        "date": "2026-10-07",
+        "actual": 13,
+        "selectedMethod": "weekday_average",
+        "selected": 13,
+        "naive": 14,
+        "moving_average_7": 15.428571428571429
+      },
+      {
+        "date": "2026-10-08",
+        "actual": 12,
+        "selectedMethod": "weekday_average",
+        "selected": 13,
+        "naive": 13,
+        "moving_average_7": 15.285714285714286
+      },
+      {
+        "date": "2026-10-09",
+        "actual": 14,
+        "selectedMethod": "weekday_average",
+        "selected": 13,
+        "naive": 12,
+        "moving_average_7": 15.142857142857142
+      },
+      {
+        "date": "2026-10-10",
+        "actual": 21,
+        "selectedMethod": "weekday_average",
+        "selected": 21,
+        "naive": 14,
+        "moving_average_7": 15.428571428571429
+      },
+      {
+        "date": "2026-10-11",
+        "actual": 20,
+        "selectedMethod": "weekday_average",
+        "selected": 21,
+        "naive": 21,
+        "moving_average_7": 15.285714285714286
+      },
+      {
+        "date": "2026-10-12",
+        "actual": 14,
+        "selectedMethod": "weekday_average",
+        "selected": 13,
+        "naive": 20,
+        "moving_average_7": 15.142857142857142
+      },
+      {
+        "date": "2026-10-13",
+        "actual": 13,
+        "selectedMethod": "weekday_average",
+        "selected": 13,
+        "naive": 14,
+        "moving_average_7": 15.428571428571429
+      }
+    ]
+  },
+  "collective": {
+    "needs": 50,
+    "vendorOrder": 50,
+    "individualTotal": 90000,
+    "collectiveTotal": 66000,
+    "shippingAllocated": 6000,
+    "minimumMet": true
+  }
+}

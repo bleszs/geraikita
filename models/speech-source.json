@@ -1,0 +1,13 @@
+{
+  "repository": "Systran/faster-whisper-tiny",
+  "revision": "d90ca5fe260221311c53c58e660288d3deb8d356",
+  "license": "MIT",
+  "upstream": "https://github.com/openai/whisper",
+  "files": [
+    {"name":"config.json","size":2249,"gitBlobSha1":"3baa18e2b321a2f489614607852a729fcd516480"},
+    {"name":"model.bin","size":75538270,"sha256":"dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1"},
+    {"name":"tokenizer.json","size":2203239,"gitBlobSha1":"7818adb6de9fa3064d3ff81226fdd675be1f6344"},
+    {"name":"vocabulary.txt","size":459861,"gitBlobSha1":"c9074644d9d1205686f16d411564729461324b75"},
+    {"name":"README.md","size":1991,"gitBlobSha1":"7e9bc5761a3e88762273fb1011479f2e501266c4"}
+  ]
+}

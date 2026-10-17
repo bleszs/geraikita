@@ -1,0 +1,5837 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "gerai-freshretailnet-v2",
+  "runId": "2026-10-15T05-29-16Z-d1f901c0",
+  "generatedAt": "2026-10-15T05:29:26.934052+00:00",
+  "artifactDirectory": "models/benchmarks/freshretailnet-v2/2026-10-15T05-29-16Z-d1f901c0",
+  "model": {
+    "modelKind": "gerai-pooled-residual-hgb-two-day-v2",
+    "usage": "public_benchmark_only",
+    "source": {
+      "url": "https://huggingface.co/datasets/Dingdong-Inc/FreshRetailNet-50K",
+      "license": "CC-BY-4.0",
+      "revision": "c374e85975c82816c495acfa904cc55ab14a47d3",
+      "files": {
+        "train.parquet": {
+          "bytes": 106436287,
+          "sha256": "6706832db892bbae4969c19d87e07975d2543d2ba7d7d4756360654785de5a3d"
+        },
+        "eval.parquet": {
+          "bytes": 8440124,
+          "sha256": "1b118840664280c6b88bffc84c80ee1f54c05d911e354b7599e5da10995e960e"
+        }
+      }
+    },
+    "protocolSha256": "7a68f9bd0930f4a6d37df3e3b44aa3993651c1e7c0c6ce8697cc38a4e14cfc8d",
+    "selectionSha256": "ee883cf45136b3817fd8f5c994fa0424b1a98ace2e355ab18496e958075b3313",
+    "developmentManifestSha256": "54c489afe5c4429db24f55e64ef8e4ad46518ddf9b3863d15cebfc37c2bd30d0",
+    "artifactSha256": "1d2a00179ad3c38ff51af5b83072d2bee3048da892c6b5cd6f82afc94e6daa83",
+    "features": [
+      "lag1_relative",
+      "lag2_relative",
+      "lag3_relative",
+      "lag4_relative",
+      "lag5_relative",
+      "lag6_relative",
+      "lag7_relative",
+      "lag8_relative",
+      "lag9_relative",
+      "lag10_relative",
+      "lag11_relative",
+      "lag12_relative",
+      "lag13_relative",
+      "lag14_relative",
+      "mean3_relative",
+      "mean7_relative",
+      "median7_relative",
+      "std7_relative",
+      "trend7_relative",
+      "zero_fraction7",
+      "weekly_two_day_relative",
+      "log_scale14",
+      "past_stockout_fraction7",
+      "weekday_sin",
+      "weekday_cos",
+      "weekend_days"
+    ],
+    "selected": {
+      "variant": "calendar",
+      "maxLeafNodes": 15,
+      "residualWeight": 1,
+      "mae": 0.5711282281053722,
+      "wape": 0.2493761131446538,
+      "observations": 3500
+    },
+    "fitting": {
+      "estimator": "sklearn HistGradientBoostingRegressor",
+      "loss": "absolute_error",
+      "target": "(two_day_sales - 2*mean_last_7) / history_scale",
+      "sampleWeight": "history_scale, so normalized residual loss targets absolute error in original normalized-sales units",
+      "learning_rate": 0.05,
+      "max_iter": 150,
+      "min_samples_leaf": 50,
+      "l2_regularization": 10,
+      "max_leaf_nodes": [
+        7,
+        15
+      ],
+      "variants": [
+        "lags",
+        "calendar"
+      ],
+      "residualWeights": [
+        0,
+        0.25,
+        0.5,
+        1
+      ],
+      "random_state": 26015,
+      "early_stopping": false,
+      "threads": 2
+    },
+    "developmentSeries": 500,
+    "developmentStores": 355,
+    "trainingTargets": 19000,
+    "trainingThrough": "2024-06-25",
+    "unit": "normalized_sales",
+    "horizonDays": 2,
+    "inference": "max(0, 2*mean_last_7 + residualWeight*max(mean_last_14,1e-6)*model.predict(features))",
+    "environment": {
+      "python": "3.13.7",
+      "numpy": "2.5.4",
+      "sklearn": "1.7.2",
+      "duckdb": "1.5.6",
+      "joblib": "1.5.3"
+    }
+  },
+  "validation": {
+    "chosen": {
+      "variant": "calendar",
+      "maxLeafNodes": 15,
+      "residualWeight": 1,
+      "mae": 0.5711282281053722,
+      "wape": 0.2493761131446538,
+      "observations": 3500
+    },
+    "candidates": [
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.25,
+        "mae": 0.603395532342531,
+        "wape": 0.26346523449488424,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.5,
+        "mae": 0.5974722764376579,
+        "wape": 0.2608789176889044,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 7,
+        "residualWeight": 1,
+        "mae": 0.5954608904224605,
+        "wape": 0.26000067073520833,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.25,
+        "mae": 0.6025912877708389,
+        "wape": 0.2631140709987783,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.5,
+        "mae": 0.5962398742586563,
+        "wape": 0.26034080444198976,
+        "observations": 3500
+      },
+      {
+        "variant": "lags",
+        "maxLeafNodes": 15,
+        "residualWeight": 1,
+        "mae": 0.5948899039598541,
+        "wape": 0.2597513565222243,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.25,
+        "mae": 0.5961152309550302,
+        "wape": 0.26028638047718083,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 0.5,
+        "mae": 0.5840230919411367,
+        "wape": 0.2550064967689407,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 7,
+        "residualWeight": 1,
+        "mae": 0.5740615078138956,
+        "wape": 0.2506568936357604,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 0,
+        "mae": 0.612707306122449,
+        "wape": 0.26753110593573654,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.25,
+        "mae": 0.5947369449821682,
+        "wape": 0.25968456886675784,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 0.5,
+        "mae": 0.5819674853606203,
+        "wape": 0.2541089414495262,
+        "observations": 3500
+      },
+      {
+        "variant": "calendar",
+        "maxLeafNodes": 15,
+        "residualWeight": 1,
+        "mae": 0.5711282281053722,
+        "wape": 0.2493761131446538,
+        "observations": 3500
+      }
+    ]
+  },
+  "test": {
+    "stores": 200,
+    "series": 200,
+    "targets": 600,
+    "origins": [
+      "2024-06-26",
+      "2024-06-28",
+      "2024-06-30"
+    ],
+    "targetThrough": "2024-07-01",
+    "unusedDate": "2024-07-02",
+    "failedOrExcludedSeries": [],
+    "metrics": {
+      "pooled": {
+        "mae": 0.5651001515983399,
+        "wape": 0.24831053599132605,
+        "observations": 600
+      },
+      "naive": {
+        "mae": 0.82965,
+        "wape": 0.3645563279403106,
+        "observations": 600
+      },
+      "ma7": {
+        "mae": 0.615315238095238,
+        "wape": 0.27037553634149086,
+        "observations": 600
+      },
+      "ma14": {
+        "mae": 0.654192857142857,
+        "wape": 0.28745874255985077,
+        "observations": 600
+      },
+      "weekly": {
+        "mae": 0.68893,
+        "wape": 0.30272258302647886,
+        "observations": 600
+      }
+    },
+    "stockoutStrata": {
+      "true": {
+        "pooled": {
+          "mae": 0.5463289612718519,
+          "wape": 0.2653471824474946,
+          "observations": 343
+        },
+        "naive": {
+          "mae": 0.8378658892128281,
+          "wape": 0.40694411010889114,
+          "observations": 343
+        },
+        "ma7": {
+          "mae": 0.5962057476051645,
+          "wape": 0.2895718999002725,
+          "observations": 343
+        },
+        "ma14": {
+          "mae": 0.6352494793835902,
+          "wape": 0.30853509781590666,
+          "observations": 343
+        },
+        "weekly": {
+          "mae": 0.6808454810495626,
+          "wape": 0.33068067571968673,
+          "observations": 343
+        }
+      },
+      "false": {
+        "pooled": {
+          "mae": 0.5901527519173493,
+          "wape": 0.23006054874231144,
+          "observations": 257
+        },
+        "naive": {
+          "mae": 0.8186848249027238,
+          "wape": 0.31914971073540255,
+          "observations": 257
+        },
+        "ma7": {
+          "mae": 0.6408193440800445,
+          "wape": 0.24981201810000248,
+          "observations": 257
+        },
+        "ma14": {
+          "mae": 0.6794752640355753,
+          "wape": 0.26488134062406954,
+          "observations": 257
+        },
+        "weekly": {
+          "mae": 0.6997198443579766,
+          "wape": 0.2727733300164731,
+          "observations": 257
+        }
+      }
+    },
+    "byOrigin": {
+      "2024-06-26": {
+        "pooled": {
+          "mae": 0.5146474604484989,
+          "wape": 0.2626301728670277,
+          "observations": 200
+        },
+        "naive": {
+          "mae": 0.7472099999999999,
+          "wape": 0.3813093555284523,
+          "observations": 200
+        },
+        "ma7": {
+          "mae": 0.5652814285714285,
+          "wape": 0.2884692351825783,
+          "observations": 200
+        },
+        "ma14": {
+          "mae": 0.5989042857142857,
+          "wape": 0.30562734332910746,
+          "observations": 200
+        },
+        "weekly": {
+          "mae": 0.6249899999999999,
+          "wape": 0.3189391658459167,
+          "observations": 200
+        }
+      },
+      "2024-06-28": {
+        "pooled": {
+          "mae": 0.6326375042929897,
+          "wape": 0.27107614375395905,
+          "observations": 200
+        },
+        "naive": {
+          "mae": 0.8551899999999999,
+          "wape": 0.36643671265746847,
+          "observations": 200
+        },
+        "ma7": {
+          "mae": 0.6482542857142858,
+          "wape": 0.2777677117637697,
+          "observations": 200
+        },
+        "ma14": {
+          "mae": 0.6708228571428572,
+          "wape": 0.28743802259956175,
+          "observations": 200
+        },
+        "weekly": {
+          "mae": 0.7149,
+          "wape": 0.3063244493958351,
+          "observations": 200
+        }
+      },
+      "2024-06-30": {
+        "pooled": {
+          "mae": 0.5480154900535312,
+          "wape": 0.21626925947770526,
+          "observations": 200
+        },
+        "naive": {
+          "mae": 0.8865500000000001,
+          "wape": 0.349868781941238,
+          "observations": 200
+        },
+        "ma7": {
+          "mae": 0.63241,
+          "wape": 0.24957477456145544,
+          "observations": 200
+        },
+        "ma14": {
+          "mae": 0.6928514285714286,
+          "wape": 0.2734274269703145,
+          "observations": 200
+        },
+        "weekly": {
+          "mae": 0.7269,
+          "wape": 0.2868643816965607,
+          "observations": 200
+        }
+      }
+    },
+    "perSeries": {
+      "7:73:317": {
+        "pooled": {
+          "mae": 0.351258314952261,
+          "wape": 0.15053927783668328,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3333333333333334,
+          "wape": 0.14285714285714288,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5904761904761907,
+          "wape": 0.253061224489796,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.642857142857143,
+          "wape": 0.27551020408163274,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5333333333333334,
+          "wape": 0.22857142857142862,
+          "observations": 3
+        }
+      },
+      "3:804:44": {
+        "pooled": {
+          "mae": 1.046339623001841,
+          "wape": 0.4421153336627497,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.1666666666666667,
+          "wape": 0.49295774647887325,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.023809523809524,
+          "wape": 0.4325955734406439,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.1095238095238094,
+          "wape": 0.46881287726358145,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.0,
+          "wape": 0.4225352112676057,
+          "observations": 3
+        }
+      },
+      "11:651:191": {
+        "pooled": {
+          "mae": 1.4964261738918783,
+          "wape": 0.36797364931767496,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.0000000000000004,
+          "wape": 0.4918032786885247,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.4095238095238098,
+          "wape": 0.3466042154566745,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.3809523809523814,
+          "wape": 0.3395784543325528,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.8666666666666665,
+          "wape": 0.4590163934426229,
+          "observations": 3
+        }
+      },
+      "12:319:11": {
+        "pooled": {
+          "mae": 0.23545194263353433,
+          "wape": 0.19620995219461196,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.19999999999999996,
+          "wape": 0.16666666666666666,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.32380952380952377,
+          "wape": 0.2698412698412698,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3142857142857142,
+          "wape": 0.26190476190476186,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2333333333333333,
+          "wape": 0.19444444444444445,
+          "observations": 3
+        }
+      },
+      "16:445:769": {
+        "pooled": {
+          "mae": 0.4702133173954706,
+          "wape": 0.36170255184266975,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3666666666666667,
+          "wape": 0.2820512820512821,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.44285714285714284,
+          "wape": 0.34065934065934067,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.480952380952381,
+          "wape": 0.36996336996337004,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4333333333333333,
+          "wape": 0.3333333333333333,
+          "observations": 3
+        }
+      },
+      "3:766:183": {
+        "pooled": {
+          "mae": 0.1439992233745556,
+          "wape": 0.1270581382716667,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.26666666666666666,
+          "wape": 0.23529411764705888,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3904761904761904,
+          "wape": 0.3445378151260504,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3285714285714285,
+          "wape": 0.2899159663865546,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.16666666666666674,
+          "wape": 0.14705882352941185,
+          "observations": 3
+        }
+      },
+      "13:702:4": {
+        "pooled": {
+          "mae": 0.4750042721471806,
+          "wape": 0.21923274099100645,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.2999999999999998,
+          "wape": 0.5999999999999999,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.919047619047619,
+          "wape": 0.42417582417582417,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.0333333333333334,
+          "wape": 0.476923076923077,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333331,
+          "wape": 0.33846153846153837,
+          "observations": 3
+        }
+      },
+      "16:315:291": {
+        "pooled": {
+          "mae": 0.5028301892978199,
+          "wape": 0.24729353572023924,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.36666666666666675,
+          "wape": 0.18032786885245905,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5190476190476191,
+          "wape": 0.25526932084309134,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7490476190476191,
+          "wape": 0.368384074941452,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333334,
+          "wape": 0.36065573770491804,
+          "observations": 3
+        }
+      },
+      "14:68:835": {
+        "pooled": {
+          "mae": 0.4215227587827031,
+          "wape": 0.35126896565225263,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9333333333333335,
+          "wape": 0.7777777777777778,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4952380952380952,
+          "wape": 0.4126984126984126,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.36190476190476195,
+          "wape": 0.3015873015873016,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3666666666666667,
+          "wape": 0.3055555555555556,
+          "observations": 3
+        }
+      },
+      "8:13:580": {
+        "pooled": {
+          "mae": 0.26187963813799103,
+          "wape": 0.12671595393773757,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6666666666666669,
+          "wape": 0.3225806451612903,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.40000000000000036,
+          "wape": 0.19354838709677433,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.28095238095238106,
+          "wape": 0.13594470046082952,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4000000000000002,
+          "wape": 0.19354838709677427,
+          "observations": 3
+        }
+      },
+      "16:524:267": {
+        "pooled": {
+          "mae": 3.4256536590460036,
+          "wape": 0.0635950555515966,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 4.466666666666669,
+          "wape": 0.08292079207920795,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 2.209523809523811,
+          "wape": 0.04101838755304105,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 3.304761904761906,
+          "wape": 0.061350777934936374,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.633333333333333,
+          "wape": 0.04888613861386138,
+          "observations": 3
+        }
+      },
+      "16:650:546": {
+        "pooled": {
+          "mae": 0.547374523369608,
+          "wape": 0.10074377730728983,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6999999999999998,
+          "wape": 0.12883435582822086,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8428571428571429,
+          "wape": 0.15512708150744964,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.9952380952380953,
+          "wape": 0.18317265556529364,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.9666666666666666,
+          "wape": 0.3619631901840491,
+          "observations": 3
+        }
+      },
+      "0:161:223": {
+        "pooled": {
+          "mae": 0.25547645411993497,
+          "wape": 0.1869339908194646,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333335,
+          "wape": 0.3170731707317075,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3190476190476191,
+          "wape": 0.23344947735191643,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3428571428571429,
+          "wape": 0.25087108013937287,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.06666666666666672,
+          "wape": 0.0487804878048781,
+          "observations": 3
+        }
+      },
+      "4:864:144": {
+        "pooled": {
+          "mae": 0.3522602921024635,
+          "wape": 0.13427965391453503,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8233333333333333,
+          "wape": 0.3138500635324015,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2414285714285714,
+          "wape": 0.09203122163732075,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.43428571428571444,
+          "wape": 0.16554728625884924,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.1766666666666669,
+          "wape": 0.06734434561626439,
+          "observations": 3
+        }
+      },
+      "13:338:112": {
+        "pooled": {
+          "mae": 0.2376853383106073,
+          "wape": 0.16977524165043378,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5333333333333333,
+          "wape": 0.38095238095238093,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4095238095238097,
+          "wape": 0.2925170068027212,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3428571428571429,
+          "wape": 0.2448979591836735,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.40000000000000013,
+          "wape": 0.2857142857142858,
+          "observations": 3
+        }
+      },
+      "13:590:531": {
+        "pooled": {
+          "mae": 0.360475627909782,
+          "wape": 0.311650398769264,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5766666666666667,
+          "wape": 0.4985590778097983,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5347619047619049,
+          "wape": 0.46233017702758356,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.36047619047619045,
+          "wape": 0.31165088513791683,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.44333333333333336,
+          "wape": 0.38328530259366,
+          "observations": 3
+        }
+      },
+      "0:722:116": {
+        "pooled": {
+          "mae": 0.46279317963380845,
+          "wape": 0.16931457791480797,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8666666666666666,
+          "wape": 0.3170731707317073,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.28571428571428603,
+          "wape": 0.1045296167247388,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3,
+          "wape": 0.10975609756097561,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.39999999999999997,
+          "wape": 0.14634146341463417,
+          "observations": 3
+        }
+      },
+      "0:548:486": {
+        "pooled": {
+          "mae": 0.6222192139285189,
+          "wape": 0.2629095270120503,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.49999999999999983,
+          "wape": 0.21126760563380276,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8047619047619046,
+          "wape": 0.3400402414486921,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5952380952380952,
+          "wape": 0.2515090543259557,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7666666666666665,
+          "wape": 0.3239436619718309,
+          "observations": 3
+        }
+      },
+      "6:478:768": {
+        "pooled": {
+          "mae": 1.763616382771949,
+          "wape": 0.9982734242105374,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 3.366666666666667,
+          "wape": 1.9056603773584913,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.6904761904761905,
+          "wape": 0.9568733153638815,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.561904761904762,
+          "wape": 0.8840970350404315,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.2,
+          "wape": 0.679245283018868,
+          "observations": 3
+        }
+      },
+      "12:228:810": {
+        "pooled": {
+          "mae": 0.12410515272347422,
+          "wape": 0.059097691773082967,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333333,
+          "wape": 0.20634920634920634,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.17619047619047623,
+          "wape": 0.08390022675736963,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.16666666666666652,
+          "wape": 0.07936507936507929,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4000000000000001,
+          "wape": 0.19047619047619052,
+          "observations": 3
+        }
+      },
+      "7:141:521": {
+        "pooled": {
+          "mae": 0.2706700104780066,
+          "wape": 0.2255583420650055,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5333333333333333,
+          "wape": 0.4444444444444445,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.20952380952380953,
+          "wape": 0.1746031746031746,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.21142857142857144,
+          "wape": 0.1761904761904762,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.1666666666666667,
+          "wape": 0.13888888888888892,
+          "observations": 3
+        }
+      },
+      "0:521:554": {
+        "pooled": {
+          "mae": 0.4541162074451961,
+          "wape": 0.11846509759439898,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666666,
+          "wape": 0.19999999999999998,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.24285714285714258,
+          "wape": 0.06335403726708068,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.542857142857143,
+          "wape": 0.1416149068322982,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.36666666666666653,
+          "wape": 0.09565217391304345,
+          "observations": 3
+        }
+      },
+      "7:99:272": {
+        "pooled": {
+          "mae": 0.5523561491439003,
+          "wape": 0.3156320852250859,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.38333333333333347,
+          "wape": 0.2190476190476191,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.669047619047619,
+          "wape": 0.38231292517006804,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6223809523809524,
+          "wape": 0.35564625850340137,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.75,
+          "wape": 0.42857142857142855,
+          "observations": 3
+        }
+      },
+      "3:807:836": {
+        "pooled": {
+          "mae": 0.3704957315110571,
+          "wape": 0.5292796164443674,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5,
+          "wape": 0.7142857142857144,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3857142857142856,
+          "wape": 0.5510204081632653,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.42857142857142855,
+          "wape": 0.6122448979591837,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2666666666666667,
+          "wape": 0.3809523809523811,
+          "observations": 3
+        }
+      },
+      "4:884:291": {
+        "pooled": {
+          "mae": 0.22484688026224156,
+          "wape": 0.1621491924968088,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5733333333333335,
+          "wape": 0.41346153846153855,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.31619047619047636,
+          "wape": 0.22802197802197813,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3123809523809524,
+          "wape": 0.2252747252747253,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2800000000000001,
+          "wape": 0.20192307692307698,
+          "observations": 3
+        }
+      },
+      "0:599:841": {
+        "pooled": {
+          "mae": 0.1147447746343269,
+          "wape": 0.21514645243936292,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.19999999999999998,
+          "wape": 0.37499999999999994,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.13333333333333336,
+          "wape": 0.25000000000000006,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.11904761904761903,
+          "wape": 0.22321428571428567,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.20000000000000004,
+          "wape": 0.37500000000000006,
+          "observations": 3
+        }
+      },
+      "13:310:599": {
+        "pooled": {
+          "mae": 0.28228197765060487,
+          "wape": 0.20162998403614635,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7333333333333331,
+          "wape": 0.5238095238095237,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3333333333333335,
+          "wape": 0.23809523809523825,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.380952380952381,
+          "wape": 0.27210884353741505,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.23333333333333325,
+          "wape": 0.16666666666666663,
+          "observations": 3
+        }
+      },
+      "3:709:219": {
+        "pooled": {
+          "mae": 0.6559450943286914,
+          "wape": 0.40996568395543204,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8666666666666666,
+          "wape": 0.5416666666666665,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7238095238095239,
+          "wape": 0.4523809523809524,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.661904761904762,
+          "wape": 0.41369047619047616,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.43333333333333335,
+          "wape": 0.2708333333333333,
+          "observations": 3
+        }
+      },
+      "1:65:309": {
+        "pooled": {
+          "mae": 1.043672225596807,
+          "wape": 0.4066255424403144,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.233333333333333,
+          "wape": 0.87012987012987,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4619047619047619,
+          "wape": 0.17996289424860853,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4428571428571426,
+          "wape": 0.1725417439703153,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.5000000000000002,
+          "wape": 0.5844155844155845,
+          "observations": 3
+        }
+      },
+      "16:280:426": {
+        "pooled": {
+          "mae": 0.17804796204684692,
+          "wape": 0.14436321247041642,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666666,
+          "wape": 0.6216216216216215,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2333333333333333,
+          "wape": 0.18918918918918917,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.1952380952380952,
+          "wape": 0.15830115830115826,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.20000000000000004,
+          "wape": 0.16216216216216217,
+          "observations": 3
+        }
+      },
+      "13:774:531": {
+        "pooled": {
+          "mae": 1.0585499737241273,
+          "wape": 0.9771230526684251,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.46333333333333343,
+          "wape": 0.4276923076923078,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.013809523809524,
+          "wape": 0.935824175824176,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.2747619047619045,
+          "wape": 1.1767032967032967,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.4166666666666667,
+          "wape": 1.3076923076923077,
+          "observations": 3
+        }
+      },
+      "0:577:600": {
+        "pooled": {
+          "mae": 0.6142739254955787,
+          "wape": 0.09122880081617506,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.1333333333333329,
+          "wape": 0.16831683168316824,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.22857142857142865,
+          "wape": 0.03394625176803396,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.2428571428571427,
+          "wape": 0.18458274398868454,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.133333333333333,
+          "wape": 0.1683168316831683,
+          "observations": 3
+        }
+      },
+      "3:752:44": {
+        "pooled": {
+          "mae": 1.2253366998538755,
+          "wape": 0.4130348426473737,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666667,
+          "wape": 0.25842696629213485,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.2047619047619047,
+          "wape": 0.406099518459069,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.780952380952381,
+          "wape": 0.6003210272873195,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.7333333333333336,
+          "wape": 0.5842696629213484,
+          "observations": 3
+        }
+      },
+      "13:400:521": {
+        "pooled": {
+          "mae": 0.48997065007362267,
+          "wape": 0.23331935717791555,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666667,
+          "wape": 0.3650793650793651,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4142857142857143,
+          "wape": 0.19727891156462585,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.38809523809523805,
+          "wape": 0.18480725623582764,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5666666666666668,
+          "wape": 0.2698412698412699,
+          "observations": 3
+        }
+      },
+      "5:749:6": {
+        "pooled": {
+          "mae": 0.25713884583451274,
+          "wape": 0.15428330750070765,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.26666666666666666,
+          "wape": 0.16,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.20000000000000004,
+          "wape": 0.12000000000000002,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2666666666666666,
+          "wape": 0.15999999999999998,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3333333333333334,
+          "wape": 0.20000000000000004,
+          "observations": 3
+        }
+      },
+      "3:755:834": {
+        "pooled": {
+          "mae": 0.39811161637100007,
+          "wape": 0.20591980157120693,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.26666666666666666,
+          "wape": 0.13793103448275862,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.45714285714285735,
+          "wape": 0.23645320197044348,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.8142857142857142,
+          "wape": 0.4211822660098522,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9,
+          "wape": 0.4655172413793104,
+          "observations": 3
+        }
+      },
+      "13:701:45": {
+        "pooled": {
+          "mae": 0.45407424426265,
+          "wape": 0.7169593330462894,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666666,
+          "wape": 1.2105263157894737,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4142857142857142,
+          "wape": 0.6541353383458646,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.33809523809523817,
+          "wape": 0.5338345864661656,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.9473684210526315,
+          "observations": 3
+        }
+      },
+      "3:767:209": {
+        "pooled": {
+          "mae": 0.10994992857736922,
+          "wape": 0.08914859073840749,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.42,
+          "wape": 0.34054054054054056,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.13047619047619033,
+          "wape": 0.10579150579150569,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.14666666666666672,
+          "wape": 0.11891891891891897,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.26666666666666666,
+          "wape": 0.2162162162162162,
+          "observations": 3
+        }
+      },
+      "3:842:580": {
+        "pooled": {
+          "mae": 0.48045816633815214,
+          "wape": 0.21513052224096366,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.2333333333333334,
+          "wape": 0.5522388059701493,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8047619047619049,
+          "wape": 0.3603411513859276,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7285714285714285,
+          "wape": 0.326226012793177,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4333333333333333,
+          "wape": 0.19402985074626866,
+          "observations": 3
+        }
+      },
+      "13:589:864": {
+        "pooled": {
+          "mae": 0.7831366311441971,
+          "wape": 0.4350759061912206,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6,
+          "wape": 0.33333333333333337,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8495238095238093,
+          "wape": 0.4719576719576719,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.558095238095238,
+          "wape": 0.31005291005291,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7066666666666664,
+          "wape": 0.3925925925925925,
+          "observations": 3
+        }
+      },
+      "5:111:638": {
+        "pooled": {
+          "mae": 0.31177209602818834,
+          "wape": 0.4871439000440443,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.10666666666666665,
+          "wape": 0.16666666666666666,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.35428571428571426,
+          "wape": 0.5535714285714285,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.240952380952381,
+          "wape": 0.3764880952380953,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5266666666666667,
+          "wape": 0.8229166666666667,
+          "observations": 3
+        }
+      },
+      "14:88:117": {
+        "pooled": {
+          "mae": 1.9980694969960167,
+          "wape": 0.9082134077254621,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 3.5999999999999996,
+          "wape": 1.6363636363636362,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 2.485714285714286,
+          "wape": 1.1298701298701301,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 2.4666666666666663,
+          "wape": 1.121212121212121,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.7333333333333334,
+          "wape": 0.787878787878788,
+          "observations": 3
+        }
+      },
+      "11:669:104": {
+        "pooled": {
+          "mae": 1.8376822850905097,
+          "wape": 0.32429687383950173,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.6000000000000003,
+          "wape": 0.28235294117647064,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 2.4,
+          "wape": 0.4235294117647059,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 2.1714285714285713,
+          "wape": 0.38319327731092434,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.8333333333333335,
+          "wape": 0.5,
+          "observations": 3
+        }
+      },
+      "13:748:503": {
+        "pooled": {
+          "mae": 0.03890901068778333,
+          "wape": 0.03537182789798485,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.23333333333333325,
+          "wape": 0.21212121212121204,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.05238095238095242,
+          "wape": 0.04761904761904765,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.1428571428571427,
+          "wape": 0.12987012987012975,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.1666666666666667,
+          "wape": 0.15151515151515155,
+          "observations": 3
+        }
+      },
+      "0:750:362": {
+        "pooled": {
+          "mae": 0.5764258045780396,
+          "wape": 0.28917682503915026,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6066666666666666,
+          "wape": 0.3043478260869565,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7266666666666667,
+          "wape": 0.36454849498327757,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6904761904761904,
+          "wape": 0.34639273769708545,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.1733333333333333,
+          "wape": 0.588628762541806,
+          "observations": 3
+        }
+      },
+      "11:891:481": {
+        "pooled": {
+          "mae": 0.15330557866816075,
+          "wape": 0.13936870788014613,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5666666666666668,
+          "wape": 0.5151515151515152,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.16666666666666663,
+          "wape": 0.1515151515151515,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.11428571428571425,
+          "wape": 0.10389610389610388,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3666666666666667,
+          "wape": 0.33333333333333337,
+          "observations": 3
+        }
+      },
+      "0:441:774": {
+        "pooled": {
+          "mae": 0.45700233628001447,
+          "wape": 0.1757701293384671,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5333333333333333,
+          "wape": 0.20512820512820515,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.619047619047619,
+          "wape": 0.23809523809523805,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6523809523809523,
+          "wape": 0.25091575091575086,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6333333333333334,
+          "wape": 0.24358974358974364,
+          "observations": 3
+        }
+      },
+      "0:61:253": {
+        "pooled": {
+          "mae": 0.8208397878505199,
+          "wape": 1.6416795757010398,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.0333333333333332,
+          "wape": 2.0666666666666664,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6809523809523809,
+          "wape": 1.3619047619047617,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7238095238095239,
+          "wape": 1.4476190476190478,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.8333333333333334,
+          "wape": 1.6666666666666667,
+          "observations": 3
+        }
+      },
+      "3:794:120": {
+        "pooled": {
+          "mae": 0.3546427716300961,
+          "wape": 0.8247506316978979,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.43,
+          "wape": 1.0,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.29285714285714276,
+          "wape": 0.6810631229235878,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.28333333333333327,
+          "wape": 0.6589147286821704,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4033333333333333,
+          "wape": 0.937984496124031,
+          "observations": 3
+        }
+      },
+      "17:886:291": {
+        "pooled": {
+          "mae": 0.6481290106047859,
+          "wape": 0.2606416932727021,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.1400000000000001,
+          "wape": 0.4584450402144772,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7876190476190478,
+          "wape": 0.31673688242052855,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7790476190476192,
+          "wape": 0.313289927230946,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5133333333333335,
+          "wape": 0.20643431635388745,
+          "observations": 3
+        }
+      },
+      "13:677:83": {
+        "pooled": {
+          "mae": 0.2646087109024258,
+          "wape": 0.3053177433489529,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6,
+          "wape": 0.6923076923076923,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3714285714285716,
+          "wape": 0.42857142857142877,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3490476190476192,
+          "wape": 0.4027472527472529,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.46666666666666673,
+          "wape": 0.5384615384615385,
+          "observations": 3
+        }
+      },
+      "12:459:11": {
+        "pooled": {
+          "mae": 0.25584203202593886,
+          "wape": 0.21929317030794757,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333333,
+          "wape": 0.3714285714285714,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.30000000000000004,
+          "wape": 0.2571428571428572,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2523809523809523,
+          "wape": 0.21632653061224483,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.39999999999999997,
+          "wape": 0.34285714285714286,
+          "observations": 3
+        }
+      },
+      "13:773:864": {
+        "pooled": {
+          "mae": 1.1381736520344365,
+          "wape": 1.0347033200313058,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666667,
+          "wape": 0.696969696969697,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.4028571428571428,
+          "wape": 1.2753246753246752,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.2671428571428571,
+          "wape": 1.1519480519480518,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.11,
+          "wape": 1.009090909090909,
+          "observations": 3
+        }
+      },
+      "7:861:461": {
+        "pooled": {
+          "mae": 0.0821578653338965,
+          "wape": 0.05405122719335295,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.27999999999999997,
+          "wape": 0.18421052631578944,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.09142857142857141,
+          "wape": 0.06015037593984961,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.12000000000000004,
+          "wape": 0.07894736842105264,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.21333333333333324,
+          "wape": 0.14035087719298237,
+          "observations": 3
+        }
+      },
+      "13:637:221": {
+        "pooled": {
+          "mae": 0.45039447409879124,
+          "wape": 0.40944952190799205,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7666666666666666,
+          "wape": 0.6969696969696969,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4238095238095238,
+          "wape": 0.3852813852813853,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.39999999999999997,
+          "wape": 0.36363636363636365,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.46666666666666656,
+          "wape": 0.4242424242424242,
+          "observations": 3
+        }
+      },
+      "0:146:108": {
+        "pooled": {
+          "mae": 0.35253790473429464,
+          "wape": 0.4406723809178683,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8666666666666666,
+          "wape": 1.0833333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3466666666666666,
+          "wape": 0.4333333333333333,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3780952380952381,
+          "wape": 0.47261904761904766,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3133333333333333,
+          "wape": 0.39166666666666666,
+          "observations": 3
+        }
+      },
+      "16:569:11": {
+        "pooled": {
+          "mae": 0.09227176206902839,
+          "wape": 0.0692038215517713,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6666666666666666,
+          "wape": 0.5,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.1714285714285714,
+          "wape": 0.12857142857142856,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.14761904761904762,
+          "wape": 0.11071428571428571,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.16666666666666666,
+          "wape": 0.125,
+          "observations": 3
+        }
+      },
+      "7:114:381": {
+        "pooled": {
+          "mae": 0.26925534902639203,
+          "wape": 0.24477759002399274,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3666666666666667,
+          "wape": 0.3333333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2142857142857143,
+          "wape": 0.19480519480519481,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.1619047619047618,
+          "wape": 0.1471861471861471,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.5454545454545453,
+          "observations": 3
+        }
+      },
+      "4:852:363": {
+        "pooled": {
+          "mae": 1.042132954330671,
+          "wape": 0.4962537877765099,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.0333333333333334,
+          "wape": 0.49206349206349204,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.0904761904761908,
+          "wape": 0.5192743764172336,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.166666666666667,
+          "wape": 0.5555555555555556,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.1333333333333335,
+          "wape": 0.5396825396825397,
+          "observations": 3
+        }
+      },
+      "3:855:4": {
+        "pooled": {
+          "mae": 0.24722343034165153,
+          "wape": 0.39035278474997614,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.2333333333333333,
+          "wape": 0.3684210526315789,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2523809523809524,
+          "wape": 0.39849624060150374,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.34761904761904766,
+          "wape": 0.5488721804511278,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3,
+          "wape": 0.4736842105263158,
+          "observations": 3
+        }
+      },
+      "13:638:221": {
+        "pooled": {
+          "mae": 0.34290767463038496,
+          "wape": 0.1870405497983918,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6999999999999998,
+          "wape": 0.3818181818181818,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5190476190476191,
+          "wape": 0.28311688311688316,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.38095238095238093,
+          "wape": 0.20779220779220778,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3000000000000001,
+          "wape": 0.1636363636363637,
+          "observations": 3
+        }
+      },
+      "0:24:635": {
+        "pooled": {
+          "mae": 0.20223342375718398,
+          "wape": 0.1989181217283777,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.23666666666666666,
+          "wape": 0.23278688524590163,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.27761904761904765,
+          "wape": 0.2730679156908666,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.16904761904761897,
+          "wape": 0.1662763466042154,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.47000000000000003,
+          "wape": 0.4622950819672132,
+          "observations": 3
+        }
+      },
+      "0:144:548": {
+        "pooled": {
+          "mae": 0.4930608233010003,
+          "wape": 0.301873973449592,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9,
+          "wape": 0.5510204081632653,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.40476190476190466,
+          "wape": 0.24781341107871713,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.319047619047619,
+          "wape": 0.19533527696793,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5333333333333333,
+          "wape": 0.32653061224489793,
+          "observations": 3
+        }
+      },
+      "13:661:73": {
+        "pooled": {
+          "mae": 0.5468823061166236,
+          "wape": 0.21875292244664943,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6333333333333333,
+          "wape": 0.2533333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.442857142857143,
+          "wape": 0.17714285714285719,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7857142857142857,
+          "wape": 0.3142857142857143,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7000000000000002,
+          "wape": 0.2800000000000001,
+          "observations": 3
+        }
+      },
+      "6:473:226": {
+        "pooled": {
+          "mae": 0.1468565130830756,
+          "wape": 0.06851781325804461,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.2833333333333336,
+          "wape": 0.13219284603421474,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3004761904761906,
+          "wape": 0.14019106865141087,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.22666666666666666,
+          "wape": 0.1057542768273717,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.31333333333333324,
+          "wape": 0.1461897356143079,
+          "observations": 3
+        }
+      },
+      "6:497:93": {
+        "pooled": {
+          "mae": 0.20474861055848084,
+          "wape": 0.22749845617608982,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333333,
+          "wape": 0.4814814814814814,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.19523809523809535,
+          "wape": 0.21693121693121706,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.20952380952380953,
+          "wape": 0.2328042328042328,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.0666666666666667,
+          "wape": 0.0740740740740741,
+          "observations": 3
+        }
+      },
+      "11:361:300": {
+        "pooled": {
+          "mae": 3.4985493232858125,
+          "wape": 0.31452346328610836,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.57,
+          "wape": 0.23104584956547794,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 3.6100000000000008,
+          "wape": 0.3245430026970333,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 3.7976190476190474,
+          "wape": 0.3414101631062973,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.956666666666667,
+          "wape": 0.26580761162721006,
+          "observations": 3
+        }
+      },
+      "0:382:644": {
+        "pooled": {
+          "mae": 0.694123820065902,
+          "wape": 0.7712486889621133,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8333333333333334,
+          "wape": 0.9259259259259258,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6714285714285714,
+          "wape": 0.7460317460317459,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6761904761904761,
+          "wape": 0.7513227513227513,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7666666666666666,
+          "wape": 0.8518518518518517,
+          "observations": 3
+        }
+      },
+      "0:411:90": {
+        "pooled": {
+          "mae": 0.4337678606906607,
+          "wape": 0.09229103418950227,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9666666666666663,
+          "wape": 0.20567375886524816,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5190476190476194,
+          "wape": 0.11043566362715307,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.2285714285714286,
+          "wape": 0.26139817629179335,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5333333333333335,
+          "wape": 0.11347517730496458,
+          "observations": 3
+        }
+      },
+      "0:258:769": {
+        "pooled": {
+          "mae": 0.6322756093576362,
+          "wape": 0.2709752611532727,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7999999999999999,
+          "wape": 0.34285714285714286,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6857142857142858,
+          "wape": 0.29387755102040825,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7714285714285714,
+          "wape": 0.3306122448979592,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333331,
+          "wape": 0.3142857142857142,
+          "observations": 3
+        }
+      },
+      "0:210:41": {
+        "pooled": {
+          "mae": 0.641746362461383,
+          "wape": 0.37023828603541326,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.0,
+          "wape": 0.5769230769230769,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5523809523809522,
+          "wape": 0.31868131868131855,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5238095238095238,
+          "wape": 0.3021978021978022,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4333333333333333,
+          "wape": 0.24999999999999994,
+          "observations": 3
+        }
+      },
+      "11:614:740": {
+        "pooled": {
+          "mae": 0.309630034368704,
+          "wape": 0.16296317598352844,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8333333333333334,
+          "wape": 0.43859649122807015,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3571428571428572,
+          "wape": 0.1879699248120301,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3714285714285715,
+          "wape": 0.19548872180451132,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.43333333333333335,
+          "wape": 0.22807017543859648,
+          "observations": 3
+        }
+      },
+      "0:494:351": {
+        "pooled": {
+          "mae": 1.1809794065216455,
+          "wape": 0.36525136284174603,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9666666666666665,
+          "wape": 0.29896907216494845,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.6047619047619044,
+          "wape": 0.4963181148748158,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.2761904761904759,
+          "wape": 0.39469808541973483,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.0666666666666667,
+          "wape": 0.32989690721649484,
+          "observations": 3
+        }
+      },
+      "0:166:223": {
+        "pooled": {
+          "mae": 0.22958186341028028,
+          "wape": 0.12522647095106196,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.23333333333333348,
+          "wape": 0.12727272727272734,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.22380952380952368,
+          "wape": 0.12207792207792201,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.361904761904762,
+          "wape": 0.19740259740259747,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.30000000000000004,
+          "wape": 0.16363636363636366,
+          "observations": 3
+        }
+      },
+      "0:535:666": {
+        "pooled": {
+          "mae": 0.6732619106277505,
+          "wape": 0.11951394863214507,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.3,
+          "wape": 0.40828402366863903,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.9190476190476193,
+          "wape": 0.16314454775993245,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.366666666666667,
+          "wape": 0.24260355029585803,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.666666666666667,
+          "wape": 0.29585798816568054,
+          "observations": 3
+        }
+      },
+      "12:433:835": {
+        "pooled": {
+          "mae": 0.5558180983907466,
+          "wape": 0.22841839659893695,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9,
+          "wape": 0.36986301369863017,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7761904761904764,
+          "wape": 0.31898238747553825,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7142857142857144,
+          "wape": 0.2935420743639922,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9666666666666667,
+          "wape": 0.3972602739726027,
+          "observations": 3
+        }
+      },
+      "6:513:715": {
+        "pooled": {
+          "mae": 0.3348466975426727,
+          "wape": 0.304406088675157,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5666666666666665,
+          "wape": 0.5151515151515151,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.41428571428571437,
+          "wape": 0.3766233766233767,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.238095238095238,
+          "wape": 0.21645021645021637,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.8000000000000002,
+          "wape": 0.7272727272727274,
+          "observations": 3
+        }
+      },
+      "0:522:411": {
+        "pooled": {
+          "mae": 0.1846931649834456,
+          "wape": 0.16296455733833437,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.46666666666666673,
+          "wape": 0.41176470588235303,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.1714285714285716,
+          "wape": 0.15126050420168086,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3047619047619049,
+          "wape": 0.26890756302521024,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2666666666666667,
+          "wape": 0.2352941176470589,
+          "observations": 3
+        }
+      },
+      "0:579:291": {
+        "pooled": {
+          "mae": 0.34591729522294773,
+          "wape": 0.17012325994571198,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333335,
+          "wape": 0.21311475409836073,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.38571428571428606,
+          "wape": 0.1896955503512882,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4952380952380954,
+          "wape": 0.24355971896955508,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.43333333333333357,
+          "wape": 0.21311475409836075,
+          "observations": 3
+        }
+      },
+      "0:194:293": {
+        "pooled": {
+          "mae": 0.3124513226743609,
+          "wape": 0.21798929488908897,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.36666666666666664,
+          "wape": 0.25581395348837205,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2714285714285713,
+          "wape": 0.1893687707641195,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4095238095238094,
+          "wape": 0.28571428571428564,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.36666666666666653,
+          "wape": 0.25581395348837205,
+          "observations": 3
+        }
+      },
+      "3:858:460": {
+        "pooled": {
+          "mae": 0.05556984053400208,
+          "wape": 0.04167738040050156,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.2000000000000001,
+          "wape": 0.15000000000000008,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.10476190476190468,
+          "wape": 0.07857142857142851,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.13809523809523813,
+          "wape": 0.10357142857142859,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.36666666666666675,
+          "wape": 0.2750000000000001,
+          "observations": 3
+        }
+      },
+      "9:37:447": {
+        "pooled": {
+          "mae": 0.5771118374530166,
+          "wape": 0.20131808283244768,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.0666666666666667,
+          "wape": 0.372093023255814,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7238095238095239,
+          "wape": 0.2524916943521595,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6142857142857144,
+          "wape": 0.21428571428571436,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.8333333333333336,
+          "wape": 0.2906976744186048,
+          "observations": 3
+        }
+      },
+      "13:643:73": {
+        "pooled": {
+          "mae": 0.829583916113774,
+          "wape": 0.30350631077333196,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.2,
+          "wape": 0.43902439024390244,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8666666666666666,
+          "wape": 0.3170731707317073,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.9285714285714285,
+          "wape": 0.33972125435540074,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333334,
+          "wape": 0.26829268292682934,
+          "observations": 3
+        }
+      },
+      "0:540:746": {
+        "pooled": {
+          "mae": 0.10526967270970089,
+          "wape": 0.10187387681583958,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.23333333333333328,
+          "wape": 0.2258064516129032,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.10952380952380954,
+          "wape": 0.10599078341013828,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.22857142857142862,
+          "wape": 0.22119815668202772,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.19999999999999998,
+          "wape": 0.19354838709677422,
+          "observations": 3
+        }
+      },
+      "13:626:530": {
+        "pooled": {
+          "mae": 0.4066386443501629,
+          "wape": 0.34854740944299684,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5,
+          "wape": 0.4285714285714286,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.34761904761904744,
+          "wape": 0.29795918367346924,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.23809523809523803,
+          "wape": 0.2040816326530612,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.23333333333333317,
+          "wape": 0.19999999999999987,
+          "observations": 3
+        }
+      },
+      "0:553:705": {
+        "pooled": {
+          "mae": 0.5577298657733961,
+          "wape": 0.5397385797807058,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7000000000000001,
+          "wape": 0.6774193548387097,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.519047619047619,
+          "wape": 0.5023041474654377,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4904761904761905,
+          "wape": 0.47465437788018433,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2666666666666667,
+          "wape": 0.2580645161290323,
+          "observations": 3
+        }
+      },
+      "11:666:290": {
+        "pooled": {
+          "mae": 0.3176974050319763,
+          "wape": 0.2023550350522142,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6366666666666666,
+          "wape": 0.40552016985138,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.47380952380952385,
+          "wape": 0.3017895056111617,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.38857142857142873,
+          "wape": 0.24749772520473168,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2700000000000001,
+          "wape": 0.1719745222929937,
+          "observations": 3
+        }
+      },
+      "11:665:381": {
+        "pooled": {
+          "mae": 0.31731952592664686,
+          "wape": 0.29748705555623145,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8000000000000002,
+          "wape": 0.7500000000000002,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.32380952380952377,
+          "wape": 0.30357142857142855,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.26666666666666655,
+          "wape": 0.2499999999999999,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.46666666666666673,
+          "wape": 0.43750000000000006,
+          "observations": 3
+        }
+      },
+      "12:414:127": {
+        "pooled": {
+          "mae": 0.3029537488815668,
+          "wape": 0.2216734747913903,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9666666666666667,
+          "wape": 0.7073170731707316,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3857142857142856,
+          "wape": 0.2822299651567943,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2904761904761904,
+          "wape": 0.21254355400696856,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.26666666666666655,
+          "wape": 0.19512195121951206,
+          "observations": 3
+        }
+      },
+      "3:106:836": {
+        "pooled": {
+          "mae": 0.24956622163814782,
+          "wape": 0.2772958018201642,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3666666666666667,
+          "wape": 0.40740740740740744,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.37619047619047624,
+          "wape": 0.417989417989418,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.30476190476190484,
+          "wape": 0.33862433862433866,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.36666666666666675,
+          "wape": 0.4074074074074075,
+          "observations": 3
+        }
+      },
+      "4:879:441": {
+        "pooled": {
+          "mae": 0.45251185743149974,
+          "wape": 0.5221290662671151,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5333333333333333,
+          "wape": 0.6153846153846154,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5523809523809523,
+          "wape": 0.6373626373626373,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5176190476190476,
+          "wape": 0.5972527472527472,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6999999999999998,
+          "wape": 0.8076923076923075,
+          "observations": 3
+        }
+      },
+      "13:645:731": {
+        "pooled": {
+          "mae": 0.4034428728808955,
+          "wape": 0.37822769332583955,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.2666666666666666,
+          "wape": 0.24999999999999997,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5047619047619046,
+          "wape": 0.47321428571428564,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.557142857142857,
+          "wape": 0.5223214285714286,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3,
+          "wape": 0.28125,
+          "observations": 3
+        }
+      },
+      "1:66:392": {
+        "pooled": {
+          "mae": 0.10137264828694607,
+          "wape": 0.03011068760998398,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333333,
+          "wape": 0.1287128712871287,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2904761904761905,
+          "wape": 0.08628005657708629,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2571428571428574,
+          "wape": 0.07637906647807646,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4666666666666668,
+          "wape": 0.13861386138613865,
+          "observations": 3
+        }
+      },
+      "0:467:682": {
+        "pooled": {
+          "mae": 0.6832808653604946,
+          "wape": 0.347430948488387,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9,
+          "wape": 0.4576271186440678,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6809523809523812,
+          "wape": 0.34624697336561755,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5666666666666668,
+          "wape": 0.28813559322033905,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7666666666666666,
+          "wape": 0.38983050847457623,
+          "observations": 3
+        }
+      },
+      "0:406:635": {
+        "pooled": {
+          "mae": 0.7438830723562049,
+          "wape": 0.3935889271725952,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9100000000000001,
+          "wape": 0.48148148148148157,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5290476190476191,
+          "wape": 0.27991937515747045,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5147619047619049,
+          "wape": 0.27236079617032,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7233333333333335,
+          "wape": 0.38271604938271614,
+          "observations": 3
+        }
+      },
+      "13:592:512": {
+        "pooled": {
+          "mae": 0.7842579583545338,
+          "wape": 0.24255400773851565,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.433333333333333,
+          "wape": 0.7525773195876289,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.9190476190476192,
+          "wape": 0.2842415316642121,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.8285714285714286,
+          "wape": 0.256259204712813,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.2666666666666664,
+          "wape": 0.39175257731958757,
+          "observations": 3
+        }
+      },
+      "16:563:300": {
+        "pooled": {
+          "mae": 2.1763577517874566,
+          "wape": 0.20322065660365943,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.649999999999999,
+          "wape": 0.24744770916334655,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 2.4620952380952374,
+          "wape": 0.22990182128628336,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 2.495714285714286,
+          "wape": 0.23304105008537285,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.4426666666666663,
+          "wape": 0.22808764940239043,
+          "observations": 3
+        }
+      },
+      "0:91:633": {
+        "pooled": {
+          "mae": 0.4647732010702022,
+          "wape": 0.7338524227424245,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5666666666666668,
+          "wape": 0.8947368421052632,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.46190476190476204,
+          "wape": 0.7293233082706768,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5095238095238095,
+          "wape": 0.8045112781954886,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6333333333333332,
+          "wape": 0.9999999999999998,
+          "observations": 3
+        }
+      },
+      "0:157:240": {
+        "pooled": {
+          "mae": 0.5007777320877164,
+          "wape": 0.14040497161337842,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6333333333333332,
+          "wape": 0.1775700934579439,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.48095238095238074,
+          "wape": 0.13484646194926564,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.376190476190476,
+          "wape": 0.10547396528704936,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3333333333333332,
+          "wape": 0.09345794392523361,
+          "observations": 3
+        }
+      },
+      "7:71:461": {
+        "pooled": {
+          "mae": 0.18765342545316752,
+          "wape": 0.26184198900441974,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3166666666666667,
+          "wape": 0.441860465116279,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.16999999999999996,
+          "wape": 0.2372093023255813,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.19428571428571417,
+          "wape": 0.27109634551495,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.29666666666666663,
+          "wape": 0.4139534883720929,
+          "observations": 3
+        }
+      },
+      "6:892:343": {
+        "pooled": {
+          "mae": 0.2749938237253357,
+          "wape": 0.18749578890363797,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.26666666666666666,
+          "wape": 0.18181818181818182,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2761904761904761,
+          "wape": 0.18831168831168824,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5095238095238096,
+          "wape": 0.3474025974025974,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5666666666666668,
+          "wape": 0.38636363636363635,
+          "observations": 3
+        }
+      },
+      "12:364:82": {
+        "pooled": {
+          "mae": 0.29056516460319,
+          "wape": 0.3158317006556413,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.32,
+          "wape": 0.34782608695652173,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2533333333333334,
+          "wape": 0.2753623188405798,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.24476190476190474,
+          "wape": 0.2660455486542443,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.19333333333333333,
+          "wape": 0.21014492753623187,
+          "observations": 3
+        }
+      },
+      "13:797:309": {
+        "pooled": {
+          "mae": 1.8915590987643764,
+          "wape": 1.261039399176251,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.366666666666667,
+          "wape": 0.9111111111111112,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 2.2809523809523813,
+          "wape": 1.5206349206349208,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 2.142857142857143,
+          "wape": 1.4285714285714286,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.8666666666666665,
+          "wape": 1.2444444444444445,
+          "observations": 3
+        }
+      },
+      "0:229:841": {
+        "pooled": {
+          "mae": 0.15651629058959615,
+          "wape": 0.2608604843159936,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.0666666666666667,
+          "wape": 0.11111111111111116,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.11428571428571428,
+          "wape": 0.1904761904761905,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.10952380952380958,
+          "wape": 0.18253968253968264,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.16666666666666666,
+          "wape": 0.2777777777777778,
+          "observations": 3
+        }
+      },
+      "11:326:343": {
+        "pooled": {
+          "mae": 0.6300886442582238,
+          "wape": 0.33754748799547707,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5999999999999999,
+          "wape": 0.3214285714285714,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7904761904761903,
+          "wape": 0.423469387755102,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7380952380952381,
+          "wape": 0.39540816326530615,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.0,
+          "wape": 0.5357142857142857,
+          "observations": 3
+        }
+      },
+      "13:798:65": {
+        "pooled": {
+          "mae": 0.298592411477138,
+          "wape": 0.597184822954276,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333333,
+          "wape": 0.8666666666666666,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.29047619047619044,
+          "wape": 0.5809523809523809,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3047619047619048,
+          "wape": 0.6095238095238096,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3,
+          "wape": 0.6,
+          "observations": 3
+        }
+      },
+      "16:526:740": {
+        "pooled": {
+          "mae": 0.7620808948641676,
+          "wape": 0.46658013971275564,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.5,
+          "wape": 0.9183673469387754,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7285714285714286,
+          "wape": 0.446064139941691,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6952380952380951,
+          "wape": 0.4256559766763848,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4333333333333334,
+          "wape": 0.2653061224489796,
+          "observations": 3
+        }
+      },
+      "13:700:392": {
+        "pooled": {
+          "mae": 0.45168929598997826,
+          "wape": 0.35659681262366705,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.9333333333333335,
+          "wape": 0.736842105263158,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5333333333333334,
+          "wape": 0.42105263157894746,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5095238095238094,
+          "wape": 0.4022556390977443,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.30000000000000004,
+          "wape": 0.23684210526315794,
+          "observations": 3
+        }
+      },
+      "3:726:666": {
+        "pooled": {
+          "mae": 0.6206841286294026,
+          "wape": 0.9800275715201094,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5,
+          "wape": 0.7894736842105263,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.661904761904762,
+          "wape": 1.0451127819548873,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5476190476190476,
+          "wape": 0.8646616541353382,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.8000000000000002,
+          "wape": 1.2631578947368423,
+          "observations": 3
+        }
+      },
+      "13:332:309": {
+        "pooled": {
+          "mae": 0.8509365175244342,
+          "wape": 0.8234869524430009,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.4333333333333336,
+          "wape": 1.3870967741935485,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8428571428571429,
+          "wape": 0.8156682027649769,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.9,
+          "wape": 0.8709677419354839,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7000000000000001,
+          "wape": 0.6774193548387097,
+          "observations": 3
+        }
+      },
+      "3:836:836": {
+        "pooled": {
+          "mae": 0.21113394259958781,
+          "wape": 0.2639174282494847,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4000000000000001,
+          "wape": 0.5,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.18095238095238095,
+          "wape": 0.22619047619047614,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.18571428571428575,
+          "wape": 0.23214285714285715,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.20000000000000004,
+          "wape": 0.25,
+          "observations": 3
+        }
+      },
+      "0:307:136": {
+        "pooled": {
+          "mae": 0.7453917237138773,
+          "wape": 0.3388144198699442,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.3333333333333333,
+          "wape": 0.6060606060606061,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6190476190476192,
+          "wape": 0.28138528138528146,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6238095238095238,
+          "wape": 0.28354978354978355,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.2727272727272727,
+          "observations": 3
+        }
+      },
+      "1:123:531": {
+        "pooled": {
+          "mae": 0.43338432555967676,
+          "wape": 0.35915828085056084,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.39333333333333326,
+          "wape": 0.32596685082872917,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.381904761904762,
+          "wape": 0.3164956590370956,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5638095238095239,
+          "wape": 0.4672454617205999,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.8266666666666667,
+          "wape": 0.6850828729281768,
+          "observations": 3
+        }
+      },
+      "3:85:92": {
+        "pooled": {
+          "mae": 0.8516491342300528,
+          "wape": 0.4405081728776135,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.133333333333333,
+          "wape": 0.5862068965517241,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8666666666666666,
+          "wape": 0.44827586206896547,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.0095238095238093,
+          "wape": 0.522167487684729,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.2333333333333332,
+          "wape": 0.6379310344827586,
+          "observations": 3
+        }
+      },
+      "4:848:419": {
+        "pooled": {
+          "mae": 0.18382512785239902,
+          "wape": 0.17233605736162408,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.20000000000000007,
+          "wape": 0.18750000000000006,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.21904761904761913,
+          "wape": 0.2053571428571429,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2961904761904763,
+          "wape": 0.2776785714285715,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.20000000000000004,
+          "wape": 0.18750000000000003,
+          "observations": 3
+        }
+      },
+      "16:412:122": {
+        "pooled": {
+          "mae": 1.836163658065278,
+          "wape": 0.3043365179113721,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 2.8333333333333335,
+          "wape": 0.46961325966850836,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.995238095238095,
+          "wape": 0.3307024467245462,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 2.2238095238095235,
+          "wape": 0.3685872138910813,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.3333333333333333,
+          "wape": 0.22099447513812157,
+          "observations": 3
+        }
+      },
+      "0:95:58": {
+        "pooled": {
+          "mae": 0.24013623341073675,
+          "wape": 0.3132211740140045,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5666666666666665,
+          "wape": 0.7391304347826086,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.23333333333333336,
+          "wape": 0.3043478260869566,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.22857142857142865,
+          "wape": 0.29813664596273304,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.23333333333333328,
+          "wape": 0.3043478260869565,
+          "observations": 3
+        }
+      },
+      "16:466:116": {
+        "pooled": {
+          "mae": 0.5114619861725923,
+          "wape": 0.232482720987542,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5333333333333333,
+          "wape": 0.24242424242424243,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4857142857142857,
+          "wape": 0.22077922077922077,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7428571428571429,
+          "wape": 0.3376623376623377,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333334,
+          "wape": 0.33333333333333337,
+          "observations": 3
+        }
+      },
+      "3:108:836": {
+        "pooled": {
+          "mae": 0.33652525235787073,
+          "wape": 0.3256695990560039,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6333333333333332,
+          "wape": 0.6129032258064515,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.33809523809523795,
+          "wape": 0.3271889400921657,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3714285714285713,
+          "wape": 0.35944700460829476,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4666666666666666,
+          "wape": 0.4516129032258064,
+          "observations": 3
+        }
+      },
+      "2:354:254": {
+        "pooled": {
+          "mae": 0.8196639192059164,
+          "wape": 1.3661065320098607,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8666666666666667,
+          "wape": 1.4444444444444446,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8476190476190476,
+          "wape": 1.4126984126984128,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6857142857142856,
+          "wape": 1.1428571428571428,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.2,
+          "wape": 2.0000000000000004,
+          "observations": 3
+        }
+      },
+      "3:725:580": {
+        "pooled": {
+          "mae": 0.42560162737744905,
+          "wape": 0.23644534854302723,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8000000000000002,
+          "wape": 0.4444444444444445,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5619047619047618,
+          "wape": 0.3121693121693121,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6238095238095237,
+          "wape": 0.3465608465608465,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.33333333333333326,
+          "observations": 3
+        }
+      },
+      "3:723:167": {
+        "pooled": {
+          "mae": 0.7372796904807984,
+          "wape": 3.1597701020605653,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3,
+          "wape": 1.2857142857142856,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7000000000000001,
+          "wape": 3.0000000000000004,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.8571428571428571,
+          "wape": 3.673469387755102,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.0999999999999999,
+          "wape": 4.714285714285714,
+          "observations": 3
+        }
+      },
+      "13:688:864": {
+        "pooled": {
+          "mae": 0.881676417078539,
+          "wape": 0.6297688693418136,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.2666666666666666,
+          "wape": 0.9047619047619047,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.133333333333333,
+          "wape": 0.8095238095238093,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.8809523809523808,
+          "wape": 0.6292517006802719,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9666666666666665,
+          "wape": 0.6904761904761904,
+          "observations": 3
+        }
+      },
+      "4:10:118": {
+        "pooled": {
+          "mae": 0.6464344259305262,
+          "wape": 0.42250616073890607,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.1366666666666667,
+          "wape": 0.7429193899782136,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7566666666666665,
+          "wape": 0.494553376906318,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7323809523809524,
+          "wape": 0.4786803610333022,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5033333333333334,
+          "wape": 0.32897603485838783,
+          "observations": 3
+        }
+      },
+      "6:537:207": {
+        "pooled": {
+          "mae": 0.18686255372382995,
+          "wape": 0.2874808518828153,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3833333333333333,
+          "wape": 0.5897435897435898,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.10238095238095242,
+          "wape": 0.1575091575091576,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.23666666666666666,
+          "wape": 0.3641025641025641,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.08333333333333333,
+          "wape": 0.12820512820512822,
+          "observations": 3
+        }
+      },
+      "13:685:332": {
+        "pooled": {
+          "mae": 0.19096203729737526,
+          "wape": 0.1080917192249294,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.10000000000000009,
+          "wape": 0.05660377358490571,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.18571428571428572,
+          "wape": 0.10512129380053908,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4047619047619049,
+          "wape": 0.22911051212938013,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3333333333333333,
+          "wape": 0.18867924528301888,
+          "observations": 3
+        }
+      },
+      "13:676:317": {
+        "pooled": {
+          "mae": 0.054787790818258054,
+          "wape": 0.024531846635040922,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.36666666666666664,
+          "wape": 0.16417910447761194,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2714285714285713,
+          "wape": 0.12153518123667371,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.30952380952380937,
+          "wape": 0.13859275053304898,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.06666666666666665,
+          "wape": 0.029850746268656712,
+          "observations": 3
+        }
+      },
+      "3:712:733": {
+        "pooled": {
+          "mae": 0.23524417618882232,
+          "wape": 0.47048835237764464,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.30000000000000004,
+          "wape": 0.6000000000000001,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.14761904761904762,
+          "wape": 0.29523809523809524,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2333333333333334,
+          "wape": 0.4666666666666668,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.10000000000000002,
+          "wape": 0.20000000000000004,
+          "observations": 3
+        }
+      },
+      "0:260:41": {
+        "pooled": {
+          "mae": 0.15371142227111453,
+          "wape": 0.13562772553333632,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5333333333333333,
+          "wape": 0.4705882352941176,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2666666666666668,
+          "wape": 0.23529411764705888,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.14761904761904768,
+          "wape": 0.13025210084033617,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.39999999999999997,
+          "wape": 0.3529411764705882,
+          "observations": 3
+        }
+      },
+      "12:558:363": {
+        "pooled": {
+          "mae": 0.6793341189960231,
+          "wape": 0.36392899231929815,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.39999999999999997,
+          "wape": 0.2142857142857143,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7428571428571429,
+          "wape": 0.39795918367346944,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.8714285714285714,
+          "wape": 0.4668367346938776,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9333333333333332,
+          "wape": 0.5,
+          "observations": 3
+        }
+      },
+      "0:121:145": {
+        "pooled": {
+          "mae": 0.21533302277555957,
+          "wape": 0.15756074837236067,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.16666666666666674,
+          "wape": 0.12195121951219519,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.18571428571428558,
+          "wape": 0.1358885017421602,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.06666666666666672,
+          "wape": 0.0487804878048781,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3999999999999999,
+          "wape": 0.2926829268292683,
+          "observations": 3
+        }
+      },
+      "10:3:691": {
+        "pooled": {
+          "mae": 2.074227786828574,
+          "wape": 0.1659382229462859,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 6.766666666666667,
+          "wape": 0.5413333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 3.033333333333332,
+          "wape": 0.24266666666666656,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 2.7238095238095235,
+          "wape": 0.21790476190476188,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.8666666666666683,
+          "wape": 0.14933333333333346,
+          "observations": 3
+        }
+      },
+      "3:762:340": {
+        "pooled": {
+          "mae": 0.18443317102847623,
+          "wape": 0.36886634205695246,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.09999999999999998,
+          "wape": 0.19999999999999996,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.10952380952380954,
+          "wape": 0.21904761904761907,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.09523809523809519,
+          "wape": 0.19047619047619038,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.26666666666666666,
+          "wape": 0.5333333333333333,
+          "observations": 3
+        }
+      },
+      "12:372:190": {
+        "pooled": {
+          "mae": 0.21898297291127589,
+          "wape": 0.17755376181995342,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.2333333333333333,
+          "wape": 0.18918918918918917,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3857142857142857,
+          "wape": 0.31274131274131267,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2714285714285714,
+          "wape": 0.22007722007722003,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5333333333333333,
+          "wape": 0.4324324324324324,
+          "observations": 3
+        }
+      },
+      "0:240:834": {
+        "pooled": {
+          "mae": 0.7874384310682503,
+          "wape": 0.3192317963790204,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.2,
+          "wape": 0.4864864864864865,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.619047619047619,
+          "wape": 0.2509652509652509,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.0999999999999999,
+          "wape": 0.44594594594594594,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.1333333333333335,
+          "wape": 0.45945945945945954,
+          "observations": 3
+        }
+      },
+      "15:139:190": {
+        "pooled": {
+          "mae": 0.33571805930018755,
+          "wape": 0.25178854447514065,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8000000000000002,
+          "wape": 0.6000000000000001,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5047619047619047,
+          "wape": 0.37857142857142856,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4142857142857143,
+          "wape": 0.3107142857142857,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6666666666666666,
+          "wape": 0.5,
+          "observations": 3
+        }
+      },
+      "12:455:76": {
+        "pooled": {
+          "mae": 0.5014678711796953,
+          "wape": 0.21188783289282898,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8333333333333334,
+          "wape": 0.35211267605633806,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5666666666666668,
+          "wape": 0.2394366197183099,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4619047619047619,
+          "wape": 0.19517102615694165,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333334,
+          "wape": 0.3098591549295775,
+          "observations": 3
+        }
+      },
+      "12:226:363": {
+        "pooled": {
+          "mae": 0.6313436737910079,
+          "wape": 0.25253746951640316,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.49999999999999994,
+          "wape": 0.19999999999999998,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4999999999999998,
+          "wape": 0.1999999999999999,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6666666666666666,
+          "wape": 0.26666666666666666,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7666666666666666,
+          "wape": 0.30666666666666664,
+          "observations": 3
+        }
+      },
+      "0:699:23": {
+        "pooled": {
+          "mae": 0.7381740916924088,
+          "wape": 0.425869668284082,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4000000000000002,
+          "wape": 0.2307692307692309,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8761904761904761,
+          "wape": 0.5054945054945054,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7761904761904762,
+          "wape": 0.4478021978021978,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.3666666666666665,
+          "wape": 0.7884615384615383,
+          "observations": 3
+        }
+      },
+      "13:407:503": {
+        "pooled": {
+          "mae": 0.2834038728903624,
+          "wape": 0.31843131785433976,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6233333333333333,
+          "wape": 0.7003745318352059,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.17095238095238086,
+          "wape": 0.19208132691278748,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.373809523809524,
+          "wape": 0.4200107009095775,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.44333333333333336,
+          "wape": 0.4981273408239701,
+          "observations": 3
+        }
+      },
+      "17:897:620": {
+        "pooled": {
+          "mae": 0.21217034837221874,
+          "wape": 0.1928821348838352,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6999999999999998,
+          "wape": 0.6363636363636362,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2047619047619049,
+          "wape": 0.18614718614718626,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.20476190476190478,
+          "wape": 0.18614718614718614,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.16666666666666674,
+          "wape": 0.15151515151515157,
+          "observations": 3
+        }
+      },
+      "12:376:11": {
+        "pooled": {
+          "mae": 0.2771668733788422,
+          "wape": 0.18477791558589482,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5666666666666668,
+          "wape": 0.3777777777777779,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2904761904761905,
+          "wape": 0.19365079365079366,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2761904761904763,
+          "wape": 0.18412698412698422,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.26666666666666666,
+          "wape": 0.17777777777777778,
+          "observations": 3
+        }
+      },
+      "12:264:822": {
+        "pooled": {
+          "mae": 0.6315568008039508,
+          "wape": 0.8237697401790665,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.30000000000000004,
+          "wape": 0.39130434782608703,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6904761904761904,
+          "wape": 0.9006211180124223,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7095238095238096,
+          "wape": 0.9254658385093169,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.782608695652174,
+          "observations": 3
+        }
+      },
+      "3:809:44": {
+        "pooled": {
+          "mae": 1.3321367981800873,
+          "wape": 0.9082750896682414,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.8666666666666665,
+          "wape": 1.2727272727272727,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.4285714285714286,
+          "wape": 0.9740259740259741,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.357142857142857,
+          "wape": 0.9253246753246753,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.3333333333333333,
+          "wape": 0.9090909090909092,
+          "observations": 3
+        }
+      },
+      "0:171:41": {
+        "pooled": {
+          "mae": 0.4485904615062199,
+          "wape": 0.7083007286940314,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5000000000000001,
+          "wape": 0.7894736842105263,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.23333333333333336,
+          "wape": 0.368421052631579,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4523809523809524,
+          "wape": 0.7142857142857143,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.9473684210526314,
+          "observations": 3
+        }
+      },
+      "0:664:843": {
+        "pooled": {
+          "mae": 0.3234783213446504,
+          "wape": 0.33463274621860384,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5533333333333332,
+          "wape": 0.5724137931034482,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.4371428571428572,
+          "wape": 0.452216748768473,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3961904761904762,
+          "wape": 0.4098522167487685,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7733333333333333,
+          "wape": 0.7999999999999999,
+          "observations": 3
+        }
+      },
+      "0:378:719": {
+        "pooled": {
+          "mae": 0.23628288855404075,
+          "wape": 0.1687734918243148,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.46666666666666673,
+          "wape": 0.33333333333333337,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.19999999999999987,
+          "wape": 0.14285714285714277,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3761904761904762,
+          "wape": 0.26870748299319724,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.36666666666666664,
+          "wape": 0.26190476190476186,
+          "observations": 3
+        }
+      },
+      "16:573:79": {
+        "pooled": {
+          "mae": 0.08193540552971408,
+          "wape": 0.22346019689922023,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.16666666666666666,
+          "wape": 0.45454545454545453,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.08095238095238094,
+          "wape": 0.22077922077922074,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.10476190476190474,
+          "wape": 0.28571428571428564,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.10000000000000003,
+          "wape": 0.2727272727272728,
+          "observations": 3
+        }
+      },
+      "3:785:302": {
+        "pooled": {
+          "mae": 0.18659236124870868,
+          "wape": 0.15129110371516918,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.2333333333333334,
+          "wape": 0.18918918918918923,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.15714285714285725,
+          "wape": 0.1274131274131275,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2047619047619047,
+          "wape": 0.16602316602316597,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4333333333333333,
+          "wape": 0.35135135135135126,
+          "observations": 3
+        }
+      },
+      "7:75:394": {
+        "pooled": {
+          "mae": 0.4772595619397208,
+          "wape": 0.23471781734740368,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6999999999999998,
+          "wape": 0.34426229508196715,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5380952380952378,
+          "wape": 0.2646370023419203,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4857142857142856,
+          "wape": 0.23887587822014048,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6999999999999998,
+          "wape": 0.34426229508196715,
+          "observations": 3
+        }
+      },
+      "12:248:6": {
+        "pooled": {
+          "mae": 0.8784181552336291,
+          "wape": 0.3711626008029419,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.5666666666666667,
+          "wape": 0.6619718309859155,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7952380952380952,
+          "wape": 0.3360160965794769,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.8285714285714286,
+          "wape": 0.3501006036217304,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7999999999999999,
+          "wape": 0.3380281690140845,
+          "observations": 3
+        }
+      },
+      "0:158:600": {
+        "pooled": {
+          "mae": 0.34856833718727237,
+          "wape": 0.09093087057059279,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.16666666666666666,
+          "wape": 0.043478260869565216,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5190476190476193,
+          "wape": 0.1354037267080746,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.2666666666666666,
+          "wape": 0.33043478260869563,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5666666666666665,
+          "wape": 0.14782608695652172,
+          "observations": 3
+        }
+      },
+      "3:711:836": {
+        "pooled": {
+          "mae": 0.4280907852556098,
+          "wape": 0.4586686984881534,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.8666666666666667,
+          "wape": 0.9285714285714287,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5047619047619049,
+          "wape": 0.5408163265306124,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.4142857142857143,
+          "wape": 0.4438775510204082,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4000000000000001,
+          "wape": 0.42857142857142866,
+          "observations": 3
+        }
+      },
+      "0:233:296": {
+        "pooled": {
+          "mae": 0.354284611041739,
+          "wape": 0.14209275843920013,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.96,
+          "wape": 0.3850267379679144,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5142857142857146,
+          "wape": 0.20626432391138286,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3799999999999999,
+          "wape": 0.15240641711229944,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4733333333333336,
+          "wape": 0.1898395721925135,
+          "observations": 3
+        }
+      },
+      "3:801:666": {
+        "pooled": {
+          "mae": 0.4942654478654685,
+          "wape": 1.4827963435964056,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.19999999999999998,
+          "wape": 0.6,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.523809523809524,
+          "wape": 1.5714285714285718,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6,
+          "wape": 1.7999999999999998,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.8333333333333334,
+          "wape": 2.5,
+          "observations": 3
+        }
+      },
+      "3:845:120": {
+        "pooled": {
+          "mae": 0.211292500022095,
+          "wape": 0.3169387500331425,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.46666666666666673,
+          "wape": 0.7000000000000001,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.20952380952380945,
+          "wape": 0.31428571428571417,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.20952380952380947,
+          "wape": 0.3142857142857142,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.36666666666666664,
+          "wape": 0.5499999999999999,
+          "observations": 3
+        }
+      },
+      "0:530:473": {
+        "pooled": {
+          "mae": 0.16650134529725122,
+          "wape": 0.23785906471035886,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.36666666666666664,
+          "wape": 0.5238095238095237,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.15714285714285714,
+          "wape": 0.22448979591836735,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.08095238095238096,
+          "wape": 0.11564625850340136,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.16666666666666666,
+          "wape": 0.23809523809523808,
+          "observations": 3
+        }
+      },
+      "13:775:531": {
+        "pooled": {
+          "mae": 0.20632905241199753,
+          "wape": 0.29758997944038107,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.31333333333333335,
+          "wape": 0.4519230769230769,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.17333333333333337,
+          "wape": 0.25000000000000006,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3495238095238095,
+          "wape": 0.5041208791208791,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.35000000000000003,
+          "wape": 0.5048076923076923,
+          "observations": 3
+        }
+      },
+      "6:541:694": {
+        "pooled": {
+          "mae": 0.6136870934460431,
+          "wape": 0.35405024621887105,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.7999999999999998,
+          "wape": 1.0384615384615385,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7333333333333334,
+          "wape": 0.4230769230769232,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7857142857142856,
+          "wape": 0.4532967032967033,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.0,
+          "wape": 0.576923076923077,
+          "observations": 3
+        }
+      },
+      "0:359:215": {
+        "pooled": {
+          "mae": 0.36054772134362495,
+          "wape": 0.05878495456689537,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.6666666666666672,
+          "wape": 0.2717391304347827,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.41904761904761906,
+          "wape": 0.06832298136645963,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.49523809523809526,
+          "wape": 0.08074534161490685,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.2000000000000002,
+          "wape": 0.19565217391304351,
+          "observations": 3
+        }
+      },
+      "12:227:291": {
+        "pooled": {
+          "mae": 0.5920662829666986,
+          "wape": 0.34157670171155685,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.46666666666666673,
+          "wape": 0.2692307692307693,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5523809523809524,
+          "wape": 0.3186813186813187,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7238095238095239,
+          "wape": 0.4175824175824176,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.7333333333333334,
+          "wape": 0.4230769230769231,
+          "observations": 3
+        }
+      },
+      "0:78:114": {
+        "pooled": {
+          "mae": 0.8348144454232248,
+          "wape": 0.3017401609963463,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7000000000000001,
+          "wape": 0.25301204819277107,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6904761904761906,
+          "wape": 0.2495697074010327,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.9109523809523811,
+          "wape": 0.32925989672977624,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9333333333333335,
+          "wape": 0.3373493975903614,
+          "observations": 3
+        }
+      },
+      "15:79:580": {
+        "pooled": {
+          "mae": 0.5026219409555286,
+          "wape": 0.12671141368626773,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6333333333333332,
+          "wape": 0.15966386554621848,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.36666666666666653,
+          "wape": 0.09243697478991594,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.29999999999999966,
+          "wape": 0.07563025210084026,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5333333333333335,
+          "wape": 0.1344537815126051,
+          "observations": 3
+        }
+      },
+      "6:514:227": {
+        "pooled": {
+          "mae": 0.41199793006348745,
+          "wape": 0.6088639360544148,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3633333333333333,
+          "wape": 0.5369458128078817,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.33095238095238105,
+          "wape": 0.4890921885995778,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3509523809523809,
+          "wape": 0.5186488388458831,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.31,
+          "wape": 0.45812807881773393,
+          "observations": 3
+        }
+      },
+      "0:59:853": {
+        "pooled": {
+          "mae": 0.2921160448769542,
+          "wape": 0.18257252804809637,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.46666666666666673,
+          "wape": 0.2916666666666667,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2571428571428573,
+          "wape": 0.1607142857142858,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2914285714285713,
+          "wape": 0.18214285714285708,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3666666666666667,
+          "wape": 0.22916666666666669,
+          "observations": 3
+        }
+      },
+      "12:387:215": {
+        "pooled": {
+          "mae": 1.9117553607851256,
+          "wape": 0.23797784574088704,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 3.1,
+          "wape": 0.3858921161825727,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 3.195238095238095,
+          "wape": 0.39774748073503263,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 3.2238095238095235,
+          "wape": 0.4013040901007706,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.4333333333333322,
+          "wape": 0.3029045643153526,
+          "observations": 3
+        }
+      },
+      "3:771:152": {
+        "pooled": {
+          "mae": 0.538141134351815,
+          "wape": 0.2562576830246738,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7000000000000001,
+          "wape": 0.3333333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6428571428571428,
+          "wape": 0.3061224489795918,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6047619047619045,
+          "wape": 0.2879818594104307,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.1666666666666665,
+          "wape": 0.5555555555555555,
+          "observations": 3
+        }
+      },
+      "16:340:190": {
+        "pooled": {
+          "mae": 0.19842907681936486,
+          "wape": 0.19202813885744988,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333333,
+          "wape": 0.4193548387096773,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.26190476190476186,
+          "wape": 0.25345622119815664,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.25714285714285706,
+          "wape": 0.24884792626728103,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.23333333333333328,
+          "wape": 0.22580645161290316,
+          "observations": 3
+        }
+      },
+      "3:753:92": {
+        "pooled": {
+          "mae": 2.535092520781389,
+          "wape": 0.4637364367283027,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 5.6000000000000005,
+          "wape": 1.0243902439024388,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 2.752380952380953,
+          "wape": 0.5034843205574913,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 3.9666666666666672,
+          "wape": 0.7256097560975611,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 4.1000000000000005,
+          "wape": 0.75,
+          "observations": 3
+        }
+      },
+      "0:257:634": {
+        "pooled": {
+          "mae": 0.2642224615995222,
+          "wape": 0.3476611336835818,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.48,
+          "wape": 0.6315789473684209,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.21428571428571433,
+          "wape": 0.2819548872180451,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.20809523809523814,
+          "wape": 0.27380952380952384,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4566666666666667,
+          "wape": 0.6008771929824561,
+          "observations": 3
+        }
+      },
+      "0:452:300": {
+        "pooled": {
+          "mae": 3.889636027823743,
+          "wape": 0.4380220752053765,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 5.48,
+          "wape": 0.6171171171171171,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 3.3980952380952374,
+          "wape": 0.3826683826683826,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 3.496666666666666,
+          "wape": 0.3937687687687687,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.233333333333333,
+          "wape": 0.2515015015015014,
+          "observations": 3
+        }
+      },
+      "13:816:402": {
+        "pooled": {
+          "mae": 0.2740095785152685,
+          "wape": 0.17870189903169684,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.40000000000000013,
+          "wape": 0.26086956521739135,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.15047619047619057,
+          "wape": 0.09813664596273297,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3057142857142858,
+          "wape": 0.1993788819875777,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.40666666666666673,
+          "wape": 0.26521739130434785,
+          "observations": 3
+        }
+      },
+      "6:609:441": {
+        "pooled": {
+          "mae": 0.5402487888238958,
+          "wape": 0.6753109860298698,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6,
+          "wape": 0.75,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6857142857142856,
+          "wape": 0.8571428571428571,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6333333333333334,
+          "wape": 0.7916666666666667,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9666666666666667,
+          "wape": 1.2083333333333333,
+          "observations": 3
+        }
+      },
+      "0:165:116": {
+        "pooled": {
+          "mae": 0.23010577166527402,
+          "wape": 0.23010577166527402,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3333333333333333,
+          "wape": 0.3333333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2000000000000001,
+          "wape": 0.2000000000000001,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.19047619047619047,
+          "wape": 0.19047619047619047,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.2333333333333333,
+          "wape": 0.2333333333333333,
+          "observations": 3
+        }
+      },
+      "5:743:351": {
+        "pooled": {
+          "mae": 0.6156024495526976,
+          "wape": 0.3130181946878123,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3666666666666669,
+          "wape": 0.1864406779661018,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.8428571428571429,
+          "wape": 0.42857142857142855,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.7523809523809524,
+          "wape": 0.38256658595641646,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.9999999999999999,
+          "wape": 0.5084745762711863,
+          "observations": 3
+        }
+      },
+      "1:28:83": {
+        "pooled": {
+          "mae": 0.40547617667853036,
+          "wape": 0.2896258404846645,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.39999999999999997,
+          "wape": 0.2857142857142857,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.3561904761904761,
+          "wape": 0.2544217687074829,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.36285714285714293,
+          "wape": 0.2591836734693878,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5133333333333333,
+          "wape": 0.36666666666666664,
+          "observations": 3
+        }
+      },
+      "7:267:272": {
+        "pooled": {
+          "mae": 0.18320305771555365,
+          "wape": 0.14854301976936782,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5,
+          "wape": 0.4054054054054054,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.261904761904762,
+          "wape": 0.2123552123552124,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.25238095238095243,
+          "wape": 0.20463320463320464,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.23333333333333328,
+          "wape": 0.18918918918918914,
+          "observations": 3
+        }
+      },
+      "3:792:860": {
+        "pooled": {
+          "mae": 0.5592309936834496,
+          "wape": 0.7294317308914561,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.0999999999999999,
+          "wape": 1.434782608695652,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.5380952380952381,
+          "wape": 0.7018633540372672,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.43333333333333335,
+          "wape": 0.5652173913043479,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6333333333333333,
+          "wape": 0.8260869565217391,
+          "observations": 3
+        }
+      },
+      "0:867:77": {
+        "pooled": {
+          "mae": 0.3005034717403971,
+          "wape": 0.32196800543613974,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.39999999999999997,
+          "wape": 0.4285714285714285,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.24761904761904763,
+          "wape": 0.26530612244897955,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.2571428571428573,
+          "wape": 0.27551020408163274,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.26666666666666655,
+          "wape": 0.2857142857142856,
+          "observations": 3
+        }
+      },
+      "13:745:523": {
+        "pooled": {
+          "mae": 0.22100190485093743,
+          "wape": 0.13260114291056246,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.39999999999999997,
+          "wape": 0.24,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.30476190476190484,
+          "wape": 0.1828571428571429,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3142857142857142,
+          "wape": 0.18857142857142853,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.40000000000000013,
+          "wape": 0.24000000000000007,
+          "observations": 3
+        }
+      },
+      "7:72:521": {
+        "pooled": {
+          "mae": 0.4763711130867085,
+          "wape": 0.23050215149356865,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7866666666666665,
+          "wape": 0.38064516129032255,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.32380952380952377,
+          "wape": 0.15668202764976957,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3428571428571427,
+          "wape": 0.16589861751152066,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4200000000000001,
+          "wape": 0.20322580645161295,
+          "observations": 3
+        }
+      },
+      "0:291:422": {
+        "pooled": {
+          "mae": 0.467317520125659,
+          "wape": 0.259620844514255,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.26666666666666666,
+          "wape": 0.14814814814814814,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.380952380952381,
+          "wape": 0.21164021164021166,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.48095238095238096,
+          "wape": 0.26719576719576715,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.3333333333333334,
+          "wape": 0.1851851851851852,
+          "observations": 3
+        }
+      },
+      "0:442:18": {
+        "pooled": {
+          "mae": 0.6740295475224928,
+          "wape": 0.31109056039499666,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5666666666666669,
+          "wape": 0.2615384615384616,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6047619047619047,
+          "wape": 0.2791208791208791,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5095238095238096,
+          "wape": 0.23516483516483516,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6333333333333334,
+          "wape": 0.2923076923076923,
+          "observations": 3
+        }
+      },
+      "12:379:215": {
+        "pooled": {
+          "mae": 1.3728911201749316,
+          "wape": 0.1723294293106609,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.5000000000000002,
+          "wape": 0.18828451882845193,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 3.128571428571428,
+          "wape": 0.39270771069934246,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 3.0666666666666664,
+          "wape": 0.38493723849372385,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.9999999999999998,
+          "wape": 0.2510460251046025,
+          "observations": 3
+        }
+      },
+      "16:605:26": {
+        "pooled": {
+          "mae": 0.30609408183159265,
+          "wape": 0.22397127938897024,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.5,
+          "wape": 0.3658536585365854,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.24285714285714288,
+          "wape": 0.1777003484320558,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3333333333333333,
+          "wape": 0.24390243902439027,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.1333333333333333,
+          "wape": 0.09756097560975609,
+          "observations": 3
+        }
+      },
+      "0:169:74": {
+        "pooled": {
+          "mae": 0.07002360846371236,
+          "wape": 0.06842697895476778,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.26999999999999996,
+          "wape": 0.263843648208469,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.1623809523809525,
+          "wape": 0.15867845509539327,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.1285714285714286,
+          "wape": 0.12563983248022337,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.1266666666666667,
+          "wape": 0.12377850162866452,
+          "observations": 3
+        }
+      },
+      "3:820:315": {
+        "pooled": {
+          "mae": 1.4736080887621945,
+          "wape": 1.4736080887621945,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.0666666666666667,
+          "wape": 1.0666666666666667,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.5714285714285712,
+          "wape": 1.5714285714285712,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.161904761904762,
+          "wape": 1.161904761904762,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 2.3666666666666667,
+          "wape": 2.3666666666666667,
+          "observations": 3
+        }
+      },
+      "13:697:507": {
+        "pooled": {
+          "mae": 0.3089223440565178,
+          "wape": 0.6178446881130356,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.16666666666666666,
+          "wape": 0.3333333333333333,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2714285714285715,
+          "wape": 0.542857142857143,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.29523809523809524,
+          "wape": 0.5904761904761905,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5,
+          "wape": 1.0,
+          "observations": 3
+        }
+      },
+      "6:498:122": {
+        "pooled": {
+          "mae": 0.3782096439615163,
+          "wape": 0.09781283895556454,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6,
+          "wape": 0.15517241379310343,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7047619047619049,
+          "wape": 0.18226600985221678,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.6285714285714291,
+          "wape": 0.16256157635467994,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6,
+          "wape": 0.15517241379310343,
+          "observations": 3
+        }
+      },
+      "12:244:740": {
+        "pooled": {
+          "mae": 0.26397188849104,
+          "wape": 0.10701563046934051,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.13333333333333353,
+          "wape": 0.054054054054054126,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.42857142857142866,
+          "wape": 0.1737451737451738,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.45238095238095255,
+          "wape": 0.18339768339768345,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.4666666666666668,
+          "wape": 0.18918918918918923,
+          "observations": 3
+        }
+      },
+      "13:594:317": {
+        "pooled": {
+          "mae": 0.5984365542575155,
+          "wape": 0.2762014865803918,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 1.4333333333333333,
+          "wape": 0.6615384615384615,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.6142857142857147,
+          "wape": 0.2835164835164837,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.557142857142857,
+          "wape": 0.2571428571428571,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5666666666666668,
+          "wape": 0.2615384615384616,
+          "observations": 3
+        }
+      },
+      "13:660:651": {
+        "pooled": {
+          "mae": 0.2308692338179589,
+          "wape": 0.14134851050079117,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.49999999999999994,
+          "wape": 0.3061224489795918,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.20476190476190484,
+          "wape": 0.1253644314868805,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3047619047619046,
+          "wape": 0.18658892128279875,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.33333333333333326,
+          "wape": 0.20408163265306117,
+          "observations": 3
+        }
+      },
+      "3:793:580": {
+        "pooled": {
+          "mae": 0.14847081667203674,
+          "wape": 0.1272607000046029,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.3,
+          "wape": 0.2571428571428572,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.22380952380952382,
+          "wape": 0.19183673469387758,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.1952380952380952,
+          "wape": 0.16734693877551018,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.19999999999999998,
+          "wape": 0.17142857142857143,
+          "observations": 3
+        }
+      },
+      "6:506:580": {
+        "pooled": {
+          "mae": 0.9571930960335718,
+          "wape": 0.15606409174460412,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4666666666666662,
+          "wape": 0.07608695652173907,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.7619047619047613,
+          "wape": 0.12422360248447195,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 1.223809523809524,
+          "wape": 0.19953416149068326,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.5666666666666664,
+          "wape": 0.2554347826086956,
+          "observations": 3
+        }
+      },
+      "0:199:104": {
+        "pooled": {
+          "mae": 0.5470699866001524,
+          "wape": 0.124334087863671,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.733333333333333,
+          "wape": 0.1666666666666666,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 1.0571428571428576,
+          "wape": 0.2402597402597404,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.9904761904761906,
+          "wape": 0.22510822510822517,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 1.4000000000000004,
+          "wape": 0.3181818181818183,
+          "observations": 3
+        }
+      },
+      "3:754:130": {
+        "pooled": {
+          "mae": 0.40145338771136335,
+          "wape": 1.136188833145368,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.42,
+          "wape": 1.1886792452830188,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.31523809523809515,
+          "wape": 0.8921832884097033,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.5371428571428571,
+          "wape": 1.5202156334231804,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.5466666666666667,
+          "wape": 1.5471698113207548,
+          "observations": 3
+        }
+      },
+      "0:679:426": {
+        "pooled": {
+          "mae": 0.2592606508884674,
+          "wape": 0.15873101074804125,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.43333333333333335,
+          "wape": 0.2653061224489796,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.2333333333333333,
+          "wape": 0.14285714285714285,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.17619047619047637,
+          "wape": 0.10787172011661818,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.6666666666666666,
+          "wape": 0.4081632653061224,
+          "observations": 3
+        }
+      },
+      "12:462:145": {
+        "pooled": {
+          "mae": 0.3506513937629525,
+          "wape": 0.12260538243459879,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.7266666666666669,
+          "wape": 0.25407925407925414,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.23142857142857162,
+          "wape": 0.08091908091908098,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.35047619047619055,
+          "wape": 0.12254412254412256,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.13999999999999999,
+          "wape": 0.048951048951048945,
+          "observations": 3
+        }
+      },
+      "0:254:715": {
+        "pooled": {
+          "mae": 0.23715729151598708,
+          "wape": 0.17352972549950277,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.4333333333333334,
+          "wape": 0.31707317073170743,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.1571428571428571,
+          "wape": 0.11498257839721253,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.3552380952380952,
+          "wape": 0.25993031358885016,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.39999999999999997,
+          "wape": 0.29268292682926833,
+          "observations": 3
+        }
+      },
+      "2:47:535": {
+        "pooled": {
+          "mae": 0.22091640492551026,
+          "wape": 0.1134844545850224,
+          "observations": 3
+        },
+        "naive": {
+          "mae": 0.6133333333333334,
+          "wape": 0.31506849315068497,
+          "observations": 3
+        },
+        "ma7": {
+          "mae": 0.35238095238095246,
+          "wape": 0.18101761252446188,
+          "observations": 3
+        },
+        "ma14": {
+          "mae": 0.32095238095238104,
+          "wape": 0.1648727984344423,
+          "observations": 3
+        },
+        "weekly": {
+          "mae": 0.32,
+          "wape": 0.1643835616438356,
+          "observations": 3
+        }
+      }
+    },
+    "seriesBeatingMA7": 113
+  },
+  "checks": {
+    "storeOverlap": 0,
+    "savedModelReloadPredictionsIdentical": true,
+    "noUserDatabaseAccess": true,
+    "selectionFrozenBeforeTraining": true,
+    "configurationAndModelFrozenBeforeHoldoutLabels": true
+  },
+  "limitations": "The held-out store records have not been scored in v1, but calendar conditions are shared with v1's known evaluation period. This is store-group transfer evidence, not a completely new temporal/domain replication or an Indonesian UMKM field test. Public models stay separate from user workspaces. No retuning after this test."
+}

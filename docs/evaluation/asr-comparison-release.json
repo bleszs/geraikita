@@ -1,0 +1,151 @@
+{
+  "checkedAt": "2026-10-15T08:28:38.645Z",
+  "version": "0.21.0",
+  "runId": "2026-10-15T08-17-56-627Z-20faa6f2",
+  "tests": {
+    "node": 115,
+    "browser": 16,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "transferPython": 7,
+    "voicePython": 7,
+    "totalUnique": 157
+  },
+  "comparison": {
+    "selectedFromValidation": "base",
+    "validationClips": 16,
+    "testClips": 48,
+    "metrics": {
+      "validation": {
+        "tiny": {
+          "observations": 16,
+          "accepted": 14,
+          "rejected": 2,
+          "errors": 0,
+          "referenceWords": 347,
+          "referenceCharacters": 2016,
+          "wordErrors": 228,
+          "characterErrors": 715,
+          "substitutions": 123,
+          "deletions": 74,
+          "insertions": 31,
+          "hits": 150,
+          "exactMatches": 0,
+          "wer": 0.6570605187319885,
+          "cer": 0.35466269841269843,
+          "exactMatchRate": 0,
+          "latencyMs": {
+            "p50": 1206,
+            "p95": 2208
+          },
+          "realTimeFactor": {
+            "p50": 0.10629800307219661,
+            "p95": 0.15442477876106192
+          }
+        },
+        "base": {
+          "observations": 16,
+          "accepted": 16,
+          "rejected": 0,
+          "errors": 0,
+          "referenceWords": 347,
+          "referenceCharacters": 2016,
+          "wordErrors": 128,
+          "characterErrors": 248,
+          "substitutions": 106,
+          "deletions": 4,
+          "insertions": 18,
+          "hits": 237,
+          "exactMatches": 1,
+          "wer": 0.3688760806916426,
+          "cer": 0.12301587301587301,
+          "exactMatchRate": 0.0625,
+          "latencyMs": {
+            "p50": 1662,
+            "p95": 1985
+          },
+          "realTimeFactor": {
+            "p50": 0.1357142857142857,
+            "p95": 0.23082595870206488
+          }
+        }
+      },
+      "test": {
+        "tiny": {
+          "observations": 48,
+          "accepted": 44,
+          "rejected": 4,
+          "errors": 0,
+          "referenceWords": 1001,
+          "referenceCharacters": 5835,
+          "wordErrors": 670,
+          "characterErrors": 1851,
+          "substitutions": 434,
+          "deletions": 92,
+          "insertions": 144,
+          "hits": 475,
+          "exactMatches": 0,
+          "wer": 0.6693306693306693,
+          "cer": 0.31722365038560413,
+          "exactMatchRate": 0,
+          "latencyMs": {
+            "p50": 1195,
+            "p95": 1906
+          },
+          "realTimeFactor": {
+            "p50": 0.11148775894538607,
+            "p95": 0.16097560975609757
+          }
+        },
+        "base": {
+          "observations": 48,
+          "accepted": 46,
+          "rejected": 2,
+          "errors": 0,
+          "referenceWords": 1001,
+          "referenceCharacters": 5835,
+          "wordErrors": 364,
+          "characterErrors": 802,
+          "substitutions": 270,
+          "deletions": 54,
+          "insertions": 40,
+          "hits": 677,
+          "exactMatches": 1,
+          "wer": 0.36363636363636365,
+          "cer": 0.13744644387317909,
+          "exactMatchRate": 0.020833333333333332,
+          "latencyMs": {
+            "p50": 1673,
+            "p95": 2234
+          },
+          "realTimeFactor": {
+            "p50": 0.14758064516129032,
+            "p95": 0.23445378151260504
+          }
+        }
+      }
+    },
+    "pairedWins": {
+      "base": 43,
+      "tiny": 1,
+      "ties": 4
+    },
+    "auditPassed": true,
+    "inferenceRepeatPassed": false,
+    "changedRepeatTranscripts": 3,
+    "repeatedInferences": 4,
+    "readyForPromotion": false,
+    "trainingPerformed": false,
+    "tuningPerformed": false
+  },
+  "userData": {
+    "readOnlyComparison": true,
+    "backup": "data/backups/gerai-kita-live-2026-10-15T08-11-59-697Z-57033f7d.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true
+  },
+  "runtimeModelChanged": false,
+  "healthReady": true,
+  "limitations": "Comparison implementation and data/scoring audit complete, prediction repeat verification failed. Initial observed mismatch preserved. Single-run paired gains do not establish repeat stability, order safety, owner-microphone accuracy or promotion readiness."
+}

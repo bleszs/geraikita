@@ -1,0 +1,44 @@
+{
+  "version": "0.33.0",
+  "checkedAt": "2026-10-17T05:27:20.340Z",
+  "readOnly": true,
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-17T05-25-47-614Z-0d55c4a7.sqlite",
+    "preserved": true,
+    "tablesCompared": 20,
+    "totalTablesAfterMigration": 20,
+    "changedOriginalTables": [],
+    "addedTables": [],
+    "tableCounts": {
+      "account_sessions": 3,
+      "accounts": 2,
+      "audit": 3,
+      "business_state": 2,
+      "businesses": 2,
+      "collective_cycles": 2,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 2,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 3,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "usage_review_decisions": 0,
+      "workspaces": 2
+    }
+  },
+  "liveSummary": {
+    "ingredients": 1,
+    "withoutHistory": 1,
+    "screenedDays": 0,
+    "reviewCandidates": 0
+  },
+  "fieldValidated": false,
+  "newTraining": false,
+  "note": "Original table schemas and rows match the backup exactly. Only an empty owner-review table may be added on the initial migration. Read-only audit, no example review or usage inserted."
+}

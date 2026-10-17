@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-17T05:29:44.071Z",
+  "url": "http://127.0.0.1:4180",
+  "account": "demo@geraikita.test",
+  "routes": [
+    "ringkasan",
+    "stok",
+    "pesanan",
+    "restock",
+    "kelompok",
+    "surplus",
+    "riwayat",
+    "pengaturan"
+  ],
+  "desktopWidth": 1440,
+  "mobileWidth": 390,
+  "javascriptErrors": [],
+  "ingredients": 8,
+  "menus": 6,
+  "groupVisible": true,
+  "trainedModelActivated": false,
+  "businessDataMutationsDuringSmoke": 0,
+  "screenshots": "D:\\INFEST_FIX\\data\\demo\\presentation-2026-10-17\\screenshots",
+  "syntheticDemo": true,
+  "productionDatabaseUsed": false
+}

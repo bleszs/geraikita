@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-14T20:37:54.722Z",
+  "version": "0.5.0",
+  "origin": "http://localhost:4174",
+  "storage": "persistent SQLite",
+  "migrationPreserved": {
+    "inventory": 140,
+    "sales": 85,
+    "movements": 5,
+    "sessions": 19
+  },
+  "ingredient": {
+    "initialStock": 0,
+    "receipt": 250,
+    "usage": 50,
+    "afterSale": 200,
+    "afterReversal": 250,
+    "unit": "gram",
+    "oldReceiptIdentityPreserved": true,
+    "renamedCatalogPersisted": true,
+    "foreignBusinessIsolated": true
+  },
+  "extraction": {
+    "mode": "ollama",
+    "items": 1
+  },
+  "testNamespaceReset": true
+}

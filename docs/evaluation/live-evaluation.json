@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-15T06:49:46.367Z",
+  "source": "data/gerai-kita-live.sqlite",
+  "readOnly": true,
+  "mode": "live",
+  "counts": {
+    "workspaces": 1,
+    "accounts": 1,
+    "businesses": 1,
+    "ingredients": 1,
+    "menus": 0,
+    "inventory": 1,
+    "sales": 0,
+    "daily_usage": 0,
+    "stock_receipts": 0,
+    "offers": 0,
+    "transfers": 0,
+    "collective_orders": 0
+  },
+  "forecast": {
+    "status": "insufficient_data",
+    "eligibleSeries": 0,
+    "insufficientSeries": 0,
+    "metrics": {},
+    "method": "Rolling one-day validation, minimum 14 earlier completed days; gaps since first actual usage count as zero; current day excluded."
+  },
+  "extraction": {
+    "status": "not_evaluated",
+    "reason": "Belum ada dataset berlabel yang diberikan pengguna; tidak membuat nilai akurasi."
+  },
+  "nextSteps": [
+    "Lanjutkan pencatatan dari transaksi dan penerimaan sebenarnya."
+  ],
+  "scope": "Jumlah catatan dan validasi histori tersimpan; tidak menguji kebenaran data lapangan dan tidak mengubah database."
+}

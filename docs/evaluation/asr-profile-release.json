@@ -1,0 +1,63 @@
+{
+  "version": "0.24.0",
+  "checkedAt": "2026-10-15T17:45:38.277Z",
+  "tests": {
+    "node": 140,
+    "browser": 16,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "transferPython": 7,
+    "voicePython": 7,
+    "totalUnique": 182
+  },
+  "experiment": {
+    "runId": "2026-10-15T17-28-28-568Z-4cbb5be2",
+    "selectedProfile": "base-pinned",
+    "counts": {
+      "validation": 16,
+      "test": 24,
+      "mainInferences": 120,
+      "repeatedInferences": 24,
+      "triggeredCaptures": 0
+    },
+    "repeatSummary": {
+      "tiny-current": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      },
+      "tiny-pinned": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      },
+      "base-pinned": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      }
+    },
+    "auditPassed": true,
+    "causeEstablished": false,
+    "fixValidated": false,
+    "readyForPromotion": false,
+    "trainingPerformed": false
+  },
+  "healthReady": true,
+  "activeModel": "whisper-tiny",
+  "defaultRuntimeChanged": false,
+  "optionalProfileFactoryAdded": true,
+  "historicalReportsAndSourcesPreserved": true,
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T17-23-39-990Z-c01e200f.sqlite",
+    "readOnlyComparison": true,
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true
+  },
+  "resultSha256": "267aac1f50c3680f84e000463d3b296cdc76948c45dfc4bfff4904989e7ee5df",
+  "limitations": "Profile selection and limited public repeated inference are research evidence; no automatic activation, causal-fix claim, universal determinism, speaker-independent or owner-order/microphone validation."
+}

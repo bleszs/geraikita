@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "experiment": "fleurs-indonesian-asr-v1",
+  "frozenBeforeInference": true,
+  "dataset": "google/fleurs",
+  "datasetCardRevision": "70bb2e84b976b7e960aa89f1c648e09c59f894dd",
+  "parquetRevision": "168de341b3db6859a9bac1c50a2ef5e3b47647e0",
+  "config": "id_id",
+  "split": "test",
+  "license": "CC-BY-4.0",
+  "raw": {"path":"id_id/test/0000.parquet","bytes":542857871,"sha256":"910017ff324772fdd6fac9c859255b867d90066f098d2b5db6dbab6c530dd7d8"},
+  "selection": {"count":64,"seed":"gerai-kita-fleurs-id-v1","rule":"Sort SHA256(seed + '|' + basename(audio.path)) ascending, then basename. Select first 64 unique audio filenames from publisher test, without transcript/duration/outcome filtering."},
+  "audio": {"representation":"Deterministically decode publisher bytes and re-encode all selected clips as PCM s16 mono WAV 16000Hz. No crop, denoise, loudness normalization or augmentation.","invalidOrOversizePolicy":"Retain selected record, count recognition failure as empty hypothesis in all-sample WER/CER. Never replace a failed sample."},
+  "engine": {"path":"server/transcriber.mjs:createTranscriber -> production Python subprocess","model":"whisper-tiny","modelRevision":"d90ca5fe260221311c53c58e660288d3deb8d356","language":"id","compute":"cpu-int8","tuning":false,"training":false,"timeoutMs":90000},
+  "scoring": {"reference":"publisher transcription","normalization":"Unicode NFKC, lowercase, replace Unicode punctuation and symbols with spaces, collapse whitespace; preserve letters, digits and diacritics; do not expand numbers or repair words.","wer":"sum word Levenshtein distance / sum reference words, no clipping; rejected/error hypotheses are empty","cer":"sum character Levenshtein distance / sum reference characters after removing whitespace, no clipping","exactMatch":"normalized transcript equality","latency":"Sequential cold subprocess per clip through production adapter, includes Python/model load and inference; excludes file preparation, browser, microphone, HTTP and one-time availability check."},
+  "verification": {"rawRepreparation":true,"recomputeAllMetrics":true,"repeatInferenceCount":8,"repeatSelection":"First eight records in the frozen hash order, never selected by output quality. Identical transcripts may be claimed only for this repeated subset."},
+  "limitations": ["Small deterministic sample of public read speech, not a full FLEURS test result or a business-order benchmark.","No fine-tuning or model selection. Pretraining overlap with public speech/text cannot be ruled out.","No owner consent, microphone study, menu/quantity/negation labels or operational accuracy claim is inferred from public-data licensing.","After scoring this sample is observed; never tune on it and call the next score independent."]
+}

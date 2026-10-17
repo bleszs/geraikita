@@ -1,0 +1,38 @@
+{
+  "protocolVersion": "gerai-uci-online-retail-ridge-v1",
+  "frozenBeforeDownloadAndTraining": true,
+  "purpose": "Replicate the existing Ridge training/evaluation method on a separately sourced retail dataset and disjoint calendar period. This is retraining the method, not transfer of the FreshRetailNet boosting weights.",
+  "source": {
+    "dataset": "UCI Online Retail",
+    "url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+    "downloadUrl": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+    "doi": "10.24432/C5BW33",
+    "license": "CC-BY-4.0",
+    "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33",
+    "expectedRows": 541909,
+    "checksumPolicy": "Compute SHA256 and content SHA1 from the original XLSX at initial download and freeze a source lock before parsing records. These are locally computed content pins, not publisher-provided checksums. Future runs require the same lock."
+  },
+  "calendar": {
+    "from": "2010-12-02",
+    "developmentThrough": "2011-10-31",
+    "externalFrom": "2011-11-01",
+    "externalThrough": "2011-12-08",
+    "boundaryPolicy": "Exclude both publisher coverage boundary dates, 2010-12-01 and 2011-12-09, because completeness of each boundary day is not assured. Use source local calendar dates as published; do not relabel as Asia/Jakarta."
+  },
+  "target": "Daily sum of positive Quantity for positive-priced, non-cancelled published invoice lines with stock codes matching ^[0-9]{5}[A-Za-z]?$, grouped by Country. Gross invoiced product units, not net demand, revenue, ingredient use or latent sales.",
+  "filterOrder": ["invalid required fields", "outside fixed calendar", "InvoiceNo starts with C, case-insensitive", "Quantity <= 0 or UnitPrice <= 0", "non-product StockCode", "Country is Unspecified"],
+  "aggregation": "SUM of the selected published event log by country/date. Calendar groups with no matching event have sum 0 by the target definition; these are empty-event aggregates, not imputed unknown demand or generated transactions. Preserve duplicate published invoice rows; do not infer refunds against earlier orders. CustomerID and Description are not used or copied to processed data.",
+  "selection": {
+    "policy": "Select every country with at least 100 distinct positive-sales dates AND at least 1000 gross units in the development interval, and a positive mean in its first 84 development dates. Selection uses development records only. No sample replacement, test-dependent inclusion or relaxing thresholds.",
+    "minimumActiveDates": 100,
+    "minimumUnits": 1000,
+    "excludedCountries": ["Unspecified"]
+  },
+  "normalization": "For each country divide daily gross units by the mean of its first 84 development calendar dates. This fixed positive scale uses only early fitting history; no validation or external targets. Preserve native float ratios. normalized_sales is a derived dimensionless target; also report errors after inverse scaling.",
+  "fitting": "Reuse server/ml/forecast-model.mjs unchanged: target next two days, 14-day features, ten Ridge candidates (lags/calendar x alpha .01,.1,1,10,100), chronological last 7 origins internal test, preceding 7 validation, earlier origins fitting. Choose by validation MAE only, refit train+validation, no fit on internal/external test. Save all selected countries including losers.",
+  "externalTest": "Nineteen non-overlapping two-day targets over 2011-11-01 through 2011-12-08, fixed learned weights. Actual earlier test days may enter later lags. No model refit, parameter selection or threshold changes after reading external scores.",
+  "comparators": ["ridge", "2*last_day", "2*mean_last_7", "2*mean_last_14", "last_week_same_two_days"],
+  "primaryMetric": "Pooled external WAPE in normalized-sales units, comparing all methods on exactly the same selected country/date targets.",
+  "reporting": "Report all selected countries and every target, internal scores, external pooled normalized MAE/WAPE, inverse-scaled gross-unit MAE/WAPE, equal-country mean WAPE with undefined-country counts, by-origin errors, zero-event aggregate counts and all exclusions. Raw-unit pooled metrics may be dominated by the UK; disclose its target share. Pipeline failures fail the run, never silently drop a country.",
+  "restrictions": "Public benchmark only, isolated from user accounts. Country aggregates from one retailer are correlated, not independent shops. Gift/wholesale sales in 2010-2011 are a different task from fresh-product store sales in 2024; no direct numeric v1/v2 comparison, no claim that boosting generalized, no Indonesian pilot, no public-model activation or Qwen fine-tuning. After the first report this external test is known and repetition is reproducibility only."
+}

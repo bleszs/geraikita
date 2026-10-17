@@ -1,0 +1,87 @@
+{
+  "checkedAt": "2026-10-15T07:19:23.556Z",
+  "version": "0.19.0",
+  "tests": {
+    "node": 99,
+    "browser": 16,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "transferPython": 7,
+    "voicePython": 7,
+    "totalUnique": 141
+  },
+  "userData": {
+    "readOnlyComparison": true,
+    "backup": "data/backups/gerai-kita-live-2026-10-15T07-02-35-074Z-609897e2.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true,
+    "tableCounts": {
+      "account_sessions": 2,
+      "accounts": 1,
+      "audit": 2,
+      "business_state": 1,
+      "businesses": 1,
+      "collective_cycles": 1,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 1,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 2,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "workspaces": 1
+    }
+  },
+  "speech": {
+    "available": true,
+    "model": "whisper-tiny",
+    "engine": "faster-whisper",
+    "compute": "cpu-int8",
+    "pretrained": true,
+    "language": "id",
+    "maxSeconds": 30,
+    "maxBytes": 1048576,
+    "reason": "Ucapan diproses di laptop. Rekaman tidak disimpan.",
+    "source": "Systran/faster-whisper-tiny",
+    "revision": "d90ca5fe260221311c53c58e660288d3deb8d356",
+    "sourceChecksumsVerified": true,
+    "files": [
+      {
+        "name": "config.json",
+        "size": 2249,
+        "sha256": "a73a28cdfe1c43ccc7202fa333d1f89c202477271407ae9a7f19afa52039cac8"
+      },
+      {
+        "name": "model.bin",
+        "size": 75538270,
+        "sha256": "dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1"
+      },
+      {
+        "name": "tokenizer.json",
+        "size": 2203239,
+        "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab"
+      },
+      {
+        "name": "vocabulary.txt",
+        "size": 459861,
+        "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+      },
+      {
+        "name": "README.md",
+        "size": 1991,
+        "sha256": "29fb8444a02c1f133ab7e538525aa478ff68845964f21cf42500842b0e4a7b20"
+      }
+    ],
+    "smokePassed": true,
+    "audioStoredByApplication": false,
+    "businessDataWrittenBySpeechEndpoint": false
+  },
+  "healthReady": true,
+  "limitations": "CPU model load, VAD/codec/transport and control flow tested. No field speech dataset, WER/CER, fine-tuning, actual owner microphone validation or ASR accuracy claim. Browser audio/transcripts are stubs in memory tests."
+}

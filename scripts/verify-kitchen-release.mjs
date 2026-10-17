@@ -1,0 +1,20 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const output=process.argv[2];
+if(!output)throw Error('Tentukan path laporan baru.');
+const read=p=>{const b=readFileSync(p);return b[0]===255&&b[1]===254?b.subarray(2).toString('utf16le'):b.toString('utf8');};
+const log=read('data/kitchen-npm-test-sequential.log');
+const nodeTests=Number(log.match(/tests (\d+)/)?.[1]),browserTests=Number(log.match(/(\d+) passed \(/)?.[1]);
+if(!nodeTests||!browserTests||!log.match(/fail 0/))throw Error('Regresi penuh belum tercatat lulus.');
+const preserved=JSON.parse(read('docs/evaluation/kitchen-data-preservation.json'));
+const demo=JSON.parse(read('docs/evaluation/kitchen-demo-preservation.json'));
+const servers=await Promise.all([4174,4180].map(async port=>{
+ const base=`http://127.0.0.1:${port}`;
+ const health=await fetch(base+'/api/health',{signal:AbortSignal.timeout(10000)});const h=await health.json();
+ const asset=await fetch(base+'/kitchen-view.js',{signal:AbortSignal.timeout(10000)});
+ const protectedRoute=await fetch(base+'/api/kitchen',{signal:AbortSignal.timeout(10000)});
+ if(!health.ok||!asset.ok||protectedRoute.status!==401)throw Error('Server/asset/sesi belum sesuai.');
+ return {port,storage:h.storage,kitchenAsset:asset.status,kitchenWithoutSession:protectedRoute.status,speechAvailable:!!h.speech?.available};
+}));
+const report={version:'0.34.0',createdAt:new Date().toISOString(),validation:{command:'npm test',nodeTests,browserTests,total:nodeTests+browserTests,workers:1,log:'data/kitchen-npm-test-sequential.log'},data:{mainPreserved:preserved.originalTablesPreserved,demoPreserved:demo.originalTablesPreserved,addedTables:preserved.addedTables},servers,uiReview:'ship',designHashes:Object.fromEntries(['DESIGN.md','.impeccable/design.json'].map(p=>[p,createHash('sha256').update(readFileSync(p)).digest('hex')])),limitations:{twoSecondVoiceTargetMet:false,fieldAccuracyValidated:false,externalChannelsConnected:false,staffRoles:false,publicCustomerAccess:false,equipmentCapacity:false,partialWaste:false,productionDeployed:false,newModelsTrained:false,publicForecastActivated:false}};
+writeFileSync(output,JSON.stringify(report,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify({nodeTests,browserTests,total:report.validation.total,data:report.data.mainPreserved&&report.data.demoPreserved,servers:servers.map(s=>s.port)}));

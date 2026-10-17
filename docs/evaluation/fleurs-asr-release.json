@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-15T07:41:23.158Z",
+  "version": "0.20.0",
+  "runId": "2026-10-15T07-34-09-350Z-ae86cc5d",
+  "tests": {
+    "node": 107,
+    "browser": 16,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "transferPython": 7,
+    "voicePython": 7,
+    "totalUnique": 149
+  },
+  "publicSpeech": {
+    "source": "google/fleurs",
+    "split": "publisher_test",
+    "sampled": true,
+    "sourceRecordings": 687,
+    "selectedRecordings": 64,
+    "trainingPerformed": false,
+    "tuningPerformed": false,
+    "modelPretrained": true,
+    "allScoresRecomputed": true,
+    "audioAndReferenceHashesIdentical": true,
+    "repeatedInferenceCount": 8,
+    "allRepeatedTranscriptsIdentical": true,
+    "metrics": {
+      "observations": 64,
+      "accepted": 58,
+      "rejected": 6,
+      "errors": 0,
+      "referenceWords": 1320,
+      "referenceCharacters": 8032,
+      "wordErrors": 888,
+      "characterErrors": 2220,
+      "substitutions": 522,
+      "deletions": 120,
+      "insertions": 246,
+      "hits": 678,
+      "exactMatches": 0,
+      "wer": 0.6727272727272727,
+      "cer": 0.27639442231075695,
+      "exactMatchRate": 0,
+      "latencyMs": {
+        "p50": 3955,
+        "p95": 5733
+      },
+      "realTimeFactor": {
+        "p50": 0.30660000000000004,
+        "p95": 0.530017006802721
+      }
+    }
+  },
+  "userData": {
+    "readOnlyComparison": true,
+    "backup": "data/backups/gerai-kita-live-2026-10-15T07-27-08-529Z-2b45a859.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true
+  },
+  "runtimeCodeChanged": false,
+  "healthReady": true,
+  "limitations": "Public read-speech ASR sample with application input/rejection policy, not owner microphone validation or order extraction safety. Eight transcripts were re-inferred, not all 64. No retraining/model swap and no public audio in business SQLite."
+}

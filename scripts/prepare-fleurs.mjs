@@ -1,0 +1,20 @@
+import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
+import {randomUUID} from 'node:crypto';
+import {sha256,selectAudioRecords} from './speech-evaluation.mjs';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const protocol=JSON.parse(readFileSync(path.join(root,'benchmarks/fleurs/protocol.json'),'utf8'));
+const id=new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8);
+const directory=path.join(root,'datasets/public/fleurs/processed',id);
+mkdirSync(directory,{recursive:true});
+function run(env,args){const executable=path.join(root,env,process.platform==='win32'?'Scripts/python.exe':'bin/python');const r=spawnSync(executable,args,{cwd:root,stdio:'inherit',windowsHide:true,env:{...process.env,PYTHONUTF8:'1'}});if(r.error)throw r.error;if(r.status!==0)throw Error('Audio preparation failed.');}
+run('.venv-speech-data',['scripts/prepare-fleurs.py','metadata',directory]);
+const source=JSON.parse(readFileSync(path.join(directory,'source-metadata.json'),'utf8'));
+const records=selectAudioRecords(source,protocol.selection);
+writeFileSync(path.join(directory,'selection.json'),JSON.stringify({schemaVersion:1,dataset:protocol.dataset,revision:protocol.parquetRevision,split:protocol.split,sourceRecords:source.length,rawSha256:protocol.raw.sha256,protocolSha256:sha256(readFileSync(path.join(root,'benchmarks/fleurs/protocol.json'))),selection:protocol.selection,records},null,2)+'\n',{flag:'wx'});
+run('.venv-speech-data',['scripts/prepare-fleurs.py','extract',directory]);
+run('.venv-voice',['scripts/prepare-fleurs-audio.py',directory]);
+writeFileSync(path.join(root,'datasets/public/fleurs/processed/index.json'),JSON.stringify({directory:path.relative(root,directory).replaceAll('\\','/'),manifestSha256:sha256(readFileSync(path.join(directory,'manifest.json')))},null,2)+'\n');
+console.log('Prepared public speech sample: '+directory);

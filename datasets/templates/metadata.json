@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "scope": {"workspaceId": "", "businessId": "", "productId": "", "unit": ""},
+  "provenance": {
+    "source": "user_records",
+    "reference": "",
+    "permissionConfirmed": false,
+    "completeDailyRecords": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "usage-review-labels-v1",
+  "datasetId": "",
+  "unit": "",
+  "periods": {
+    "validationFrom": "",
+    "validationTo": "",
+    "testFrom": "",
+    "testTo": ""
+  },
+  "provenance": {
+    "source": "consented_business_usage",
+    "permissionConfirmed": false,
+    "permissionReference": "",
+    "humanAnnotated": false,
+    "blindReviewConfirmed": false,
+    "completenessReviewed": false,
+    "completenessReference": ""
+  },
+  "observations": [],
+  "annotations": []
+}

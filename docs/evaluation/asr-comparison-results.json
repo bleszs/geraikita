@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-10-15T08-17-56-627Z-20faa6f2",
+  "evaluatedAt": "2026-10-15T08:21:08.046Z",
+  "protocolSha256": "b8b0f4b793014baf6c2e39da2521750a313e39d4f7bfa836fd4b96f21b95ad16",
+  "source": {
+    "dataset": "google/fleurs",
+    "config": "id_id",
+    "license": "CC-BY-4.0",
+    "parquetRevision": "168de341b3db6859a9bac1c50a2ef5e3b47647e0"
+  },
+  "trainingPerformed": false,
+  "tuningPerformed": false,
+  "runtimeModelChanged": false,
+  "counts": {
+    "validation": 16,
+    "test": 48,
+    "previousExcluded": 64
+  },
+  "metrics": {
+    "validation": {
+      "tiny": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 347,
+        "referenceCharacters": 2016,
+        "wordErrors": 228,
+        "characterErrors": 715,
+        "substitutions": 123,
+        "deletions": 74,
+        "insertions": 31,
+        "hits": 150,
+        "exactMatches": 0,
+        "wer": 0.6570605187319885,
+        "cer": 0.35466269841269843,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 1206,
+          "p95": 2208
+        },
+        "realTimeFactor": {
+          "p50": 0.10629800307219661,
+          "p95": 0.15442477876106192
+        }
+      },
+      "base": {
+        "observations": 16,
+        "accepted": 16,
+        "rejected": 0,
+        "errors": 0,
+        "referenceWords": 347,
+        "referenceCharacters": 2016,
+        "wordErrors": 128,
+        "characterErrors": 248,
+        "substitutions": 106,
+        "deletions": 4,
+        "insertions": 18,
+        "hits": 237,
+        "exactMatches": 1,
+        "wer": 0.3688760806916426,
+        "cer": 0.12301587301587301,
+        "exactMatchRate": 0.0625,
+        "latencyMs": {
+          "p50": 1662,
+          "p95": 1985
+        },
+        "realTimeFactor": {
+          "p50": 0.1357142857142857,
+          "p95": 0.23082595870206488
+        }
+      }
+    },
+    "test": {
+      "tiny": {
+        "observations": 48,
+        "accepted": 44,
+        "rejected": 4,
+        "errors": 0,
+        "referenceWords": 1001,
+        "referenceCharacters": 5835,
+        "wordErrors": 670,
+        "characterErrors": 1851,
+        "substitutions": 434,
+        "deletions": 92,
+        "insertions": 144,
+        "hits": 475,
+        "exactMatches": 0,
+        "wer": 0.6693306693306693,
+        "cer": 0.31722365038560413,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 1195,
+          "p95": 1906
+        },
+        "realTimeFactor": {
+          "p50": 0.11148775894538607,
+          "p95": 0.16097560975609757
+        }
+      },
+      "base": {
+        "observations": 48,
+        "accepted": 46,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 1001,
+        "referenceCharacters": 5835,
+        "wordErrors": 364,
+        "characterErrors": 802,
+        "substitutions": 270,
+        "deletions": 54,
+        "insertions": 40,
+        "hits": 677,
+        "exactMatches": 1,
+        "wer": 0.36363636363636365,
+        "cer": 0.13744644387317909,
+        "exactMatchRate": 0.020833333333333332,
+        "latencyMs": {
+          "p50": 1673,
+          "p95": 2234
+        },
+        "realTimeFactor": {
+          "p50": 0.14758064516129032,
+          "p95": 0.23445378151260504
+        }
+      }
+    }
+  },
+  "decision": {
+    "decidedAt": "2026-10-15T08:18:44.179Z",
+    "runId": "2026-10-15T08-17-56-627Z-20faa6f2",
+    "selectedModel": "base",
+    "source": "validation_only",
+    "thresholds": {
+      "relativeWerReduction": 0.1,
+      "maxP95Ms": 15000
+    },
+    "relativeWerReduction": 0.4385964912280702,
+    "gates": {
+      "wordErrorImproved": true,
+      "noBaseInfrastructureErrors": true,
+      "noExtraRejections": true,
+      "latencyWithinBound": true
+    },
+    "validation": {
+      "tiny": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 347,
+        "referenceCharacters": 2016,
+        "wordErrors": 228,
+        "characterErrors": 715,
+        "substitutions": 123,
+        "deletions": 74,
+        "insertions": 31,
+        "hits": 150,
+        "exactMatches": 0,
+        "wer": 0.6570605187319885,
+        "cer": 0.35466269841269843,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 1206,
+          "p95": 2208
+        },
+        "realTimeFactor": {
+          "p50": 0.10629800307219661,
+          "p95": 0.15442477876106192
+        }
+      },
+      "base": {
+        "observations": 16,
+        "accepted": 16,
+        "rejected": 0,
+        "errors": 0,
+        "referenceWords": 347,
+        "referenceCharacters": 2016,
+        "wordErrors": 128,
+        "characterErrors": 248,
+        "substitutions": 106,
+        "deletions": 4,
+        "insertions": 18,
+        "hits": 237,
+        "exactMatches": 1,
+        "wer": 0.3688760806916426,
+        "cer": 0.12301587301587301,
+        "exactMatchRate": 0.0625,
+        "latencyMs": {
+          "p50": 1662,
+          "p95": 1985
+        },
+        "realTimeFactor": {
+          "p50": 0.1357142857142857,
+          "p95": 0.23082595870206488
+        }
+      }
+    },
+    "validationPredictionsSha256": "1cf7bb2730379235edd8e1fe6e0a5f7f5767cce60d569a8014cce90fef3ef445"
+  },
+  "decisionSha256": "90637f98878ac38a0643f347e1b1ccc34baf2bb4497e25dfe2e5031434a9825a",
+  "testStartedAt": "2026-10-15T08:18:44.181Z",
+  "pairedTest": {
+    "clips": 48,
+    "baseFewerErrors": 43,
+    "tinyFewerErrors": 1,
+    "ties": 4,
+    "rows": [
+      {
+        "filename": "9485984081064467567.wav",
+        "sentenceId": 1771,
+        "tinyWordErrors": 11,
+        "baseWordErrors": 2,
+        "baseMinusTiny": -9
+      },
+      {
+        "filename": "16274568817512201809.wav",
+        "sentenceId": 1958,
+        "tinyWordErrors": 5,
+        "baseWordErrors": 3,
+        "baseMinusTiny": -2
+      },
+      {
+        "filename": "6475550457404205193.wav",
+        "sentenceId": 1731,
+        "tinyWordErrors": 8,
+        "baseWordErrors": 5,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "8317078176854202279.wav",
+        "sentenceId": 1844,
+        "tinyWordErrors": 10,
+        "baseWordErrors": 7,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "11314714857215564898.wav",
+        "sentenceId": 1739,
+        "tinyWordErrors": 4,
+        "baseWordErrors": 2,
+        "baseMinusTiny": -2
+      },
+      {
+        "filename": "11034535007203861884.wav",
+        "sentenceId": 1885,
+        "tinyWordErrors": 14,
+        "baseWordErrors": 7,
+        "baseMinusTiny": -7
+      },
+      {
+        "filename": "9268992364918133744.wav",
+        "sentenceId": 1701,
+        "tinyWordErrors": 10,
+        "baseWordErrors": 7,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "15306121865536355395.wav",
+        "sentenceId": 1914,
+        "tinyWordErrors": 9,
+        "baseWordErrors": 2,
+        "baseMinusTiny": -7
+      },
+      {
+        "filename": "4058971635921749658.wav",
+        "sentenceId": 1723,
+        "tinyWordErrors": 19,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -13
+      },
+      {
+        "filename": "1689522643535069084.wav",
+        "sentenceId": 1944,
+        "tinyWordErrors": 16,
+        "baseWordErrors": 9,
+        "baseMinusTiny": -7
+      },
+      {
+        "filename": "3847795109135951088.wav",
+        "sentenceId": 1805,
+        "tinyWordErrors": 12,
+        "baseWordErrors": 12,
+        "baseMinusTiny": 0
+      },
+      {
+        "filename": "256711082621140723.wav",
+        "sentenceId": 1842,
+        "tinyWordErrors": 17,
+        "baseWordErrors": 14,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "14496880555594414124.wav",
+        "sentenceId": 1823,
+        "tinyWordErrors": 7,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -1
+      },
+      {
+        "filename": "10767369870409762683.wav",
+        "sentenceId": 1715,
+        "tinyWordErrors": 8,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -2
+      },
+      {
+        "filename": "8467235396572034984.wav",
+        "sentenceId": 1927,
+        "tinyWordErrors": 18,
+        "baseWordErrors": 18,
+        "baseMinusTiny": 0
+      },
+      {
+        "filename": "18131265482949133764.wav",
+        "sentenceId": 1878,
+        "tinyWordErrors": 6,
+        "baseWordErrors": 2,
+        "baseMinusTiny": -4
+      },
+      {
+        "filename": "16614073994242155585.wav",
+        "sentenceId": 1782,
+        "tinyWordErrors": 26,
+        "baseWordErrors": 14,
+        "baseMinusTiny": -12
+      },
+      {
+        "filename": "482339159245872117.wav",
+        "sentenceId": 1759,
+        "tinyWordErrors": 24,
+        "baseWordErrors": 11,
+        "baseMinusTiny": -13
+      },
+      {
+        "filename": "5203472489476112773.wav",
+        "sentenceId": 1785,
+        "tinyWordErrors": 7,
+        "baseWordErrors": 5,
+        "baseMinusTiny": -2
+      },
+      {
+        "filename": "10727440187897083373.wav",
+        "sentenceId": 1668,
+        "tinyWordErrors": 7,
+        "baseWordErrors": 4,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "8831258405162159423.wav",
+        "sentenceId": 1932,
+        "tinyWordErrors": 20,
+        "baseWordErrors": 15,
+        "baseMinusTiny": -5
+      },
+      {
+        "filename": "18248719567330957544.wav",
+        "sentenceId": 1826,
+        "tinyWordErrors": 10,
+        "baseWordErrors": 5,
+        "baseMinusTiny": -5
+      },
+      {
+        "filename": "15094520801066785034.wav",
+        "sentenceId": 1882,
+        "tinyWordErrors": 12,
+        "baseWordErrors": 3,
+        "baseMinusTiny": -9
+      },
+      {
+        "filename": "18047620031436021096.wav",
+        "sentenceId": 1970,
+        "tinyWordErrors": 7,
+        "baseWordErrors": 7,
+        "baseMinusTiny": 0
+      },
+      {
+        "filename": "14756157578207111413.wav",
+        "sentenceId": 1981,
+        "tinyWordErrors": 8,
+        "baseWordErrors": 3,
+        "baseMinusTiny": -5
+      },
+      {
+        "filename": "17476279973670140232.wav",
+        "sentenceId": 1841,
+        "tinyWordErrors": 20,
+        "baseWordErrors": 9,
+        "baseMinusTiny": -11
+      },
+      {
+        "filename": "5450655422482970725.wav",
+        "sentenceId": 1700,
+        "tinyWordErrors": 6,
+        "baseWordErrors": 3,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "1790442846498140835.wav",
+        "sentenceId": 1934,
+        "tinyWordErrors": 10,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -4
+      },
+      {
+        "filename": "7070659208363049647.wav",
+        "sentenceId": 1847,
+        "tinyWordErrors": 29,
+        "baseWordErrors": 15,
+        "baseMinusTiny": -14
+      },
+      {
+        "filename": "15508708595874285160.wav",
+        "sentenceId": 1884,
+        "tinyWordErrors": 8,
+        "baseWordErrors": 4,
+        "baseMinusTiny": -4
+      },
+      {
+        "filename": "12871930852782740984.wav",
+        "sentenceId": 1793,
+        "tinyWordErrors": 14,
+        "baseWordErrors": 9,
+        "baseMinusTiny": -5
+      },
+      {
+        "filename": "1391217803693020353.wav",
+        "sentenceId": 1995,
+        "tinyWordErrors": 14,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -8
+      },
+      {
+        "filename": "1767434013363970481.wav",
+        "sentenceId": 1843,
+        "tinyWordErrors": 73,
+        "baseWordErrors": 17,
+        "baseMinusTiny": -56
+      },
+      {
+        "filename": "11392429944867102580.wav",
+        "sentenceId": 1828,
+        "tinyWordErrors": 3,
+        "baseWordErrors": 0,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "6251939308867216871.wav",
+        "sentenceId": 1769,
+        "tinyWordErrors": 17,
+        "baseWordErrors": 10,
+        "baseMinusTiny": -7
+      },
+      {
+        "filename": "18007214199207370446.wav",
+        "sentenceId": 1694,
+        "tinyWordErrors": 6,
+        "baseWordErrors": 3,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "5391610382088254398.wav",
+        "sentenceId": 1879,
+        "tinyWordErrors": 3,
+        "baseWordErrors": 8,
+        "baseMinusTiny": 5
+      },
+      {
+        "filename": "16580463071797566193.wav",
+        "sentenceId": 1859,
+        "tinyWordErrors": 11,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -5
+      },
+      {
+        "filename": "4600139786023009708.wav",
+        "sentenceId": 1870,
+        "tinyWordErrors": 8,
+        "baseWordErrors": 8,
+        "baseMinusTiny": 0
+      },
+      {
+        "filename": "13404376799970598810.wav",
+        "sentenceId": 2007,
+        "tinyWordErrors": 12,
+        "baseWordErrors": 10,
+        "baseMinusTiny": -2
+      },
+      {
+        "filename": "13299890908430723483.wav",
+        "sentenceId": 1924,
+        "tinyWordErrors": 57,
+        "baseWordErrors": 14,
+        "baseMinusTiny": -43
+      },
+      {
+        "filename": "1799385846660421241.wav",
+        "sentenceId": 1664,
+        "tinyWordErrors": 8,
+        "baseWordErrors": 7,
+        "baseMinusTiny": -1
+      },
+      {
+        "filename": "2387219639567528552.wav",
+        "sentenceId": 1755,
+        "tinyWordErrors": 7,
+        "baseWordErrors": 3,
+        "baseMinusTiny": -4
+      },
+      {
+        "filename": "14287102389092990611.wav",
+        "sentenceId": 1702,
+        "tinyWordErrors": 9,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -3
+      },
+      {
+        "filename": "4744952555395890998.wav",
+        "sentenceId": 1832,
+        "tinyWordErrors": 21,
+        "baseWordErrors": 17,
+        "baseMinusTiny": -4
+      },
+      {
+        "filename": "4007344633004182576.wav",
+        "sentenceId": 1892,
+        "tinyWordErrors": 13,
+        "baseWordErrors": 6,
+        "baseMinusTiny": -7
+      },
+      {
+        "filename": "14558356872710198155.wav",
+        "sentenceId": 1918,
+        "tinyWordErrors": 13,
+        "baseWordErrors": 12,
+        "baseMinusTiny": -1
+      },
+      {
+        "filename": "195829537800795467.wav",
+        "sentenceId": 1699,
+        "tinyWordErrors": 13,
+        "baseWordErrors": 10,
+        "baseMinusTiny": -3
+      }
+    ]
+  },
+  "limitations": [
+    "New unscored sentence groups, not an independent dataset or an independently audited speaker split.",
+    "Public read speech does not measure menu/quantity/negation safety, owner microphones or noisy kedai use.",
+    "The old FLEURS sample and Tiny failure are known. Pretraining overlap cannot be ruled out.",
+    "Small validation/test samples, no claim of statistical significance or general production accuracy.",
+    "Once scored, these groups are observed and cannot be recycled as untouched tests for tuning."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-15T17:43:35.079Z",
+  "runId": "2026-10-15T17-28-28-568Z-4cbb5be2",
+  "directory": "models\\benchmarks\\asr-profiles\\2026-10-15T17-28-28-568Z-4cbb5be2",
+  "auditPassed": true,
+  "repreparedFromPinnedRaw": true,
+  "allSourceModelAudioHashesVerified": true,
+  "allMetricsAndDecisionRecomputed": true,
+  "decisionFrozenBeforeTest": true,
+  "repeatResultsRetained": true,
+  "repeatSummary": {
+    "tiny-current": {
+      "repeated": 8,
+      "changed": 0,
+      "allAccepted": true,
+      "observedRepeatMatch": true
+    },
+    "tiny-pinned": {
+      "repeated": 8,
+      "changed": 0,
+      "allAccepted": true,
+      "observedRepeatMatch": true
+    },
+    "base-pinned": {
+      "repeated": 8,
+      "changed": 0,
+      "allAccepted": true,
+      "observedRepeatMatch": true
+    }
+  },
+  "captureAnalysis": [],
+  "causeEstablished": false,
+  "fixValidated": false,
+  "readyForPromotion": false,
+  "activeModelChanged": false,
+  "scope": "Audit and scoped profile experiment only. No additional repeat-until-pass inference or rewriting historical results."
+}

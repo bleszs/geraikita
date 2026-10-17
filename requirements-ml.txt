@@ -1,0 +1,9 @@
+# Isolated public benchmark environment; app runtime remains Node.
+duckdb==1.5.6
+scikit-learn==1.7.2
+numpy==2.5.4
+scipy==1.18.1
+joblib==1.5.3
+threadpoolctl==3.7.0
+openpyxl==3.1.5
+et_xmlfile==2.0.0

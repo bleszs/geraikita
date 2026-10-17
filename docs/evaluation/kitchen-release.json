@@ -1,0 +1,71 @@
+{
+  "version": "0.34.0",
+  "createdAt": "2026-10-17T10:03:10.433Z",
+  "validation": {
+    "command": "npm test",
+    "nodeTests": 215,
+    "browserTests": 35,
+    "total": 250,
+    "workers": 1,
+    "log": "data/kitchen-npm-test-sequential.log"
+  },
+  "data": {
+    "mainPreserved": true,
+    "demoPreserved": true,
+    "addedTables": [
+      {
+        "name": "kitchen_actions",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_menus",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_orders",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "kitchen_tasks",
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    ]
+  },
+  "servers": [
+    {
+      "port": 4174,
+      "storage": "sqlite",
+      "kitchenAsset": 200,
+      "kitchenWithoutSession": 401,
+      "speechAvailable": true
+    },
+    {
+      "port": 4180,
+      "storage": "sqlite",
+      "kitchenAsset": 200,
+      "kitchenWithoutSession": 401,
+      "speechAvailable": true
+    }
+  ],
+  "uiReview": "ship",
+  "designHashes": {
+    "DESIGN.md": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    ".impeccable/design.json": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f"
+  },
+  "limitations": {
+    "twoSecondVoiceTargetMet": false,
+    "fieldAccuracyValidated": false,
+    "externalChannelsConnected": false,
+    "staffRoles": false,
+    "publicCustomerAccess": false,
+    "equipmentCapacity": false,
+    "partialWaste": false,
+    "productionDeployed": false,
+    "newModelsTrained": false,
+    "publicForecastActivated": false
+  }
+}

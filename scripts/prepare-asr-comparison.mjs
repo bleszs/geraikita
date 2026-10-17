@@ -1,0 +1,20 @@
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {spawnSync} from 'node:child_process';
+import path from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {sha256} from './speech-evaluation.mjs';
+import {selectFreshComparison} from './asr-comparison.mjs';
+const read=file=>JSON.parse(readFileSync(file,'utf8')),protocol=read('benchmarks/asr-comparison/protocol.json');
+const directory=path.join('datasets/public/fleurs/comparison',new Date().toISOString().replace(/[:.]/g,'-')+'-'+randomUUID().slice(0,8));mkdirSync(directory,{recursive:true});
+function run(env,mode){const python=path.resolve(env,process.platform==='win32'?'Scripts/python.exe':'bin/python'),r=spawnSync(python,['scripts/asr-comparison-data.py',mode,path.resolve(directory)],{stdio:'inherit',windowsHide:true,env:{...process.env,PYTHONUTF8:'1'}});if(r.error)throw r.error;if(r.status!==0)throw Error('Comparison data preparation failed.');}
+run('.venv-speech-data','metadata');
+const previous=read(path.join(protocol.previousRun.directory,protocol.previousRun.predictions));
+if(sha256(readFileSync(path.join(protocol.previousRun.directory,protocol.previousRun.predictions)))!==protocol.previousRun.predictionsSha256||previous.length!==protocol.previousRun.knownRecordings)throw Error('Known previous sample does not match the frozen exclusion source.');
+const splits=selectFreshComparison({validation:read(path.join(directory,'validation-metadata.json')),test:read(path.join(directory,'test-metadata.json')),previous,selection:protocol.selection});
+writeFileSync(path.join(directory,'selection.json'),JSON.stringify({protocolSha256:sha256(readFileSync('benchmarks/asr-comparison/protocol.json')),previousPredictionsSha256:sha256(readFileSync(path.join(protocol.previousRun.directory,protocol.previousRun.predictions))),splits},null,2)+'\n',{flag:'wx'});
+run('.venv-speech-data','extract');run('.venv-voice','convert');
+const manifest=read(path.join(directory,'manifest.json'));
+const oldProtocol=read(path.join(protocol.previousRun.directory,'protocol.json')),oldManifest=read(oldProtocol.manifestPath),oldHashes=new Set(oldManifest.records.map(r=>r.audioSha256));
+for(const split of ['validation','test'])for(const row of manifest.splits[split].records)if(row.audioSha256&&oldHashes.has(row.audioSha256))throw Error('Previously evaluated audio was selected under a new identity.');
+writeFileSync('datasets/public/fleurs/comparison/index.json',JSON.stringify({directory,manifestSha256:sha256(readFileSync(path.join(directory,'manifest.json')))},null,2)+'\n');
+console.log(JSON.stringify({directory,splits:Object.fromEntries(Object.entries(splits).map(([name,value])=>[name,{source:value.sourceRecordings,eligibleGroups:value.eligibleSentenceGroups,selected:value.records.length}]))},null,2));

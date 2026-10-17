@@ -1,0 +1,270 @@
+import {request} from './api.js';
+import {createVoiceCapture} from './voice.js';
+import {icon} from './icons.js';
+import {routes,authView,guestGuideView,createViews,escape as e,notice} from './live-views.js';
+import {createGuideController} from './guide.js';
+import {number as n,money as m} from './model.js';
+import {receiptUnits,receiptMeasurement} from './receipt-measurement.js';
+import {scopeOf,saveSnapshot,readSnapshot,clearSnapshot,readAction,saveAction,clearAction,listDrafts,putDraft,removeDraft,validateDraft,registerPwa} from './offline.js';
+
+let state=null,connected=true,snapshotAt='',pendingAction=null,deviceDrafts=[],busy=false,registration=null,toastTimer,values={};
+let kitchenEvents=null,kitchenEventScope='',kitchenVoiceTimer,kitchenRecordingRevisions={},kitchenUpdating=false,kitchenRenderPending=false,kitchenVoiceEpoch=0;
+const ui={auth:'register',joining:false,error:'',mobile:false,editor:null,editId:null,review:null,reviewRevision:null,reviewId:null,cancel:null,extractionReason:'',receiptUnits:u=>u?receiptUnits(u):[]};
+const voice=createVoiceCapture({onChange(){ui.voice=voice.state;if(ui.kitchenHandsfree){if(voice.state.phase==='recording')kitchenRecordingRevisions=Object.fromEntries((state?.kitchen?.orders||[]).map(o=>[o.id,o.revision]));if(voice.state.phase==='review')queueMicrotask(runSpokenKitchenCommand);if(voice.state.phase==='error')ui.kitchenHandsfree=false;}if(state)render();const selector=ui.kitchenHandsfree?'[data-action="kitchen-listen"]':voice.state.phase==='recording'?'[data-action="voice-stop"]':voice.state.phase==='review'?'#voice-text':['requesting','processing'].includes(voice.state.phase)?'[data-action="voice-cancel"]':'[data-action="voice-start"]';document.querySelector(selector)?.focus();},onTick(seconds){if(ui.kitchenHandsfree&&seconds>=4)voice.stop();const el=document.querySelector('#voice-elapsed');if(el)el.textContent=String(seconds);},async send(body,signal){
+  let response,data;try{response=await fetch('/api/transcriptions',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,csrf:state.csrf}),signal:AbortSignal.any([signal,AbortSignal.timeout(95000)])});data=await response.json();}
+  catch(error){throw new Error(error.name==='TimeoutError'?'Pemrosesan suara terlalu lama. Rekam lebih singkat atau ketik pesanan.':'Server suara belum terhubung. Periksa server lalu rekam ulang, atau ketik pesanan.');}
+  if(!response.ok)throw new Error(data.error||'Suara belum dapat diproses. Ketik pesanan atau coba lagi.');return data;
+}});
+ui.voice=voice.state;
+function clearVoice(){kitchenVoiceEpoch++;clearTimeout(kitchenVoiceTimer);ui.kitchenHandsfree=false;voice.reset();ui.voice=voice.state;}
+const route=()=>routes.some(r=>r[0]===location.hash.slice(1))?location.hash.slice(1):'dapur';
+const guide=createGuideController({getContext:()=>({scope:state?scopeOf(state):'guest',signedIn:!!state,route:route()}),navigate:page=>{location.hash=page;},notify,escape:e});
+function notify(message){const box=document.querySelector('#toast');box.textContent=message;box.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>box.hidden=true,7000);}
+function showUpdatePrompt(){
+  if(!registration?.waiting || document.querySelector('[data-action="update-app"]'))return;
+  const main=document.querySelector('#main');if(!main)return;
+  main.insertAdjacentHTML('afterbegin',`<section class="update-prompt" role="status">${notice('Versi aplikasi baru tersedia. Simpan isian sebelum memuat ulang.')}<button class="text-link" data-action="update-app">Muat ulang aplikasi</button></section>`);
+}
+function done(a,data){
+  const id=a.payload.idempotencyKey;
+  if(a.kind==='kitchenCreate')return data.kitchen?.orders.some(o=>o.idem===id);
+  if(a.kind==='kitchenChange')return data.kitchen?.recentActions.includes(id);
+  if(a.kind==='sale')return data.transactions.some(t=>t.idem===id);
+  if(['receipt','collectiveReceipt'].includes(a.kind))return data.stockReceipts.some(r=>r.idem===id);
+  if(a.kind==='offer')return data.offers.some(o=>o.ownerId===data.business.id&&o.idempotencyKey===id);
+  if(['cancelReceipt','cancelCollectiveReceipt'].includes(a.kind))return data.stockReceipts.some(r=>r.id===a.match.id&&r.cancelled_at);
+  if(a.kind==='cancelSale')return data.transactions.some(t=>t.id===a.match.id&&t.cancelled_at);
+  if(a.kind==='requestTransfer')return data.transfers.some(t=>t.offer_id===a.match.offerId&&t.receiver_id===data.business.id&&!a.match.before.includes(t.id));
+  if(a.kind==='transferDecision')return data.transfers.some(t=>t.id===a.match.id&&t.status===a.match.status);
+  if(a.kind==='finalize')return data.group.frozen&&data.group.cycle.id===a.match.cycle;
+  if(a.kind==='cancelPlan')return data.collectiveHistory.some(h=>h.id===a.match.id&&h.status==='cancelled');
+  if(a.kind==='nextCycle')return data.group.cycle.id>a.match.cycle;
+  return false;
+}
+async function adopt(data){
+  const before=state&&scopeOf(state);state=data;connected=true;snapshotAt=new Date().toISOString();
+  if(before&&before!==scopeOf(data)){clearVoice();values={};ui.editor=null;ui.review=null;ui.cancel=null;ui.reviewId=null;ui.usageReview=null;}
+  try{await saveSnapshot(data);}catch(err){notify(err.message);}
+  pendingAction=null;
+  try{
+    pendingAction=await readAction(scopeOf(data));
+    if(pendingAction&&done(pendingAction,data)){
+      await clearAction(scopeOf(data));
+      if(pendingAction.kind==='sale'){try{await removeDraft(pendingAction.payload.idempotencyKey,true);}catch{}ui.review=null;ui.reviewId=null;}
+      pendingAction=null;ui.cancel=null;ui.editor=null;
+    }
+  }catch(err){notify(err.message);}
+  try{deviceDrafts=(await listDrafts()).filter(d=>d.scope===scopeOf(data));}catch(err){deviceDrafts=[];notify(err.message);}
+}
+async function refresh(){const before=state&&scopeOf(state);await adopt(await request('/bootstrap'));if(before&&before!==scopeOf(state))throw new Error('Akun atau kelompok berubah. Buka akun asal untuk memeriksa catatan tertunda.');}
+async function durable(kind,path,payload,label,match={}){
+  if(!connected)throw new Error('Hubungkan ke server sebelum mengirim catatan ini.');
+  if(pendingAction)throw new Error('Periksa status catatan sebelumnya terlebih dahulu.');
+  const a={scope:scopeOf(state),kind,path,payload,label,match,createdAt:new Date().toISOString()};
+  await saveAction(a.scope,a);pendingAction=a;await sendAction(a);
+}
+async function sendAction(a){
+  if(a.scope!==scopeOf(state))throw new Error('Catatan tertunda berasal dari akun lain.');
+  let result;
+  try{result=await request(a.path,a.payload,state.csrf);}
+  catch(err){if(err.status>=400&&err.status<500){await clearAction(a.scope);pendingAction=null;throw err;}throw new Error('Status pengiriman belum pasti. Rincian asal tersimpan. Hubungkan lalu periksa status sebelum membuat catatan baru.');}
+  try{await refresh();}catch(err){notify('Server menerima catatan. Hubungkan untuk memperbarui stok dan riwayat.');return;}
+  if(!pendingAction){ui.editor=null;ui.cancel=null;values={};if(a.kind==='sale'){ui.review=null;ui.reviewId=null;}}
+  notify(result?.cancelled?'Catatan ditemukan dan sudah dibatalkan. Stok tidak ditambah lagi.':'Catatan tersimpan. Stok dan riwayat mengikuti hasil server.');
+}
+function pendingPanel(){return !pendingAction?'':`<section class="section-panel pending-action" aria-labelledby="pending-title"><h2 id="pending-title">Ada catatan yang perlu diperiksa</h2><p>${e(pendingAction.label)}</p>${notice('Rincian asal tersimpan dan dikunci. Periksa status sebelum mencatat tindakan yang sama kembali.','warn')}<button class="button" data-action="retry-action" ${connected?'':'disabled'}>Periksa status & ulangi</button><p class="small muted">Tidak ada pengiriman otomatis ketika koneksi kembali.</p></section>`;}
+function render(){
+  if(!state){syncKitchenEvents();document.title='Gerai Kita · '+(route()==='panduan'?'Panduan penggunaan':'Akun usaha');document.querySelector('#app').innerHTML=route()==='panduan'?guestGuideView():authView(ui,values);showUpdatePrompt();if(busy)document.querySelectorAll('form input,form button').forEach(c=>c.disabled=true);guide.sync();return;}
+  const page=route(),title=routes.find(r=>r[0]===page)[1],view=createViews({state,ui,values,pendingAction,deviceDrafts,connected});document.title='Gerai Kita · '+title;
+  document.querySelector('#app').innerHTML=`<div class="app-shell"><aside class="sidebar ${ui.mobile?'is-open':''}" id="sidebar"><a class="brand" href="#ringkasan"><span class="brand-mark">${icon('shop')}</span><span>gerai<span class="brand-light">kita</span><small>Tumbuh bersama.</small></span></a><div class="business-block"><span class="avatar">${e(state.business.letter)}</span><div><strong>${e(state.business.name)}</strong><span>${e(state.community.name)}</span></div></div><nav aria-label="Navigasi utama">${routes.map(([id,label,symbol])=>`<a href="#${id}" ${id===page?'aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('')}</nav><div class="sidebar-bottom"><button class="button secondary" data-action="logout" ${!connected?'disabled':''}>Keluar akun</button><span class="sidebar-foot">Catatan milik ${e(state.business.name)}</span></div></aside><div class="workspace"><header class="topbar"><button class="icon-button mobile-toggle" data-action="menu" aria-label="${ui.mobile?'Tutup':'Buka'} navigasi" aria-expanded="${ui.mobile}" aria-controls="sidebar">${icon(ui.mobile?'close':'menu')}</button><span class="topbar-title">${title}</span><div class="topbar-actions"><button class="icon-button" data-action="refresh" aria-label="Perbarui data">${icon('refresh')}</button><button class="icon-button" data-action="theme" aria-label="Ubah tema">${icon('moon')}</button><span class="active-business"><strong>${e(state.business.name)}</strong></span></div></header><main id="main" tabindex="-1">${!connected?notice(`Server belum terhubung. Data terakhir ${e(new Date(snapshotAt).toLocaleString('id-ID'))}. Tindakan server perlu diperiksa saat tersambung kembali.`,'warn')+`<div class="actions"><button class="button secondary" data-action="reconnect">Hubungkan & muat ulang</button></div>`:''}${registration?notice('Versi aplikasi baru tersedia. Simpan isian sebelum memuat ulang.')+`<button class="text-link" data-action="update-app">Muat ulang aplikasi</button>`:''}${pendingPanel()}<div class="date-line">${e(new Date(state.date+'T12:00:00Z').toLocaleDateString('id-ID',{dateStyle:'full'}))}</div>${view[page]()}<footer class="page-footer"><span>Keputusan usahamu tetap di tanganmu.</span><span>${e(state.community.name)}</span></footer></main><nav class="quick-nav" aria-label="Navigasi cepat">${[['dapur','Dapur','shop'],['pesanan','Catat','plus'],['stok','Stok','box'],['kelompok','Bersama','people']].map(([id,label,sym])=>`<a href="#${id}" ${page===id?'aria-current="page"':''}>${icon(sym)}<span>${label}</span></a>`).join('')}<button data-action="menu" aria-label="Menu navigasi">${icon('menu')}<span>Menu</span></button></nav></div></div>`;
+  lockControls();receiptPreview();guide.sync();syncKitchenEvents();restoreKitchenFocus();
+}
+function lockControls(){
+  if(!state)return;document.querySelector('#main')?.setAttribute('aria-busy',String(busy));
+  document.querySelectorAll('#main form').forEach(f=>{const localDraft=!connected&&f.dataset.form==='extract';if(busy||pendingAction||!connected)f.querySelectorAll('input,select,textarea,button').forEach(c=>{if(!localDraft||c.tagName==='BUTTON')c.disabled=true;});});
+  const readonly=new Set(['theme','menu','reconnect','refresh','update-app','export-sales','export-receipts','back-order','manual-order','add-order','remove-order','resume-draft','delete-draft','confirm-order','review-catalog','close-editor','close-cancel','copy-invite','close-usage-review']);
+  document.querySelectorAll('[data-action]').forEach(b=>{if(busy||pendingAction&&!['theme','menu','reconnect','refresh','retry-action','logout','export-sales','export-receipts','update-app'].includes(b.dataset.action)||!connected&&!readonly.has(b.dataset.action))b.disabled=true;});
+  if(pendingAction)document.querySelectorAll('[data-review]').forEach(c=>c.disabled=true);
+  if(voice.active){document.querySelectorAll('#extract-form button,[data-action="manual-order"]').forEach(c=>c.disabled=true);}
+  if(busy||pendingAction||!connected)document.querySelectorAll('[data-action="voice-start"],[data-action="voice-use"]').forEach(c=>c.disabled=true);
+  if(ui.kitchenHandsfree){const stop=document.querySelector('[data-action="kitchen-listen"]');if(stop)stop.disabled=false;}
+}
+function receiptPreview(){
+  const target=document.querySelector('#receipt-preview');if(!target)return;const r=values.receipt||{},p=state.catalog.find(p=>p.id===r.productId);
+  if(!p||!r.inputUnit||r.qty===''||r.qty===undefined||r.unitPrice===''||r.unitPrice===undefined){target.textContent='Pilih bahan, satuan, jumlah dan harga untuk melihat hasil penerimaan.';return;}
+  try{const x=receiptMeasurement(p.unit,r.inputUnit,Number(r.qty),Number(r.unitPrice));target.textContent=`${n(x.inputQty)} ${x.inputUnit} = ${n(x.qty)} ${p.unit}. Saldo setelah diterima: ${n(state.stock[p.id]+x.qty)} ${p.unit}. Total ${m(x.total)}.`;}catch(err){target.textContent=err.message;}
+}
+function csv(filename,rows){const cell=v=>{let t=String(v??'');if(/^\s*[=+@-]/.test(t))t="'"+t;return '"'+t.replaceAll('"','""')+'"';};const url=URL.createObjectURL(new Blob(['\uFEFF'+rows.map(r=>r.map(cell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
+async function confirmOrder(){
+  validateDraft(ui.review,state.menu);
+  if(!connected){const id=ui.reviewId||crypto.randomUUID();await putDraft({id,scope:scopeOf(state),status:'draft',createdAt:new Date().toISOString(),label:ui.review.map(i=>`${i.qty} ${state.menu.find(m=>m.id===i.id).name}`).join(', '),payload:{items:structuredClone(ui.review),catalogRevision:ui.reviewRevision,idempotencyKey:id}});deviceDrafts=(await listDrafts()).filter(d=>d.scope===scopeOf(state));ui.review=null;notify('Draft tersimpan di perangkat. Stok dan penjualan belum berubah.');return;}
+  if(ui.reviewRevision!==state.catalogRevision)throw new Error('Perbarui rincian katalog dan periksa harga/resep terlebih dahulu.');
+  const id=ui.reviewId||crypto.randomUUID();await durable('sale','/transactions',{items:structuredClone(ui.review),catalogRevision:ui.reviewRevision,idempotencyKey:id},'Pencatatan pesanan: '+ui.review.map(i=>`${i.qty} ${state.menu.find(m=>m.id===i.id).name}`).join(', '));
+}
+document.addEventListener('input',event=>{
+  if(event.target.id==='voice-text'){voice.edit(event.target.value);ui.voice=voice.state;return;}
+  const f=event.target.closest('[data-form]');if(f&&event.target.name){const name=f.dataset.form;values[name]??={};if(event.target.type!=='password')values[name][event.target.name]=event.target.type==='checkbox'?event.target.checked:event.target.value;
+    if(name==='receipt'&&['productId','inputUnit'].includes(event.target.name)){values.receipt.qty='';values.receipt.unitPrice='';if(event.target.name==='productId')values.receipt.inputUnit='';render();}else if(name==='receipt')receiptPreview();
+  }
+  if(event.target.dataset.review){const item=ui.review[Number(event.target.dataset.index)],key=event.target.dataset.review;item[key]=key==='qty'?Number(event.target.value):event.target.value;ui.reviewId=null;if(key==='id')render();else if(key==='qty'){
+    const template=document.createElement('template');template.innerHTML=createViews({state,ui,values,pendingAction,deviceDrafts,connected}).pesanan();
+    for(const selector of ['.order-total','.ingredient-list'])document.querySelector(selector)?.replaceWith(template.content.querySelector(selector));
+  }}
+});
+function showFormError(kind,message){const target=document.querySelector(`[data-form="${kind}"] .form-error`);if(target)target.innerHTML=notice(e(message),'warn');else notify(message);}
+document.addEventListener('submit',async event=>{
+  const f=event.target.closest('[data-form]');if(!f)return;event.preventDefault();if(busy)return;const kind=f.dataset.form,b=Object.fromEntries(new FormData(f));let payload,error='';
+  if(kind==='auth'){
+    busy=true;f.querySelector('button[type=submit]').disabled=true;
+    try{const result=await request(ui.auth==='register'?'/auth/register':'/auth/login',b);values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
+  }
+  if(!state||!connected||pendingAction||(kind==='extract'&&voice.active))return;busy=true;lockControls();
+  try{
+    if(kind==='kitchen-new'){ui.kitchenFocus={queue:true};await durable('kitchenCreate','/kitchen/orders',{label:b.label,channel:b.channel,items:Array.from({length:Math.min(20,Number(b.itemCount)||1)},(_,i)=>({id:b['menuId-'+i],qty:Number(b['qty-'+i]),note:b['note-'+i]||''})),catalogRevision:state.catalogRevision,idempotencyKey:crypto.randomUUID()},'Pesanan dapur: '+b.label);}
+    else if(kind==='kitchen-command'){ui.kitchenFocus={command:true};await runKitchenCommand(b.text);values['kitchen-command']={};}
+    else if(kind==='kitchen-discard'){ui.kitchenFocus={queue:true};await durable('kitchenChange',`/kitchen/orders/${b.orderId}/actions`,{action:'discard',revision:Number(b.revision),confirmed:b.confirmed==='on',idempotencyKey:crypto.randomUUID()},'Penutupan bahan terpakai');ui.kitchenDiscard=null;}
+    else if(kind==='usage-decision'){const editor=ui.usageReview;if(!editor)throw new Error('Buka kembali pemeriksaan dari tanggal yang dipilih.');await request('/usage-reviews',{...editor,decision:b.decision,note:b.note||'',confirmed:b.confirmed==='on'},state.csrf);await refresh();ui.usageReview=null;values['usage-decision']={};notify('Hasil pemeriksaan tersimpan. Stok dan transaksi tidak diubah.');}
+    else if(kind==='profile'){await request('/account/profile',{businessName:b.businessName},state.csrf);await refresh();values.profile={};notify('Nama usaha tersimpan.');}
+    else if(kind==='password'){if(b.newPassword!==b.repeatPassword)throw new Error('Ulangan kata sandi baru belum sama.');const result=await request('/account/password',{currentPassword:b.currentPassword,newPassword:b.newPassword},state.csrf);await refresh();notify(`Kata sandi tersimpan. ${result.revokedSessions} sesi lain dikeluarkan.`);}
+    else if(kind==='community-settings'){await request('/community/settings',{communityName:b.communityName},state.csrf);await refresh();values['community-settings']={};notify('Nama kelompok tersimpan.');}
+    else if(kind==='invite'){if(b.confirmed!=='on')throw new Error('Periksa dampak mengganti kode terlebih dahulu.');await request('/community/invite',{expectedCode:state.community.inviteCode},state.csrf);await refresh();values.invite={};notify('Kode undangan diganti. Bagikan kode terbaru kepada anggota baru.');}
+    else if(kind==='ingredient'){payload={name:b.name,unit:b.unit,min:Number(b.min),storageNote:b.storageNote,catalogRevision:state.catalogRevision};await request('/ingredients'+(ui.editId?'/'+ui.editId:''),payload,state.csrf);await refresh();ui.editor=null;values.ingredient={};}
+    else if(kind==='menu'){payload={name:b.name,price:Number(b.price),aliases:b.aliases.split(',').map(x=>x.trim()).filter(Boolean),recipe:Object.fromEntries(state.catalog.map(c=>[c.id,Number(b['recipe-'+c.id])]).filter(([,qty])=>qty>0)),catalogRevision:state.catalogRevision,preparation:{minutes:Number(b.minutes),passiveMinutes:Number(b.passiveMinutes),station:b.station}};await request('/menus'+(ui.editId?'/'+ui.editId:''),payload,state.csrf);await refresh();ui.editor=null;values.menu={};}
+    else if(kind==='receipt'){const p=state.catalog.find(c=>c.id===b.productId);receiptMeasurement(p.unit,b.inputUnit,Number(b.qty),Number(b.unitPrice));await durable('receipt','/stock-receipts',{productId:b.productId,inputUnit:b.inputUnit,qty:Number(b.qty),unitPrice:Number(b.unitPrice),supplier:b.supplier,idempotencyKey:crypto.randomUUID()},`Penerimaan ${b.qty} ${b.inputUnit} ${p.name} pada ${m(Number(b.unitPrice))} per ${b.inputUnit}.`);}
+    else if(kind==='extract'){const result=await request('/extractions',{text:b.text},state.csrf);ui.review=result.items;ui.reviewRevision=result.catalogRevision;ui.reviewId=null;ui.extractionReason=result.reason;}
+    else if(kind==='quote'){payload={...b,unitPrice:Number(b.unitPrice),shipping:Number(b.shipping),minimum:Number(b.minimum),expiresAt:new Date(b.expiresAt).toISOString(),individualPrice:b.individualPrice===''?null:Number(b.individualPrice),individualShipping:b.individualShipping===''?null:Number(b.individualShipping)};await request('/community/quote',payload,state.csrf);await refresh();values.quote={};notify('Penawaran pemasok tersimpan dari rincian yang kamu masukkan.');}
+    else if(kind==='demand'){await request('/demand-consents',{qty:Number(b.qty),active:true,budget:b.budget===''?null:Number(b.budget)},state.csrf);await refresh();location.hash='kelompok';}
+    else if(kind==='collective-receipt')await durable('collectiveReceipt',`/collective-orders/${state.group.purchase.id}/receipts`,{qty:Number(b.qty),idempotencyKey:crypto.randomUUID()},`Penerimaan ${b.qty} ${state.sharedProduct.unit} dari rencana kulakan.`);
+    else if(kind==='offer')await durable('offer','/offers',{productId:state.sharedProduct.id,qty:Number(b.qty),unitPrice:Number(b.unitPrice),condition:b.condition,expiresInHours:Number(b.expiresInHours),cycle:state.group.cycle.id,idempotencyKey:crypto.randomUUID()},`Penawaran surplus ${b.qty} ${state.sharedProduct.unit}: ${b.condition}.`);
+    else if(kind.startsWith('request-')){const offerId=kind.slice(8);await durable('requestTransfer',`/offers/${offerId}/request`,{qty:Number(b.qty)},`Permintaan ${b.qty} ${state.sharedProduct.unit} surplus.`,{offerId,before:state.transfers.map(t=>t.id)});}
+    else if(kind==='cancel'){const c=ui.cancel,reason=b.reason?.trim();if(b.confirmed!=='on')throw new Error('Konfirmasi dampak koreksi terlebih dahulu.');if(c.kind!=='cancelSale'&&(!reason||reason.length<5||reason.length>240))throw new Error('Isi alasan dalam 5–240 karakter.');await durable(c.kind,c.path,c.kind==='cancelSale'?{}:{reason},`Pembatalan catatan. ${reason||'Mengembalikan bahan sesuai resep transaksi.'}`,{id:c.id});}
+  }catch(err){error=err.message;if(err.status===401){state=null;ui.auth='login';ui.error='Sesi berakhir. Masuk lagi untuk melanjutkan.';}if(err.transport)connected=false;}
+  finally{if(!state)clearVoice();busy=false;render();if(error&&state)showFormError(kind,error);}
+});
+document.addEventListener('click',async event=>{
+  const b=event.target.closest('[data-action]');if(!b)return;event.preventDefault();const action=b.dataset.action;if(action==='kitchen-listen'&&ui.kitchenHandsfree){clearVoice();render();return;}if(busy)return;
+  if(action==='show-login'||action==='show-register'){ui.auth=action==='show-login'?'login':'register';ui.error='';render();return;}
+  if(action==='create-community'||action==='join-community'){ui.joining=action==='join-community';render();return;}
+  if(action==='theme'){const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('gerai-theme',theme);}catch{}return;}
+  if(action==='menu'){ui.mobile=!ui.mobile;render();return;}
+  if(action==='update-app'){registration?.waiting?.postMessage('ACTIVATE_UPDATE');return;}
+  if(!state)return;
+  if(action==='kitchen-add-item'||action==='kitchen-remove-item'){ui.kitchenItemCount=Math.max(1,Math.min(20,(ui.kitchenItemCount||1)+(action==='kitchen-add-item'?1:-1)));ui.kitchenFocus={field:'menuId-'+(ui.kitchenItemCount-1)};render();return;}
+  if(action==='kitchen-close-discard'){ui.kitchenFocus={order:ui.kitchenDiscard};ui.kitchenDiscard=null;render();return;}
+  if(action==='kitchen-listen'){
+    if(ui.kitchenHandsfree){clearVoice();render();return;}
+    if(!connected||pendingAction||route()!=='dapur')return;
+    ui.kitchenHandsfree=true;ui.kitchenCommandResult='Kendali suara aktif. Ucapkan satu perintah tiap rekaman.';await voice.start();return;
+  }
+  if(action==='kitchen-action'&&b.dataset.step==='open-discard'){ui.kitchenDiscard=b.dataset.id;ui.kitchenFocus={discard:true};render();return;}
+  if(action.startsWith('voice-')){
+    if(action==='voice-cancel'){voice.cancel();notify('Suara dibatalkan. Catatan yang kamu ketik tetap tersedia.');return;}
+    if(action==='voice-stop'){voice.stop();return;}
+    if(!connected||pendingAction||route()!=='pesanan')return;
+    if(action==='voice-start'&&state.speech?.available){await voice.start();return;}
+    if(action==='voice-use'&&voice.state.phase==='review'){
+      const text=voice.state.text.trim(),before=values.extract?.text||'';
+      if(!text){notify('Periksa hasil ucapan terlebih dahulu.');return;}
+      const combined=before.trim()?before.trim()+'\n'+text:text;
+      if(combined.length>2000){notify('Gabungan teks melebihi 2.000 karakter. Ringkas catatan sebelum menambahkan hasil suara.');return;}
+      values.extract={...values.extract,text:combined};clearVoice();render();document.querySelector('#order-text')?.focus();return;
+    }
+    return;
+  }
+  if(action==='copy-invite'){try{await navigator.clipboard.writeText(state.community.inviteCode);notify('Kode kelompok disalin.');}catch{notify('Salin kode yang ditampilkan pada pengaturan kelompok.');}return;}
+  if(action.startsWith('export-')){if(action==='export-sales')csv('penjualan.csv',[['ID','Tanggal','Menu','Total (Rp)','Status'],...state.transactions.map(t=>[t.id,t.date,t.items.map(i=>`${i.qty} ${i.name}`).join(', '),t.total,t.cancelled_at?'Dibatalkan':'Tercatat'])]);else csv('barang-masuk.csv',[['ID','Bahan','Jumlah stok','Satuan stok','Jumlah diterima asli','Satuan diterima asli','Harga satuan diterima','Total','Status','Alasan'],...state.stockReceipts.map(r=>[r.id,r.product_name,r.qty,r.product_unit,r.input_quantity==null?r.qty:r.input_quantity/10000,r.input_unit||r.product_unit,r.input_unit_price??r.unit_price,r.total,r.cancelled_at?'Dibatalkan':'Diterima',r.cancel_reason])]);return;}
+  if(pendingAction&&!['reconnect','refresh','retry-action','logout'].includes(action)){notify('Periksa catatan tertunda terlebih dahulu.');return;}
+  if(['new-ingredient','edit-ingredient','new-menu','edit-menu','new-receipt'].includes(action)){if(!connected)return;const type=action.includes('ingredient')?'ingredient':action.includes('menu')?'menu':'receipt';ui.editor=type;ui.editId=b.dataset.id||null;values[type]={};render();document.querySelector('.inventory-editor')?.scrollIntoView({block:'start'});return;}
+  if(action==='close-editor'){ui.editor=null;render();return;}
+  if(action==='open-usage-review'){
+    if(!connected)return;
+    const row=state.usageReviews?.find(item=>item.productId===b.dataset.product)?.dates.find(item=>item.date===b.dataset.date);
+    if(!row?.screened)return;
+    ui.usageReview={productId:b.dataset.product,date:row.date,snapshotHash:row.snapshotHash,expectedReviewId:row.saved?.id??null,idempotencyKey:crypto.randomUUID()};
+    values['usage-decision']={decision:row.saved?.decision||'checked',note:row.saved?.note||'',confirmed:false};render();
+    document.querySelector('#usage-decision-title')?.focus();return;
+  }
+  if(action==='close-usage-review'){ui.usageReview=null;values['usage-decision']={};render();return;}
+  if(action==='manual-order'){clearVoice();ui.review=[{id:state.menu[0].id,qty:1,note:''}];ui.reviewRevision=state.catalogRevision;ui.reviewId=null;ui.extractionReason='Input manual. Periksa menu, jumlah dan resep sebelum konfirmasi.';render();return;}
+  if(action==='back-order'){ui.review=null;render();return;}
+  if(action==='add-order'){ui.review.push({id:state.menu[0].id,qty:1,note:''});ui.reviewId=null;render();return;}
+  if(action==='remove-order'){if(ui.review.length>1)ui.review.splice(Number(b.dataset.index),1);ui.reviewId=null;render();return;}
+  if(action==='resume-draft'){const d=deviceDrafts.find(d=>d.id===b.dataset.id);ui.review=structuredClone(d.payload.items);ui.reviewRevision=d.payload.catalogRevision;ui.reviewId=d.id;render();return;}
+  if(action==='close-cancel'){ui.cancel=null;render();return;}
+  if(['cancel-sale','cancel-receipt','cancel-collective-receipt'].includes(action)){const id=b.dataset.id,kind=action==='cancel-sale'?'cancelSale':action==='cancel-receipt'?'cancelReceipt':'cancelCollectiveReceipt';ui.cancel={id,kind,path:kind==='cancelSale'?`/transactions/${id}/cancel`:kind==='cancelReceipt'?`/stock-receipts/${id}/cancel`:`/collective-orders/${state.group.purchase.id}/receipts/${id}/cancel`};values.cancel={};location.hash='riwayat';render();return;}
+  busy=true;lockControls();
+  try{
+    if(action==='kitchen-action'){ui.kitchenFocus={order:b.dataset.id,task:b.dataset.task};await durable('kitchenChange',`/kitchen/orders/${b.dataset.id}/actions`,{action:b.dataset.step,taskId:b.dataset.task||null,revision:Number(b.dataset.revision),idempotencyKey:crypto.randomUUID()},'Perubahan tahap dapur');}
+    else if(action==='reconnect'||action==='refresh'){await refresh();if(!ui.kitchenLive){kitchenEvents?.close();kitchenEvents=null;kitchenEventScope='';}}
+    else if(action==='retry-action'){const original=pendingAction;await refresh();if(pendingAction){if(original.scope!==scopeOf(state))throw new Error('Masuk ke akun asal untuk memeriksa catatan.');await sendAction(original);}else notify('Catatan ditemukan di server. Tidak dikirim dua kali.');}
+    else if(action==='logout'){clearVoice();await request('/auth/logout',{},state.csrf);await clearSnapshot();state=null;pendingAction=null;values={};deviceDrafts=[];ui.auth='login';ui.review=null;ui.editor=null;ui.cancel=null;ui.usageReview=null;}
+    else if(action==='confirm-order')await confirmOrder();
+    else if(action==='review-catalog'){await refresh();ui.reviewRevision=state.catalogRevision;}
+    else if(action==='delete-draft'){await removeDraft(b.dataset.id,true);deviceDrafts=(await listDrafts()).filter(d=>d.scope===scopeOf(state));}
+    else if(action==='approve'||action==='decline'){await request('/proposal/approval',{version:state.group.version,decision:action==='approve'?'accepted':'declined'},state.csrf);await refresh();}
+    else if(action==='withdraw-demand'){await request('/demand-consents',{qty:state.demand,active:false,budget:state.budget},state.csrf);await refresh();}
+    else if(action==='finalize')await durable('finalize','/collective-orders',{cycle:state.group.cycle.id,version:state.group.version},'Menyimpan rencana sesuai persetujuan.',{cycle:state.group.cycle.id});
+    else if(action==='next-cycle')await durable('nextCycle','/collective-cycles/next',{cycle:state.group.cycle.id,version:state.group.version},'Membuka siklus baru setelah siklus ini selesai.',{cycle:state.group.cycle.id});
+    else if(action==='cancel-plan')await durable('cancelPlan',`/collective-orders/${state.group.purchase.id}/cancel`,{},'Membatalkan rencana tanpa penerimaan aktif.',{id:state.group.purchase.id});
+    else if(action==='withdraw-offer'){await request(`/offers/${b.dataset.id}/withdraw`,{},state.csrf);await refresh();}
+    else if(action==='approve-transfer'||action==='cancel-transfer')await durable('transferDecision',`/transfers/${b.dataset.id}/${action==='approve-transfer'?'approval':'cancel'}`,{},action==='approve-transfer'?'Menyetujui pemindahan stok surplus.':'Membatalkan permintaan surplus.',{id:b.dataset.id,status:action==='approve-transfer'?'completed':'cancelled'});
+  }catch(err){if(err.transport)connected=false;if(err.status===401){state=null;ui.auth='login';ui.error='Masuk lagi untuk melanjutkan.';}notify(err.message);}
+  finally{if(!state)clearVoice();busy=false;render();}
+});
+window.addEventListener('hashchange',()=>{clearVoice();ui.mobile=false;render();scrollTo(0,0);});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&ui.mobile){ui.mobile=false;render();document.querySelector('[data-action="menu"]')?.focus();}});
+window.addEventListener('gerai:connection-lost',()=>{clearVoice();connected=false;});
+window.addEventListener('offline',()=>{clearVoice();connected=false;if(state)render();});
+window.addEventListener('pagehide',()=>{clearVoice();kitchenEvents?.close();kitchenEvents=null;});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&voice.active){clearVoice();if(state)render();}});
+window.addEventListener('online',()=>{if(!connected)notify('Koneksi tersedia. Hubungkan untuk memeriksa catatan; tidak ada pengiriman otomatis.');});
+let updateReload=false;navigator.serviceWorker?.addEventListener('controllerchange',()=>{if(registration&&!updateReload){updateReload=true;location.reload();}});
+registerPwa(r=>{registration=r;showUpdatePrompt();});
+const systemTheme=matchMedia('(prefers-color-scheme: dark)');
+try{document.documentElement.dataset.theme=localStorage.getItem('gerai-theme')||(systemTheme.matches?'dark':'light');}catch{document.documentElement.dataset.theme=systemTheme.matches?'dark':'light';}
+systemTheme.addEventListener('change',()=>{try{if(!localStorage.getItem('gerai-theme'))document.documentElement.dataset.theme=systemTheme.matches?'dark':'light';}catch{}});
+function restoreKitchenFocus(){
+  const focus=ui.kitchenFocus;if(!focus||route()!=='dapur')return;ui.kitchenFocus=null;
+  let target;
+  if(focus.command)target=document.querySelector('[data-form="kitchen-command"] [name="text"]');
+  else if(focus.field)target=document.querySelector(`[data-form="kitchen-new"] [name="${CSS.escape(focus.field)}"]`);
+  else if(focus.discard)target=document.querySelector('[data-form="kitchen-discard"] [name="confirmed"]');
+  else if(focus.task){const task=document.querySelector(`[data-kitchen-task="${CSS.escape(focus.task)}"]`);target=task?.querySelector('button:not(:disabled)')||task?.querySelector('strong');}
+  if(!target&&focus.order)target=document.querySelector(`[data-kitchen-order="${CSS.escape(focus.order)}"] h3`);
+  (target||document.querySelector('#kitchen-queue-title'))?.focus({preventScroll:true});
+}
+async function runKitchenCommand(text,revisions=Object.fromEntries((state.kitchen?.orders||[]).map(o=>[o.id,o.revision])),voiceEpoch=null){
+  const commandScope=scopeOf(state);
+  const resolved=await request('/kitchen/commands',{text,revisions},state.csrf);
+  if(!state||scopeOf(state)!==commandScope||voiceEpoch!==null&&(voiceEpoch!==kitchenVoiceEpoch||!ui.kitchenHandsfree||route()!=='dapur'||document.hidden))throw new Error('Kendali suara dihentikan. Perintah belum dikirim.');
+  await durable('kitchenChange',`/kitchen/orders/${resolved.id}/actions`,{action:resolved.action,taskId:resolved.taskId,revision:resolved.revision,idempotencyKey:crypto.randomUUID()},'Perubahan tahap dapur dari perintah');
+  ui.kitchenCommandResult='Tahap diperbarui: '+resolved.menu+' · '+resolved.label;
+}
+async function runSpokenKitchenCommand(){
+  if(!ui.kitchenHandsfree||route()!=='dapur'||busy||!connected)return;
+  busy=true;lockControls();
+  try{await runKitchenCommand(voice.state.text,kitchenRecordingRevisions,kitchenVoiceEpoch);}
+  catch(error){ui.kitchenCommandResult=error.message;ui.kitchenHandsfree=false;notify(error.message);}
+  finally{voice.reset();ui.voice=voice.state;busy=false;render();if(ui.kitchenHandsfree&&!pendingAction)kitchenVoiceTimer=setTimeout(()=>{if(ui.kitchenHandsfree&&connected&&route()==='dapur')voice.start();},1000);}
+}
+function syncKitchenEvents(){
+  const key=state&&connected?scopeOf(state):'';
+  if(key===kitchenEventScope&&kitchenEvents)return;
+  kitchenEvents?.close();kitchenEvents=null;kitchenEventScope=key;ui.kitchenLive=false;
+  if(!key)return;
+  const stream=kitchenEvents=new EventSource('/api/kitchen/events');
+  stream.onopen=()=>{ui.kitchenLive=true;const el=document.querySelector('#kitchen-live-status');if(el)el.textContent='Pembaruan langsung aktif';};
+  stream.onerror=()=>{ui.kitchenLive=false;const el=document.querySelector('#kitchen-live-status');if(el)el.textContent='Pembaruan terputus · status mungkin lama. Mencoba terhubung; gunakan Perbarui status atau Perbarui data.';};
+  stream.onmessage=async event=>{
+    if(busy||voice.active||pendingAction||kitchenUpdating||!state||scopeOf(state)!==key)return;
+    const canRender=['dapur','layanan'].includes(route())&&!document.querySelector('#main input:focus,#main select:focus,#main textarea:focus')&&!ui.kitchenDiscard;
+    const data=JSON.parse(event.data);if(data.revision===state.kitchen?.revision){if(kitchenRenderPending&&canRender){kitchenRenderPending=false;render();}return;}
+    kitchenUpdating=true;
+    try{await refresh();kitchenRenderPending=true;if(canRender){kitchenRenderPending=false;render();}}catch(error){if(error.status===401){clearVoice();state=null;kitchenEvents?.close();kitchenEvents=null;kitchenEventScope='';render();}}finally{kitchenUpdating=false;}
+  };
+}
+async function initialize(){
+  try{await adopt(await request('/bootstrap'));render();}
+  catch(err){if(err.transport){try{const snapshot=await readSnapshot();if(snapshot?.data.mode==='live'){state=snapshot.data;connected=false;snapshotAt=snapshot.savedAt;pendingAction=await readAction(scopeOf(state));deviceDrafts=(await listDrafts()).filter(d=>d.scope===scopeOf(state));render();return;}}catch{}ui.error='Server belum terhubung. Buka aplikasi saat server aktif untuk masuk.';}else if(err.status!==401)ui.error=err.message;render();}
+}
+initialize();

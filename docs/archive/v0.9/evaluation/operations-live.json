@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-13T18:49:16.245Z",
+  "extraction": {
+    "items": [
+      {
+        "id": "c3edfc73-9b2d-4f18-af57-8d88eaa772a6",
+        "qty": 2,
+        "note": ""
+      }
+    ],
+    "mode": "ollama",
+    "model": "qwen2.5:1.5b",
+    "latencyMs": 1226,
+    "reason": "AI lokal; jumlah lolos pemeriksaan katalog dan bukti chat. Periksa variasi dari pesan asli.",
+    "catalogRevision": 2
+  },
+  "checks": {
+    "menuTotal": 44000,
+    "stockAfterSaleAndReceipt": 16,
+    "persistedAfterReload": true,
+    "mobileOverflow": false,
+    "desktopOverflow": false,
+    "errors": [],
+    "editorOpeningVisibility": {
+      "titleTop": 87.625,
+      "headerBottom": 65
+    }
+  },
+  "runtime": "localhost:4174 / SQLite / installed Ollama"
+}

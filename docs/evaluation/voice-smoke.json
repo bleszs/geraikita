@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-15T07:17:42.881Z",
+  "database": ":memory:",
+  "realPythonSubprocess": true,
+  "available": {
+    "available": true,
+    "model": "whisper-tiny",
+    "engine": "faster-whisper",
+    "compute": "cpu-int8",
+    "pretrained": true,
+    "language": "id",
+    "maxSeconds": 30,
+    "maxBytes": 1048576,
+    "reason": "Ucapan diproses di laptop. Rekaman tidak disimpan."
+  },
+  "cases": [
+    {
+      "name": "silence",
+      "httpStatus": 422,
+      "error": "Ucapan belum terdengar jelas. Dekatkan mikrofon lalu rekam ulang, atau ketik pesanan.",
+      "elapsedMs": 646,
+      "inventedTranscript": false
+    },
+    {
+      "name": "decoded_duration_31_seconds",
+      "httpStatus": 422,
+      "error": "Rekaman melebihi 30 detik. Rekam pesanan yang lebih singkat.",
+      "elapsedMs": 618,
+      "inventedTranscript": false
+    },
+    {
+      "name": "malformed_container",
+      "httpStatus": 422,
+      "error": "Rekaman tidak dapat dibaca. Rekam ulang atau ketik pesanan.",
+      "elapsedMs": 610,
+      "inventedTranscript": false
+    }
+  ],
+  "passed": true,
+  "scope": "Technical rejection smoke with generated silence/invalid bytes. Not speech recognition accuracy or a business dataset."
+}

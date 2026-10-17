@@ -1,0 +1,517 @@
+{
+  "version": "0.23.0",
+  "checkedAt": "2026-10-15T16:53:27.397Z",
+  "auditPassed": true,
+  "registrySha256": "4ad7dc6af9191395df6764d3a2a95470d9807f46ee8623553428e2362588fc57",
+  "analysisSourceSha256": {
+    "scripts/analyze-asr-followup.mjs": "6f3488ff3df74f2d60665cdd938a360c2a79446a53988ece5f56412d26beae70",
+    "scripts/asr-followup-evaluation.mjs": "2f99812fb7e3113ae007e03e42b354b27cd1f2c7afb0cacd5e093b00bc391fc3",
+    "scripts/asr-stability-evaluation.mjs": "e933bc89110b06c335fe81b7840ccded37bd4297e85d4728900c3c68a974f148"
+  },
+  "newInferenceCount": 68,
+  "newKernelChecks": 112,
+  "experiments": {
+    "deferred": {
+      "directory": "models/benchmarks/asr-deferred/2026-10-15T09-23-00-122Z-6ddf4525",
+      "protocolSha256": "7c8079a006dda2b23d3518f3a0d631451a1074232346189f3c7cab0dc981fee0",
+      "tracesSha256": "91a6a2b773665f237fb9eae0b2a1ca71bca814f1bdc91c0f4edf897246517639",
+      "inferences": 64,
+      "groups": [
+        {
+          "profile": "baseline:plain",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": null,
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "baseline:plain",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": null,
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "baseline:deferred",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "waveform": 1,
+            "window": 1,
+            "mel_filters": 1,
+            "stft": 1,
+            "magnitudes": 1,
+            "mel_spec": 1,
+            "log_spec": 1,
+            "encoder_input": 1,
+            "encoder_output": 1
+          },
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "baseline:deferred",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "waveform": 1,
+            "window": 1,
+            "mel_filters": 1,
+            "stft": 1,
+            "magnitudes": 1,
+            "mel_spec": 1,
+            "log_spec": 1,
+            "encoder_input": 1,
+            "encoder_output": 1
+          },
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "openblas_one:plain",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": null,
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "openblas_one:plain",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": null,
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "openblas_one:deferred",
+          "model": "tiny",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "waveform": 1,
+            "window": 1,
+            "mel_filters": 1,
+            "stft": 1,
+            "magnitudes": 1,
+            "mel_spec": 1,
+            "log_spec": 1,
+            "encoder_input": 1,
+            "encoder_output": 1
+          },
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        },
+        {
+          "profile": "openblas_one:deferred",
+          "model": "base",
+          "filename": "9485984081064467567.wav",
+          "repeats": 8,
+          "accepted": 8,
+          "transcriptVariants": 1,
+          "stageVariants": {
+            "pcm": 1,
+            "waveform": 1,
+            "window": 1,
+            "mel_filters": 1,
+            "stft": 1,
+            "magnitudes": 1,
+            "mel_spec": 1,
+            "log_spec": 1,
+            "encoder_input": 1,
+            "encoder_output": 1
+          },
+          "observedRepeatMatch": true,
+          "firstChangedStage": null
+        }
+      ],
+      "crossProfiles": [
+        {
+          "model": "tiny",
+          "repeat": 1,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 2,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 3,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 4,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 5,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 6,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 7,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "tiny",
+          "repeat": 8,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": false
+        },
+        {
+          "model": "base",
+          "repeat": 1,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 2,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 3,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 4,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 5,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 6,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 7,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        },
+        {
+          "model": "base",
+          "repeat": 8,
+          "comparable": true,
+          "equalStages": {
+            "pcm": true,
+            "waveform": true,
+            "window": true,
+            "mel_filters": true,
+            "stft": true,
+            "magnitudes": true,
+            "mel_spec": false,
+            "log_spec": false,
+            "encoder_input": false,
+            "encoder_output": false
+          },
+          "firstChangedStage": "mel_spec",
+          "sameTranscript": true
+        }
+      ],
+      "allObservedTextRepeatsMatch": true,
+      "withinConfigurationFailureLocalized": false
+    },
+    "alignment": {
+      "directory": "models/benchmarks/asr-alignment/2026-10-15T09-24-33-684Z-75e65d73",
+      "protocolSha256": "99d29ee589f12540a7ff55a947383a88f03620e1d85a641da90cce1464d041f7",
+      "tracesSha256": "f74682b33dee3f73f335786c855930b4cb5e0b7ed424d3f5d4246fa560923a95",
+      "captureInferences": 4,
+      "kernelChecks": 112,
+      "differentKernels": 0,
+      "groups": [
+        {
+          "profile": "baseline",
+          "repeat": 1,
+          "kernelChecks": 28,
+          "differentKernels": 0
+        },
+        {
+          "profile": "baseline",
+          "repeat": 2,
+          "kernelChecks": 28,
+          "differentKernels": 0
+        },
+        {
+          "profile": "openblas_one",
+          "repeat": 1,
+          "kernelChecks": 28,
+          "differentKernels": 0
+        },
+        {
+          "profile": "openblas_one",
+          "repeat": 2,
+          "kernelChecks": 28,
+          "differentKernels": 0
+        }
+      ],
+      "scope": "Only the frozen STFT/magnitude/mel/log inputs, offsets and shapes on one seen clip; negative results do not rule out other alignment effects."
+    }
+  },
+  "historical": {
+    "comparisonChanged": 3,
+    "comparisonRepeated": 4,
+    "previousDiagnosticChangedGroups": 4
+  },
+  "withinConfigurationFailureLocalized": false,
+  "causeEstablished": false,
+  "fixValidated": false,
+  "readyForPromotion": false,
+  "runtimeChanged": false,
+  "activeModel": "whisper-tiny",
+  "trainingPerformed": false,
+  "newAccuracyBenchmark": false,
+  "limitations": [
+    "Already-seen first comparison test clip, not a new accuracy sample.",
+    "Deferred profiling changes timing and object lifetime even though hashing is postponed.",
+    "Matching new repetitions do not erase previous failures or validate a fix.",
+    "The first differing stage under a changed BLAS setting is distinct from historical variation with an unchanged setting."
+  ]
+}

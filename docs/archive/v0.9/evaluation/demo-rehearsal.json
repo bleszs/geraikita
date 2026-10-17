@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-10-15T02:55:37.471Z",
+  "version": "0.9.0",
+  "passed": true,
+  "storage": ":memory:",
+  "realDatabaseModified": false,
+  "ai": {
+    "provider": "ollama",
+    "model": "qwen2.5:1.5b",
+    "available": true
+  },
+  "steps": [
+    {
+      "step": "Chat → review → konfirmasi",
+      "mode": "ollama",
+      "total": 82000,
+      "eggsBefore": 8,
+      "eggsAfter": 4
+    },
+    {
+      "step": "Tiga kebutuhan berizin",
+      "demand": 50,
+      "vendorOrder": 50,
+      "total": 66000,
+      "individual": 90000
+    },
+    {
+      "step": "Surplus selesai, proposal dihitung ulang",
+      "demand": 50,
+      "surplus": 10,
+      "vendorOrder": 40,
+      "total": 64000,
+      "savings": 26000,
+      "sariEggs": 14
+    },
+    {
+      "step": "Semua anggota setuju",
+      "ready": true,
+      "allocations": [
+        {
+          "businessId": "budi",
+          "order": 18,
+          "cost": 24300,
+          "shipping": 2700
+        },
+        {
+          "businessId": "rina",
+          "order": 10,
+          "cost": 13500,
+          "shipping": 1500
+        },
+        {
+          "businessId": "sari",
+          "order": 12,
+          "cost": 26200,
+          "shipping": 1800
+        }
+      ]
+    },
+    {
+      "step": "Barang fisik dicatat setelah diterima",
+      "status": "completed",
+      "sariEggs": 26,
+      "receivedCost": 16200
+    },
+    {
+      "step": "Siklus baru",
+      "cycle": 2,
+      "sariEggs": 26,
+      "shared": false,
+      "collectiveHistoryPreserved": true
+    }
+  ],
+  "interpretation": "Latihan domain dengan model aktual bila tersedia dan fixture sintetis. Bukan pengukuran durasi demo, benchmark lapangan atau uji browser."
+}

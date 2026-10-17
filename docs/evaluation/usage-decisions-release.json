@@ -1,0 +1,99 @@
+{
+  "version": "0.32.0",
+  "checkedAt": "2026-10-15T22:34:35.938Z",
+  "functionality": {
+    "persistedOwnerDecisions": true,
+    "appendOnlyRevisions": true,
+    "noteAndTime": true,
+    "explicitConfirmation": true,
+    "perIngredientSummary": true,
+    "targetAnd56DayReferenceSnapshot": true,
+    "staleResultVisible": true,
+    "incompleteReferenceBlocksSave": true,
+    "optimisticReviewRevision": true,
+    "retryIdempotency": true,
+    "sessionTenantIsolation": true,
+    "csrfAndOrigin": true,
+    "offlineReadOnly": true,
+    "noAutomaticSend": true,
+    "operationalReviewsAreNotBlindResearchLabels": true
+  },
+  "tests": {
+    "node": 204,
+    "browser": 32,
+    "total": 236,
+    "newBackend": 8,
+    "newBrowser": 4,
+    "pythonSuitesRerun": false,
+    "logSha256": "a1d7d798a7e48f1b87fbc2bcdcabe9587a53a5d7d989a8e7b7a11d9428d530d7"
+  },
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T22-24-56-176Z-f6517378.sqlite",
+    "preserved": true,
+    "tablesCompared": 19,
+    "totalTablesAfterMigration": 20,
+    "changedOriginalTables": [],
+    "addedTables": [
+      {
+        "name": "usage_review_decisions",
+        "rows": 0
+      }
+    ],
+    "tableCounts": {
+      "account_sessions": 2,
+      "accounts": 1,
+      "audit": 2,
+      "business_state": 1,
+      "businesses": 1,
+      "collective_cycles": 1,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 1,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 2,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "usage_review_decisions": 0,
+      "workspaces": 1
+    }
+  },
+  "healthReady": true,
+  "preview": "http://localhost:4174",
+  "uiReviewDisposition": "ship",
+  "screenshots": {
+    ".impeccable/review/usage-decision-editor-desktop.png": "969fd023107094623577b0c7e2ca17a60de716405453fee8aacff11ac254ef65",
+    ".impeccable/review/usage-decision-editor-mobile.png": "dcb8093d709007d9f6197f95f70593dea751090aa292068eaaa9a4df67e8475d",
+    ".impeccable/review/usage-decision-editor-mobile-dark.png": "10d8e45b1eb39cf870a8443c67149aabeab39b87f1258e89e121dad59ece9f73",
+    ".impeccable/review/usage-decision-saved-desktop.png": "2dfc418329737ee063f714657cc5defd1fe1d9dbbf1c81e53b274eb5741f035a",
+    ".impeccable/review/usage-decision-stale-desktop.png": "5f2b9ae8928a3307255a9df7835638b7987c992c9d413e4ad0987388750a269b",
+    ".impeccable/review/usage-decision-stale-mobile.png": "8a759c8b8a2d9ef6e7c5a281134a6a4cc5a6d80a1e9817ac02e799a31428629c",
+    ".impeccable/review/usage-decision-offline-mobile.png": "b7e3cb69579b367440ed24c9af220a152e6eb925a9c05da32c234cd7ce411163"
+  },
+  "unchangedSpeechSourceCount": 17,
+  "unchangedDecoderSources": 10,
+  "unchangedScreeningSources": 5,
+  "sourceHashes": {
+    "server/usage-decisions.mjs": "a76d86a5cb0cc34c1a1f1416f06d755dab314520da25b5125c254b68c40ab2f2",
+    "server/store.mjs": "6771c2d478f2a01af44eda518d9e5e07f10255c318dffb28929e0c6eafc468d8",
+    "server/service.mjs": "b59a8fb795e278816af316b30f452f0b255d038c0d3e00221aeb9839c8a684cf",
+    "server/http.mjs": "a5befd3ea211626ef93e94b492d2b43c20fc97d43a792c3f2e12a8cdc308f482",
+    "public/app.js": "84ede97e72798bfba35e1b2dc672a117cba6f849d3f97f437c0f7ff5938e0b76",
+    "public/live-views.js": "bf0b825f8750f5ce46a1f3503e776570203ea81acb70a5728c61370b5dbdaca8",
+    "public/styles.css": "b94e6bf84924552efe7cc0cad3cd33b5a28705e88a36d6c5fd4b65c694381368",
+    "public/guide-content.js": "3dd71268f1fb7bd62dedde6b45e6e130e39f787cb9ae774ad5c39fcc5ce708b3",
+    "public/sw.js": "73a87336ec8f0f639a0615688da8eb1e2b54623aea3c9c03e9cf7bbd75fcb85f",
+    "tests/usage-decisions.test.mjs": "c9947578f58a79fdbc1082978ab244c2a491056f0545a3c5625f031e25d13750",
+    "tests/real-usage-decisions.spec.js": "3f91aa763e64606e77fdb883bc7194c0e1b9d0071d702525e9365a758f0b64bc",
+    "tests/usage-evaluation.test.mjs": "1491b7ea93cd90bbabda4b8f657efc27adc8cdd3976fa5b5961730a53cfcf966",
+    "scripts/verify-usage-decisions.mjs": "d602a2e2bf3f8b6b100340fe07915dfabbcdedaeb0fd3e6f3d47ecc4e31e21af"
+  },
+  "defaultModel": "whisper-tiny",
+  "newTraining": false,
+  "fieldValidated": false,
+  "limitations": "Isolated software/UI evidence only; active account has no usage history or example decisions. No novice comprehension or AI accuracy claim. Unsaved note remains in the current page session, not across reload. Old review events persist; UI shows latest within the 28-day window."
+}

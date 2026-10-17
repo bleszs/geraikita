@@ -1,0 +1,13 @@
+# Persisting an owner's usage review — v0.32
+
+Mode: Operate. Ordinary local extension of Saran kulakan, public/live-views.js, public/app.js and existing styles. Code-led, no approved comp or new visual world. Preserve DESIGN.md and its sidecar. The old global direction's synthetic-data sentence is superseded by the user's explicit no-dummy-data instruction and current PRODUCT.md; screenshots use isolated contract fixtures only.
+
+User context: continue the TODO and say what will be worked on. Announced scope: save an owner's review of a usage date, keep it after reopening the app, and request recheck after observed usage/reference data changes. Existing user preference: per-ingredient summary with details only when opened. Warm kedai cream/terracotta, local Nunito Sans and straightforward Indonesian remain fixed.
+
+First viewport keeps the existing Saran kulakan composition and per-ingredient summary. Within expanded findings, show owner status, time, escaped note and Catat hasil pemeriksaan / Periksa kembali. A single inline editor opens under the list with ingredient/date, native decision select, optional note, explicit confirmation, Save and Close without saving. No modal or decorative new surface. Saved human status stays separate from the unchanged statistical flag.
+
+Signature interaction: open a real date, review its evidence, save once; a later change to target/reference input makes the saved result visibly stale. Latest review revisions are protected against another session and retries are idempotent. Unknown/gapped dates cannot be marked as newly reviewed. Offline remains read-only; text survives connection failure during this page session, with explicit reconnect/retry and no automatic send. Unsaved text is not promised to survive page reload.
+
+Requirements: persist owner decisions in an additive empty SQLite table without modifying the original nineteen tables; isolate session scope, login/CSRF/origin; keep old review events; do not alter forecast, inventory, transactions, screening rule or AI models. Operational notes are not independent blind research labels and are not automatically used for training/evaluation.
+
+Verification: desktop 1440 and phone 320, light/dark editor, saved result, stale result and offline editor. Existing screenshots also expose the incumbent horizontally scrollable forecast table on phones, outside this local change. Fixed bottom navigation crossing a full-page capture at viewport height is expected. No shipping raster assets were added. Review disposition is for this local extension, not field accuracy or novice comprehension.

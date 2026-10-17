@@ -1,0 +1,6 @@
+const CACHE='gerai-kita-shell-v34-live';
+const FILES=['/','/index.html','/app.js','/guide.js','/guide-state.js','/guide-layout.js','/guide-content.js','/voice.js','/live-views.js','/kitchen-view.js','/api.js','/styles.css','/offline.js','/model.js','/catalog.js','/icons.js','/receipt-measurement.js','/manifest.webmanifest','/assets/favicon.svg','/assets/icon-192.png','/assets/icon-512.png',...[400,600,700,800,900].map(w=>'/assets/nunito-sans-'+w+'.woff2')];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
+self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('gerai-kita-shell-')&&key!==CACHE)await caches.delete(key);await self.clients.claim();})()));
+self.addEventListener('message',e=>{if(e.data==='ACTIVATE_UPDATE')self.skipWaiting();});
+self.addEventListener('fetch',e=>{const url=new URL(e.request.url);if(url.origin!==location.origin||e.request.method!=='GET'||url.pathname.startsWith('/api/'))return;if(e.request.mode==='navigate'){e.respondWith(caches.open(CACHE).then(c=>c.match('/index.html')));return;}if(FILES.includes(url.pathname))e.respondWith(caches.open(CACHE).then(async c=>(await c.match(url.pathname))||fetch(e.request)));});

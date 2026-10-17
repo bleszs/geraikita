@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-15T17:54:25.493Z",
+  "directory": "models\\benchmarks\\runtime-speech-capture\\2026-10-15T17-54-08-415Z-bf1a7684",
+  "runId": "2026-10-15T17-54-08-415Z-bf1a7684",
+  "protocolSha256": "967786cab1c12d5c4a2ae8a0ff4a88ef0d706caa4f7693afae69edcda7074b8c",
+  "tracesSha256": "0e1aafb6d05f3a0d95a127f2ad59891f7da85c8b9ca876314a4ee24465abf163",
+  "firstEvidenceSha256": "aa7459023ed0b72d5861a4824c88293cb56554b5111289ff7cbc6b8cfc6664c1",
+  "firstDiscrepancy": {
+    "profile": "base-pinned",
+    "filename": "14837807713644458039.wav",
+    "audioSha256": "5040e611baf23bfe5863098bb090af2db78ccd8e7de4a6442da6cc2500cbf591",
+    "expectedHypothesis": "Namun setelah kehilangan gawang Captain, India hanya membuat 30-66 kebobolan 7 juga wang saat mengakhiri ining tersebut.",
+    "actualHypothesis": "Namun, setelah kehilangan gawang Captain, India hanya membuat 30-66 kebobolan 7 gawang saat mengakhiri ining tersebut.",
+    "scope": "Post-hoc HTTP parity check, not a new accuracy score or modification of frozen predictions."
+  },
+  "captures": 4,
+  "usable": 4,
+  "stageVariants": {
+    "pcm": 1,
+    "waveform": 1,
+    "window": 1,
+    "mel_filters": 1,
+    "stft": 1,
+    "magnitudes": 1,
+    "mel_spec": 1,
+    "log_spec": 1,
+    "encoder_input": 1,
+    "encoder_output": 1
+  },
+  "transcriptVariants": 1,
+  "firstChangedStage": null,
+  "causeEstablished": false,
+  "fixValidated": false,
+  "readyForPromotion": false,
+  "scope": "Four captures once; preserve all attempts and original/HTTP text; no score replacement or retry until match. Profiling changes timing/lifetime; no equivalence to unprofiled HTTP is assumed."
+}

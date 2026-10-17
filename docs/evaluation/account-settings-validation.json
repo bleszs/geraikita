@@ -1,0 +1,118 @@
+{
+  "checkedAt": "2026-10-15T04:32:33.902Z",
+  "version": "0.11.0",
+  "tests": {
+    "backend": 59,
+    "browser": 10,
+    "passed": 69,
+    "storage": "Isolated memory/temporary SQLite, not the active database.",
+    "localModelAccuracy": "Not measured by these tests."
+  },
+  "activeDatabase": {
+    "database": "data/gerai-kita-live.sqlite",
+    "comparedTo": "data/backups/gerai-kita-live-2026-10-15T04-31-01-940Z-149c2c88.sqlite",
+    "tables": [
+      {
+        "table": "workspaces",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "businesses",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "inventory",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "sales",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "movements",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "daily_usage",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "demands",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "offers",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "transfers",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "audit",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "sessions",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "business_state",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "menus",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "ingredients",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "stock_receipts",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "collective_cycles",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "collective_orders",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "accounts",
+        "count": 0,
+        "unchanged": true
+      },
+      {
+        "table": "account_sessions",
+        "count": 0,
+        "unchanged": true
+      }
+    ]
+  },
+  "runtime": {
+    "origin": "http://localhost:4174",
+    "unauthenticatedBootstrap": 401,
+    "cache": "v23-live"
+  },
+  "scope": "Account settings, password verification/session revocation, invite rotation, persistence, desktop/mobile forms, and explicit PWA updates before login. Active database checked read-only; no account or business data inserted."
+}

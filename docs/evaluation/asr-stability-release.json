@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-15T08:48:45.905Z",
+  "version": "0.22.0",
+  "tests": {
+    "node": 122,
+    "browser": 16,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "transferPython": 7,
+    "voicePython": 7,
+    "totalUnique": 164
+  },
+  "diagnostics": {
+    "inferences": 136,
+    "auditPassed": true,
+    "causeEstablished": false,
+    "fixValidated": false,
+    "readyForPromotion": false,
+    "trainingPerformed": false,
+    "newAccuracyBenchmark": false
+  },
+  "reportSha256": "3da04d31c914e8f8e917bbdd12f3372913c73112af5a0399469d4f05e4615595",
+  "healthReady": true,
+  "activeModel": "whisper-tiny",
+  "runtimeChanged": false,
+  "userData": {
+    "readOnlyComparison": true,
+    "backup": "data/backups/gerai-kita-live-2026-10-15T08-33-12-879Z-7b4e4288.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true
+  },
+  "limitations": "Software/audit checks passed; prediction stability and a causal fix are not established. All diagnostic clips were already seen; no order/owner-microphone accuracy or promotion claim."
+}

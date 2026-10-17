@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Gerai Kita",
+  "short_name": "Gerai Kita",
+  "description": "Catat pesanan, kenali stok, dan tinjau kulakan bersama.",
+  "lang": "id",
+  "start_url": "/#ringkasan",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fcfaf6",
+  "theme_color": "#a3452b",
+  "icons": [
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

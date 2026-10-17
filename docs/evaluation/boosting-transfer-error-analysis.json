@@ -1,0 +1,221 @@
+{
+  "runId": "2026-10-15T06-43-36Z-fc59f6b9",
+  "perCountry": [
+    {
+      "country": "Australia",
+      "targetUnits": 4098.0,
+      "predictedUnits": 4182.655421271673,
+      "predictionToActualRatio": 1.0206577406714672,
+      "emptyEventDaysOf38": 33,
+      "boostingWape": 1.9502408849000668,
+      "ma7Wape": 1.8811266820051593,
+      "ma14Wape": 1.8237467754305237
+    },
+    {
+      "country": "Belgium",
+      "targetUnits": 3408.0,
+      "predictedUnits": 4107.258209731751,
+      "predictionToActualRatio": 1.2051813995691758,
+      "emptyEventDaysOf38": 28,
+      "boostingWape": 1.6622697122060544,
+      "ma7Wape": 1.5599429912810197,
+      "ma14Wape": 1.3667421193829643
+    },
+    {
+      "country": "Finland",
+      "targetUnits": 1416.0,
+      "predictedUnits": 1702.43473624409,
+      "predictionToActualRatio": 1.2022844182514758,
+      "emptyEventDaysOf38": 30,
+      "boostingWape": 1.7326924258483964,
+      "ma7Wape": 1.7213478611783701,
+      "ma14Wape": 1.4574253430185633
+    },
+    {
+      "country": "Italy",
+      "targetUnits": 2095.0,
+      "predictedUnits": 2513.7417720311914,
+      "predictionToActualRatio": 1.1998767408263444,
+      "emptyEventDaysOf38": 31,
+      "boostingWape": 1.5566777339784983,
+      "ma7Wape": 1.4094101602454823,
+      "ma14Wape": 1.8706443914081146
+    },
+    {
+      "country": "Netherlands",
+      "targetUnits": 26606.0,
+      "predictedUnits": 24430.67786507838,
+      "predictionToActualRatio": 0.9182394146086741,
+      "emptyEventDaysOf38": 28,
+      "boostingWape": 1.7385915028130112,
+      "ma7Wape": 1.617433232031443,
+      "ma14Wape": 1.5434005219016118
+    },
+    {
+      "country": "Norway",
+      "targetUnits": 3479.0,
+      "predictedUnits": 4750.493814495469,
+      "predictionToActualRatio": 1.3654768078457802,
+      "emptyEventDaysOf38": 32,
+      "boostingWape": 2.0359710717032216,
+      "ma7Wape": 2.044635157886092,
+      "ma14Wape": 1.6975321315648992
+    },
+    {
+      "country": "Portugal",
+      "targetUnits": 2637.0,
+      "predictedUnits": 2302.7531190852083,
+      "predictionToActualRatio": 0.8732472958229838,
+      "emptyEventDaysOf38": 27,
+      "boostingWape": 1.3030707602933052,
+      "ma7Wape": 1.2313234736442928,
+      "ma14Wape": 1.1044476948913808
+    },
+    {
+      "country": "Spain",
+      "targetUnits": 3757.0,
+      "predictedUnits": 5683.076380113201,
+      "predictionToActualRatio": 1.512663396356987,
+      "emptyEventDaysOf38": 26,
+      "boostingWape": 1.3793955274483227,
+      "ma7Wape": 1.3114186851211074,
+      "ma14Wape": 1.3315335183847292
+    },
+    {
+      "country": "Sweden",
+      "targetUnits": 2003.0,
+      "predictedUnits": 2637.972423154576,
+      "predictionToActualRatio": 1.317010695533987,
+      "emptyEventDaysOf38": 32,
+      "boostingWape": 1.6800510383796536,
+      "ma7Wape": 1.5879751800870125,
+      "ma14Wape": 1.6140075600884387
+    },
+    {
+      "country": "Switzerland",
+      "targetUnits": 3758.0,
+      "predictedUnits": 5567.812779068898,
+      "predictionToActualRatio": 1.4815893504707018,
+      "emptyEventDaysOf38": 33,
+      "boostingWape": 2.2605976604419658,
+      "ma7Wape": 2.147646924655972,
+      "ma14Wape": 1.8416330875085536
+    }
+  ],
+  "zeroTargetTwoDayCases": 121,
+  "boostingAbsoluteErrorOnZeroTargets": 39630.17632703668,
+  "ma7AbsoluteErrorOnZeroTargets": 34230.857142857145,
+  "worstRawTargets": [
+    {
+      "key": "Netherlands",
+      "date": "2011-12-07",
+      "targetThrough": "2011-12-08",
+      "actual": 7958.0,
+      "naive": 0.0,
+      "ma7": 14.285714285714286,
+      "ma14": 1042.0,
+      "weekly": 50.0,
+      "boosting": 151.90655844900792
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-09",
+      "targetThrough": "2011-11-10",
+      "actual": 7784.0,
+      "naive": 0.0,
+      "ma7": 780.5714285714286,
+      "ma14": 1214.4285714285713,
+      "weekly": 2732.0,
+      "boosting": 867.5032617217028
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-23",
+      "targetThrough": "2011-11-24",
+      "actual": 7244.0,
+      "naive": 1016.0,
+      "ma7": 239.42857142857142,
+      "ma14": 1231.7142857142858,
+      "weekly": 146.0,
+      "boosting": 620.6560176131487
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-03",
+      "targetThrough": "2011-11-04",
+      "actual": 0.0,
+      "naive": 5464.0,
+      "ma7": 2428.8571428571427,
+      "ma14": 4158.571428571428,
+      "weekly": 5769.0,
+      "boosting": 3537.0918551091554
+    },
+    {
+      "key": "Australia",
+      "date": "2011-11-15",
+      "targetThrough": "2011-11-16",
+      "actual": 3130.0,
+      "naive": 0.0,
+      "ma7": 0.0,
+      "ma14": 106.28571428571429,
+      "weekly": 0.0,
+      "boosting": 10.527559109970992
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-11",
+      "targetThrough": "2011-11-12",
+      "actual": 0.0,
+      "naive": 15568.0,
+      "ma7": 2224.0,
+      "ma14": 1502.2857142857142,
+      "weekly": 0.0,
+      "boosting": 2864.3127047616126
+    },
+    {
+      "key": "Switzerland",
+      "date": "2011-11-05",
+      "targetThrough": "2011-11-06",
+      "actual": 2699.0,
+      "naive": 0.0,
+      "ma7": 0.0,
+      "ma14": 325.57142857142856,
+      "weekly": 0.0,
+      "boosting": 130.13693473842716
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-13",
+      "targetThrough": "2011-11-14",
+      "actual": 0.0,
+      "naive": 0.0,
+      "ma7": 2224.0,
+      "ma14": 1502.2857142857142,
+      "weekly": 0.0,
+      "boosting": 2565.6135847506634
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-25",
+      "targetThrough": "2011-11-26",
+      "actual": 0.0,
+      "naive": 0.0,
+      "ma7": 2267.4285714285716,
+      "ma14": 1154.5714285714287,
+      "weekly": 32.0,
+      "boosting": 2408.704695181678
+    },
+    {
+      "key": "Netherlands",
+      "date": "2011-11-01",
+      "targetThrough": "2011-11-02",
+      "actual": 2732.0,
+      "naive": 0.0,
+      "ma7": 1648.2857142857142,
+      "ma14": 3806.714285714286,
+      "weekly": 0.0,
+      "boosting": 329.2662272549653
+    }
+  ],
+  "purpose": "Descriptive only. Selection, parameters and learned artifact remain unchanged after test."
+}

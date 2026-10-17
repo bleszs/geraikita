@@ -1,0 +1,129 @@
+{
+  "checkedAt": "2026-10-15T05:17:06.236Z",
+  "version": "0.13.0",
+  "pipeline": "implemented_and_tested",
+  "businessTraining": {
+    "status": "awaiting_permitted_dataset",
+    "ingredients": 1,
+    "ingredientsWithRecordedUsage": 0,
+    "activeModels": 0,
+    "modelDirectoryExists": false,
+    "businessEvaluation": null
+  },
+  "tests": {
+    "backendAndMl": 70,
+    "browser": 12,
+    "passed": 82,
+    "mlTests": 11,
+    "scope": "Isolated tests; public real-data benchmark reported separately."
+  },
+  "activeData": {
+    "readOnlyComparedTo": "data/backups/gerai-kita-live-2026-10-15T04-58-52-173Z-fd6aff4f.sqlite",
+    "preserved": [
+      {
+        "table": "workspaces",
+        "unchanged": true
+      },
+      {
+        "table": "businesses",
+        "unchanged": true
+      },
+      {
+        "table": "inventory",
+        "unchanged": true
+      },
+      {
+        "table": "sales",
+        "unchanged": true
+      },
+      {
+        "table": "movements",
+        "unchanged": true
+      },
+      {
+        "table": "daily_usage",
+        "unchanged": true
+      },
+      {
+        "table": "demands",
+        "unchanged": true
+      },
+      {
+        "table": "offers",
+        "unchanged": true
+      },
+      {
+        "table": "transfers",
+        "unchanged": true
+      },
+      {
+        "table": "audit",
+        "unchanged": true
+      },
+      {
+        "table": "sessions",
+        "unchanged": true
+      },
+      {
+        "table": "business_state",
+        "unchanged": true
+      },
+      {
+        "table": "menus",
+        "unchanged": true
+      },
+      {
+        "table": "ingredients",
+        "unchanged": true
+      },
+      {
+        "table": "stock_receipts",
+        "unchanged": true
+      },
+      {
+        "table": "collective_cycles",
+        "unchanged": true
+      },
+      {
+        "table": "collective_orders",
+        "unchanged": true
+      },
+      {
+        "table": "accounts",
+        "unchanged": true
+      },
+      {
+        "table": "account_sessions",
+        "unchanged": true
+      }
+    ]
+  },
+  "remaining": [
+    "Improve forecasting with a new predeclared experiment and new holdout; Ridge does not beat MA7 in this run.",
+    "Validate separately with permitted Indonesian UMKM records.",
+    "Complete chat labeling/evaluation; Qwen remains pretrained."
+  ],
+  "publicBenchmark": {
+    "status": "trained_and_evaluated",
+    "models": 500,
+    "syntheticRows": 0,
+    "externalWape": {
+      "ridge": {
+        "mae": 0.8685388729380723,
+        "wape": 0.3564737857195538,
+        "observations": 1500
+      },
+      "naive": {
+        "mae": 0.9088200000000023,
+        "wape": 0.37300633976430564,
+        "observations": 1500
+      },
+      "moving_average_7": {
+        "mae": 0.6549819047619042,
+        "wape": 0.2688237526760968,
+        "observations": 1500
+      }
+    },
+    "report": "docs/evaluation/FRESHRETAILNET_RESULTS.md"
+  }
+}

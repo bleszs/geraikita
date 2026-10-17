@@ -1,0 +1,1062 @@
+{
+  "runId": "2026-10-15T17-28-28-568Z-4cbb5be2",
+  "completedAt": "2026-10-15T17:42:38.085Z",
+  "counts": {
+    "validation": 16,
+    "test": 24,
+    "mainInferences": 120,
+    "repeatedInferences": 24,
+    "triggeredCaptures": 0
+  },
+  "decision": {
+    "runId": "2026-10-15T17-28-28-568Z-4cbb5be2",
+    "decidedAt": "2026-10-15T17:33:18.364Z",
+    "selectedProfile": "base-pinned",
+    "source": "validation_only",
+    "gates": {
+      "base-pinned": {
+        "accuracy": true,
+        "noErrors": true,
+        "noExtraRejections": true,
+        "latency": true
+      },
+      "tiny-pinned": {
+        "accuracy": false,
+        "noErrors": true,
+        "noExtraRejections": true,
+        "latency": true
+      }
+    },
+    "thresholds": {
+      "relativeBaseWerReduction": 0.1,
+      "maxP95Ms": 15000
+    },
+    "validation": {
+      "tiny-current": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 149,
+        "characterErrors": 497,
+        "substitutions": 90,
+        "deletions": 45,
+        "insertions": 14,
+        "hits": 136,
+        "exactMatches": 2,
+        "wer": 0.5498154981549815,
+        "cer": 0.2997587454764777,
+        "exactMatchRate": 0.125,
+        "latencyMs": {
+          "p50": 4933,
+          "p95": 13213
+        },
+        "realTimeFactor": {
+          "p50": 0.4953086419753086,
+          "p95": 0.7477564102564103
+        }
+      },
+      "tiny-pinned": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 161,
+        "characterErrors": 546,
+        "substitutions": 97,
+        "deletions": 40,
+        "insertions": 24,
+        "hits": 134,
+        "exactMatches": 2,
+        "wer": 0.5940959409594095,
+        "cer": 0.3293124246079614,
+        "exactMatchRate": 0.125,
+        "latencyMs": {
+          "p50": 4497,
+          "p95": 8171
+        },
+        "realTimeFactor": {
+          "p50": 0.41245791245791247,
+          "p95": 1.0013480392156862
+        }
+      },
+      "base-pinned": {
+        "observations": 16,
+        "accepted": 15,
+        "rejected": 1,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 90,
+        "characterErrors": 240,
+        "substitutions": 63,
+        "deletions": 16,
+        "insertions": 11,
+        "hits": 192,
+        "exactMatches": 3,
+        "wer": 0.33210332103321033,
+        "cer": 0.14475271411338964,
+        "exactMatchRate": 0.1875,
+        "latencyMs": {
+          "p50": 7193,
+          "p95": 9701
+        },
+        "realTimeFactor": {
+          "p50": 0.6304835924006909,
+          "p95": 1.1888480392156864
+        }
+      }
+    },
+    "validationPredictionsSha256": "228c2d82c85ec162cbad552960b5c84f1ae3714a8e15900851c82b01bb466356"
+  },
+  "decisionSha256": "cc4fd3a63648d813b7aa9a2c0e9e5ff21fed1f8ae236ea75f8228cae47f877bb",
+  "metrics": {
+    "validation": {
+      "tiny-current": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 149,
+        "characterErrors": 497,
+        "substitutions": 90,
+        "deletions": 45,
+        "insertions": 14,
+        "hits": 136,
+        "exactMatches": 2,
+        "wer": 0.5498154981549815,
+        "cer": 0.2997587454764777,
+        "exactMatchRate": 0.125,
+        "latencyMs": {
+          "p50": 4933,
+          "p95": 13213
+        },
+        "realTimeFactor": {
+          "p50": 0.4953086419753086,
+          "p95": 0.7477564102564103
+        }
+      },
+      "tiny-pinned": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 161,
+        "characterErrors": 546,
+        "substitutions": 97,
+        "deletions": 40,
+        "insertions": 24,
+        "hits": 134,
+        "exactMatches": 2,
+        "wer": 0.5940959409594095,
+        "cer": 0.3293124246079614,
+        "exactMatchRate": 0.125,
+        "latencyMs": {
+          "p50": 4497,
+          "p95": 8171
+        },
+        "realTimeFactor": {
+          "p50": 0.41245791245791247,
+          "p95": 1.0013480392156862
+        }
+      },
+      "base-pinned": {
+        "observations": 16,
+        "accepted": 15,
+        "rejected": 1,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 90,
+        "characterErrors": 240,
+        "substitutions": 63,
+        "deletions": 16,
+        "insertions": 11,
+        "hits": 192,
+        "exactMatches": 3,
+        "wer": 0.33210332103321033,
+        "cer": 0.14475271411338964,
+        "exactMatchRate": 0.1875,
+        "latencyMs": {
+          "p50": 7193,
+          "p95": 9701
+        },
+        "realTimeFactor": {
+          "p50": 0.6304835924006909,
+          "p95": 1.1888480392156864
+        }
+      }
+    },
+    "test": {
+      "tiny-current": {
+        "observations": 24,
+        "accepted": 22,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 492,
+        "referenceCharacters": 2908,
+        "wordErrors": 426,
+        "characterErrors": 1263,
+        "substitutions": 246,
+        "deletions": 38,
+        "insertions": 142,
+        "hits": 208,
+        "exactMatches": 0,
+        "wer": 0.8658536585365854,
+        "cer": 0.4343191196698762,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 4565,
+          "p95": 8199
+        },
+        "realTimeFactor": {
+          "p50": 0.4530413625304136,
+          "p95": 0.8648734177215189
+        }
+      },
+      "tiny-pinned": {
+        "observations": 24,
+        "accepted": 22,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 492,
+        "referenceCharacters": 2908,
+        "wordErrors": 479,
+        "characterErrors": 1511,
+        "substitutions": 240,
+        "deletions": 42,
+        "insertions": 197,
+        "hits": 210,
+        "exactMatches": 0,
+        "wer": 0.9735772357723578,
+        "cer": 0.5196011004126547,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 4233,
+          "p95": 9649
+        },
+        "realTimeFactor": {
+          "p50": 0.3669444444444444,
+          "p95": 0.9459803921568627
+        }
+      },
+      "base-pinned": {
+        "observations": 24,
+        "accepted": 24,
+        "rejected": 0,
+        "errors": 0,
+        "referenceWords": 492,
+        "referenceCharacters": 2908,
+        "wordErrors": 182,
+        "characterErrors": 374,
+        "substitutions": 154,
+        "deletions": 17,
+        "insertions": 11,
+        "hits": 321,
+        "exactMatches": 0,
+        "wer": 0.3699186991869919,
+        "cer": 0.12861072902338377,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 6749,
+          "p95": 9735
+        },
+        "realTimeFactor": {
+          "p50": 0.5977443609022556,
+          "p95": 1.0253753753753754
+        }
+      }
+    }
+  },
+  "repeatSummary": {
+    "tiny-current": {
+      "repeated": 8,
+      "changed": 0,
+      "allAccepted": true,
+      "observedRepeatMatch": true
+    },
+    "tiny-pinned": {
+      "repeated": 8,
+      "changed": 0,
+      "allAccepted": true,
+      "observedRepeatMatch": true
+    },
+    "base-pinned": {
+      "repeated": 8,
+      "changed": 0,
+      "allAccepted": true,
+      "observedRepeatMatch": true
+    }
+  },
+  "causeEstablished": false,
+  "fixValidated": false,
+  "readyForPromotion": false,
+  "activeModelChanged": false,
+  "trainingPerformed": false,
+  "limitations": [
+    "One-factor candidate change: OPENBLAS_NUM_THREADS=1 before native imports; model CPU int8/two threads/decoder/gates unchanged.",
+    "Exclude all previously scored sentence IDs, normalized references, filenames and converted audio hashes. Diagnostic clips were subsets of the old comparison.",
+    "No filtering/replacing failures, WER tuning, new training, model activation or user-data mutation.",
+    "Test is unscored sentence groups from the same public dataset, not independent speaker/domain validation.",
+    "Fixed-configuration cause remains unresolved. Passing a small scoped repeat check is not universal determinism or order accuracy."
+  ],
+  "directory": "models\\benchmarks\\asr-profiles\\2026-10-15T17-28-28-568Z-4cbb5be2",
+  "audit": {
+    "checkedAt": "2026-10-15T17:43:35.079Z",
+    "runId": "2026-10-15T17-28-28-568Z-4cbb5be2",
+    "directory": "models\\benchmarks\\asr-profiles\\2026-10-15T17-28-28-568Z-4cbb5be2",
+    "auditPassed": true,
+    "repreparedFromPinnedRaw": true,
+    "allSourceModelAudioHashesVerified": true,
+    "allMetricsAndDecisionRecomputed": true,
+    "decisionFrozenBeforeTest": true,
+    "repeatResultsRetained": true,
+    "repeatSummary": {
+      "tiny-current": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      },
+      "tiny-pinned": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      },
+      "base-pinned": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      }
+    },
+    "captureAnalysis": [],
+    "causeEstablished": false,
+    "fixValidated": false,
+    "readyForPromotion": false,
+    "activeModelChanged": false,
+    "scope": "Audit and scoped profile experiment only. No additional repeat-until-pass inference or rewriting historical results."
+  },
+  "comparison": [
+    {
+      "profile": "tiny-current",
+      "validation": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 149,
+        "characterErrors": 497,
+        "substitutions": 90,
+        "deletions": 45,
+        "insertions": 14,
+        "hits": 136,
+        "exactMatches": 2,
+        "wer": 0.5498154981549815,
+        "cer": 0.2997587454764777,
+        "exactMatchRate": 0.125,
+        "latencyMs": {
+          "p50": 4933,
+          "p95": 13213
+        },
+        "realTimeFactor": {
+          "p50": 0.4953086419753086,
+          "p95": 0.7477564102564103
+        }
+      },
+      "test": {
+        "observations": 24,
+        "accepted": 22,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 492,
+        "referenceCharacters": 2908,
+        "wordErrors": 426,
+        "characterErrors": 1263,
+        "substitutions": 246,
+        "deletions": 38,
+        "insertions": 142,
+        "hits": 208,
+        "exactMatches": 0,
+        "wer": 0.8658536585365854,
+        "cer": 0.4343191196698762,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 4565,
+          "p95": 8199
+        },
+        "realTimeFactor": {
+          "p50": 0.4530413625304136,
+          "p95": 0.8648734177215189
+        }
+      },
+      "repeat": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      }
+    },
+    {
+      "profile": "tiny-pinned",
+      "validation": {
+        "observations": 16,
+        "accepted": 14,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 161,
+        "characterErrors": 546,
+        "substitutions": 97,
+        "deletions": 40,
+        "insertions": 24,
+        "hits": 134,
+        "exactMatches": 2,
+        "wer": 0.5940959409594095,
+        "cer": 0.3293124246079614,
+        "exactMatchRate": 0.125,
+        "latencyMs": {
+          "p50": 4497,
+          "p95": 8171
+        },
+        "realTimeFactor": {
+          "p50": 0.41245791245791247,
+          "p95": 1.0013480392156862
+        }
+      },
+      "test": {
+        "observations": 24,
+        "accepted": 22,
+        "rejected": 2,
+        "errors": 0,
+        "referenceWords": 492,
+        "referenceCharacters": 2908,
+        "wordErrors": 479,
+        "characterErrors": 1511,
+        "substitutions": 240,
+        "deletions": 42,
+        "insertions": 197,
+        "hits": 210,
+        "exactMatches": 0,
+        "wer": 0.9735772357723578,
+        "cer": 0.5196011004126547,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 4233,
+          "p95": 9649
+        },
+        "realTimeFactor": {
+          "p50": 0.3669444444444444,
+          "p95": 0.9459803921568627
+        }
+      },
+      "repeat": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      }
+    },
+    {
+      "profile": "base-pinned",
+      "validation": {
+        "observations": 16,
+        "accepted": 15,
+        "rejected": 1,
+        "errors": 0,
+        "referenceWords": 271,
+        "referenceCharacters": 1658,
+        "wordErrors": 90,
+        "characterErrors": 240,
+        "substitutions": 63,
+        "deletions": 16,
+        "insertions": 11,
+        "hits": 192,
+        "exactMatches": 3,
+        "wer": 0.33210332103321033,
+        "cer": 0.14475271411338964,
+        "exactMatchRate": 0.1875,
+        "latencyMs": {
+          "p50": 7193,
+          "p95": 9701
+        },
+        "realTimeFactor": {
+          "p50": 0.6304835924006909,
+          "p95": 1.1888480392156864
+        }
+      },
+      "test": {
+        "observations": 24,
+        "accepted": 24,
+        "rejected": 0,
+        "errors": 0,
+        "referenceWords": 492,
+        "referenceCharacters": 2908,
+        "wordErrors": 182,
+        "characterErrors": 374,
+        "substitutions": 154,
+        "deletions": 17,
+        "insertions": 11,
+        "hits": 321,
+        "exactMatches": 0,
+        "wer": 0.3699186991869919,
+        "cer": 0.12861072902338377,
+        "exactMatchRate": 0,
+        "latencyMs": {
+          "p50": 6749,
+          "p95": 9735
+        },
+        "realTimeFactor": {
+          "p50": 0.5977443609022556,
+          "p95": 1.0253753753753754
+        }
+      },
+      "repeat": {
+        "repeated": 8,
+        "changed": 0,
+        "allAccepted": true,
+        "observedRepeatMatch": true
+      }
+    }
+  ],
+  "pairedTest": {
+    "tiny-current": {
+      "lowerErrors": 0,
+      "higherErrors": 0,
+      "ties": 24,
+      "rows": [
+        {
+          "filename": "18345425441689740856.wav",
+          "sentenceId": 1747,
+          "currentWordErrors": 1,
+          "candidateWordErrors": 1,
+          "difference": 0
+        },
+        {
+          "filename": "14837807713644458039.wav",
+          "sentenceId": 1693,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 8,
+          "difference": 0
+        },
+        {
+          "filename": "10959048533889674480.wav",
+          "sentenceId": 1975,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 8,
+          "difference": 0
+        },
+        {
+          "filename": "11299246431272238435.wav",
+          "sentenceId": 1911,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 13,
+          "difference": 0
+        },
+        {
+          "filename": "13994551214691894046.wav",
+          "sentenceId": 1967,
+          "currentWordErrors": 12,
+          "candidateWordErrors": 12,
+          "difference": 0
+        },
+        {
+          "filename": "8732519717190664250.wav",
+          "sentenceId": 1671,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 13,
+          "difference": 0
+        },
+        {
+          "filename": "9334628444699203987.wav",
+          "sentenceId": 1763,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 13,
+          "difference": 0
+        },
+        {
+          "filename": "11797780711229885631.wav",
+          "sentenceId": 1880,
+          "currentWordErrors": 9,
+          "candidateWordErrors": 9,
+          "difference": 0
+        },
+        {
+          "filename": "10527662494755681688.wav",
+          "sentenceId": 1766,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 8,
+          "difference": 0
+        },
+        {
+          "filename": "16669133654072260874.wav",
+          "sentenceId": 1913,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 13,
+          "difference": 0
+        },
+        {
+          "filename": "5622155185917120500.wav",
+          "sentenceId": 1669,
+          "currentWordErrors": 3,
+          "candidateWordErrors": 3,
+          "difference": 0
+        },
+        {
+          "filename": "7349321806944175433.wav",
+          "sentenceId": 1848,
+          "currentWordErrors": 14,
+          "candidateWordErrors": 14,
+          "difference": 0
+        },
+        {
+          "filename": "13612850467609981002.wav",
+          "sentenceId": 1998,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 7,
+          "difference": 0
+        },
+        {
+          "filename": "16471544935438621056.wav",
+          "sentenceId": 1906,
+          "currentWordErrors": 6,
+          "candidateWordErrors": 6,
+          "difference": 0
+        },
+        {
+          "filename": "9542402484813759556.wav",
+          "sentenceId": 1922,
+          "currentWordErrors": 18,
+          "candidateWordErrors": 18,
+          "difference": 0
+        },
+        {
+          "filename": "1126397733394949199.wav",
+          "sentenceId": 1941,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 7,
+          "difference": 0
+        },
+        {
+          "filename": "13068356703837187893.wav",
+          "sentenceId": 1735,
+          "currentWordErrors": 24,
+          "candidateWordErrors": 24,
+          "difference": 0
+        },
+        {
+          "filename": "3005821335100067802.wav",
+          "sentenceId": 1801,
+          "currentWordErrors": 12,
+          "candidateWordErrors": 12,
+          "difference": 0
+        },
+        {
+          "filename": "884118084967724916.wav",
+          "sentenceId": 1968,
+          "currentWordErrors": 24,
+          "candidateWordErrors": 24,
+          "difference": 0
+        },
+        {
+          "filename": "17938018515880631131.wav",
+          "sentenceId": 1936,
+          "currentWordErrors": 112,
+          "candidateWordErrors": 112,
+          "difference": 0
+        },
+        {
+          "filename": "1122412941982695251.wav",
+          "sentenceId": 1955,
+          "currentWordErrors": 18,
+          "candidateWordErrors": 18,
+          "difference": 0
+        },
+        {
+          "filename": "13737991478691016535.wav",
+          "sentenceId": 1696,
+          "currentWordErrors": 63,
+          "candidateWordErrors": 63,
+          "difference": 0
+        },
+        {
+          "filename": "16841596503905768169.wav",
+          "sentenceId": 1992,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 13,
+          "difference": 0
+        },
+        {
+          "filename": "8688819308104589386.wav",
+          "sentenceId": 1677,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 7,
+          "difference": 0
+        }
+      ]
+    },
+    "tiny-pinned": {
+      "lowerErrors": 7,
+      "higherErrors": 10,
+      "ties": 7,
+      "rows": [
+        {
+          "filename": "18345425441689740856.wav",
+          "sentenceId": 1747,
+          "currentWordErrors": 1,
+          "candidateWordErrors": 1,
+          "difference": 0
+        },
+        {
+          "filename": "14837807713644458039.wav",
+          "sentenceId": 1693,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 6,
+          "difference": -2
+        },
+        {
+          "filename": "10959048533889674480.wav",
+          "sentenceId": 1975,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 7,
+          "difference": -1
+        },
+        {
+          "filename": "11299246431272238435.wav",
+          "sentenceId": 1911,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 14,
+          "difference": 1
+        },
+        {
+          "filename": "13994551214691894046.wav",
+          "sentenceId": 1967,
+          "currentWordErrors": 12,
+          "candidateWordErrors": 9,
+          "difference": -3
+        },
+        {
+          "filename": "8732519717190664250.wav",
+          "sentenceId": 1671,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 14,
+          "difference": 1
+        },
+        {
+          "filename": "9334628444699203987.wav",
+          "sentenceId": 1763,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 15,
+          "difference": 2
+        },
+        {
+          "filename": "11797780711229885631.wav",
+          "sentenceId": 1880,
+          "currentWordErrors": 9,
+          "candidateWordErrors": 9,
+          "difference": 0
+        },
+        {
+          "filename": "10527662494755681688.wav",
+          "sentenceId": 1766,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 8,
+          "difference": 0
+        },
+        {
+          "filename": "16669133654072260874.wav",
+          "sentenceId": 1913,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 12,
+          "difference": -1
+        },
+        {
+          "filename": "5622155185917120500.wav",
+          "sentenceId": 1669,
+          "currentWordErrors": 3,
+          "candidateWordErrors": 3,
+          "difference": 0
+        },
+        {
+          "filename": "7349321806944175433.wav",
+          "sentenceId": 1848,
+          "currentWordErrors": 14,
+          "candidateWordErrors": 16,
+          "difference": 2
+        },
+        {
+          "filename": "13612850467609981002.wav",
+          "sentenceId": 1998,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 6,
+          "difference": -1
+        },
+        {
+          "filename": "16471544935438621056.wav",
+          "sentenceId": 1906,
+          "currentWordErrors": 6,
+          "candidateWordErrors": 6,
+          "difference": 0
+        },
+        {
+          "filename": "9542402484813759556.wav",
+          "sentenceId": 1922,
+          "currentWordErrors": 18,
+          "candidateWordErrors": 16,
+          "difference": -2
+        },
+        {
+          "filename": "1126397733394949199.wav",
+          "sentenceId": 1941,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 56,
+          "difference": 49
+        },
+        {
+          "filename": "13068356703837187893.wav",
+          "sentenceId": 1735,
+          "currentWordErrors": 24,
+          "candidateWordErrors": 26,
+          "difference": 2
+        },
+        {
+          "filename": "3005821335100067802.wav",
+          "sentenceId": 1801,
+          "currentWordErrors": 12,
+          "candidateWordErrors": 13,
+          "difference": 1
+        },
+        {
+          "filename": "884118084967724916.wav",
+          "sentenceId": 1968,
+          "currentWordErrors": 24,
+          "candidateWordErrors": 25,
+          "difference": 1
+        },
+        {
+          "filename": "17938018515880631131.wav",
+          "sentenceId": 1936,
+          "currentWordErrors": 112,
+          "candidateWordErrors": 112,
+          "difference": 0
+        },
+        {
+          "filename": "1122412941982695251.wav",
+          "sentenceId": 1955,
+          "currentWordErrors": 18,
+          "candidateWordErrors": 18,
+          "difference": 0
+        },
+        {
+          "filename": "13737991478691016535.wav",
+          "sentenceId": 1696,
+          "currentWordErrors": 63,
+          "candidateWordErrors": 67,
+          "difference": 4
+        },
+        {
+          "filename": "16841596503905768169.wav",
+          "sentenceId": 1992,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 12,
+          "difference": -1
+        },
+        {
+          "filename": "8688819308104589386.wav",
+          "sentenceId": 1677,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 8,
+          "difference": 1
+        }
+      ]
+    },
+    "base-pinned": {
+      "lowerErrors": 22,
+      "higherErrors": 0,
+      "ties": 2,
+      "rows": [
+        {
+          "filename": "18345425441689740856.wav",
+          "sentenceId": 1747,
+          "currentWordErrors": 1,
+          "candidateWordErrors": 1,
+          "difference": 0
+        },
+        {
+          "filename": "14837807713644458039.wav",
+          "sentenceId": 1693,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 6,
+          "difference": -2
+        },
+        {
+          "filename": "10959048533889674480.wav",
+          "sentenceId": 1975,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 6,
+          "difference": -2
+        },
+        {
+          "filename": "11299246431272238435.wav",
+          "sentenceId": 1911,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 6,
+          "difference": -7
+        },
+        {
+          "filename": "13994551214691894046.wav",
+          "sentenceId": 1967,
+          "currentWordErrors": 12,
+          "candidateWordErrors": 11,
+          "difference": -1
+        },
+        {
+          "filename": "8732519717190664250.wav",
+          "sentenceId": 1671,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 6,
+          "difference": -7
+        },
+        {
+          "filename": "9334628444699203987.wav",
+          "sentenceId": 1763,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 8,
+          "difference": -5
+        },
+        {
+          "filename": "11797780711229885631.wav",
+          "sentenceId": 1880,
+          "currentWordErrors": 9,
+          "candidateWordErrors": 3,
+          "difference": -6
+        },
+        {
+          "filename": "10527662494755681688.wav",
+          "sentenceId": 1766,
+          "currentWordErrors": 8,
+          "candidateWordErrors": 5,
+          "difference": -3
+        },
+        {
+          "filename": "16669133654072260874.wav",
+          "sentenceId": 1913,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 8,
+          "difference": -5
+        },
+        {
+          "filename": "5622155185917120500.wav",
+          "sentenceId": 1669,
+          "currentWordErrors": 3,
+          "candidateWordErrors": 3,
+          "difference": 0
+        },
+        {
+          "filename": "7349321806944175433.wav",
+          "sentenceId": 1848,
+          "currentWordErrors": 14,
+          "candidateWordErrors": 10,
+          "difference": -4
+        },
+        {
+          "filename": "13612850467609981002.wav",
+          "sentenceId": 1998,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 4,
+          "difference": -3
+        },
+        {
+          "filename": "16471544935438621056.wav",
+          "sentenceId": 1906,
+          "currentWordErrors": 6,
+          "candidateWordErrors": 3,
+          "difference": -3
+        },
+        {
+          "filename": "9542402484813759556.wav",
+          "sentenceId": 1922,
+          "currentWordErrors": 18,
+          "candidateWordErrors": 10,
+          "difference": -8
+        },
+        {
+          "filename": "1126397733394949199.wav",
+          "sentenceId": 1941,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 5,
+          "difference": -2
+        },
+        {
+          "filename": "13068356703837187893.wav",
+          "sentenceId": 1735,
+          "currentWordErrors": 24,
+          "candidateWordErrors": 18,
+          "difference": -6
+        },
+        {
+          "filename": "3005821335100067802.wav",
+          "sentenceId": 1801,
+          "currentWordErrors": 12,
+          "candidateWordErrors": 8,
+          "difference": -4
+        },
+        {
+          "filename": "884118084967724916.wav",
+          "sentenceId": 1968,
+          "currentWordErrors": 24,
+          "candidateWordErrors": 7,
+          "difference": -17
+        },
+        {
+          "filename": "17938018515880631131.wav",
+          "sentenceId": 1936,
+          "currentWordErrors": 112,
+          "candidateWordErrors": 17,
+          "difference": -95
+        },
+        {
+          "filename": "1122412941982695251.wav",
+          "sentenceId": 1955,
+          "currentWordErrors": 18,
+          "candidateWordErrors": 13,
+          "difference": -5
+        },
+        {
+          "filename": "13737991478691016535.wav",
+          "sentenceId": 1696,
+          "currentWordErrors": 63,
+          "candidateWordErrors": 12,
+          "difference": -51
+        },
+        {
+          "filename": "16841596503905768169.wav",
+          "sentenceId": 1992,
+          "currentWordErrors": 13,
+          "candidateWordErrors": 9,
+          "difference": -4
+        },
+        {
+          "filename": "8688819308104589386.wav",
+          "sentenceId": 1677,
+          "currentWordErrors": 7,
+          "candidateWordErrors": 3,
+          "difference": -4
+        }
+      ]
+    }
+  },
+  "selectedTestRelativeWerReduction": 0.5727699530516431
+}

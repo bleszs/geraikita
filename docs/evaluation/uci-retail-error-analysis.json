@@ -1,0 +1,73 @@
+{
+  "runId": "2026-10-15T06-29-42-482Z-b034a708",
+  "generatedAt": "2026-10-15T06:33:57.607Z",
+  "normalizedRidgeVsMA7Improvement": 0.13622260694440924,
+  "rawRidgeVsWeeklyErrorIncrease": 0.32114331044499145,
+  "ukShareOfRawTarget": 0.9353957128575611,
+  "allCountriesBeatingMA7": true,
+  "countriesWhereWeeklyBeatsRidge": [
+    "United Kingdom"
+  ],
+  "worstNormalizedTargets": [
+    {
+      "country": "EIRE",
+      "date": "2011-11-15",
+      "targetThrough": "2011-11-16",
+      "actual": 17.721012708107573,
+      "ridge": 5.738714155501835,
+      "ma7": 6.112895281253079,
+      "weekly": 2.3997635700916167,
+      "ridgeAbsoluteError": 11.982298552605737,
+      "sourceEventRows": 116,
+      "emptyEventDates": 0
+    },
+    {
+      "country": "Germany",
+      "date": "2011-11-15",
+      "targetThrough": "2011-11-16",
+      "actual": 12.131964809384163,
+      "ridge": 3.1226277823535766,
+      "ma7": 2.5751989945538334,
+      "weekly": 0.36950146627565983,
+      "ridgeAbsoluteError": 9.009337027030586,
+      "sourceEventRows": 182,
+      "emptyEventDates": 0
+    },
+    {
+      "country": "EIRE",
+      "date": "2011-11-13",
+      "targetThrough": "2011-11-14",
+      "actual": 11.783666633829178,
+      "ridge": 3.331998803534337,
+      "ma7": 3.6504777854398576,
+      "weekly": 3.165205398482908,
+      "ridgeAbsoluteError": 8.451667830294841,
+      "sourceEventRows": 155,
+      "emptyEventDates": 0
+    },
+    {
+      "country": "EIRE",
+      "date": "2011-12-07",
+      "targetThrough": "2011-12-08",
+      "actual": 11.576790463993694,
+      "ridge": 3.2860059731085536,
+      "ma7": 2.2449019801004826,
+      "weekly": 4.745739336026007,
+      "ridgeAbsoluteError": 8.290784490885141,
+      "sourceEventRows": 237,
+      "emptyEventDates": 0
+    },
+    {
+      "country": "France",
+      "date": "2011-11-11",
+      "targetThrough": "2011-11-12",
+      "actual": 8.463067240808215,
+      "ridge": 1.0936411004623463,
+      "ma7": 4.405432262338523,
+      "weekly": 1.562769128850613,
+      "ridgeAbsoluteError": 7.369426140345869,
+      "sourceEventRows": 112,
+      "emptyEventDates": 1
+    }
+  ]
+}

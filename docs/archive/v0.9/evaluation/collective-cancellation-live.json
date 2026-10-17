@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-15T00:22:06.264Z",
+  "version": "0.7.0",
+  "passed": true,
+  "storage": "actual preview SQLite; fresh isolated namespace",
+  "migration": {
+    "tablesCompared": 17,
+    "previousRowsUnchanged": true,
+    "integrity": "ok",
+    "backup": "data/backups/gerai-kita-2026-10-15T00-05-05-830Z-f4922a48.sqlite"
+  },
+  "afterLatestCorrection": {
+    "stock": 23,
+    "remaining": 7,
+    "activeCost": 7800,
+    "status": "receiving"
+  },
+  "afterAllOwnCorrections": {
+    "stock": 18,
+    "activeCost": 0
+  },
+  "replacement": {
+    "stock": 30,
+    "activeCost": 16200,
+    "shipping": 1800
+  },
+  "checks": [
+    "latest-own-batch-only",
+    "completed-cycle-reopened",
+    "next-cycle-blocked-until-complete",
+    "same-reason-retry-once",
+    "historical-reason-persists-on-reopen",
+    "shipping-reapplied-to-first-active-batch",
+    "old-active-receipt-protected-after-next-cycle"
+  ],
+  "testNamespaceRemoved": true
+}

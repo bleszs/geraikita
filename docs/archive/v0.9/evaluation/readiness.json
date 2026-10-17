@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-15T02:55:31.778Z",
+  "ready": true,
+  "checks": [
+    {
+      "name": "Node.js",
+      "status": "pass",
+      "detail": "24.9.0"
+    },
+    {
+      "name": "SQLite",
+      "status": "pass",
+      "detail": {
+        "integrity": "ok",
+        "foreignKeys": "ok",
+        "namespaces": 11
+      }
+    },
+    {
+      "name": "Aplikasi lokal",
+      "status": "pass",
+      "detail": {
+        "origin": "http://localhost:4174",
+        "checkedAssets": 14
+      }
+    },
+    {
+      "name": "AI lokal",
+      "status": "pass",
+      "detail": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b",
+        "available": true
+      }
+    }
+  ],
+  "scope": "Pemeriksaan read-only file SQLite, aset aplikasi dan ketersediaan model. Tidak membuat sesi atau transaksi; bukan pengujian alur penuh atau pemasangan OS."
+}

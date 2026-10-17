@@ -1,0 +1,37 @@
+{
+  "protocolVersion": "gerai-freshretailnet-v2",
+  "purpose": "A prespecified pooled residual-boosting experiment with a new store-group holdout. Previous v1 scores are known development evidence, not reused as independent test evidence.",
+  "datasetRevision": "c374e85975c82816c495acfa904cc55ab14a47d3",
+  "sourceProtocol": "benchmarks/freshretailnet/protocol.json",
+  "development": "Use exactly the previous ID-selected 500 series, publisher train split only. Historical v1 internal test becomes validation here; it is no longer claimed as independent test.",
+  "selection": {
+    "holdoutStores": 200,
+    "exclude": "Every city_id/store_id pair present in the 500 v1 development series; 355 stores excluded.",
+    "stores": "Sort remaining stores by SHA256('gerai-freshretailnet-v2:store:' + city_id + ':' + store_id), take first 200.",
+    "product": "Within each selected store, choose exactly one product with smallest SHA256('gerai-freshretailnet-v2:product:' + city_id + ':' + store_id + ':' + product_id). Selection never reads sales or scores."
+  },
+  "target": "Next two days' observed normalized sales; no latent demand recovery, ingredient conversion, imputation or synthetic fallback.",
+  "features": "Last 14 observed sales divided by their mean (floor 1e-6), recent mean/median/std/trend/zeros, previous-week two-day pattern, log mean level, and last-seven-day stockout fraction. Calendar ablation adds weekday sin/cos and known upcoming weekend-day count. No future stockout, discount, weather or sales features.",
+  "fitting": {
+    "estimator": "sklearn HistGradientBoostingRegressor",
+    "loss": "absolute_error",
+    "target": "(two_day_sales - 2*mean_last_7) / history_scale",
+    "sampleWeight": "history_scale, so normalized residual loss targets absolute error in original normalized-sales units",
+    "learning_rate": 0.05,
+    "max_iter": 150,
+    "min_samples_leaf": 50,
+    "l2_regularization": 10,
+    "max_leaf_nodes": [7, 15],
+    "variants": ["lags", "calendar"],
+    "residualWeights": [0, 0.25, 0.5, 1],
+    "random_state": 26015,
+    "early_stopping": false,
+    "threads": 2
+  },
+  "validation": "Use non-overlapping two-day origins starting at day 14. The last 14 days of each 90-day development series are validation; earlier origins train. Choose tree variant/size and residual weight by pooled validation MAE only. Weight zero explicitly permits retaining MA7.",
+  "finalFit": "Refit chosen boosting configuration on every eligible origin in the development publisher train split through 2024-06-25. Parameters and residual weight remain fixed before reading any holdout target.",
+  "primaryTest": "Publisher eval split for the 200 unseen stores: three complete non-overlapping two-day origins on 2024-06-26, 2024-06-28 and 2024-06-30, leaving the seventh day unscored. Earlier observed test days may enter later lags, no refit.",
+  "comparators": ["2*last_day", "2*mean_last_7", "2*mean_last_14", "last_week_same_two_days"],
+  "reporting": "All 200 selected stores, including errors and poor scores; MAE/WAPE and stockout strata. Previous v1 metric values are not a direct apples-to-apples comparison because the test stores differ.",
+  "limitations": "The held-out store records have not been scored in v1, but calendar conditions are shared with v1's known evaluation period. This is store-group transfer evidence, not a completely new temporal/domain replication or an Indonesian UMKM field test. Public models stay separate from user workspaces. No retuning after this test."
+}

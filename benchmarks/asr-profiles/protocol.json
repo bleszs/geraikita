@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "experiment": "fleurs-fixed-blas-profiles-v1",
+  "source": {
+    "dataset": "google/fleurs",
+    "config": "id_id",
+    "license": "CC-BY-4.0",
+    "parquetRevision": "168de341b3db6859a9bac1c50a2ef5e3b47647e0"
+  },
+  "raw": {
+    "validation": {
+      "path": "id_id/validation/0000.parquet",
+      "bytes": 265875871,
+      "sha256": "d5fe4ac4679cf2687917adc235db89ae82df815c53a23850f6ba8e159bb4df77"
+    },
+    "test": {
+      "path": "id_id/test/0000.parquet",
+      "bytes": 542857871,
+      "sha256": "910017ff324772fdd6fac9c859255b867d90066f098d2b5db6dbab6c530dd7d8"
+    }
+  },
+  "selection": {
+    "validationCount": 16,
+    "testCount": 24,
+    "seed": "gerai-kita-asr-profile-v1"
+  },
+  "previousRuns": [
+    {
+      "directory": "models/benchmarks/fleurs/2026-10-15T07-34-09-350Z-ae86cc5d",
+      "predictions": "predictions.json",
+      "sha256": "69e6d3de4f9b25a41ea1d236d213b2f6d084a291673b0079daf3b2336782d671"
+    },
+    {
+      "directory": "models/benchmarks/asr-comparison/2026-10-15T08-17-56-627Z-20faa6f2",
+      "predictions": "predictions.json",
+      "sha256": "05c25df61fb75a0da08a8b577601217c888d551c80e1c84917a0187a8614a879"
+    }
+  ],
+  "profiles": [
+    "tiny-current",
+    "tiny-pinned",
+    "base-pinned"
+  ],
+  "decision": {
+    "relativeBaseWerReduction": 0.1,
+    "maxP95Ms": 15000,
+    "rule": "Validation only: prefer Base pinned if WER >=10% relative lower than Tiny current, no errors/extra rejections, p95 <=15s. Otherwise Tiny pinned only if WER no worse and same other gates. Otherwise current. Immutable decision before test; no automatic activation."
+  },
+  "verification": {
+    "firstTestClips": 2,
+    "additionalRepeats": 4,
+    "firstMismatchCaptures": 4,
+    "rule": "Repeat the first two fixed test clips on every profile four times, keeping original main predictions. On first mismatch for each profile preserve it and run four deferred captures, once only. Matching later results never erase mismatch."
+  },
+  "policy": [
+    "One-factor candidate change: OPENBLAS_NUM_THREADS=1 before native imports; model CPU int8/two threads/decoder/gates unchanged.",
+    "Exclude all previously scored sentence IDs, normalized references, filenames and converted audio hashes. Diagnostic clips were subsets of the old comparison.",
+    "No filtering/replacing failures, WER tuning, new training, model activation or user-data mutation.",
+    "Test is unscored sentence groups from the same public dataset, not independent speaker/domain validation.",
+    "Fixed-configuration cause remains unresolved. Passing a small scoped repeat check is not universal determinism or order accuracy."
+  ]
+}

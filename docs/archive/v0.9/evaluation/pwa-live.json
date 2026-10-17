@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14T19:23:15.366Z",
+  "runtime": "localhost:4174 / installed Chrome / persistent browser profile",
+  "installability": {
+    "installabilityErrors": []
+  },
+  "manifestErrors": [],
+  "offlineReopened": {
+    "drafts": 1,
+    "stock": 8
+  },
+  "afterManualConfirmation": {
+    "stock": 6,
+    "newTransactions": 1
+  }
+}

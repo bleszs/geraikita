@@ -1,0 +1,66 @@
+{
+  "verifiedAt": "2026-10-15T07:40:06.385Z",
+  "runId": "2026-10-15T07-34-09-350Z-ae86cc5d",
+  "passed": true,
+  "rawParquetChecksumVerified": true,
+  "sourceHashesVerified": true,
+  "modelFileHashesVerified": true,
+  "repreparedFromRaw": true,
+  "recordingsCompared": 64,
+  "allAudioAndReferencesIdentical": true,
+  "allStoredScoresRecomputed": true,
+  "aggregateMetricsIdentical": true,
+  "repeatedInference": [
+    {
+      "filename": "17079712024485464618.wav",
+      "status": "accepted",
+      "errorMessage": null,
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "2998720147468476625.wav",
+      "status": "accepted",
+      "errorMessage": null,
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "17363198873542579481.wav",
+      "status": "accepted",
+      "errorMessage": null,
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "2708341615308237219.wav",
+      "status": "rejected",
+      "errorMessage": "Ucapan belum terdengar jelas. Dekatkan mikrofon lalu rekam ulang, atau ketik pesanan.",
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "8966782512114449193.wav",
+      "status": "accepted",
+      "errorMessage": null,
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "4352173900708120380.wav",
+      "status": "rejected",
+      "errorMessage": "Ucapan belum terdengar jelas. Dekatkan mikrofon lalu rekam ulang, atau ketik pesanan.",
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "6243787741050326551.wav",
+      "status": "accepted",
+      "errorMessage": null,
+      "transcriptIdentical": true
+    },
+    {
+      "filename": "9142828858324536275.wav",
+      "status": "accepted",
+      "errorMessage": null,
+      "transcriptIdentical": true
+    }
+  ],
+  "repeatInferenceCount": 8,
+  "allRepeatedTranscriptsIdentical": true,
+  "limitations": "Only the prespecified first eight selected clips were rerun through inference. Timing is measured, not expected to reproduce exactly; no claim that all 64 predictions were re-inferred."
+}

@@ -1,0 +1,143 @@
+{
+  "analyzedAt": "2026-10-15T07:39:34.001Z",
+  "runId": "2026-10-15T07-34-09-350Z-ae86cc5d",
+  "postHocDescriptiveOnly": true,
+  "retuned": false,
+  "selectionChanged": false,
+  "errorsByCode": {
+    "http_422": 5,
+    "http_400": 1
+  },
+  "preparedInput": {
+    "recordings": 64,
+    "representation": "PCM s16 mono WAV 16000Hz, no cropping or augmentation",
+    "conversionFailures": 0,
+    "over30Seconds": 1,
+    "over1MiB": 1,
+    "overEitherLimit": 1
+  },
+  "outcome": {
+    "exactMatches": 0,
+    "acceptedWithWordErrors": 58,
+    "failedInference": 6,
+    "failedReferenceWords": 87
+  },
+  "highestWordErrorCases": [
+    {
+      "filename": "10582873098068662583.wav",
+      "sentenceId": 1687,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 11.76,
+      "referenceWords": 14,
+      "wordErrors": 112,
+      "wer": 8,
+      "characterErrors": 112
+    },
+    {
+      "filename": "16558020848172193726.wav",
+      "sentenceId": 1721,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 12.18,
+      "referenceWords": 16,
+      "wordErrors": 69,
+      "wer": 4.3125,
+      "characterErrors": 342
+    },
+    {
+      "filename": "18417012389792353106.wav",
+      "sentenceId": 1877,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 21.9,
+      "referenceWords": 30,
+      "wordErrors": 25,
+      "wer": 0.8333333333333334,
+      "characterErrors": 70
+    },
+    {
+      "filename": "15348167519118099798.wav",
+      "sentenceId": 2008,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 18.18,
+      "referenceWords": 29,
+      "wordErrors": 22,
+      "wer": 0.7586206896551724,
+      "characterErrors": 54
+    },
+    {
+      "filename": "17249834387342525111.wav",
+      "sentenceId": 1813,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 18.12,
+      "referenceWords": 26,
+      "wordErrors": 22,
+      "wer": 0.8461538461538461,
+      "characterErrors": 45
+    },
+    {
+      "filename": "893869228407466263.wav",
+      "sentenceId": 1804,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 13.32,
+      "referenceWords": 24,
+      "wordErrors": 22,
+      "wer": 0.9166666666666666,
+      "characterErrors": 103
+    },
+    {
+      "filename": "12419882125114087229.wav",
+      "sentenceId": 1825,
+      "status": "rejected",
+      "errorCode": "http_400",
+      "durationSeconds": 41.28,
+      "referenceWords": 21,
+      "wordErrors": 21,
+      "wer": 1,
+      "characterErrors": 124
+    },
+    {
+      "filename": "3036831053971184691.wav",
+      "sentenceId": 1758,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 12.54,
+      "referenceWords": 20,
+      "wordErrors": 21,
+      "wer": 1.05,
+      "characterErrors": 52
+    },
+    {
+      "filename": "11495663757007397159.wav",
+      "sentenceId": 1689,
+      "status": "accepted",
+      "errorCode": null,
+      "durationSeconds": 15,
+      "referenceWords": 31,
+      "wordErrors": 20,
+      "wer": 0.6451612903225806,
+      "characterErrors": 43
+    },
+    {
+      "filename": "316355196094816047.wav",
+      "sentenceId": 1875,
+      "status": "rejected",
+      "errorCode": "http_422",
+      "durationSeconds": 8.82,
+      "referenceWords": 18,
+      "wordErrors": 18,
+      "wer": 1,
+      "characterErrors": 93
+    }
+  ],
+  "limitations": [
+    "Descriptive error counts after scoring, not causal attribution, a new test, or model selection.",
+    "Long/oversize recordings are kept as failures; overall WER measures the application acceptance policy plus transcription, not unconstrained raw Whisper.",
+    "Runtime machine workload was not isolated. Latency is local adapter/Python/model timing from this run, not a universal service guarantee.",
+    "No menu/quantity/negation labels or business microphone study. Read-speech WER cannot establish order safety."
+  ]
+}

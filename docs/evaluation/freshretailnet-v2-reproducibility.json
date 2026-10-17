@@ -1,0 +1,19 @@
+{
+  "runId": "2026-10-15T05-29-16Z-d1f901c0",
+  "verifiedAt": "2026-10-15T05:30:38.249569+00:00",
+  "passed": true,
+  "refitConfigurationUnchanged": {
+    "variant": "calendar",
+    "maxLeafNodes": 15,
+    "residualWeight": 1,
+    "mae": 0.5711282281053722,
+    "wape": 0.2493761131446538,
+    "observations": 3500
+  },
+  "identicalPredictions": 600,
+  "holdoutStores": 200,
+  "storeOverlap": 0,
+  "rawRecordsAndMetricsIdentical": true,
+  "artifactChecksumVerified": true,
+  "note": "Deterministic reproduction of the same test; not new independent evaluation."
+}

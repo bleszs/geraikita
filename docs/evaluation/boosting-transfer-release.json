@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-15T06:54:11.207Z",
+  "version": "0.18.0",
+  "runId": "2026-10-15T06-43-36Z-fc59f6b9",
+  "tests": {
+    "backend": 92,
+    "browser": 12,
+    "pooledPython": 7,
+    "uciPython": 5,
+    "transferPython": 7,
+    "totalUnique": 123
+  },
+  "userData": {
+    "readOnlyComparison": true,
+    "backup": "data/backups/gerai-kita-live-2026-10-15T05-55-00-039Z-710586d6.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true
+  },
+  "experiment": {
+    "modelKind": "gerai-sales-only-residual-hgb-transfer-v1",
+    "artifactSha256Verified": true,
+    "sourceTrainingTargets": 19000,
+    "targetCountries": 10,
+    "targetPredictions": 190,
+    "targetFittingPerformed": false,
+    "learnedInferenceStateIdenticalAfterRefit": true,
+    "predictionsIdentical": 190,
+    "meanCountryWape": {
+      "boosting": 1.7299558318012498,
+      "naive": 2.049925864700536,
+      "ma7": 1.6512260348135954,
+      "ma14": 1.565111314357978,
+      "weekly": 1.755016780991746
+    },
+    "publicBenchmarkOnly": true,
+    "performanceConclusion": "Did not beat MA7 or MA14; preserve negative result, do not claim deployment readiness."
+  },
+  "healthReady": true,
+  "limitations": "Known UCI calendar and one-retailer groups. New sales-only variant, not original v2 weights or an Indonesian pilot."
+}

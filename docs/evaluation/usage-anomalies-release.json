@@ -1,0 +1,51 @@
+{
+  "version": "0.26.0",
+  "checkedAt": "2026-10-15T18:03:25.367Z",
+  "asOf": "2026-10-16",
+  "readOnly": true,
+  "liveSummary": {
+    "ingredients": 1,
+    "withoutHistory": 1,
+    "screenedDays": 0,
+    "reviewCandidates": 0
+  },
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T18-00-46-702Z-6b75c7dc.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true,
+    "tableCounts": {
+      "account_sessions": 2,
+      "accounts": 1,
+      "audit": 2,
+      "business_state": 1,
+      "businesses": 1,
+      "collective_cycles": 1,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 1,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 2,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "workspaces": 1
+    }
+  },
+  "sourceHashes": {
+    "server/ml/usage-anomalies.mjs": "711baaf5a3cd0a39932b0f17859fa20dade525df87abad90fec99bd31e8704dd",
+    "scripts/usage-anomaly-report.mjs": "728393ba5a574ed0aa7c3015c77733f5a7268ebbb39992dd594a9769cc5fa82c",
+    "scripts/usage-anomalies.mjs": "798c07a9fb8ef23ffeb1e82c4dea9f30e91d988e20f4cdee71838d0f40ca97f2",
+    "scripts/verify-usage-anomalies.mjs": "f621e58505ee98b53f64ce22fa4687013f5ffa2e9d456acbe6239b1e03b23705",
+    "tests/usage-anomalies.test.mjs": "4ce6c1f646c286332e2323e0ec688fe7ab18e3be2f7e572a0305fd9c4f1fa733"
+  },
+  "fieldValidated": false,
+  "accuracyMetrics": null,
+  "newTraining": false,
+  "automaticActions": false,
+  "note": "Actual ledger audit and backup comparison only. Zero screened days means no evidence of anomaly accuracy; it does not mean the business has no anomalies."
+}

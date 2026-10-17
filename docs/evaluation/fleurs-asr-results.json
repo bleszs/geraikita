@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "evaluatedAt": "2026-10-15T07:38:33.317Z",
+  "runId": "2026-10-15T07-34-09-350Z-ae86cc5d",
+  "source": "google/fleurs",
+  "language": "id_id",
+  "split": "publisher_test",
+  "sampled": true,
+  "sourceRecordings": 687,
+  "selectedRecordings": 64,
+  "distinctSentenceIds": 61,
+  "trainingPerformed": false,
+  "tuningPerformed": false,
+  "model": "whisper-tiny",
+  "modelPretrained": true,
+  "protocolSha256": "dc460d4052069f62a4249385d40e981d9a5761a83ad2475222aadbc3013a45b2",
+  "sampleSelectionSha256": "ec791c4585605bca0556b7bf090622ab78447ea017fc84bd5779e7b88045398d",
+  "metrics": {
+    "observations": 64,
+    "accepted": 58,
+    "rejected": 6,
+    "errors": 0,
+    "referenceWords": 1320,
+    "referenceCharacters": 8032,
+    "wordErrors": 888,
+    "characterErrors": 2220,
+    "substitutions": 522,
+    "deletions": 120,
+    "insertions": 246,
+    "hits": 678,
+    "exactMatches": 0,
+    "wer": 0.6727272727272727,
+    "cer": 0.27639442231075695,
+    "exactMatchRate": 0,
+    "latencyMs": {
+      "p50": 3955,
+      "p95": 5733
+    },
+    "realTimeFactor": {
+      "p50": 0.30660000000000004,
+      "p95": 0.530017006802721
+    }
+  },
+  "byDuration": {
+    "under_5": null,
+    "from_5_to_10": {
+      "observations": 16,
+      "accepted": 12,
+      "rejected": 4,
+      "errors": 0,
+      "referenceWords": 221,
+      "referenceCharacters": 1313,
+      "wordErrors": 146,
+      "characterErrors": 448,
+      "substitutions": 80,
+      "deletions": 55,
+      "insertions": 11,
+      "hits": 86,
+      "exactMatches": 0,
+      "wer": 0.6606334841628959,
+      "cer": 0.3412033511043412,
+      "exactMatchRate": 0,
+      "latencyMs": {
+        "p50": 3619,
+        "p95": 4902
+      },
+      "realTimeFactor": {
+        "p50": 0.41944444444444445,
+        "p95": 0.6923728813559322
+      }
+    },
+    "from_10_to_20": {
+      "observations": 41,
+      "accepted": 40,
+      "rejected": 1,
+      "errors": 0,
+      "referenceWords": 884,
+      "referenceCharacters": 5421,
+      "wordErrors": 630,
+      "characterErrors": 1454,
+      "substitutions": 361,
+      "deletions": 41,
+      "insertions": 228,
+      "hits": 482,
+      "exactMatches": 0,
+      "wer": 0.7126696832579186,
+      "cer": 0.2682161962737502,
+      "exactMatchRate": 0,
+      "latencyMs": {
+        "p50": 3982,
+        "p95": 5733
+      },
+      "realTimeFactor": {
+        "p50": 0.2957364341085271,
+        "p95": 0.4706896551724138
+      }
+    },
+    "at_least_20": {
+      "observations": 7,
+      "accepted": 6,
+      "rejected": 1,
+      "errors": 0,
+      "referenceWords": 215,
+      "referenceCharacters": 1298,
+      "wordErrors": 112,
+      "characterErrors": 318,
+      "substitutions": 81,
+      "deletions": 24,
+      "insertions": 7,
+      "hits": 110,
+      "exactMatches": 0,
+      "wer": 0.5209302325581395,
+      "cer": 0.24499229583975346,
+      "exactMatchRate": 0,
+      "latencyMs": {
+        "p50": 4193,
+        "p95": 7596
+      },
+      "realTimeFactor": {
+        "p50": 0.18990036231884058,
+        "p95": 0.3468493150684932
+      }
+    },
+    "unknown": null
+  },
+  "durationSeconds": 870.3,
+  "latencyScope": "Sequential cold subprocess per clip through production adapter, includes Python/model load and inference; excludes file preparation, browser, microphone, HTTP and one-time availability check.",
+  "normalization": "Unicode NFKC, lowercase, replace Unicode punctuation and symbols with spaces, collapse whitespace; preserve letters, digits and diacritics; do not expand numbers or repair words.",
+  "limitations": [
+    "Small deterministic sample of public read speech, not a full FLEURS test result or a business-order benchmark.",
+    "No fine-tuning or model selection. Pretraining overlap with public speech/text cannot be ruled out.",
+    "No owner consent, microphone study, menu/quantity/negation labels or operational accuracy claim is inferred from public-data licensing.",
+    "After scoring this sample is observed; never tune on it and call the next score independent."
+  ]
+}

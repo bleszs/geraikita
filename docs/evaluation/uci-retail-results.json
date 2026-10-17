@@ -1,0 +1,1062 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-15T06:29:42.613Z",
+  "protocolVersion": "gerai-uci-online-retail-ridge-v1",
+  "runId": "2026-10-15T06-29-42-482Z-b034a708",
+  "directory": "models/benchmarks/uci-online-retail/2026-10-15T06-29-42-482Z-b034a708",
+  "protocolHash": "530a8e9c74842af4f0450ff7e83cf92724ccd4b5a8c644e3f1dd535c76946e33",
+  "source": {
+    "dataset": "UCI Online Retail",
+    "url": "https://archive.ics.uci.edu/dataset/352/online+retail",
+    "downloadUrl": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+    "doi": "10.24432/C5BW33",
+    "license": "CC-BY-4.0",
+    "citation": "Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5BW33",
+    "expectedRows": 541909,
+    "checksumPolicy": "Compute SHA256 and content SHA1 from the original XLSX at initial download and freeze a source lock before parsing records. These are locally computed content pins, not publisher-provided checksums. Future runs require the same lock.",
+    "sourceLock": {
+      "lockedAt": "2026-10-15T06:29:03.134658+00:00",
+      "downloadUrl": "https://archive.ics.uci.edu/static/public/352/online+retail.zip",
+      "files": {
+        "archiveSha256": "f5385cbb54bbebf7196389109c6b0621faab0c304e3702548165e71c84aede8b",
+        "workbookSha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+        "workbookContentSha1": "4d584293831862e8584967b6f25243f86defe77b",
+        "archiveBytes": 23715478,
+        "workbookBytes": 23715344
+      },
+      "policy": "Locally computed before parsing records. Not a publisher-supplied checksum. SHA1 is a content revision, not a Git commit."
+    }
+  },
+  "preparationDirectory": "datasets/public/uci-online-retail/processed/2026-10-15T06-29-17Z-7f211266",
+  "accounting": {
+    "sourceRows": 541909,
+    "acceptedRows": 522219,
+    "excludedRows": {
+      "outside_fixed_calendar": 4740,
+      "cancelled_invoice": 9255,
+      "nonproduct_stock_code": 2742,
+      "nonpositive_quantity_or_price": 2507,
+      "excluded_country": 446
+    }
+  },
+  "data": {
+    "selectedCountries": 4,
+    "developmentDaysPerSeries": 334,
+    "externalDaysPerSeries": 38,
+    "developmentEmptyEventDates": 590,
+    "externalEmptyEventDates": 36,
+    "generatedTransactions": 0,
+    "zeroPolicy": "SUM of the selected published event log by country/date. Calendar groups with no matching event have sum 0 by the target definition; these are empty-event aggregates, not imputed unknown demand or generated transactions. Preserve duplicate published invoice rows; do not infer refunds against earlier orders. CustomerID and Description are not used or copied to processed data.",
+    "scope": "Country aggregate from one retailer, not independent stores.",
+    "normalization": "For each country divide daily gross units by the mean of its first 84 development calendar dates. This fixed positive scale uses only early fitting history; no validation or external targets. Preserve native float ratios. normalized_sales is a derived dimensionless target; also report errors after inverse scaling."
+  },
+  "run": {
+    "trainedModels": 4,
+    "failures": [],
+    "allModelsSavedBeforeExternalScoring": true,
+    "automaticActivation": false
+  },
+  "external": {
+    "targets": 76,
+    "metrics": {
+      "ridge": {
+        "mae": 2.47492493490006,
+        "wape": 0.5440995665313033,
+        "observations": 76
+      },
+      "naive": {
+        "mae": 4.152226195556443,
+        "wape": 0.9128456549464652,
+        "observations": 76
+      },
+      "moving_average_7": {
+        "mae": 2.8652346713371086,
+        "wape": 0.6299071623147774,
+        "observations": 76
+      },
+      "moving_average_14": {
+        "mae": 2.811730330170946,
+        "wape": 0.618144507041668,
+        "observations": 76
+      },
+      "weekly": {
+        "mae": 3.2835774471316705,
+        "wape": 0.7218776781722674,
+        "observations": 76
+      }
+    },
+    "rawUnitMetrics": {
+      "ridge": {
+        "mae": 3921.2750296530126,
+        "wape": 0.32920404771379536,
+        "observations": 76
+      },
+      "naive": {
+        "mae": 6826.513157894737,
+        "wape": 0.5731084268142478,
+        "observations": 76
+      },
+      "moving_average_7": {
+        "mae": 4667.389097744362,
+        "wape": 0.3918427989909822,
+        "observations": 76
+      },
+      "moving_average_14": {
+        "mae": 4801.300751879699,
+        "wape": 0.4030851266124916,
+        "observations": 76
+      },
+      "weekly": {
+        "mae": 2968.092105263158,
+        "wape": 0.24918117899178693,
+        "observations": 76
+      }
+    },
+    "macroCountry": {
+      "ridge": {
+        "meanCountryWape": 0.5572641374568591,
+        "definedCountries": 4,
+        "undefinedCountries": 0
+      },
+      "naive": {
+        "meanCountryWape": 0.9426456908380012,
+        "definedCountries": 4,
+        "undefinedCountries": 0
+      },
+      "moving_average_7": {
+        "meanCountryWape": 0.6451272778064585,
+        "definedCountries": 4,
+        "undefinedCountries": 0
+      },
+      "moving_average_14": {
+        "meanCountryWape": 0.63881530743819,
+        "definedCountries": 4,
+        "undefinedCountries": 0
+      },
+      "weekly": {
+        "meanCountryWape": 0.7297427806465655,
+        "definedCountries": 4,
+        "undefinedCountries": 0
+      }
+    },
+    "seriesBeatingBoth": 4,
+    "ukShareOfRawTarget": 0.9353957128575611,
+    "byOrigin": {
+      "2011-11-01": {
+        "ridge": {
+          "mae": 1.5340440626233613,
+          "wape": 0.43394422487214934,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 1.6800438731419771,
+          "wape": 0.4752440650466467,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 1.9503900390167392,
+          "wape": 0.5517185029432095,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 1.4198412231980706,
+          "wape": 0.4016389842079027,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 2.9531368193227627,
+          "wape": 0.8353714858821849,
+          "observations": 4
+        }
+      },
+      "2011-11-03": {
+        "ridge": {
+          "mae": 3.048294154271915,
+          "wape": 0.8181874706441156,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 1.6314984165823665,
+          "wape": 0.4379077265075293,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.2527710058628108,
+          "wape": 0.6046624498637136,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.180747123209997,
+          "wape": 0.5853306415173668,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 6.128965944990256,
+          "wape": 1.6450653678444778,
+          "observations": 4
+        }
+      },
+      "2011-11-05": {
+        "ridge": {
+          "mae": 1.2542280227607114,
+          "wape": 0.865443740830956,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 2.99589497524031,
+          "wape": 2.0672306051666833,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.76558838991661,
+          "wape": 1.9083142126738537,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.866050703932562,
+          "wape": 1.9776353243670244,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 1.4187040607970913,
+          "wape": 0.9789356697721869,
+          "observations": 4
+        }
+      },
+      "2011-11-07": {
+        "ridge": {
+          "mae": 1.424920508772806,
+          "wape": 0.368486891417317,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 4.239015907377087,
+          "wape": 1.0962167957868827,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 1.379806884756639,
+          "wape": 0.35682043074674663,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 1.3106634823269112,
+          "wape": 0.3389398280980488,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 1.6315254466046598,
+          "wape": 0.42191528326402766,
+          "observations": 4
+        }
+      },
+      "2011-11-09": {
+        "ridge": {
+          "mae": 2.4907185154707228,
+          "wape": 0.48164381487340874,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 1.8521915161773181,
+          "wape": 0.35816836876053354,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.780775190236173,
+          "wape": 0.5377336550122187,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.0417458228577288,
+          "wape": 0.39482351819960315,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 2.1625211239751807,
+          "wape": 0.4181784964564298,
+          "observations": 4
+        }
+      },
+      "2011-11-11": {
+        "ridge": {
+          "mae": 4.0456596576304165,
+          "wape": 0.7016354384990358,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 3.4790125128117904,
+          "wape": 0.6033622886113089,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 3.6959269983323315,
+          "wape": 0.6409815900466006,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.760764533733428,
+          "wape": 0.4787971302937503,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 4.981258245172667,
+          "wape": 0.8638955346964934,
+          "observations": 4
+        }
+      },
+      "2011-11-13": {
+        "ridge": {
+          "mae": 3.7299296433585334,
+          "wape": 0.6288836516380422,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 5.931032924203469,
+          "wape": 1,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 3.6201081169218865,
+          "wape": 0.6103672266172865,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 3.367474921158744,
+          "wape": 0.5677720835803642,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 4.300059130881605,
+          "wape": 0.7250101602595804,
+          "observations": 4
+        }
+      },
+      "2011-11-15": {
+        "ridge": {
+          "mae": 5.626688142650694,
+          "wape": 0.553657802366056,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 8.185780295106158,
+          "wape": 0.8054686902737761,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 5.802155920378124,
+          "wape": 0.5709235725206567,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 6.058299115775375,
+          "wape": 0.5961276846127573,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 7.241717952343269,
+          "wape": 0.7125743501683341,
+          "observations": 4
+        }
+      },
+      "2011-11-17": {
+        "ridge": {
+          "mae": 2.7815520507099274,
+          "wape": 0.4215106283543123,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 9.29649301011432,
+          "wape": 1.4087712682509874,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 3.0262499807496663,
+          "wape": 0.4585916451275649,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.799954348961357,
+          "wape": 0.4242992744618493,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 2.3815877872607283,
+          "wape": 0.3609008734648746,
+          "observations": 4
+        }
+      },
+      "2011-11-19": {
+        "ridge": {
+          "mae": 0.4065747716052433,
+          "wape": 0.30661269007051367,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 2.673375064948434,
+          "wape": 2.016088497067737,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 5.1576350787824286,
+          "wape": 3.8895585175239438,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 4.237737347547663,
+          "wape": 3.1958304811038487,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 2.604450963786875,
+          "wape": 1.9641103480438808,
+          "observations": 4
+        }
+      },
+      "2011-11-21": {
+        "ridge": {
+          "mae": 1.7532574075803162,
+          "wape": 0.3321524114437859,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 2.626431229375781,
+          "wape": 0.49757409411570935,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.024900065523646,
+          "wape": 0.38361477144681544,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 1.6607287471519812,
+          "wape": 0.31462297306465453,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 2.0253724304990595,
+          "wape": 0.38370426039748906,
+          "observations": 4
+        }
+      },
+      "2011-11-23": {
+        "ridge": {
+          "mae": 3.012173312633834,
+          "wape": 0.532800255811655,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 5.131533682158688,
+          "wape": 0.9076776714981252,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 3.319491738185127,
+          "wape": 0.5871594572103922,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 3.5046990628331556,
+          "wape": 0.6199193616743148,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 6.111820851115065,
+          "wape": 1.081073157142391,
+          "observations": 4
+        }
+      },
+      "2011-11-25": {
+        "ridge": {
+          "mae": 2.1005206797434437,
+          "wape": 1.3573564549387394,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 6.3262451372892246,
+          "wape": 4.088019582684208,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.6761602819000014,
+          "wape": 1.7293347635745795,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 4.269178134722959,
+          "wape": 2.75874289376542,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 1.0990923059290978,
+          "wape": 0.7102334437424246,
+          "observations": 4
+        }
+      },
+      "2011-11-27": {
+        "ridge": {
+          "mae": 1.3736308464402036,
+          "wape": 0.3447465554142595,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 3.984465761491368,
+          "wape": 1,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 0.8541949641298352,
+          "wape": 0.21438130360796823,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 1.2295732030998048,
+          "wape": 0.3085917351789669,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 0.925969492105975,
+          "wape": 0.23239489244836395,
+          "observations": 4
+        }
+      },
+      "2011-11-29": {
+        "ridge": {
+          "mae": 2.116170450137382,
+          "wape": 0.3899259716519622,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 2.4125999120659243,
+          "wape": 0.44454612096992063,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.2137539715519154,
+          "wape": 0.4079067299610633,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.7966629695962437,
+          "wape": 0.5153136533647762,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 3.3928466832678,
+          "wape": 0.625166578407447,
+          "observations": 4
+        }
+      },
+      "2011-12-01": {
+        "ridge": {
+          "mae": 1.9934422181401081,
+          "wape": 0.5398796560887187,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 3.1845488216522497,
+          "wape": 0.8624644883037752,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 1.3598460944635358,
+          "wape": 0.36828418457873824,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 1.5059827852893446,
+          "wape": 0.4078620693385943,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 3.099010755679471,
+          "wape": 0.8392983984017742,
+          "observations": 4
+        }
+      },
+      "2011-12-03": {
+        "ridge": {
+          "mae": 0.8212228293811508,
+          "wape": 0.4097659156251563,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 3.3816019751960495,
+          "wape": 1.68731942180692,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 1.739860840060687,
+          "wape": 0.8681391270199688,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 1.840078128100499,
+          "wape": 0.9181445912202875,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 1.4900915627548161,
+          "wape": 0.7435116410946209,
+          "observations": 4
+        }
+      },
+      "2011-12-05": {
+        "ridge": {
+          "mae": 2.3767421649518656,
+          "wape": 0.6451480803730394,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 3.286125906023434,
+          "wape": 0.8919931877331206,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 2.0947302204001774,
+          "wape": 0.5685981426672494,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 2.3010752592805446,
+          "wape": 0.6246088903584551,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 2.788291557531002,
+          "wape": 0.7568599456802707,
+          "observations": 4
+        }
+      },
+      "2011-12-07": {
+        "ridge": {
+          "mae": 5.133804324238511,
+          "wape": 0.6737367196219507,
+          "observations": 4
+        },
+        "naive": {
+          "mae": 6.594406794616488,
+          "wape": 0.8654194279827022,
+          "observations": 4
+        },
+        "moving_average_7": {
+          "mae": 5.725112974236717,
+          "wape": 0.751337330197027,
+          "observations": 4
+        },
+        "moving_average_14": {
+          "mae": 5.271619360471605,
+          "wape": 0.6918229271518875,
+          "observations": 4
+        },
+        "weekly": {
+          "mae": 5.651548381484366,
+          "wape": 0.7416830535103819,
+          "observations": 4
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "country": "EIRE",
+      "key": "4ff8b47cf8fcceb88ac3",
+      "scope": {
+        "workspaceId": "public-uci-online-retail",
+        "businessId": "country-4ff8b47cf8fcceb88ac3",
+        "productId": "gross-product-units",
+        "unit": "normalized_sales"
+      },
+      "scale": 241.6904761904762,
+      "datasetHash": "2f1198b9b17bf503d3eb38b3719addb874e9e5fcad4d14494b4fcaf88752621a",
+      "artifact": "models/benchmarks/uci-online-retail/2026-10-15T06-29-42-482Z-b034a708/series/4ff8b47cf8fcceb88ac3.model.json",
+      "artifactSha256": "12e3585102c7c16eb258957a846447181ca6fa1257bb33ae2feb12f4734a7f0d",
+      "training": {
+        "from": "2010-12-16",
+        "to": "2011-10-17",
+        "origins": 153
+      },
+      "selection": {
+        "variant": "calendar",
+        "alpha": 100,
+        "validationMae": 4.100736741421484
+      },
+      "internalQualified": true,
+      "internalMetrics": {
+        "ridge": {
+          "mae": 5.5203673547677194,
+          "wape": 1.1733092340504003,
+          "observations": 7
+        },
+        "naive": {
+          "mae": 6.415525563983844,
+          "wape": 1.36356783919598,
+          "observations": 7
+        },
+        "moving_average_7": {
+          "mae": 7.781414920416004,
+          "wape": 1.6538765254845655,
+          "observations": 7
+        }
+      },
+      "externalMetrics": {
+        "ridge": {
+          "mae": 2.9550299509984295,
+          "wape": 0.6541262629194827,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 5.612877134220636,
+          "wape": 1.2424680645938777,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 3.966453914314897,
+          "wape": 0.8780153565403023,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 4.123306493008208,
+          "wape": 0.9127362875735979,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 4.620742576567514,
+          "wape": 1.0228488792480113,
+          "observations": 19
+        }
+      },
+      "externalRawUnitMetrics": {
+        "ridge": {
+          "mae": 714.20259601393,
+          "wape": 0.6541262629194828,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 1356.578947368421,
+          "wape": 1.2424680645938782,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 958.6541353383459,
+          "wape": 0.8780153565403024,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 996.5639097744361,
+          "wape": 0.9127362875735978,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 1116.7894736842106,
+          "wape": 1.0228488792480115,
+          "observations": 19
+        }
+      },
+      "externalEmptyEventDates": 13,
+      "externalBeatsBoth": true
+    },
+    {
+      "country": "France",
+      "key": "7a1ca4ef7515f7276bae",
+      "scope": {
+        "workspaceId": "public-uci-online-retail",
+        "businessId": "country-7a1ca4ef7515f7276bae",
+        "productId": "gross-product-units",
+        "unit": "normalized_sales"
+      },
+      "scale": 215.64285714285714,
+      "datasetHash": "5c8d4b8e7ee04b54e4c18fd9f7297158ae9777e7b11d8ed253b6bd249e0fd153",
+      "artifact": "models/benchmarks/uci-online-retail/2026-10-15T06-29-42-482Z-b034a708/series/7a1ca4ef7515f7276bae.model.json",
+      "artifactSha256": "a1248989a059f1c2280426f461b26af846d65934e7dfcf33f1a37f0246b765bc",
+      "training": {
+        "from": "2010-12-16",
+        "to": "2011-10-17",
+        "origins": 153
+      },
+      "selection": {
+        "variant": "calendar",
+        "alpha": 10,
+        "validationMae": 3.0598863996761296
+      },
+      "internalQualified": true,
+      "internalMetrics": {
+        "ridge": {
+          "mae": 4.293408222521122,
+          "wape": 0.8439770428305291,
+          "observations": 7
+        },
+        "naive": {
+          "mae": 4.623385226896324,
+          "wape": 0.9088422971741112,
+          "observations": 7
+        },
+        "moving_average_7": {
+          "mae": 5.0365778640041645,
+          "wape": 0.9900656707532602,
+          "observations": 7
+        }
+      },
+      "externalMetrics": {
+        "ridge": {
+          "mae": 2.5715567076812293,
+          "wape": 0.49326867412153225,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 3.4272066386569278,
+          "wape": 0.6573970037453185,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 2.6199682711249808,
+          "wape": 0.5025548421615839,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 2.051045135196388,
+          "wape": 0.3934256286784377,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 4.196509823747843,
+          "wape": 0.8049625468164796,
+          "observations": 19
+        }
+      },
+      "externalRawUnitMetrics": {
+        "ridge": {
+          "mae": 554.5378357492593,
+          "wape": 0.49326867412153214,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 739.0526315789474,
+          "wape": 0.6573970037453184,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 564.9774436090227,
+          "wape": 0.5025548421615839,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 442.2932330827068,
+          "wape": 0.3934256286784377,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 904.9473684210526,
+          "wape": 0.8049625468164794,
+          "observations": 19
+        }
+      },
+      "externalEmptyEventDates": 7,
+      "externalBeatsBoth": true
+    },
+    {
+      "country": "Germany",
+      "key": "80db4ccdca106d37b920",
+      "scope": {
+        "workspaceId": "public-uci-online-retail",
+        "businessId": "country-80db4ccdca106d37b920",
+        "productId": "gross-product-units",
+        "unit": "normalized_sales"
+      },
+      "scale": 227.33333333333334,
+      "datasetHash": "22dfa20b5ca1ef7f1c075bf9ed12356e47578e2ea50393ad96c959ed64d6bfe3",
+      "artifact": "models/benchmarks/uci-online-retail/2026-10-15T06-29-42-482Z-b034a708/series/80db4ccdca106d37b920.model.json",
+      "artifactSha256": "d3b668e3b1b2c06edaa87028de101c2bb9c2d08b0e014ae4212e0cb38789d18a",
+      "training": {
+        "from": "2010-12-16",
+        "to": "2011-10-17",
+        "origins": 153
+      },
+      "selection": {
+        "variant": "calendar",
+        "alpha": 100,
+        "validationMae": 5.896343803763324
+      },
+      "internalQualified": true,
+      "internalMetrics": {
+        "ridge": {
+          "mae": 2.057736608222272,
+          "wape": 0.6176055933391881,
+          "observations": 7
+        },
+        "naive": {
+          "mae": 4.920402178466694,
+          "wape": 1.4768012070916632,
+          "observations": 7
+        },
+        "moving_average_7": {
+          "mae": 3.9803100125680766,
+          "wape": 1.1946435307431156,
+          "observations": 7
+        }
+      },
+      "externalMetrics": {
+        "ridge": {
+          "mae": 2.931774804952307,
+          "wape": 0.7731432102605369,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 5.046380614292329,
+          "wape": 1.3307894254838515,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 3.1523052499283404,
+          "wape": 0.8312996607153762,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 3.288569664630785,
+          "wape": 0.8672341761663456,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 3.3646396048772957,
+          "wape": 0.8872947066365469,
+          "observations": 19
+        }
+      },
+      "externalRawUnitMetrics": {
+        "ridge": {
+          "mae": 666.4901389924911,
+          "wape": 0.7731432102605367,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 1147.2105263157894,
+          "wape": 1.3307894254838513,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 716.6240601503761,
+          "wape": 0.8312996607153761,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 747.6015037593985,
+          "wape": 0.8672341761663453,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 764.8947368421053,
+          "wape": 0.8872947066365467,
+          "observations": 19
+        }
+      },
+      "externalEmptyEventDates": 11,
+      "externalBeatsBoth": true
+    },
+    {
+      "country": "United Kingdom",
+      "key": "8d23a6e37e0a6431a8f1",
+      "scope": {
+        "workspaceId": "public-uci-online-retail",
+        "businessId": "country-8d23a6e37e0a6431a8f1",
+        "productId": "gross-product-units",
+        "unit": "normalized_sales"
+      },
+      "scale": 9539.654761904761,
+      "datasetHash": "90a7b783a99fe79d5a0aecd0e197e6e0bd4b54c64b4496f01aa74739e0317630",
+      "artifact": "models/benchmarks/uci-online-retail/2026-10-15T06-29-42-482Z-b034a708/series/8d23a6e37e0a6431a8f1.model.json",
+      "artifactSha256": "5d71392cd5475801054357771f5690587e950e41ce57f6f2557760580f30edba",
+      "training": {
+        "from": "2010-12-16",
+        "to": "2011-10-17",
+        "origins": 153
+      },
+      "selection": {
+        "variant": "lags",
+        "alpha": 0.01,
+        "validationMae": 1.3642526411682319
+      },
+      "internalQualified": true,
+      "internalMetrics": {
+        "ridge": {
+          "mae": 1.4377933028719674,
+          "wape": 0.41571531539914947,
+          "observations": 7
+        },
+        "naive": {
+          "mae": 2.2643976084788933,
+          "wape": 0.6547149469381746,
+          "observations": 7
+        },
+        "moving_average_7": {
+          "mae": 1.4734392796841398,
+          "wape": 0.4260217888425736,
+          "observations": 7
+        }
+      },
+      "externalMetrics": {
+        "ridge": {
+          "mae": 1.4413382759682767,
+          "wape": 0.3085184025258845,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 2.522440395055884,
+          "wape": 0.5399282695289573,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 1.7222112499802138,
+          "wape": 0.3686392518085718,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 1.784000027848404,
+          "wape": 0.38186513733437905,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 0.952417783334031,
+          "wape": 0.20386498988522422,
+          "observations": 19
+        }
+      },
+      "externalRawUnitMetrics": {
+        "ridge": {
+          "mae": 13749.869547856366,
+          "wape": 0.30851840252588447,
+          "observations": 19
+        },
+        "naive": {
+          "mae": 24063.21052631579,
+          "wape": 0.5399282695289573,
+          "observations": 19
+        },
+        "moving_average_7": {
+          "mae": 16429.300751879702,
+          "wape": 0.3686392518085719,
+          "observations": 19
+        },
+        "moving_average_14": {
+          "mae": 17018.74436090226,
+          "wape": 0.3818651373343792,
+          "observations": 19
+        },
+        "weekly": {
+          "mae": 9085.736842105263,
+          "wape": 0.20386498988522417,
+          "observations": 19
+        }
+      },
+      "externalEmptyEventDates": 5,
+      "externalBeatsBoth": true
+    }
+  ],
+  "limitations": [
+    "Public benchmark only, isolated from user accounts. Country aggregates from one retailer are correlated, not independent shops. Gift/wholesale sales in 2010-2011 are a different task from fresh-product store sales in 2024; no direct numeric v1/v2 comparison, no claim that boosting generalized, no Indonesian pilot, no public-model activation or Qwen fine-tuning. After the first report this external test is known and repetition is reproducibility only.",
+    "The method was retrained in the new domain; this does not test fixed FreshRetailNet weights.",
+    "Gross positive published invoice units omit returns/cancellation reconciliation and latent demand. Aggregate zero means no matching published event, not proof of no real demand.",
+    "No known stockout, weather, holiday or customer features. No personal customer identifiers copied to derived files.",
+    "Raw-unit pooled errors can be dominated by the UK; normalized and equal-country summaries are also reported.",
+    "Observed earlier holdout days enter later lags; no full-period recursive forecast or refitting after the external score."
+  ]
+}

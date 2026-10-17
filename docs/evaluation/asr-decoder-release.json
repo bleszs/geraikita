@@ -1,0 +1,97 @@
+{
+  "version": "0.31.0",
+  "checkedAt": "2026-10-15T22:13:13.146Z",
+  "diagnosticAuditPassed": true,
+  "diagnosticRun": "models/benchmarks/asr-decoder/2026-10-15T22-09-19-911Z-29fe892c",
+  "inferences": 24,
+  "decoderReplays": 36,
+  "fixedProfilePlainVariationReproduced": true,
+  "pinnedBasePlainVariants": [
+    {
+      "repeat": 1,
+      "transcriptSha256": "df58badd22aa1f0714d42446b663f8c8ec158db48cd383cece1fa6cbfcac201f"
+    },
+    {
+      "repeat": 2,
+      "transcriptSha256": "5d8ae7c4a3fdac1d58a8b0bd79f55a1e1a6e6fa74769d3d1e1b4c5aa8d0c670e"
+    },
+    {
+      "repeat": 3,
+      "transcriptSha256": "df58badd22aa1f0714d42446b663f8c8ec158db48cd383cece1fa6cbfcac201f"
+    },
+    {
+      "repeat": 4,
+      "transcriptSha256": "df58badd22aa1f0714d42446b663f8c8ec158db48cd383cece1fa6cbfcac201f"
+    },
+    {
+      "repeat": 5,
+      "transcriptSha256": "df58badd22aa1f0714d42446b663f8c8ec158db48cd383cece1fa6cbfcac201f"
+    },
+    {
+      "repeat": 6,
+      "transcriptSha256": "df58badd22aa1f0714d42446b663f8c8ec158db48cd383cece1fa6cbfcac201f"
+    }
+  ],
+  "withinConfigurationTextFailureLocalized": false,
+  "causeEstablished": false,
+  "fixValidated": false,
+  "readyForPromotion": false,
+  "tests": {
+    "node": 196,
+    "browser": 28,
+    "npmTestTotal": 224,
+    "newNodeContracts": 7,
+    "newPythonContracts": 3,
+    "priorPythonSuitesRerun": false,
+    "logSha256": "a0d6a1096a755a10457d77e6b327d2033c41a5dfdd9843668c20589afaf3d611"
+  },
+  "userData": {
+    "backup": "data/backups/gerai-kita-live-2026-10-15T22-07-08-459Z-936e26ce.sqlite",
+    "tablesCompared": 19,
+    "changedTables": [],
+    "preserved": true,
+    "tableCounts": {
+      "account_sessions": 2,
+      "accounts": 1,
+      "audit": 2,
+      "business_state": 1,
+      "businesses": 1,
+      "collective_cycles": 1,
+      "collective_orders": 0,
+      "daily_usage": 0,
+      "demands": 1,
+      "ingredients": 1,
+      "inventory": 1,
+      "menus": 0,
+      "movements": 0,
+      "offers": 0,
+      "sales": 0,
+      "sessions": 2,
+      "stock_receipts": 0,
+      "transfers": 0,
+      "workspaces": 1
+    }
+  },
+  "healthReady": true,
+  "preview": "http://localhost:4174",
+  "priorSpeechSourcesPreserved": 17,
+  "guideSourcesPreserved": 8,
+  "usageEvaluationSourcesPreserved": 6,
+  "sourceHashes": {
+    "scripts/probe-asr-decoder.py": "e0a23b930737718a636dcf36340a6cbc334dbf8f4057441c43daecd5c9bd3c22",
+    "scripts/probe-asr-decoder.mjs": "635ab51fb0c71e896fb5f0a9f09032dde38fca4f1e2973c92a5f1763dd513618",
+    "scripts/asr-decoder-evaluation.mjs": "9cb56eacc96c7cad6e77a7040d01d3ed8ebfb7314ba29e928a2d35a4c62c9554",
+    "scripts/analyze-asr-decoder.mjs": "ede0edf6efccb4b9159bc91ebeee74f4cf14e1ddf17f8b682ec60f4dbfb26eca",
+    "tests/asr-decoder.test.mjs": "f4ed8b8a87ccd307578a472c478905840caa578fc86020421a4fcdca8fce835a",
+    "tests/test_asr_decoder.py": "74dbbec90420ef38f2fd9e75d41a0dc28415ea7ece00bc9518d095127da3ccb9",
+    "docs/ASR_DECODER.md": "cbd7538a8a37a05eaa0d9bd9cc8c375037971af7f51bff5d0fdfe83620fdb326",
+    "docs/evaluation/ASR_DECODER_RESULTS.md": "b4b3d04565afad7eea30f703a8123a67f0b09f206e0f3ec3404bee2b06018cae"
+  },
+  "sourceProtocolSha256": "85d2a6141300d27fc61f6e34a741e5121549e4d886e84015e0953cc6bd78a5f7",
+  "diagnosticReportSha256": "adb0be180512cd8e16226ac44fa079a1a5f741aee41e5303e21edd26424d0cf8",
+  "defaultModel": "whisper-tiny",
+  "defaultModelChanged": false,
+  "newTraining": false,
+  "accuracyBenchmark": false,
+  "scope": "Seen-public-audio diagnostics and isolated software tests only. New failure retained. No cause, validated fix, field quality, promotion or new accuracy score is claimed."
+}
