@@ -3,6 +3,7 @@ import {migrateDisplayAccess} from './display-access.mjs';
 import {migrateOrderRequests} from './order-requests.mjs';
 import {migrateRoles} from './roles.mjs';
 import {migrateActivity,createActivity} from './activity.mjs';
+import {accountTableSQL,migrateAccountCredentials,migrateStaffInvites} from './staff-invites.mjs';
 import { DatabaseSync } from 'node:sqlite';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
@@ -69,8 +70,9 @@ export function createStore(filename = 'data/gerai-kita-live.sqlite') {
   }
   function log(workspace, business, message) { const a=activity.current(workspace,business);run('INSERT INTO audit(id,workspace_id,business_id,message,created_at,actor_id,actor_name,actor_role,actor_revision) VALUES(?,?,?,?,?,?,?,?,?)', randomUUID(), workspace, business, message, new Date().toISOString(),a?.id??null,a?.name??null,a?.role??null,a?.revision??null); }
   function movement(workspace, business, product, delta, reason, ref) { run('INSERT INTO movements VALUES(?,?,?,?,?,?,?,?)', randomUUID(), workspace, business, product, units(delta), reason, ref, new Date().toISOString()); }
-  db.exec(`CREATE TABLE IF NOT EXISTS accounts(id TEXT PRIMARY KEY,email TEXT NOT NULL UNIQUE,password_hash TEXT NOT NULL,salt TEXT NOT NULL,workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,created_at TEXT NOT NULL,FOREIGN KEY(workspace_id,business_id) REFERENCES businesses(workspace_id,id) ON DELETE CASCADE);
+  db.exec(`${accountTableSQL().replace('CREATE TABLE accounts','CREATE TABLE IF NOT EXISTS accounts')};
     CREATE TABLE IF NOT EXISTS account_sessions(session_id TEXT PRIMARY KEY,account_id TEXT NOT NULL,FOREIGN KEY(session_id) REFERENCES sessions(id) ON DELETE CASCADE,FOREIGN KEY(account_id) REFERENCES accounts(id) ON DELETE CASCADE);`);
+  migrateAccountCredentials(db);
   // Additive migration: keep the existing namespaces, balances, and sessions.
   atomic(() => {
     for(const [column,type] of [['name','TEXT'],['join_code','TEXT'],['owner_business_id','TEXT'],['settings','TEXT'],['quote_json','TEXT']])if(!all('PRAGMA table_info(workspaces)').some(c=>c.name===column))db.exec('ALTER TABLE workspaces ADD COLUMN '+column+' '+type);
@@ -108,6 +110,7 @@ export function createStore(filename = 'data/gerai-kita-live.sqlite') {
   migrateOrderRequests(db);
   migrateRoles(db);
   atomic(()=>migrateActivity(db));
+  migrateStaffInvites(db);
   function menus(s) { return all('SELECT id,name,aliases,price,recipe FROM menus WHERE workspace_id=? AND business_id=? ORDER BY rowid', s.workspace_id, s.business_id).map(m => ({ ...m, aliases: JSON.parse(m.aliases), recipe: JSON.parse(m.recipe) })); }
   function ingredients(s) { return all('SELECT id,name,unit,min_quantity,storage_note,shared FROM ingredients WHERE workspace_id=? AND business_id=? ORDER BY rowid',s.workspace_id,s.business_id).map(p=>({id:p.id,name:p.name,unit:p.unit,min:quantity(p.min_quantity),shelf:p.storage_note || 'Belum ada catatan',storageNote:p.storage_note,shared:!!p.shared})); }
   function session(business,workspace) {

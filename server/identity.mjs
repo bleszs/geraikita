@@ -1,5 +1,6 @@
 import {randomUUID,randomBytes,scryptSync,timingSafeEqual,createHash} from 'node:crypto';
 import {requireValue} from './common.mjs';
+import {createStaffInvites} from './staff-invites.mjs';
 
 export function createIdentity(store) {
   const {get,run,atomic}=store;
@@ -43,7 +44,7 @@ export function createIdentity(store) {
   }
   function resolve(id){return id && get('SELECT s.*,u.id AS account_id,r.role,r.name AS account_name,r.revision AS role_revision FROM sessions s JOIN account_sessions a ON a.session_id=s.id JOIN accounts u ON u.id=a.account_id AND u.workspace_id=s.workspace_id AND u.business_id=s.business_id JOIN account_roles r ON r.account_id=u.id AND r.workspace_id=u.workspace_id AND r.business_id=u.business_id WHERE s.id=? AND s.expires_at>? AND r.disabled_at IS NULL',id,Date.now());}
   function account(s){const row=get('SELECT a.*,r.role,r.name AS account_name,r.revision AS role_revision FROM accounts a JOIN account_sessions x ON x.account_id=a.id JOIN account_roles r ON r.account_id=a.id AND r.workspace_id=a.workspace_id AND r.business_id=a.business_id WHERE x.session_id=? AND a.workspace_id=? AND a.business_id=? AND r.disabled_at IS NULL',s.id,s.workspace_id,s.business_id);requireValue(row,'Sesi akun tidak ditemukan.',401);return row;}
-  function details(s){const a=account(s);return {id:a.id,email:a.email,createdAt:a.created_at,role:a.role,name:a.account_name,roleRevision:a.role_revision};}
+  function details(s){const a=account(s);return {id:a.id,email:a.email,hasPassword:!!a.password_hash,createdAt:a.created_at,role:a.role,name:a.account_name,roleRevision:a.role_revision};}
   function owner(s){requireValue(account(s).role==='owner','Hanya pemilik usaha dapat mengelola akun staf.',403);}
   function staff(s){owner(s);return store.all("SELECT a.id,a.email,a.created_at,r.name,r.role,r.revision,r.disabled_at FROM accounts a JOIN account_roles r ON r.account_id=a.id WHERE a.workspace_id=? AND a.business_id=? AND r.workspace_id=a.workspace_id AND r.business_id=a.business_id AND r.role<>'owner' ORDER BY a.created_at,a.id",s.workspace_id,s.business_id).map(a=>({id:a.id,email:a.email,name:a.name,role:a.role,revision:a.revision,createdAt:a.created_at,disabled:!!a.disabled_at}));}
   function createStaff(s,b){
@@ -79,6 +80,7 @@ export function createIdentity(store) {
       if(b.action==='enable')run('UPDATE account_roles SET disabled_at=NULL,revision=revision+1 WHERE account_id=?',id);
       if(b.action==='role')run('UPDATE account_roles SET role=?,revision=revision+1 WHERE account_id=?',b.role,id);
       run('DELETE FROM sessions WHERE id IN (SELECT session_id FROM account_sessions WHERE account_id=?)',id);
+      run('UPDATE staff_invites SET revoked_at=? WHERE account_id=? AND used_at IS NULL AND revoked_at IS NULL',new Date().toISOString(),id);
       store.log(s.workspace_id,s.business_id,`Akses staf ${row.name}: ${b.action}; seluruh sesi akun ini dikeluarkan.`);
       const result={id,revision:row.revision+1};run('INSERT INTO staff_actions VALUES(?,?,?,?,?)',s.workspace_id,s.business_id,b.idempotencyKey,fingerprint,JSON.stringify(result));return result;
     });
@@ -92,12 +94,13 @@ export function createIdentity(store) {
     requireValue(typeof body.currentPassword==='string' && body.currentPassword.length>=10 && body.currentPassword.length<=128,'Isi kata sandi saat ini.');
     requireValue(typeof body.newPassword==='string' && body.newPassword.length>=10 && body.newPassword.length<=128,'Kata sandi baru harus 10–128 karakter.');
     requireValue(body.currentPassword!==body.newPassword,'Gunakan kata sandi baru yang berbeda.');
-    const a=account(s),candidate=scryptSync(body.currentPassword,a.salt,64);
+    const a=account(s);requireValue(a.password_hash&&a.salt,'Akun ini masuk dengan kode. Minta kode baru kepada pemilik jika perlu masuk lagi.',403);const candidate=scryptSync(body.currentPassword,a.salt,64);
     requireValue(timingSafeEqual(candidate,Buffer.from(a.password_hash,'hex')),'Kata sandi saat ini tidak sesuai.',403,'incorrect_password');
     const salt=randomBytes(16).toString('hex'),hash=scryptSync(body.newPassword,salt,64).toString('hex');
     return atomic(()=>{
       run('UPDATE accounts SET password_hash=?,salt=? WHERE id=?',hash,salt,a.id);
       const result=run('DELETE FROM sessions WHERE id IN (SELECT session_id FROM account_sessions WHERE account_id=? AND session_id<>?)',a.id,s.id);
+      run('UPDATE staff_invites SET revoked_at=? WHERE account_id=? AND used_at IS NULL AND revoked_at IS NULL',new Date().toISOString(),a.id);
       store.log(s.workspace_id,s.business_id,'Kata sandi diperbarui; sesi lain pada akun ini dikeluarkan.');return {saved:true,revokedSessions:Number(result.changes)};
     });
   }
@@ -111,5 +114,5 @@ export function createIdentity(store) {
     requireValue(typeof body.expectedCode==='string' && body.expectedCode.length<=64,'Kode undangan asal tidak valid.');
     return atomic(()=>{account(s);const w=get('SELECT owner_business_id,join_code FROM workspaces WHERE id=?',s.workspace_id);requireValue(w.owner_business_id===s.business_id,'Hanya pengelola kelompok dapat mengganti kode undangan.',403);requireValue(w.join_code===body.expectedCode,'Kode sudah berubah. Perbarui data untuk melihat kode terbaru.',409);const code=randomBytes(12).toString('hex');run('UPDATE workspaces SET join_code=? WHERE id=?',code,s.workspace_id);store.log(s.workspace_id,s.business_id,'Kode undangan diganti; kode sebelumnya tidak dapat dipakai bergabung.');return {saved:true};});
   }
-  return store.attribute({register,login,resolve,details,staff,createStaff,updateStaff,saveBusiness,changePassword,saveCommunity,rotateInvite});
+  return store.attribute({register,login,resolve,details,staff,createStaff,updateStaff,saveBusiness,changePassword,saveCommunity,rotateInvite,...createStaffInvites(store,{owner,account,issue})});
 }

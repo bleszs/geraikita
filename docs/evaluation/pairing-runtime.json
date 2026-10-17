@@ -1,0 +1,171 @@
+{
+  "version": "0.42.0",
+  "checkedAt": "2026-10-17T17:36:13.988Z",
+  "runtime": [
+    {
+      "base": "http://localhost:4174",
+      "checks": [
+        {
+          "path": "/",
+          "status": 200
+        },
+        {
+          "path": "/api/health",
+          "status": 200
+        },
+        {
+          "path": "/api/staff/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/app.js",
+          "status": 200
+        },
+        {
+          "path": "/staff-pairing.js",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/staff-pairing.js",
+          "status": 200
+        },
+        {
+          "path": "/api/display/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/catalog/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/bootstrap",
+          "status": 401
+        }
+      ]
+    },
+    {
+      "base": "http://127.0.0.1:4180",
+      "checks": [
+        {
+          "path": "/",
+          "status": 200
+        },
+        {
+          "path": "/api/health",
+          "status": 200
+        },
+        {
+          "path": "/api/staff/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/app.js",
+          "status": 200
+        },
+        {
+          "path": "/staff-pairing.js",
+          "status": 200
+        },
+        {
+          "path": "/api/staff-client/staff-pairing.js",
+          "status": 200
+        },
+        {
+          "path": "/api/display/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/catalog/screen",
+          "status": 200
+        },
+        {
+          "path": "/api/bootstrap",
+          "status": 401
+        }
+      ]
+    }
+  ],
+  "demo": {
+    "asOf": "2026-10-17",
+    "counts": {
+      "accounts": 3,
+      "roles": [
+        {
+          "role": "cashier",
+          "count": 1
+        },
+        {
+          "role": "kitchen",
+          "count": 1
+        },
+        {
+          "role": "owner",
+          "count": 1
+        }
+      ],
+      "ingredients": 9,
+      "menus": 7,
+      "activeOrders": 4,
+      "menuStatuses": [
+        "low",
+        "ok",
+        "out"
+      ],
+      "ledgerConsistent": true,
+      "foreignKeysValid": true,
+      "trainingAllowed": false
+    },
+    "roles": [
+      {
+        "role": "owner",
+        "login": 200,
+        "projectionPassed": true,
+        "logout": 200
+      },
+      {
+        "role": "cashier",
+        "login": 200,
+        "projectionPassed": true,
+        "forbiddenMutationRejected": 403,
+        "logout": 200
+      },
+      {
+        "role": "kitchen",
+        "login": 200,
+        "projectionPassed": true,
+        "forbiddenMutationRejected": 403,
+        "logout": 200
+      }
+    ],
+    "businessDataUnchangedByRuntimeChecks": true,
+    "synthetic": true,
+    "trainingAllowed": false
+  },
+  "migrations": [
+    {
+      "report": "docs/evaluation/pairing-data-preservation.json",
+      "migrationPassed": true,
+      "originalBusinessDataStillIdentical": true,
+      "sessionTablesChanged": [],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    {
+      "report": "docs/evaluation/pairing-fnb-demo-preservation.json",
+      "migrationPassed": true,
+      "originalBusinessDataStillIdentical": true,
+      "sessionTablesChanged": [],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    {
+      "report": "docs/evaluation/pairing-legacy-demo-preservation.json",
+      "migrationPassed": true,
+      "originalBusinessDataStillIdentical": true,
+      "sessionTablesChanged": [],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  ],
+  "passed": true
+}

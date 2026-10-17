@@ -24,7 +24,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
   const displays=createDisplayAccess(store);
   const failures=new Map();
   const kitchenStreams=new Set();
-  const stateOf=async s=>s.role==='owner'?({...service.bootstrap(s),displays:displays.list(s),staff:identity.staff(s),account:identity.details(s),ai:await extractor.status(),speech:await transcriber.status()}):({...staffBootstrap(store,service,s,identity.details(s)),speech:s.role==='kitchen'?await transcriber.status():{available:false}});
+  const stateOf=async s=>s.role==='owner'?({...service.bootstrap(s),displays:displays.list(s),staff:identity.staff(s),staffInvites:identity.staffInvites(s),account:identity.details(s),ai:await extractor.status(),speech:await transcriber.status()}):({...staffBootstrap(store,service,s,identity.details(s)),speech:s.role==='kitchen'?await transcriber.status():{available:false}});
   const server = http.createServer(async (request, response) => {
     const json = (value, status = 200) => { response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); response.end(JSON.stringify(value)); };
     try {
@@ -99,10 +99,21 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
           response.setHeader('Set-Cookie',`gerai_session=${session.id}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000`);
           return json(await stateOf(session),pathname.endsWith('/register') ? 201 : 200);
         }
+        if(pathname==='/api/auth/staff-code'&&mutating){
+          requireValue(!session,'Keluar dari akun aktif sebelum masuk sebagai staf.',409);
+          const key='staff-code:'+request.socket.remoteAddress,failed=failures.get(key),current=failed&&failed.until>Date.now()?failed:{count:0,until:Date.now()+600000};
+          requireValue(current.count<8,'Terlalu banyak percobaan kode. Coba lagi dalam 10 menit.',429);
+          try{session=identity.loginStaffCode(body);}catch(error){if(error.status===400||error.status===401)failures.set(key,{...current,count:current.count+1});throw error;}
+          response.setHeader('Set-Cookie',`gerai_session=${session.id}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000`);
+          return json(await stateOf(session));
+        }
         requireValue(session, 'Masuk ke akun untuk membuka catatan usaha.', 401);
         if (mutating) requireValue(body.csrf === session.csrf, 'Sesi berubah. Muat ulang halaman.', 403);
         authorize(session,pathname,request.method,body);
         if(pathname==='/api/staff'&&mutating)return json(identity.createStaff(session,body),201);
+        if(pathname==='/api/staff-invites')return json(mutating?identity.createStaffInvite(session,body):identity.staffInvites(session),mutating?201:200);
+        const inviteRevoke=pathname.match(/^\/api\/staff-invites\/([a-zA-Z0-9-]+)\/revoke$/);
+        if(inviteRevoke&&mutating)return json(identity.revokeStaffInvite(session,inviteRevoke[1],body));
         const staffMatch=pathname.match(/^\/api\/staff\/([a-zA-Z0-9-]+)$/);
         if(staffMatch&&mutating)return json(identity.updateStaff(session,staffMatch[1],body));
         if(pathname==='/api/displays'&&mutating)return json(displays.create(session,body),201);

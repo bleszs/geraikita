@@ -8,6 +8,8 @@ Demo v0.41 tersedia di **http://127.0.0.1:4180**. Jalankan `npm run demo:setup`,
 | Kasir | `kasir.demo@geraikita.test` | `KasirDemo2026!` |
 | Dapur | `dapur.demo@geraikita.test` | `DapurDemo2026!` |
 
+V0.42 juga mendukung kode sekali pakai: pada akun demo yang sudah ada, pemilik memilih **Buat kode masuk**. Kode baru tidak mengubah kata sandi demo dan tidak perlu membuat staf duplikat. [Cara memakai](STAFF_PAIRING.md).
+
 Ketiganya berada pada usaha **[DEMO] Kedai Bu Sari**. Gunakan profil browser berbeda untuk tiap peran, misalnya Chrome biasa, satu jendela Samaran dan browser lain. Tab dalam satu profil berbagi akun login.
 
 Demo ini melengkapi histori/kelompok/surplus sebelumnya dengan 9 bahan, 7 menu berwaktu/stasiun, kapasitas kompor, empat pesanan aktif (menunggu, pasif, siap, satu item terbuang), satu contoh penyerahan selesai dan status menu Tersedia/Hampir habis/Habis. Kasir melihat status saja; pemilik melihat angka dan identitas tindakan di Riwayat. Data simulasi ini memang dibuat untuk presentasi, tidak dimasukkan ke database usaha asli atau dipakai melatih model.

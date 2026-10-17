@@ -1,0 +1,1078 @@
+{
+  "version": "0.42.0",
+  "checkedAt": "2026-10-17T17:30:53.923Z",
+  "baseline": "D:\\INFEST_FIX\\data\\backups\\gerai-kita-demo-2026-10-17T17-11-28-553Z-a4c76cc4.sqlite",
+  "target": "data/demo/fnb-2026-10-17/history/gerai-kita-demo.sqlite",
+  "originalRowsAndColumnsPreserved": true,
+  "credentialValuesAndSessionsPreserved": true,
+  "nullableCredentialConstraint": true,
+  "addedTables": [
+    {
+      "name": "staff_invites",
+      "columns": [
+        "id",
+        "workspace_id",
+        "business_id",
+        "account_id",
+        "role_revision",
+        "name",
+        "role",
+        "code_hash",
+        "created_by",
+        "created_at",
+        "expires_at",
+        "used_at",
+        "revoked_at",
+        "idem",
+        "fingerprint"
+      ],
+      "count": 0,
+      "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "before": {
+    "tables": [
+      {
+        "name": "account_roles",
+        "columns": [
+          "account_id",
+          "workspace_id",
+          "business_id",
+          "role",
+          "name",
+          "revision",
+          "disabled_at",
+          "created_by",
+          "idem",
+          "fingerprint"
+        ],
+        "count": 3,
+        "hash": "b1e8f22213a0dcbdbd391e5ce2e82aeee7f90653f92eb8fe95cadfd267aa4a2f"
+      },
+      {
+        "name": "account_sessions",
+        "columns": [
+          "session_id",
+          "account_id"
+        ],
+        "count": 2,
+        "hash": "0bca4e68a41dd7986c9a40d4ffc5a907fd7d2a3a52cefeac0faf3b5e3fadd0e7"
+      },
+      {
+        "name": "accounts",
+        "columns": [
+          "id",
+          "email",
+          "password_hash",
+          "salt",
+          "workspace_id",
+          "business_id",
+          "created_at"
+        ],
+        "count": 3,
+        "hash": "77edfc1ce1188628ba54783c9079b6cac8f1ecacbcf1492439bf2e1aef27b76c"
+      },
+      {
+        "name": "audit",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "message",
+          "created_at",
+          "actor_id",
+          "actor_name",
+          "actor_role",
+          "actor_revision"
+        ],
+        "count": 361,
+        "hash": "237d828927c005c94591632e4a884454792cdb89b3ed4e4c8510b71b057c0d83"
+      },
+      {
+        "name": "business_state",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "catalog_revision",
+          "stock_revision"
+        ],
+        "count": 3,
+        "hash": "b53535871f4bd04557c34b6c26a623729a80bcff2dcdd39215ea93a0ec7fc6c7"
+      },
+      {
+        "name": "businesses",
+        "columns": [
+          "workspace_id",
+          "id",
+          "name",
+          "short_name",
+          "letter"
+        ],
+        "count": 3,
+        "hash": "c8f4c288c5e614187ed56ea600a0b1bb5f1b1751570469d156cef21dd21134d0"
+      },
+      {
+        "name": "collective_cycles",
+        "columns": [
+          "workspace_id",
+          "cycle",
+          "status",
+          "created_at",
+          "closed_at"
+        ],
+        "count": 2,
+        "hash": "616edcf67cac2cba83cbff63dfa0372712992d0a1d0b05e07ddbcd49cb7a61f2"
+      },
+      {
+        "name": "collective_orders",
+        "columns": [
+          "id",
+          "workspace_id",
+          "cycle",
+          "approved_version",
+          "status",
+          "snapshot",
+          "created_at",
+          "cancelled_at"
+        ],
+        "count": 1,
+        "hash": "32dde11cb3fbbf2acafdd052eea7103f207f0fa4e0905f026299e6c2aaf4f870"
+      },
+      {
+        "name": "daily_usage",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "date",
+          "quantity"
+        ],
+        "count": 680,
+        "hash": "05ca921b520031ca6d1db0b3c158af8cf9a3ecbb11ba5d22b0f6ca312357221d"
+      },
+      {
+        "name": "demands",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "qty",
+          "active",
+          "budget",
+          "expires_at",
+          "approved_version",
+          "decision",
+          "stock_revision"
+        ],
+        "count": 3,
+        "hash": "010bff265039bb9b2e85acb672bf8d8be523ec0ad72f87bb47acded0ec96b1d9"
+      },
+      {
+        "name": "display_access",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "label",
+          "token_hash",
+          "idem",
+          "fingerprint",
+          "created_at",
+          "expires_at",
+          "revoked_at",
+          "kind"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "ingredients",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "id",
+          "name",
+          "normalized_name",
+          "unit",
+          "min_quantity",
+          "storage_note",
+          "shared"
+        ],
+        "count": 11,
+        "hash": "1d06e392c9173a245d6e4fe429e5ebf2c46683da71c1158370aec7b9ef65f9c2"
+      },
+      {
+        "name": "inventory",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "quantity",
+          "expires_at"
+        ],
+        "count": 11,
+        "hash": "c90b0e59559cd87cd1d6a4f528ebe586ff0638333479cf9dcd54e8c12e8cdcfb"
+      },
+      {
+        "name": "kitchen_actions",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "result",
+          "actor_id",
+          "actor_name",
+          "actor_role",
+          "actor_revision"
+        ],
+        "count": 9,
+        "hash": "bb16728998b99a5881d76e3af50b88f9f659b4b2d127adfdc4842ae2b5c2c8ae"
+      },
+      {
+        "name": "kitchen_menus",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "menu_id",
+          "minutes",
+          "station",
+          "passive_minutes"
+        ],
+        "count": 7,
+        "hash": "09a1a783f57de87f5f89fe19f01e9fcc9d7c03de8a0db0860b29a3612914444e"
+      },
+      {
+        "name": "kitchen_orders",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "label",
+          "channel",
+          "status",
+          "revision",
+          "items",
+          "usage_json",
+          "total",
+          "created_at",
+          "updated_at",
+          "sale_id"
+        ],
+        "count": 5,
+        "hash": "dfacedf3ef91496fce3931cdf97190f26b7272565e09ecae057c14dc9b9969df"
+      },
+      {
+        "name": "kitchen_stations",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "station",
+          "cooks",
+          "equipment",
+          "revision",
+          "updated_at"
+        ],
+        "count": 1,
+        "hash": "553f10bdef1779a3c6f97f2921b32e963b6103fa2e0ef67f6e3615582b628c4f"
+      },
+      {
+        "name": "kitchen_tasks",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "order_id",
+          "menu_id",
+          "name",
+          "qty",
+          "note",
+          "station",
+          "minutes",
+          "passive_minutes",
+          "status",
+          "phase_started_at",
+          "item_index",
+          "usage_json",
+          "waste_json"
+        ],
+        "count": 7,
+        "hash": "595b5c99a0b49831e7ba2c09f3a4dd58157031c3aab7860622046788f1e54e11"
+      },
+      {
+        "name": "menus",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "id",
+          "name",
+          "aliases",
+          "price",
+          "recipe"
+        ],
+        "count": 7,
+        "hash": "c6cccffea074e7fc98ce407b35ff132b78a2ebd6ff5e9601e500789f14974c6f"
+      },
+      {
+        "name": "movements",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "delta",
+          "reason",
+          "ref",
+          "created_at"
+        ],
+        "count": 976,
+        "hash": "cc722903d4ac2c87082c5f2ab5a9a07285fcc730fe74b97a736d7f13840af7ab"
+      },
+      {
+        "name": "offers",
+        "columns": [
+          "id",
+          "workspace_id",
+          "owner_id",
+          "product_id",
+          "qty",
+          "unit_price",
+          "expires_at",
+          "condition",
+          "cycle",
+          "created_at",
+          "cancelled_at",
+          "idem",
+          "fingerprint"
+        ],
+        "count": 2,
+        "hash": "0e5cfcced4c46513d5d7ed39d4601cdf60a59ab82ec6b0a6890163e549eaeb8a"
+      },
+      {
+        "name": "order_requests",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "access_id",
+          "idem",
+          "fingerprint",
+          "label",
+          "note",
+          "items",
+          "total",
+          "status",
+          "created_at",
+          "created_ms",
+          "decided_at",
+          "order_id",
+          "reason"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "sales",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "items",
+          "total",
+          "date",
+          "created_at",
+          "cancelled_at",
+          "usage_snapshot"
+        ],
+        "count": 174,
+        "hash": "f78b01d9c30ce551667d1ff2e53310de22034c057a39a3bacd05965962f858b5"
+      },
+      {
+        "name": "sessions",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "csrf",
+          "expires_at"
+        ],
+        "count": 2,
+        "hash": "ea74369be37d049cc2f1cfd32eb5c6ea8ff70b8cbda5b172468afbdbc05e313d"
+      },
+      {
+        "name": "staff_actions",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "result"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "stock_receipts",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "product_id",
+          "quantity",
+          "unit_price",
+          "total",
+          "supplier",
+          "created_at",
+          "cancelled_at",
+          "collective_order_id",
+          "shipping",
+          "product_name",
+          "product_unit",
+          "cancel_reason",
+          "input_quantity",
+          "input_unit",
+          "input_unit_price"
+        ],
+        "count": 108,
+        "hash": "39c9125f1c10b313762163c4cccddcd86b5372fed791400b365da59d142a5b98"
+      },
+      {
+        "name": "transfers",
+        "columns": [
+          "id",
+          "workspace_id",
+          "offer_id",
+          "receiver_id",
+          "qty",
+          "status",
+          "created_at",
+          "completed_at",
+          "cycle"
+        ],
+        "count": 2,
+        "hash": "64c94f8dab4f30cc2ae6bcc05cc9a12aaa600a6546d58b6cd64ae454e30fbada"
+      },
+      {
+        "name": "usage_review_decisions",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "date",
+          "snapshot_hash",
+          "decision",
+          "note",
+          "created_at",
+          "idem",
+          "fingerprint",
+          "previous_id"
+        ],
+        "count": 2,
+        "hash": "11c1742337b8afda7bf76cb26a289893355c57ce2a9925187d9698130d85a37b"
+      },
+      {
+        "name": "workspaces",
+        "columns": [
+          "id",
+          "version",
+          "quote_expires",
+          "created_at",
+          "name",
+          "join_code",
+          "owner_business_id",
+          "settings",
+          "quote_json",
+          "active_cycle"
+        ],
+        "count": 1,
+        "hash": "7ac4cc035feaa51e738acf0bf229996f51a9ec42d8b70a01657a5788c12e25be"
+      }
+    ],
+    "accountSchema": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "notnull": 0,
+        "pk": 1
+      },
+      {
+        "name": "email",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "password_hash",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "salt",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "workspace_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "business_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      }
+    ],
+    "integrity": "ok",
+    "foreignKeys": []
+  },
+  "after": {
+    "tables": [
+      {
+        "name": "account_roles",
+        "columns": [
+          "account_id",
+          "workspace_id",
+          "business_id",
+          "role",
+          "name",
+          "revision",
+          "disabled_at",
+          "created_by",
+          "idem",
+          "fingerprint"
+        ],
+        "count": 3,
+        "hash": "b1e8f22213a0dcbdbd391e5ce2e82aeee7f90653f92eb8fe95cadfd267aa4a2f"
+      },
+      {
+        "name": "account_sessions",
+        "columns": [
+          "session_id",
+          "account_id"
+        ],
+        "count": 2,
+        "hash": "0bca4e68a41dd7986c9a40d4ffc5a907fd7d2a3a52cefeac0faf3b5e3fadd0e7"
+      },
+      {
+        "name": "accounts",
+        "columns": [
+          "id",
+          "email",
+          "password_hash",
+          "salt",
+          "workspace_id",
+          "business_id",
+          "created_at"
+        ],
+        "count": 3,
+        "hash": "77edfc1ce1188628ba54783c9079b6cac8f1ecacbcf1492439bf2e1aef27b76c"
+      },
+      {
+        "name": "audit",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "message",
+          "created_at",
+          "actor_id",
+          "actor_name",
+          "actor_role",
+          "actor_revision"
+        ],
+        "count": 361,
+        "hash": "237d828927c005c94591632e4a884454792cdb89b3ed4e4c8510b71b057c0d83"
+      },
+      {
+        "name": "business_state",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "catalog_revision",
+          "stock_revision"
+        ],
+        "count": 3,
+        "hash": "b53535871f4bd04557c34b6c26a623729a80bcff2dcdd39215ea93a0ec7fc6c7"
+      },
+      {
+        "name": "businesses",
+        "columns": [
+          "workspace_id",
+          "id",
+          "name",
+          "short_name",
+          "letter"
+        ],
+        "count": 3,
+        "hash": "c8f4c288c5e614187ed56ea600a0b1bb5f1b1751570469d156cef21dd21134d0"
+      },
+      {
+        "name": "collective_cycles",
+        "columns": [
+          "workspace_id",
+          "cycle",
+          "status",
+          "created_at",
+          "closed_at"
+        ],
+        "count": 2,
+        "hash": "616edcf67cac2cba83cbff63dfa0372712992d0a1d0b05e07ddbcd49cb7a61f2"
+      },
+      {
+        "name": "collective_orders",
+        "columns": [
+          "id",
+          "workspace_id",
+          "cycle",
+          "approved_version",
+          "status",
+          "snapshot",
+          "created_at",
+          "cancelled_at"
+        ],
+        "count": 1,
+        "hash": "32dde11cb3fbbf2acafdd052eea7103f207f0fa4e0905f026299e6c2aaf4f870"
+      },
+      {
+        "name": "daily_usage",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "date",
+          "quantity"
+        ],
+        "count": 680,
+        "hash": "05ca921b520031ca6d1db0b3c158af8cf9a3ecbb11ba5d22b0f6ca312357221d"
+      },
+      {
+        "name": "demands",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "qty",
+          "active",
+          "budget",
+          "expires_at",
+          "approved_version",
+          "decision",
+          "stock_revision"
+        ],
+        "count": 3,
+        "hash": "010bff265039bb9b2e85acb672bf8d8be523ec0ad72f87bb47acded0ec96b1d9"
+      },
+      {
+        "name": "display_access",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "label",
+          "token_hash",
+          "idem",
+          "fingerprint",
+          "created_at",
+          "expires_at",
+          "revoked_at",
+          "kind"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "ingredients",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "id",
+          "name",
+          "normalized_name",
+          "unit",
+          "min_quantity",
+          "storage_note",
+          "shared"
+        ],
+        "count": 11,
+        "hash": "1d06e392c9173a245d6e4fe429e5ebf2c46683da71c1158370aec7b9ef65f9c2"
+      },
+      {
+        "name": "inventory",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "quantity",
+          "expires_at"
+        ],
+        "count": 11,
+        "hash": "c90b0e59559cd87cd1d6a4f528ebe586ff0638333479cf9dcd54e8c12e8cdcfb"
+      },
+      {
+        "name": "kitchen_actions",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "result",
+          "actor_id",
+          "actor_name",
+          "actor_role",
+          "actor_revision"
+        ],
+        "count": 9,
+        "hash": "bb16728998b99a5881d76e3af50b88f9f659b4b2d127adfdc4842ae2b5c2c8ae"
+      },
+      {
+        "name": "kitchen_menus",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "menu_id",
+          "minutes",
+          "station",
+          "passive_minutes"
+        ],
+        "count": 7,
+        "hash": "09a1a783f57de87f5f89fe19f01e9fcc9d7c03de8a0db0860b29a3612914444e"
+      },
+      {
+        "name": "kitchen_orders",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "label",
+          "channel",
+          "status",
+          "revision",
+          "items",
+          "usage_json",
+          "total",
+          "created_at",
+          "updated_at",
+          "sale_id"
+        ],
+        "count": 5,
+        "hash": "dfacedf3ef91496fce3931cdf97190f26b7272565e09ecae057c14dc9b9969df"
+      },
+      {
+        "name": "kitchen_stations",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "station",
+          "cooks",
+          "equipment",
+          "revision",
+          "updated_at"
+        ],
+        "count": 1,
+        "hash": "553f10bdef1779a3c6f97f2921b32e963b6103fa2e0ef67f6e3615582b628c4f"
+      },
+      {
+        "name": "kitchen_tasks",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "order_id",
+          "menu_id",
+          "name",
+          "qty",
+          "note",
+          "station",
+          "minutes",
+          "passive_minutes",
+          "status",
+          "phase_started_at",
+          "item_index",
+          "usage_json",
+          "waste_json"
+        ],
+        "count": 7,
+        "hash": "595b5c99a0b49831e7ba2c09f3a4dd58157031c3aab7860622046788f1e54e11"
+      },
+      {
+        "name": "menus",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "id",
+          "name",
+          "aliases",
+          "price",
+          "recipe"
+        ],
+        "count": 7,
+        "hash": "c6cccffea074e7fc98ce407b35ff132b78a2ebd6ff5e9601e500789f14974c6f"
+      },
+      {
+        "name": "movements",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "delta",
+          "reason",
+          "ref",
+          "created_at"
+        ],
+        "count": 976,
+        "hash": "cc722903d4ac2c87082c5f2ab5a9a07285fcc730fe74b97a736d7f13840af7ab"
+      },
+      {
+        "name": "offers",
+        "columns": [
+          "id",
+          "workspace_id",
+          "owner_id",
+          "product_id",
+          "qty",
+          "unit_price",
+          "expires_at",
+          "condition",
+          "cycle",
+          "created_at",
+          "cancelled_at",
+          "idem",
+          "fingerprint"
+        ],
+        "count": 2,
+        "hash": "0e5cfcced4c46513d5d7ed39d4601cdf60a59ab82ec6b0a6890163e549eaeb8a"
+      },
+      {
+        "name": "order_requests",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "access_id",
+          "idem",
+          "fingerprint",
+          "label",
+          "note",
+          "items",
+          "total",
+          "status",
+          "created_at",
+          "created_ms",
+          "decided_at",
+          "order_id",
+          "reason"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "sales",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "items",
+          "total",
+          "date",
+          "created_at",
+          "cancelled_at",
+          "usage_snapshot"
+        ],
+        "count": 174,
+        "hash": "f78b01d9c30ce551667d1ff2e53310de22034c057a39a3bacd05965962f858b5"
+      },
+      {
+        "name": "sessions",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "csrf",
+          "expires_at"
+        ],
+        "count": 2,
+        "hash": "ea74369be37d049cc2f1cfd32eb5c6ea8ff70b8cbda5b172468afbdbc05e313d"
+      },
+      {
+        "name": "staff_actions",
+        "columns": [
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "result"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "staff_invites",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "account_id",
+          "role_revision",
+          "name",
+          "role",
+          "code_hash",
+          "created_by",
+          "created_at",
+          "expires_at",
+          "used_at",
+          "revoked_at",
+          "idem",
+          "fingerprint"
+        ],
+        "count": 0,
+        "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "stock_receipts",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "idem",
+          "fingerprint",
+          "product_id",
+          "quantity",
+          "unit_price",
+          "total",
+          "supplier",
+          "created_at",
+          "cancelled_at",
+          "collective_order_id",
+          "shipping",
+          "product_name",
+          "product_unit",
+          "cancel_reason",
+          "input_quantity",
+          "input_unit",
+          "input_unit_price"
+        ],
+        "count": 108,
+        "hash": "39c9125f1c10b313762163c4cccddcd86b5372fed791400b365da59d142a5b98"
+      },
+      {
+        "name": "transfers",
+        "columns": [
+          "id",
+          "workspace_id",
+          "offer_id",
+          "receiver_id",
+          "qty",
+          "status",
+          "created_at",
+          "completed_at",
+          "cycle"
+        ],
+        "count": 2,
+        "hash": "64c94f8dab4f30cc2ae6bcc05cc9a12aaa600a6546d58b6cd64ae454e30fbada"
+      },
+      {
+        "name": "usage_review_decisions",
+        "columns": [
+          "id",
+          "workspace_id",
+          "business_id",
+          "product_id",
+          "date",
+          "snapshot_hash",
+          "decision",
+          "note",
+          "created_at",
+          "idem",
+          "fingerprint",
+          "previous_id"
+        ],
+        "count": 2,
+        "hash": "11c1742337b8afda7bf76cb26a289893355c57ce2a9925187d9698130d85a37b"
+      },
+      {
+        "name": "workspaces",
+        "columns": [
+          "id",
+          "version",
+          "quote_expires",
+          "created_at",
+          "name",
+          "join_code",
+          "owner_business_id",
+          "settings",
+          "quote_json",
+          "active_cycle"
+        ],
+        "count": 1,
+        "hash": "7ac4cc035feaa51e738acf0bf229996f51a9ec42d8b70a01657a5788c12e25be"
+      }
+    ],
+    "accountSchema": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "notnull": 0,
+        "pk": 1
+      },
+      {
+        "name": "email",
+        "type": "TEXT",
+        "notnull": 0,
+        "pk": 0
+      },
+      {
+        "name": "password_hash",
+        "type": "TEXT",
+        "notnull": 0,
+        "pk": 0
+      },
+      {
+        "name": "salt",
+        "type": "TEXT",
+        "notnull": 0,
+        "pk": 0
+      },
+      {
+        "name": "workspace_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "business_id",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      },
+      {
+        "name": "created_at",
+        "type": "TEXT",
+        "notnull": 1,
+        "pk": 0
+      }
+    ],
+    "integrity": "ok",
+    "foreignKeys": []
+  },
+  "passed": true
+}

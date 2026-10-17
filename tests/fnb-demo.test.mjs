@@ -23,3 +23,8 @@ test('F&B demo reuses existing data and refuses overwrite or silently replacing 
  const reopened=createStore(manifest.filename);assert.deepEqual(reopened.all('SELECT id,message,actor_id FROM audit'),before);reopened.close();assert.throws(()=>buildFnbDemo(folder),/ditimpa/);
  rmSync(manifest.filename);assert.throws(()=>prepareFnbDemo(folder),/hilang/);
 });
+test('existing F&B demo retains owner-created code-only staff when prepared again',t=>{
+ const folder=temp(t),manifest=buildFnbDemo(folder),store=createStore(manifest.filename);let id;
+ try{const identity=createIdentity(store),owner=identity.login(FNB_DEMO_ACCOUNTS.owner);id=identity.createStaffInvite(owner,{name:'Staf tambahan demo',role:'cashier',code:'ABCD2345',confirmed:true,idempotencyKey:'demo-staff-additional-key'}).accountId;store.run('DELETE FROM sessions WHERE id=?',owner.id);}finally{store.close();}
+ assert.equal(prepareFnbDemo(folder).filename,manifest.filename);const reopened=createStore(manifest.filename);try{assert.equal(reopened.get('SELECT COUNT(*) AS n FROM accounts').n,4);assert.equal(reopened.get('SELECT email FROM accounts WHERE id=?',id).email,null);}finally{reopened.close();}
+});

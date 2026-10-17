@@ -1,3 +1,7 @@
+## Pembaruan v0.42
+
+Pemilik membuat staf dengan nama/peran dan kode 15 menit sekali pakai. Masuk sebagai staf membuka ruang kerja identitas/peran yang sama; akun email lama dan formulir opsional email tetap tersedia. Kode sementara tidak dimasukkan ke snapshot/draft atau histori metadata. Sesi yang sudah masuk hanya berakhir lewat logout, expiry atau pencabutan akses, bukan saat kode diganti. Schema 30 tabel mempertahankan data; asli/demo tetap terpisah. Panduan v8 memiliki 18 topik/93 langkah. Server publik/HTTPS dan pilot antarperangkat masih berikutnya. Lihat docs/STAFF_PAIRING.md. Catatan versi berikut adalah riwayat.
+
 # Konteks penambahan v0.41
 
 Perbaikan operasional F&B: kasir mengenali menu tersedia/hampir habis/habis tanpa angka stok/porsi; pemilik menelusuri pelaku tindakan baru pada Jejak aktivitas. Demo tiga peran dipisahkan dari usaha asli. Pembaruan tampilan fe073d0 dipertahankan pada dunia visual yang sama; DESIGN.md/sidecar tidak diganti. Pairing dan deployment masih tahap berikutnya. [Cakupan](docs/FNB_OPERATIONS.md).

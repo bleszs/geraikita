@@ -1,3 +1,9 @@
+# Akun staf v0.42
+
+Alur utama kini nama/peran lalu kode sekali pakai 15 menit. Akun email lama tetap berlaku dan pembuatannya tersedia di **Buat akun staf dengan email**. Staf tanpa password masuk lagi dengan kode baru; tidak ditawari ganti kata sandi. Kode baru/cabut kode tidak mengakhiri sesi; **Nonaktifkan** mengakhiri sesi dan membatalkan kode tertunda. Panduan lengkap dan kontrak server: [Kode masuk staf](STAFF_PAIRING.md).
+
+Status menu kasir tetap tanpa angka porsi. Demo F&B v0.41+ sudah menyediakan tiga akun peran; tidak perlu membuat ulang staf demo bawaan. Keterangan v0.36 tentang generator tanpa staf dan porsi tersedia di bawah adalah riwayat yang telah diperbarui oleh v0.41. Tidak ada perubahan matriks endpoint bisnis.
+
 # Perubahan staf v0.41
 
 Kasir kini mendapat status ok/low/out tanpa angka porsi tersisa. Peringatan mengikuti minimum bahan yang diisi pemilik dan stok setelah cadangan. Tindakan baru menyimpan snapshot pelaku untuk Jejak aktivitas pemilik; catatan lama tetap tanpa pelaku. Matriks akses lama tetap berlaku, ditambah aturan waste/katalog dari v0.37-v0.38. Pairing belum tersedia. [Detail terkini](FNB_OPERATIONS.md), [demo tiga peran](DEMO_ACCOUNT.md). Bagian di bawah adalah dokumentasi v0.36.

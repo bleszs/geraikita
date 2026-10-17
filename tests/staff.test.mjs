@@ -12,11 +12,11 @@ import {staffPrefix} from '../server/roles.mjs';
 const registration=()=>({email:randomUUID()+'@example.test',password:'OwnerTesting2026!',businessName:'Usaha utama',communityName:'Kelompok'});
 const staffBody=(role='cashier')=>({email:randomUUID()+'@example.test',password:'StaffTesting2026!',name:'Staf uji '+role,role,confirmed:true,idempotencyKey:randomUUID()});
 function fixture(t){const store=createStore(':memory:');t.after(()=>store.close());const identity=createIdentity(store),owner=identity.register(registration());return {store,identity,owner};}
-test('v0.35 migration preserves every old table and session; reopen retains staff roles and never repairs missing roles into owners',t=>{
+test('role migration preserves every existing table and session; reopen retains roles and never repairs missing roles into owners',t=>{
  const dir=mkdtempSync(join(tmpdir(),'gerai-staff-')),file=join(dir,'test.sqlite');let store=createStore(file);
  t.after(()=>{store.close();rmSync(dir,{recursive:true,force:true});});
  let identity=createIdentity(store);const owner=identity.register(registration());store.db.exec('DROP TABLE staff_actions; DROP TABLE account_roles');
- const tables=store.all("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name").map(x=>x.name);assert.equal(tables.length,27);
+ const tables=store.all("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name").map(x=>x.name);assert.equal(tables.length,28);
  const snapshot=()=>tables.map(name=>[name,store.all(`SELECT * FROM ${name}`).map(r=>JSON.stringify(r)).sort()]);const before=snapshot();store.close();store=createStore(file);identity=createIdentity(store);
  assert.deepEqual(snapshot(),before);assert.equal(identity.resolve(owner.id).role,'owner');assert.equal(store.get('SELECT COUNT(*) AS n FROM account_roles').n,1);
  const a=staffBody(),b=staffBody('kitchen');identity.createStaff(identity.resolve(owner.id),a);const deleted=identity.createStaff(identity.resolve(owner.id),b);const session=identity.login(a),missing=identity.login(b);store.run('DELETE FROM account_roles WHERE account_id=?',deleted.id);

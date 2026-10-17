@@ -1,3 +1,7 @@
+# Penambahan v0.42: kode masuk staf
+
+`server/staff-invites.mjs` memusatkan migrasi kredensial nullable dan undangan sekali pakai. Schema 30 tabel menambah staff_invites; migrasi accounts menjaga nilai 29 tabel asal. Hash kode, revisi role, scope, status dan idempotensi menjadi otoritas server. Exchange kode memakai transaksi yang sama dengan pembuatan sesi; metadata pemilik tidak memuat rahasia. Rate limit per sumber koneksi ada di HTTP. Role/izin/proyeksi tetap memakai identitas yang sama. `public/staff-pairing.js` menyediakan formulir dan hasil sementara; app.js menjaga memori, retry dan penghapusan hasil. Cache shell v42 memuat modul baru. [Kontrak, batas dan bukti](STAFF_PAIRING.md). Bagian berikut adalah riwayat.
+
 # Penambahan v0.41
 
 `server/activity.mjs` menangani migrasi aktor dan konteks AsyncLocalStorage per store. Layanan, identitas dan pengelolaan layar membungkus pemanggilan publik dengan identitas dari account_roles/accounts; log hanya memakai aktor dengan scope usaha yang sesuai. Audit/aksi dapur menyimpan snapshot empat kolom, tanpa mengisi histori lama. `kitchen.snapshot` menghitung status dari stok tersedia dan minimum bahan; `staffBootstrap` memproyeksikan status kasir tanpa porsi. UI Jejak aktivitas menampilkan snapshot pelaku.

@@ -3,3 +3,7 @@
 
 .staff-menu-note:empty{display:none}
 .staff-menu-note{color:var(--ink);margin:0 0 12px;line-height:1.6}
+
+.staff-code-result,.staff-code-history,[data-staff-legacy]{border-top:1px solid var(--line);margin-top:28px;padding-top:24px}.staff-code-result{scroll-margin-top:100px}.staff-code-result label{margin-top:18px}.staff-code-result .actions{margin-top:20px}.staff-code-value{font-weight:800;letter-spacing:.12em;font-variant-numeric:tabular-nums}.staff-invite-list{list-style:none;padding:0}.staff-invite-list li{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line)}.staff-invite-list form{flex-basis:100%}.staff-invite-list small{display:block;margin-top:6px}.staff-code-history summary,[data-staff-legacy] summary{cursor:pointer;font-weight:800;padding:12px 0}
+
+@media(max-width:760px){[data-form="staff-code-create"] .form-grid{grid-template-columns:1fr}}

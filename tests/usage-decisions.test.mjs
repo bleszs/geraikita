@@ -104,12 +104,12 @@ test('HTTP review requires login, origin and CSRF; client-supplied tenant IDs ca
   assert.equal(response.headers.get('cache-control'), 'no-store'); assert.deepEqual((await response.json()).usageReviews, []);
 });
 
-test('additive migration preserves the original nineteen tables and decisions survive reopen', t => {
+test('additive migration preserves the previous tables and decisions survive reopen', t => {
   const directory = mkdtempSync(path.join(os.tmpdir(), 'gerai-decision-migration-')), filename = path.join(directory, 'database.sqlite');
   let store = createStore(filename);
   t.after(() => { store?.close(); const resolved = realpathSync(directory); assert.equal(path.dirname(resolved), realpathSync(os.tmpdir())); assert.ok(path.basename(resolved).startsWith('gerai-decision-migration-')); rmSync(resolved, { recursive: true, force: true }); });
   const owner = createIdentity(store).register(registration());
-  store.db.exec('DROP TABLE usage_review_decisions'); const before = snapshot(store); assert.equal(before.length, 28); store.close();
+  store.db.exec('DROP TABLE usage_review_decisions'); const before = snapshot(store); assert.equal(before.length, 29); store.close();
   store = createStore(filename); assert.deepEqual(snapshot(store).filter(([name]) => name !== 'usage_review_decisions'), before);
   const service = createService(store), ingredient = service.saveIngredient(owner, null, { name: 'Reopen ingredient', unit: 'kg', min: 0, storageNote: '', catalogRevision: 1 });
   for (let i = 0; i < 84; i++) store.run('INSERT INTO daily_usage VALUES(?,?,?,?,?)', owner.workspace_id, owner.business_id, ingredient.id, addDays(dayAt(), i - 84), units(10));

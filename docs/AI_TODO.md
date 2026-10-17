@@ -1,3 +1,17 @@
+# Lanjutan v0.42 - kode masuk staf
+
+- [x] Buat staf nama/peran tanpa email/password fiktif; kode 8 karakter, 15 menit, sekali pakai dan hash-only di server. Akun email lama tetap berfungsi.
+- [x] Kode untuk staf yang sudah ada, cabut kode belum dipakai, pembatalan saat role/status/password berubah, batas tebakan per sumber koneksi dan isolasi scope/peran.
+- [x] UI pemilik/staf dengan konfirmasi, hasil setelah respons server, retry idempoten, rahasia di memori saja serta penghapusan saat pindah halaman/expiry; Akun saya sesuai jenis kredensial.
+- [x] Panduan berpanah v8: 18 topik / 93 langkah; Lanjut/Kembali/Lewati tetap tersedia.
+- [x] Backup/migrasi tiga database: 29 tabel asal identik, kredensial/sesi dipertahankan; tabel staff_invites baru kosong, schema total 30, FK/integritas OK.
+- [x] Regresi penuh **263 Node + 54 browser = 317 lulus**, exit 0. Runtime 18 pemeriksaan anonim dan tiga login demo, tanpa perubahan data bisnis. [Bukti rilis](evaluation/pairing-release.json).
+- [x] Dokumentasi penggunaan dan kontrak: [Kode masuk staf](STAFF_PAIRING.md). Review UI/desain dicatat pada laporan rilis.
+- [ ] Berikutnya: deployment/HTTPS/origin/cookie, volume SQLite persisten, backup/restore dan uji antarperangkat.
+- [ ] Aging bisa diatur, hari stok tersisa, alur suara/penjualan langsung kasir, fuzzy matching dan pilot nyata tetap terbuka.
+
+Model, bobot, dataset bisnis dan protokol evaluasi tidak diubah. Checklist versi berikut adalah riwayat.
+
 # Lanjutan v0.41 — status kasir, pelaku tindakan dan demo F&B
 
 - [x] Ambil dan gabungkan perubahan terbaru origin/rahasiagelap2.0 (`fe073d0`): tombol, navigasi, ikon keluar, keadaan data kosong dan catatan layar layanan; fitur staf/kapasitas/waste/ETA tetap tersedia.
@@ -7,7 +21,7 @@
 - [x] Siapkan demo F&B tiga peran pada database terpisah: 9 bahan, 7 menu, histori 84 hari, antrean pasif/siap/waste dan tiga status menu. Jalankan ulang mempertahankan data. [Akun](DEMO_ACCOUNT.md).
 - [x] Regresi penuh selesai normal: 253 Node + 51 browser = **304 lulus**, npm test exit 0. [Bukti rilis](evaluation/fnb-release.json).
 - [x] Review UI v0.41: ship, tanpa perbaikan material pada delapan capture. Catatan desain selesai; DESIGN.md dan sidecar tetap identik. [Review](evaluation/FNB_UI_REVIEW.md), [desain](evaluation/FNB_DESIGN_CHECK.md).
-- [ ] Berikutnya: pairing staf dengan kode sekali pakai, mempertahankan akun/email/kata sandi lama.
+- [x] Pairing staf dengan kode sekali pakai selesai v0.42, mempertahankan akun/email/kata sandi lama.
 - [ ] Deployment/HTTPS/origin/cookie, volume SQLite persisten, backup/restore dan uji antarperangkat.
 - [ ] Aging bisa diatur, hari stok tersisa, alur input suara/penjualan langsung kasir, fuzzy matching dan pilot nyata masih terbuka.
 

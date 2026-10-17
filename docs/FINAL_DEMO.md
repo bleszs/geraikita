@@ -1,3 +1,9 @@
+# Tambahan demo v0.42: masuk staf dengan kode
+
+Gunakan database demo terpisah di port **4180**. Masuk sebagai pemilik memakai [akun demo](DEMO_ACCOUNT.md), lalu buka Pengaturan akun > Akun kasir dan dapur. Pada akun kasir/dapur yang sudah ada, pilih **Buat kode masuk**, konfirmasi lalu bagikan kode/alamat ke jendela privat. Pilih Masuk sebagai staf, masukkan kode dan tunjukkan ruang kerja sesuai peran. Kode berlaku 15 menit untuk sekali masuk; akun email demo lama tetap bekerja. Tidak ada kode demo yang ditanam permanen. Membuat kode untuk akun yang ada menjaga daftar demo tanpa staf duplikat.
+
+Tunjukkan perbedaan **Cabut kode** (hanya kode belum dipakai) dengan **Nonaktifkan** (mengakhiri sesi). Jangan menonaktifkan akun demo bawaan tanpa sengaja. Alur ini belum akses ponsel jarak jauh karena server masih loopback. [Penjelasan lengkap](STAFF_PAIRING.md). Skenario dan angka versi lama berikut adalah riwayat.
+
 # Alur presentasi F&B v0.41
 
 1. Jalankan `npm run start:demo`, buka http://127.0.0.1:4180 dan masuk sebagai pemilik. [Kredensial tiga peran](DEMO_ACCOUNT.md).

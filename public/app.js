@@ -1,3 +1,4 @@
+import {newStaffCode} from './staff-pairing.js';
 import {staffWorkspace,syncStaffMenuAvailability} from './staff-workspace.js';
 import {request} from './api.js';
 import {createVoiceCapture} from './voice.js';
@@ -44,7 +45,10 @@ function done(a,data){
   if(a.kind==='nextCycle')return data.group.cycle.id>a.match.cycle;
   return false;
 }
-function clearDisplaySecrets(){ui.staffRestoreFocus=null;ui.staffCreateKey=null;ui.staffCreateMeta=null;ui.staffEdit=null;ui.staffFocus=null;ui.displayEpoch=(ui.displayEpoch||0)+1;ui.displayLink=null;ui.displayCreatePending=null;ui.displayRevoke=null;ui.displayFocus=null;}
+let staffCodeTimer;
+function clearStaffCode(){clearTimeout(staffCodeTimer);ui.staffCodeResult=null;}
+function clearStaffPairing(){clearStaffCode();ui.staffInviteEpoch=(ui.staffInviteEpoch||0)+1;ui.staffInvitePending=null;ui.staffInviteTarget=null;ui.staffInviteRevoke=null;}
+function clearDisplaySecrets(){clearStaffPairing();ui.staffRestoreFocus=null;ui.staffCreateKey=null;ui.staffCreateMeta=null;ui.staffEdit=null;ui.staffFocus=null;ui.displayEpoch=(ui.displayEpoch||0)+1;ui.displayLink=null;ui.displayCreatePending=null;ui.displayRevoke=null;ui.displayFocus=null;}
 async function adopt(data){
   if(!state)clearDisplaySecrets();
   const before=state&&scopeOf(state);state=data;connected=true;snapshotAt=new Date().toISOString();
@@ -105,6 +109,7 @@ function render(){
     document.querySelector('#app').innerHTML=staffWorkspace(state,ui,values,connected,pendingPanel(),route(),e,icon);
     syncStaffMenuAvailability(state);lockControls();guide.sync();syncKitchenEvents();restoreKitchenFocus();if(busy)ui.staffRestoreFocus=focused;else{ui.staffRestoreFocus=null;if(!local)restoreStaffFocus(focused);}return;
   }
+  if(ui.staffCodeResult){const r=state.staffInvites?.find(i=>i.id===ui.staffCodeResult.id);if(r?.status!=='active'||Date.parse(r.expiresAt)<=Date.now())clearStaffCode();}
   const page=route(),title=routes.find(r=>r[0]===page)[1],view=createViews({state,ui,values,pendingAction,deviceDrafts,connected});document.title='Gerai Kita · '+title;
   document.querySelector('#app').innerHTML=`<div class="app-shell"><aside class="sidebar ${ui.mobile?'is-open':''}" id="sidebar"><a class="brand" href="#ringkasan"><span class="brand-mark">${icon('shop')}</span><span>gerai<span class="brand-light">kita</span><small>Tumbuh bersama.</small></span></a><div class="business-block"><span class="avatar">${e(state.business.letter)}</span><div><strong>${e(state.business.name)}</strong><span>${e(state.community.name)}</span></div></div><nav aria-label="Navigasi utama">${routes.map(([id,label,symbol])=>`<a href="#${id}" ${id===page?'aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('')}</nav><div class="sidebar-bottom"><button class="button secondary" data-action="logout" ${!connected?'disabled':''}>${icon('logout')}<span>Keluar akun</span></button><span class="sidebar-foot">Catatan milik ${e(state.business.name)}</span></div></aside><div class="workspace"><header class="topbar"><button class="icon-button mobile-toggle" data-action="menu" aria-label="${ui.mobile?'Tutup':'Buka'} navigasi" aria-expanded="${ui.mobile}" aria-controls="sidebar">${icon(ui.mobile?'close':'menu')}</button><span class="topbar-title">${title}</span><div class="topbar-actions"><button class="icon-button" data-action="refresh" aria-label="Perbarui data">${icon('refresh')}</button><button class="icon-button" data-action="theme" aria-label="Ubah tema">${icon('moon')}</button><span class="active-business"><strong>${e(state.business.name)}</strong></span></div></header><main id="main" tabindex="-1">${!connected?notice(`Server belum terhubung. Data terakhir ${e(new Date(snapshotAt).toLocaleString('id-ID'))}. Tindakan server perlu diperiksa saat tersambung kembali.`,'warn')+`<div class="actions"><button class="button secondary" data-action="reconnect">Hubungkan & muat ulang</button></div>`:''}${registration?notice('Versi aplikasi baru tersedia. Simpan isian sebelum memuat ulang.')+`<button class="text-link" data-action="update-app">Muat ulang aplikasi</button>`:''}${pendingPanel()}<div class="date-line">${e(new Date(state.date+'T12:00:00Z').toLocaleDateString('id-ID',{dateStyle:'full'}))}</div>${view[page]()}<footer class="page-footer"><span>Keputusan usahamu tetap di tanganmu.</span><span>${e(state.community.name)}</span></footer></main><nav class="quick-nav" aria-label="Navigasi cepat">${[['dapur','Dapur','shop'],['pesanan','Catat','plus'],['stok','Stok','box'],['kelompok','Bersama','people']].map(([id,label,sym])=>`<a href="#${id}" ${page===id?'aria-current="page"':''}>${icon(sym)}<span>${label}</span></a>`).join('')}<button data-action="menu" aria-label="Menu navigasi">${icon('menu')}<span>Menu</span></button></nav></div></div>`;
   lockControls();receiptPreview();guide.sync();syncKitchenEvents();restoreKitchenFocus();
@@ -114,7 +119,7 @@ function render(){
 function lockControls(){
   if(!state)return;document.querySelector('#main')?.setAttribute('aria-busy',String(busy));
   document.querySelectorAll('#main form').forEach(f=>{const localDraft=!connected&&f.dataset.form==='extract';if(busy||pendingAction||!connected)f.querySelectorAll('input,select,textarea,button').forEach(c=>{if(!localDraft||c.tagName==='BUTTON')c.disabled=true;});});
-  const readonly=new Set(['staff-new-order','staff-queue','display-hide-link','display-copy','display-cancel-revoke','theme','menu','reconnect','refresh','update-app','export-sales','export-receipts','back-order','manual-order','add-order','remove-order','resume-draft','delete-draft','confirm-order','review-catalog','close-editor','close-cancel','copy-invite','close-usage-review']);
+  const readonly=new Set(['staff-code-copy','staff-code-hide','staff-code-cancel','staff-code-cancel-revoke','staff-new-order','staff-queue','display-hide-link','display-copy','display-cancel-revoke','theme','menu','reconnect','refresh','update-app','export-sales','export-receipts','back-order','manual-order','add-order','remove-order','resume-draft','delete-draft','confirm-order','review-catalog','close-editor','close-cancel','copy-invite','close-usage-review']);
   document.querySelectorAll('[data-action]').forEach(b=>{if(busy||pendingAction&&!['staff-new-order','staff-queue','theme','menu','reconnect','refresh','retry-action','logout','export-sales','export-receipts','update-app'].includes(b.dataset.action)||!connected&&!readonly.has(b.dataset.action))b.disabled=true;});
   if(pendingAction)document.querySelectorAll('[data-review]').forEach(c=>c.disabled=true);
   if(voice.active){document.querySelectorAll('#extract-form button,[data-action="manual-order"]').forEach(c=>c.disabled=true);}
@@ -135,7 +140,7 @@ async function confirmOrder(){
 }
 document.addEventListener('input',event=>{
   if(event.target.id==='voice-text'){voice.edit(event.target.value);ui.voice=voice.state;return;}
-  const f=event.target.closest('[data-form]');if(f&&event.target.name){const name=f.dataset.form;values[name]??={};if(event.target.type!=='password')values[name][event.target.name]=event.target.type==='checkbox'?event.target.checked:event.target.value;
+  const f=event.target.closest('[data-form]');if(f&&event.target.name){const name=f.dataset.form;values[name]??={};if(event.target.type!=='password'&&event.target.name!=='code')values[name][event.target.name]=event.target.type==='checkbox'?event.target.checked:event.target.value;
     if(name==='kitchen-new')syncStaffMenuAvailability(state);
     if(name==='receipt'&&['productId','inputUnit'].includes(event.target.name)){values.receipt.qty='';values.receipt.unitPrice='';if(event.target.name==='productId')values.receipt.inputUnit='';render();}else if(name==='receipt')receiptPreview();
   }
@@ -149,11 +154,36 @@ document.addEventListener('submit',async event=>{
   const f=event.target.closest('[data-form]');if(!f)return;event.preventDefault();if(busy)return;const kind=f.dataset.form,b=Object.fromEntries(new FormData(f));let payload,error='';
   if(kind==='auth'){
     busy=true;f.querySelector('button[type=submit]').disabled=true;
-    try{const registering=ui.auth==='register',result=await request(registering?'/auth/register':'/auth/login',b);ui.guideAutoplayRequested=registering;values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
+    try{const registering=ui.auth==='register',result=await request(registering?'/auth/register':ui.auth==='staff'?'/auth/staff-code':'/auth/login',b);ui.guideAutoplayRequested=registering;values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
   }
   if(!state||!connected||pendingAction||(kind==='extract'&&voice.active))return;busy=true;lockControls();
   try{
-    if(kind==='staff-create'){
+    if(kind==='staff-code-create'||kind==='staff-code-existing'){
+      if(b.confirmed!=='on')throw new Error('Periksa nama dan hak akses staf lalu konfirmasi.');
+      const target=ui.staffInviteTarget;
+      if(kind==='staff-code-existing'&&!target)throw new Error('Buka kembali pemeriksaan kode staf.');
+      const current=kind==='staff-code-create'?{name:b.name.trim(),role:b.role,confirmed:true}:{accountId:target.id,revision:target.revision,confirmed:true},meta=JSON.stringify(current);
+      if(ui.staffInvitePending&&ui.staffInvitePending.meta!==meta)throw new Error('Status kode sebelumnya belum pasti. Ulangi rincian yang sama atau tutup pemeriksaan dan periksa daftar staf.');
+      ui.staffInvitePending??={meta,body:{...current,code:newStaffCode(),idempotencyKey:crypto.randomUUID()}};
+      const draft=ui.staffInvitePending.body,epoch=ui.staffInviteEpoch||0,scope=scopeOf(state);
+      try{
+        const result=await request('/staff-invites',draft,state.csrf);await refresh();
+        ui.staffInvitePending=null;ui.staffInviteTarget=null;values['staff-code-create']={};clearStaffCode();
+        const currentInvite=state?.staffInvites?.find(i=>i.id===result.id);
+        if(state&&scopeOf(state)===scope&&(ui.staffInviteEpoch||0)===epoch&&route()==='pengaturan'&&currentInvite?.status==='active'){
+          ui.staffCodeResult={...currentInvite,code:draft.code};
+          staffCodeTimer=setTimeout(()=>{const region=document.querySelector('.staff-code-result'),focused=region?.contains(document.activeElement);clearStaffCode();region?.remove();if(focused)document.querySelector('#staff-code-create-title')?.focus();notify('Kode melewati batas waktu. Buat kode baru untuk staf yang sama jika diperlukan.');},Math.max(0,Date.parse(currentInvite.expiresAt)-Date.now())+5);
+          ui.staffFocus='.staff-code-result';
+        }
+        notify(ui.staffCodeResult?'Kode masuk dibuat. Bagikan langsung kepada staf bersama alamat masuk.':'Kode sebelumnya sudah tidak aktif atau halaman telah berubah. Periksa daftar staf.');
+      }catch(error){if(error.status>=400&&error.status<500)ui.staffInvitePending=null;throw error;}
+    }
+    else if(kind==='staff-code-revoke'){
+      const r=await request('/staff-invites/'+b.id+'/revoke',{confirmed:b.confirmed==='on'},state.csrf);ui.staffInviteRevoke=null;await refresh();
+      notify(r.status==='used'?'Kode sudah dipakai. Gunakan Nonaktifkan untuk mengakhiri sesi staf.':'Kode masuk sudah tidak aktif. Sesi staf yang sudah masuk tidak diubah.');
+    }
+    else if(kind==='staff-create'){
+      ui.staffLegacyOpen=true;
       const meta=JSON.stringify([b.name.trim(),b.email.trim().toLowerCase(),b.role]);
       if(ui.staffCreateKey&&ui.staffCreateMeta!==meta)throw new Error('Status pembuatan sebelumnya belum pasti. Perbarui daftar dan ulangi rincian staf yang sama.');
       ui.staffCreateKey??=crypto.randomUUID();ui.staffCreateMeta=meta;
@@ -209,9 +239,23 @@ document.addEventListener('click',async event=>{
     const target=action==='staff-new-order'?(document.querySelector('[data-form="kitchen-new"] [name="label"]')||document.querySelector('#staff-order-entry')):document.querySelector('#kitchen-queue-title');
     if(target){target.focus({preventScroll:true});const header=document.querySelector('.staff-shell .topbar');scrollBy({top:target.getBoundingClientRect().top-(header?.getBoundingClientRect().bottom||0)-32,behavior:'instant'});}ui.staffRestoreFocus=null;return;
   }
-  if(action==='show-login'||action==='show-register'){ui.auth=action==='show-login'?'login':'register';ui.error='';render();return;}
+  if(['show-login','show-register','show-staff-code'].includes(action)){ui.auth=action==='show-login'?'login':action==='show-staff-code'?'staff':'register';ui.error='';render();return;}
   if(action==='create-community'||action==='join-community'){ui.joining=action==='join-community';render();return;}
   if(action==='theme'){const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('gerai-theme',theme);}catch{}if(!state)render();return;}
+  if(['staff-invite-review','staff-code-cancel','staff-code-hide','staff-code-copy','staff-code-revoke','staff-code-cancel-revoke'].includes(action)){
+    if(!state||isStaff())return;
+    if(action==='staff-code-copy'){
+      if(!ui.staffCodeResult||Date.parse(ui.staffCodeResult.expiresAt)<=Date.now()){clearStaffCode();render();notify('Kode tidak lagi aktif. Buat kode baru jika diperlukan.');return;}
+      try{await navigator.clipboard.writeText(ui.staffCodeResult.code.slice(0,4)+'-'+ui.staffCodeResult.code.slice(4));notify('Kode disalin. Bagikan bersama alamat masuk staf.');}catch{notify('Pilih dan salin kode yang ditampilkan.');}return;
+    }
+    if(action==='staff-code-hide'||action==='staff-code-cancel'){clearStaffPairing();render();document.querySelector('#staff-code-create-title')?.focus();notify('Kode disembunyikan. Periksa daftar sebelum membuat staf baru; gunakan Buat kode masuk untuk staf yang sama.');return;}
+    if(action==='staff-code-cancel-revoke'){ui.staffInviteRevoke=null;ui.staffCodeHistoryOpen=true;render();return;}
+    if(!connected||busy||pendingAction)return;
+    if(action==='staff-code-revoke'){ui.staffInviteRevoke=b.dataset.id;ui.staffCodeHistoryOpen=true;render();document.querySelector('[data-form="staff-code-revoke"] input[name="confirmed"]')?.focus();return;}
+    if(ui.staffInvitePending){notify('Status kode sebelumnya belum pasti. Ulangi rincian yang sama atau tutup pemeriksaan lalu periksa daftar staf.');return;}
+    const a=state.staff?.find(a=>a.id===b.dataset.id);if(!a||a.disabled)return;
+    clearStaffCode();ui.staffEdit=null;ui.staffInviteTarget={id:a.id,revision:a.revision};render();document.querySelector('[data-form="staff-code-existing"] input[name="confirmed"]')?.focus();return;
+  }
   if(action==='staff-review'){
     const target=state?.staff?.find(a=>a.id===b.dataset.id);if(!target)return;
     ui.staffEdit={id:target.id,revision:target.revision,action:b.dataset.step,idempotencyKey:crypto.randomUUID()};render();document.querySelector('[data-form="staff-update"] input[name="confirmed"]')?.focus();return;
@@ -292,7 +336,7 @@ document.addEventListener('click',async event=>{
   }catch(err){if(err.transport)connected=false;if(err.status===401){clearDisplaySecrets();state=null;ui.auth='login';ui.error='Masuk lagi untuk melanjutkan.';}notify(err.message);}
   finally{if(!state)clearVoice();busy=false;render();}
 });
-window.addEventListener('hashchange',()=>{ui.staffCreateKey=null;ui.staffCreateMeta=null;ui.staffEdit=null;ui.displayEpoch=(ui.displayEpoch||0)+1;ui.displayLink=null;ui.displayCreatePending=null;ui.displayRevoke=null;clearVoice();ui.mobile=false;render();scrollTo(0,0);});
+window.addEventListener('hashchange',()=>{clearStaffPairing();ui.staffCreateKey=null;ui.staffCreateMeta=null;ui.staffEdit=null;ui.displayEpoch=(ui.displayEpoch||0)+1;ui.displayLink=null;ui.displayCreatePending=null;ui.displayRevoke=null;clearVoice();ui.mobile=false;render();scrollTo(0,0);});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&ui.mobile){ui.mobile=false;render();document.querySelector('[data-action="menu"]')?.focus();}});
 window.addEventListener('gerai:connection-lost',()=>{clearVoice();connected=false;});
 window.addEventListener('offline',()=>{clearVoice();connected=false;if(state)render();});

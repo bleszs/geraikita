@@ -1,3 +1,11 @@
+# Gerai Kita - v0.42, kode masuk staf
+
+Pemilik kini dapat membuat staf cukup dengan nama/peran dan kode masuk sekali pakai 15 menit. Akun email/kata sandi lama tetap berlaku. Buka **Pengaturan akun > Akun kasir dan dapur**; staf memilih **Masuk sebagai staf**. [Cara memakai dan batas](docs/STAFF_PAIRING.md) | [TODO](docs/AI_TODO.md) | [bukti rilis](docs/evaluation/pairing-release.json).
+
+**317 tes lulus** (263 Node + 54 browser Chromium), `npm test` exit 0. Data 29 tabel sebelumnya dipertahankan; schema kini 30 tabel. Tidak ada seed bisnis baru pada akun asli atau perubahan model AI.
+
+Jalankan asli: `npm start` > **http://localhost:4174**. Demo terpisah: `npm run start:demo` > **http://127.0.0.1:4180**, [akun demo](docs/DEMO_ACCOUNT.md). Branch kerja tetap **feat/kitchen-capacity-and-waste**; `main` terpisah. Tahap berikutnya adalah deployment/HTTPS, penyimpanan SQLite persisten dan uji antarperangkat. Catatan versi berikut adalah riwayat.
+
 # Gerai Kita — v0.41, perbaikan F&B
 
 Branch **feat/kitchen-capacity-and-waste** memuat pembaruan `rahasiagelap2.0` sampai **fe073d0**, status menu kasir tanpa jumlah porsi, identitas pelaku pada catatan baru, dan demo pemilik/kasir/dapur. [Perubahan dan batas](docs/FNB_OPERATIONS.md) · [TODO](docs/AI_TODO.md) · [bukti rilis](docs/evaluation/fnb-release.json).

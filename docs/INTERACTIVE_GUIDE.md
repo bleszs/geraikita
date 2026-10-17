@@ -1,3 +1,7 @@
+# Panduan v0.42
+
+Panduan versi **8** mencakup **18 topik / 93 langkah**: tambahan tiga langkah pengelolaan kode staf pada pemilik dan satu langkah masuk kode pada pengunjung. Akun staf mendapat penjelasan Akun saya yang sesuai dengan ada/tidaknya kata sandi. Tur tetap menggunakan panah, Lanjut/Kembali/Lewati, tidak membuat staf/kode atau mengirim transaksi otomatis, serta menjaga progress per akun/peran/revisi. [Alur kode masuk](STAFF_PAIRING.md). Catatan versi berikut adalah riwayat.
+
 # Panduan v0.41
 
 Guide versi **7**, tetap **18 topik / 89 langkah**. Petunjuk kasir menjelaskan status Hampir habis dan Habis; tur tetap berpanah dengan Lanjut/Kembali/Lewati. Pembaruan tombol/keadaan kosong fe073d0 tidak menghilangkan dukungan role atau perlindungan tur manual. Bagian berikut mencatat versi sebelumnya.

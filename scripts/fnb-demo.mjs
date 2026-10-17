@@ -65,5 +65,5 @@ export function buildFnbDemo(directory){
 export function prepareFnbDemo(directory=fnbDemoDirectory()){
  const folder=path.resolve(directory),file=path.join(folder,'fnb-account.json');if(!existsSync(file))return buildFnbDemo(folder);
  const manifest=JSON.parse(readFileSync(file,'utf8'));assert.equal(manifest.kind,'user-requested-synthetic-fnb-demo-v1');assert.equal(path.resolve(manifest.filename),path.join(folder,'history','gerai-kita-demo.sqlite'));assert(existsSync(manifest.filename),'Database demo hilang; tidak dibuat ulang otomatis.');
- const store=createStore(manifest.filename);try{const identity=createIdentity(store);for(const account of Object.values(manifest.accounts)){const s=identity.login(account);store.run('DELETE FROM sessions WHERE id=?',s.id);}assert.equal(store.get('SELECT COUNT(*) AS n FROM accounts').n,3);}finally{store.close();}return manifest;
+ const store=createStore(manifest.filename);try{const identity=createIdentity(store);for(const account of Object.values(manifest.accounts)){const s=identity.login(account);store.run('DELETE FROM sessions WHERE id=?',s.id);}assert.ok(store.get('SELECT COUNT(*) AS n FROM accounts').n>=3);}finally{store.close();}return manifest;
 }

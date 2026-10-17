@@ -1,3 +1,11 @@
+# Perubahan terbaru v0.42
+
+Kode masuk staf sudah tersedia: pemilik membuat nama/peran atau memilih staf yang sudah ada, kemudian membagikan kode sekali pakai 15 menit. Email/password lama tetap dapat digunakan. Kode tertunda bisa dicabut; Nonaktifkan mengakhiri sesi. Panduan berpanah menyesuaikan jenis akun dan mencakup 18 topik/93 langkah.
+
+**317 tes lulus**, 263 Node + 54 browser, npm test exit 0. Backup/migrasi asli dan kedua demo mempertahankan seluruh nilai 29 tabel lama; schema menjadi 30 tabel dengan kredensial nullable dan staff_invites kosong. Runtime 18 pemeriksaan anonim dan tiga akun demo berhasil, tanpa perubahan data bisnis.
+
+[Detail dan batas](STAFF_PAIRING.md) | [bukti rilis](evaluation/pairing-release.json) | [review UI](evaluation/PAIRING_UI_REVIEW.md) | [desain](evaluation/PAIRING_DESIGN_CHECK.md). Model AI tidak berubah; deployment dan uji antarperangkat menjadi berikutnya. Catatan versi di bawah adalah riwayat.
+
 # Perubahan terbaru v0.41
 
 Pembaruan rahasiagelap2.0 sampai fe073d0 digabung. Kasir mendapat status menu tanpa jumlah porsi; ambang berasal dari bahan yang diisi pemilik dan memperhitungkan cadangan. Catatan baru menyimpan ID/nama/peran/revisi pelaku dari akun, sementara histori lama tetap tidak diketahui. Demo terpisah kini mempunyai pemilik/kasir/dapur, 9 bahan, 7 menu dan empat antrean aktif.

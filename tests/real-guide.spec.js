@@ -23,12 +23,12 @@ test('guest gets optional next/back/skip instructions without submitting registr
   await page.setViewportSize({width:320,height:900});await capture(page,'guide-welcome-mobile');
   await page.setViewportSize({width:1440,height:1050});
   await welcome(page).getByRole('button',{name:'Mulai panduan',exact:true}).click();
-  await expect(tour(page)).toContainText('Langkah 1 dari 5');await expect(tour(page).getByRole('heading')).toBeFocused();
+  await expect(tour(page)).toContainText('Langkah 1 dari 6');await expect(tour(page).getByRole('heading')).toBeFocused();
   await expect(tour(page)).toContainText('Kenalan dulu dengan Gerai Kita');
   await page.setViewportSize({width:320,height:900});await expect(page.locator('.guide-arrow')).toBeVisible();await capture(page,'guide-arrow-guest-intro-mobile');
   await page.setViewportSize({width:1440,height:1050});
   await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();await expect(tour(page)).toContainText('Isi identitas usahamu');
-  await tour(page).getByRole('button',{name:'Kembali',exact:true}).click();await expect(tour(page)).toContainText('Langkah 1 dari 5');
+  await tour(page).getByRole('button',{name:'Kembali',exact:true}).click();await expect(tour(page)).toContainText('Langkah 1 dari 6');
   await tour(page).getByRole('button',{name:'Lewati panduan'}).click();await expect(tour(page)).toHaveCount(0);
   await expect(page.getByLabel('Nama usaha',{exact:true})).toHaveValue('Nama belum dikirim');await expect(page.getByLabel('Email',{exact:true})).toHaveValue('not-submitted@example.test');
   expect(posts).toBe(0);await page.reload();await expect(welcome(page)).toHaveCount(0);
@@ -125,7 +125,7 @@ test('blocked guide storage still allows starting, advancing and skipping with a
   await tour(page).getByRole('button',{name:'Lewati panduan'}).click();await expect(welcome(page)).toHaveCount(0);await expect(tour(page)).toHaveCount(0);
 });
 
-test('all eighteen topics and eighty-nine steps run end to end without posting business actions',async({page})=>{
+test('all eighteen topics and ninety-three steps run end to end without posting business actions',async({page})=>{
   await register(page);const before=await state(page);let posts=0;page.on('request',r=>{if(r.method()==='POST')posts++;});
   let visited=0;
   for(const topic of GUIDE_TOPICS){
@@ -136,7 +136,7 @@ test('all eighteen topics and eighty-nine steps run end to end without posting b
     }
     await expect(tour(page)).toHaveCount(0);
   }
-  expect(visited).toBe(89);expect(posts).toBe(0);
+  expect(visited).toBe(93);expect(posts).toBe(0);
   const after=await state(page);for(const key of ['stock','catalog','menu','transactions','stockReceipts','offers','transfers'])expect(after[key]).toEqual(before[key]);
 });
 

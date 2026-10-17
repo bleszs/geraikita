@@ -1,0 +1,112 @@
+{
+  "version": "0.42.0",
+  "checkedAt": "2026-10-17T17:36:13.988Z",
+  "branch": "feat/kitchen-capacity-and-waste",
+  "sourceBaseCommit": "459a9d11fffeaeab3d196a7484d9ec63a9d6f5c3",
+  "mainCommit": "8f9672ddc651f3ae4714089baf842aabd2f82148",
+  "mainUnchanged": true,
+  "tests": {
+    "command": "$env:PLAYWRIGHT_CHANNEL='chromium'; $env:CAPTURE_REVIEW='1'; npm test",
+    "exitCode": 0,
+    "exitEvidence": "Unified exec session 27846 completed normally with exit_code 0; full counters independently checked in log.",
+    "nodePassed": 263,
+    "browserPassed": 54,
+    "uniquePassed": 317,
+    "failed": 0,
+    "browser": "Playwright bundled Chromium, headless, one worker",
+    "log": "data/pairing-npm-test-final.log",
+    "logSha256": "20635bd179d06f614bbd67b57448539d541fe1632ef1c020a1e588d33692dd67",
+    "isolation": "Temporary Node databases and Playwright :memory: database at port 4175; no production seeds",
+    "previousAttempts": [
+      {
+        "log": "data/pairing-domain-first.log",
+        "passed": 8,
+        "failed": 1,
+        "reason": "Legacy staff migration test expected one fewer table; expected count updated for staff_invites."
+      },
+      {
+        "log": "data/pairing-browser-first.log",
+        "passed": 15,
+        "failed": 1,
+        "reason": "Guest guide test expected five steps; staff-code introduction makes six."
+      },
+      {
+        "log": "data/pairing-npm-test.log",
+        "nodePassed": 260,
+        "nodeFailed": 3,
+        "exitCode": 1,
+        "reason": "Display and usage migration/export tests had fixed table counts from schema29. Preservation assertions retained; counts now include staff_invites."
+      }
+    ]
+  },
+  "runtime": {
+    "report": "docs/evaluation/pairing-runtime.json",
+    "reportSha256": "fefc06709d26decfb9bdb75920b9544d126155ef309bdc3d957dbe7042f3d12b",
+    "anonymousChecks": 18,
+    "demoRolesChecked": 3,
+    "demoBusinessDataUnchanged": true,
+    "demoAsOf": "2026-10-17",
+    "demoDatabaseRetained": "data/demo/fnb-2026-10-17/history/gerai-kita-demo.sqlite"
+  },
+  "preservation": [
+    {
+      "report": "docs/evaluation/pairing-data-preservation.json",
+      "sha256": "d335187e54e927c1acf8ed94b3ad1884ea417e9d23e5966fe72f9e68a36ed508",
+      "passed": true
+    },
+    {
+      "report": "docs/evaluation/pairing-fnb-demo-preservation.json",
+      "sha256": "2f7df87638750ddd920ffc08dd5b2766c032310a52977370b642d8469bc2d0c1",
+      "passed": true
+    },
+    {
+      "report": "docs/evaluation/pairing-legacy-demo-preservation.json",
+      "sha256": "505b90042b9ec202d8a1245daf229d00259a511efff2b54627dcfcb291abacca",
+      "passed": true
+    }
+  ],
+  "schema": {
+    "tables": 30,
+    "newTable": "staff_invites",
+    "newTableInitiallyEmpty": true,
+    "credentialColumnsNullableTogether": [
+      "email",
+      "password_hash",
+      "salt"
+    ],
+    "previousTableValuesPreserved": 29,
+    "migration": "Transactional accounts table rebuild plus additive invite table, backed up before applying"
+  },
+  "designHashes": {
+    "DESIGN.md": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    ".impeccable/design.json": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f"
+  },
+  "ui": {
+    "review": "docs/evaluation/PAIRING_UI_REVIEW.md",
+    "designCheck": "docs/evaluation/PAIRING_DESIGN_CHECK.md",
+    "captures": ".impeccable/review/pairing",
+    "detector": "data/pairing-detector.json",
+    "detectorRuns": 1,
+    "detectorExitCode": 2,
+    "detectorSummary": {
+      "findings": 113,
+      "advisories": 112,
+      "creamPaletteWarnings": 1,
+      "interpretation": "User-pinned cream palette and inherited typography/radius/color advisories recorded; canon preserved."
+    },
+    "scope": "Staff pairing login, owner creation/history and code-only account page; visual/usability/integration, not production security, deployment or field pilot",
+    "ownInspectionRounds": 2,
+    "disposition": "ship",
+    "designDocumentationComplete": true,
+    "openMaterialFindings": 0,
+    "reviewSha256": "529b46ebbc6fd6918723a4a139a0dabda043a9dd29b76e46c79e49f950adae88",
+    "designCheckSha256": "1dd2e8c8913ee4067622690e3f83d1d63a1711394daec8603d33694bd8f384bf"
+  },
+  "limits": [
+    "Local loopback only; deployment/HTTPS/cookie/origin/host/persistent volume and cross-device verification pending",
+    "Rate limit is per connection source in process memory, not distributed or proxy-aware",
+    "No model, weights, benchmark/protocol or live business data changes; no two-second voice/field-accuracy claim",
+    "Codes cannot be recovered after hiding/reload; issue new code for same staff; copied/shared code is outside UI memory cleanup",
+    "Aging configuration, stock coverage days, cashier voice/direct-sale flow, fuzzy matching and field pilot remain open"
+  ]
+}
