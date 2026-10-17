@@ -89,6 +89,36 @@ test('legacy multi-item tasks without per-item usage refuse item void; migration
  assert.equal(tea.usage,null);assert.throws(()=>legacy.kitchen.change(s,o.id,{action:'void',taskId:tea.id,revision:order.revision,idempotencyKey:randomUUID()}),/Pesanan lama/);
 });
 
+test('etaMinutes tracks remaining work and decreases as tasks advance through phases',t=>{
+ const {s,svc}=fresh(t);configure(svc,s,'nasi',8,'dapur',5);// 8 min active, 5 min passive
+ const o=enter(svc,s,'ETA test',[{id:'nasi',qty:2}]);
+ let order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
+ assert.equal(order.tasks[0].etaMinutes,(8+5)*2,'queued: (active+passive)×qty');
+ assert.equal(order.etaMinutes,(8+5)*2,'order ETA=task ETA');
+ step(svc,s,o.id,'start',order.tasks[0].id);
+ order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
+ assert.ok(order.tasks[0].etaMinutes<=(8+5)*2,'active ETA ≤ queued ETA');
+ assert.ok(order.tasks[0].etaMinutes>=0,'ETA non-negative');
+ step(svc,s,o.id,'passive',order.tasks[0].id);
+ order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
+ assert.ok(order.tasks[0].etaMinutes<=5*2,'passive ETA ≤ passive_minutes×qty');
+ step(svc,s,o.id,'ready',order.tasks[0].id);
+ order=svc.kitchen.snapshot(s).orders.find(x=>x.id===o.id);
+ assert.equal(order.tasks[0].etaMinutes,null,'ready task ETA=null');
+ assert.equal(order.etaMinutes,0,'all ready: order ETA=0');
+});
+test('etaMinutes accounts for tasks ahead in queue at single-worker station',t=>{
+ const {s,svc}=fresh(t);configure(svc,s,'nasi',8,'dapur',5);// default cooks=1
+ const o1=enter(svc,s,'Meja A',[{id:'nasi',qty:1}]),o2=enter(svc,s,'Meja B',[{id:'nasi',qty:1}]);
+ const snap=svc.kitchen.snapshot(s);
+ const firstId=snap.next.find(n=>n.station==='dapur').taskIds[0];
+ const first=snap.orders.find(o=>o.tasks.some(t=>t.id===firstId));
+ const second=snap.orders.find(o=>[o1.id,o2.id].includes(o.id)&&o.id!==first.id);
+ assert.equal(first.tasks[0].etaMinutes,8+5,'first task: 8 active + 5 passive');
+ assert.equal(second.tasks[0].etaMinutes,8+8+5,'second waits for first active phase: 8+8+5');
+ assert.equal(first.etaMinutes,first.tasks[0].etaMinutes);
+ assert.equal(second.etaMinutes,second.tasks[0].etaMinutes);
+});
 test('HTTP: owner sets capacity; kitchen voids with full waste only; cashier cannot void',async t=>{
  const app=createApp({filename:':memory:',extractor:{status:async()=>({provider:'rules'})},transcriber:{status:async()=>({available:false})}});await new Promise(r=>app.server.listen(0,'127.0.0.1',r));t.after(()=>app.close());const base='http://127.0.0.1:'+app.server.address().port;
  async function auth(path,body){const r=await fetch(base+'/api/auth/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});assert.ok(r.ok);return {data:await r.json(),cookie:r.headers.get('set-cookie').split(';')[0]};}

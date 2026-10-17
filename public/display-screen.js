@@ -16,7 +16,7 @@ function render(data){
   const next=JSON.stringify([data.orders,data.hasMore]);
   if(next!==lastOrders){
     lastOrders=next;
-    const lane=(title,orders,ready)=>`<section class="customer-lane"><h2>${title}</h2>${orders.length?`<ul>${orders.map(o=>`<li><strong class="customer-code">#${escape(o.code)}</strong><span class="${ready?'ready-label':'waiting-label'}">${ready?'Silakan ke petugas':o.status==='queued'?'Pesanan diterima':'Sedang disiapkan'}</span></li>`).join('')}</ul>`:`<p class="customer-empty">${ready?'Belum ada pesanan siap.':'Belum ada pesanan yang menunggu.'}</p>`}</section>`;
+    const lane=(title,orders,ready)=>`<section class="customer-lane"><h2>${title}</h2>${orders.length?`<ul>${orders.map(o=>`<li><strong class="customer-code">#${escape(o.code)}</strong><span class="${ready?'ready-label':'waiting-label'}">${ready?'Silakan ke petugas':o.status==='queued'?'Pesanan diterima':'Sedang disiapkan'}</span>${!ready&&o.etaMinutes>0?`<span class="eta-label">~${o.etaMinutes} mnt</span>`:''}</li>`).join('')}</ul>`:`<p class="customer-empty">${ready?'Belum ada pesanan siap.':'Belum ada pesanan yang menunggu.'}</p>`}</section>`;
     main.innerHTML=`<div class="customer-board">${lane('Siap disajikan',data.orders.filter(o=>o.status==='ready'),true)}${lane('Sedang disiapkan',data.orders.filter(o=>o.status!=='ready'),false)}</div>${data.hasMore?'<p>Antrean lebih panjang dari tampilan layar. Tanyakan kode pesanan kepada petugas.</p>':''}`;
   }
   retries=0;retry.hidden=true;message('Terhubung · diperbarui '+new Date(data.updatedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),'live');

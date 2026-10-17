@@ -27,6 +27,40 @@ function taskUsage(o,t){
   if(t.usage_json)return JSON.parse(t.usage_json);
   return JSON.parse(o.items).length===1?JSON.parse(o.usage_json):null;
 }
+// Simulates the per-station queue and returns a Map<taskId, fractional minutes to completion>.
+// active/passive/queued must already exclude voided tasks and closed-order tasks.
+function estimateWaits(stations,active,passive,queued,nowMs){
+  const eta=new Map();
+  for(const st of stations){
+    const wFree=[];const eFree=[];
+    for(const t of active.filter(x=>x.station===st.station)){
+      const ph=t.phase_started_at?Math.max(0,(nowMs-Date.parse(t.phase_started_at))/60000):0;
+      const rem=Math.max(0,t.minutes*t.qty-ph);
+      wFree.push(rem);eta.set(t.id,rem+t.passive_minutes*t.qty);
+    }
+    for(const t of passive.filter(x=>x.station===st.station)){
+      const ph=t.phase_started_at?Math.max(0,(nowMs-Date.parse(t.phase_started_at))/60000):0;
+      const rem=Math.max(0,t.passive_minutes*t.qty-ph);
+      eFree.push(rem);eta.set(t.id,rem);
+    }
+    while(wFree.length<st.cooks)wFree.push(0);
+    if(st.equipment!==null)while(eFree.length<st.equipment)eFree.push(0);
+    wFree.sort((a,b)=>a-b);eFree.sort((a,b)=>a-b);
+    for(const t of queued.filter(x=>x.station===st.station)){
+      wFree.sort((a,b)=>a-b);
+      const start=wFree[0],activeEnd=start+t.minutes*t.qty;
+      let taskEnd=activeEnd;
+      if(t.passive_minutes>0){
+        eFree.sort((a,b)=>a-b);
+        const eStart=st.equipment!==null?Math.max(activeEnd,eFree[0]):activeEnd;
+        taskEnd=eStart+t.passive_minutes*t.qty;
+        if(st.equipment!==null)eFree[0]=taskEnd;
+      }
+      wFree[0]=activeEnd;eta.set(t.id,taskEnd);
+    }
+  }
+  return eta;
+}
 // Validates an owner-entered waste map against reserved units; omitted products count as fully used.
 function wasteOf(reserved,given){
   if(given===undefined||given===null)return {...reserved};
@@ -59,7 +93,8 @@ export function createKitchen(store,{available,stockChanged}){
     // Each free cook slot at a station receives the next task in SJF+aging order.
     const next=stations.filter(c=>open.some(t=>t.station===c.station)).map(c=>{const taskIds=waiting.filter(t=>t.station===c.station).slice(0,Math.max(0,c.cooks-c.active)).map(t=>t.id);return {station:c.station,taskId:taskIds[0]||null,taskIds};});
     const menus=store.menus(s).map(m=>({id:m.id,name:m.name,configured:settings.some(x=>x.menuId===m.id),portions:Math.max(0,Math.min(...Object.entries(m.recipe).map(([p,q])=>Math.floor(available(s,p)/units(q)))))}));
-    const orders=rows.map(o=>({...o,items:JSON.parse(o.items),usage:JSON.parse(o.usage_json),tasks:tasks.filter(t=>t.order_id===o.id).map(t=>({...t,usage:taskUsage(o,t),waste:t.waste_json?JSON.parse(t.waste_json):null}))}));
+    const nowMs=Date.now(),taskEtas=estimateWaits(stations,open.filter(t=>t.status==='active'),open.filter(t=>t.status==='passive'),waiting,nowMs);
+    const orders=rows.map(o=>{const orderTasks=tasks.filter(t=>t.order_id===o.id).map(t=>({...t,usage:taskUsage(o,t),waste:t.waste_json?JSON.parse(t.waste_json):null,etaMinutes:taskEtas.has(t.id)?Math.round(taskEtas.get(t.id)):null}));const pending=orderTasks.filter(t=>!['voided','ready'].includes(t.status));return{...o,items:JSON.parse(o.items),usage:JSON.parse(o.usage_json),tasks:orderTasks,etaMinutes:closed.includes(o.status)?null:pending.length===0?0:Math.max(...pending.map(t=>t.etaMinutes??0))};});
     // Pending web catalog requests share the kitchen revision so SSE clients see them immediately.
     const requests=pendingRequests(store,s);
     return {settings,stations,orders,next,menus,requests,recentActions:all('SELECT idem FROM kitchen_actions WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC',...scope(s)).map(x=>x.idem),revision:hash([rows.map(o=>[o.id,o.revision]),menus,settings,stations,next,requests.map(r=>r.id)])};

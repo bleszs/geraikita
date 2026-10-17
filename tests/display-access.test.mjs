@@ -31,7 +31,7 @@ test('public projection contains only order code/status, hides labels, menu/stoc
  const {store,s,access}=fixture(t),service=createService(store),state=service.bootstrap(s),m=state.menu[0];
  service.saveMenu(s,m.id,{...m,catalogRevision:state.catalogRevision,preparation:{minutes:5,passiveMinutes:1,station:'dapur'}});
  const o=service.kitchen.create(s,{label:'Nama pelanggan pribadi',channel:'dine_in',items:[{id:m.id,qty:1,note:'Catatan pribadi'}],catalogRevision:service.bootstrap(s).catalogRevision,idempotencyKey:randomUUID()});
- const first=access.snapshot(s);assert.deepEqual(first.orders,[{code:o.id.slice(0,8).toUpperCase(),status:'queued'}]);assert.deepEqual(Object.keys(first).sort(),['hasMore','orders','updatedAt']);
+ const first=access.snapshot(s);const fo=first.orders[0];assert.equal(fo.code,o.id.slice(0,8).toUpperCase());assert.equal(fo.status,'queued');assert.ok(fo.etaMinutes===null||typeof fo.etaMinutes==='number','orders include etaMinutes');assert.equal(first.orders.length,1);assert.deepEqual(Object.keys(first).sort(),['hasMore','orders','updatedAt']);
  assert.equal(JSON.stringify(first).includes('pribadi'),false);assert.equal(JSON.stringify(first).includes(m.name),false);assert.deepEqual(access.snapshot(store.session('budi',s.workspace_id)).orders,[]);
  const task=service.kitchen.snapshot(s).orders[0].tasks[0];service.kitchen.change(s,o.id,{action:'start',taskId:task.id,revision:1,idempotencyKey:randomUUID()});assert.equal(access.snapshot(s).orders[0].status,'preparing');
  service.kitchen.change(s,o.id,{action:'ready',taskId:task.id,revision:2,idempotencyKey:randomUUID()});assert.equal(access.snapshot(s).orders[0].status,'ready');
