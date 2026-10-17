@@ -15,6 +15,17 @@ test('recovery bypasses a stale cached startup error and preserves device drafts
 const password='Only-for-browser-tests-775';
 const uniqueEmail=()=>crypto.randomUUID()+'@example.test';
 
+test('login and registration can switch and remember light or dark mode',async({page})=>{
+  await page.goto('/');
+  const theme=page.getByRole('button',{name:'Aktifkan mode gelap'});
+  await expect(theme).toBeVisible();await theme.click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+  await expect(page.getByRole('button',{name:'Aktifkan mode terang'})).toBeVisible();
+  await page.getByRole('button',{name:'Masuk',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Aktifkan mode terang'})).toBeVisible();
+  await page.reload();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+});
+
 test('restock distinguishes an untrained model from an unavailable estimate without inventing metrics',async({page})=>{
   await register(page);await addIngredient(page);await page.goto('/#restock');await expect(page.locator('#main table')).toContainText('Model terlatih belum aktif');await expect(page.locator('#main table')).toContainText('Belum cukup histori');await expect(page.locator('#main table')).toContainText('Estimasi belum tersedia');expect((await state(page)).recommendations[0].trainedModel.status).toBe('not_trained');
   await page.setViewportSize({width:1440,height:1000});await capture(page,'forecast-status-desktop');await page.setViewportSize({width:320,height:900});await capture(page,'forecast-status-mobile');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

@@ -34,9 +34,35 @@ test('guest gets optional next/back/skip instructions without submitting registr
   expect(posts).toBe(0);await page.reload();await expect(welcome(page)).toHaveCount(0);
 });
 
+test('a newly registered account autoplays each page guide once and keeps help only in the top navbar',async({page})=>{
+  await page.goto('/');await page.getByLabel('Nama usaha',{exact:true}).fill('Usaha onboarding baru');await page.getByLabel('Nama kelompok',{exact:true}).fill('Kelompok onboarding');
+  await page.getByLabel('Email',{exact:true}).fill(crypto.randomUUID()+'@example.test');await page.getByLabel('Kata sandi',{exact:true}).fill('Browser-guide-only-456');
+  await page.getByRole('button',{name:'Daftarkan usaha',exact:true}).click();
+  await expect(tour(page)).toContainText('Masukkan pesanan yang benar-benar diterima');
+  await expect(page.locator('.sidebar a[href="#panduan"]')).toBeHidden();await expect(page.getByRole('button',{name:'Buka panduan penggunaan'})).toBeVisible();
+  await tour(page).getByRole('button',{name:'Lewati panduan'}).click();await page.goto('/#ringkasan');
+  await expect(tour(page)).toContainText('Selamat datang di Gerai Kita');await tour(page).getByRole('button',{name:'Lewati panduan'}).click();
+  await page.goto('/#dapur');await expect(tour(page)).toHaveCount(0);
+  const logout=page.getByRole('button',{name:'Keluar akun'});await expect(logout).toHaveCSS('background-color','rgb(163, 69, 43)');await expect(logout).toHaveCSS('color','rgb(252, 250, 246)');
+  await page.getByRole('button',{name:'Ubah tema'}).click();await expect(logout).toHaveCSS('background-color','rgb(229, 160, 127)');await expect(logout).toHaveCSS('color','rgb(36, 31, 28)');
+  await page.getByRole('button',{name:'Buka panduan penggunaan'}).click();await expect(page).toHaveURL(/#panduan$/);
+});
+
+test('summary controls and empty kitchen queue receive tightly sized spotlights',async({page})=>{
+  await register(page);
+  for(let i=0;i<9;i++)await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
+  for(const selector of ['[data-action="refresh"]','[data-guide-open]']){
+    await expect(page.locator(selector)).toHaveClass(/guide-target/);
+    await expect.poll(()=>page.evaluate(selector=>{const node=document.querySelector(selector),spot=document.querySelector('.guide-spotlight');if(!node||!spot)return Number.POSITIVE_INFINITY;const target=node.getBoundingClientRect();return Math.max(Math.abs(Number(spot.getAttribute('width'))-(target.width+4)),Math.abs(Number(spot.getAttribute('height'))-(target.height+4)));},selector)).toBeLessThanOrEqual(1);
+    if(selector.includes('refresh'))await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
+  }
+  await tour(page).getByRole('button',{name:'Selesai',exact:true}).click();await page.goto('/#dapur');await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
+  await expect(page.locator('#kitchen-queue-title')).toHaveClass(/guide-target/);expect((await page.locator('.guide-spotlight').getAttribute('height'))|0).toBeGreaterThan(20);
+});
+
 test('arrow introduction visits every main feature without creating transactions and stays readable on phones',async({page})=>{
   await register(page);const before=await state(page);let posts=0;page.on('request',r=>{if(r.method()==='POST')posts++;});
-  await welcome(page).getByRole('button',{name:'Mulai panduan',exact:true}).click();
+  if(await welcome(page).isVisible())await welcome(page).getByRole('button',{name:'Mulai panduan',exact:true}).click();
   await expect(tour(page)).toContainText('Selamat datang di Gerai Kita');
   await expect(page.locator('.guide-arrow')).toBeVisible();
   await page.setViewportSize({width:1440,height:1050});await capture(page,'guide-arrow-intro-desktop');
@@ -56,10 +82,10 @@ test('arrow introduction visits every main feature without creating transactions
 });
 
 test('context help explains an open editor without clearing its input and supports pause/resume after reload',async({page})=>{
-  await register(page);await welcome(page).getByRole('button',{name:'Lewati',exact:true}).click();await page.goto('/#stok');
+  await register(page);if(await tour(page).isVisible())await tour(page).getByRole('button',{name:'Lewati panduan'}).click();await page.goto('/#stok');
   await page.getByRole('button',{name:'Tambah bahan',exact:true}).click();await page.getByLabel('Nama bahan',{exact:true}).fill('Isian bahan belum disimpan');
   let posts=0;page.on('request',r=>{if(r.method()==='POST')posts++;});
-  await page.getByRole('button',{name:'Panduan halaman ini',exact:true}).click();await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
+  await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
   await expect(page.getByLabel('Nama bahan',{exact:true})).toHaveValue('Isian bahan belum disimpan');
   await tour(page).getByRole('button',{name:'Tutup sementara',exact:true}).click();await expect(tour(page)).toHaveCount(0);expect(posts).toBe(0);
   await page.reload();await page.getByRole('button',{name:'Buka panduan penggunaan',exact:true}).click();
@@ -115,7 +141,7 @@ test('all fourteen topics and sixty-seven steps run end to end without posting b
 });
 
 test('arrow tracks the real target after resize and scrolling, and disappears after skip',async({page})=>{
-  await register(page);await welcome(page).getByRole('button',{name:'Mulai panduan',exact:true}).click();
+  await register(page);if(await welcome(page).isVisible())await welcome(page).getByRole('button',{name:'Mulai panduan',exact:true}).click();
   await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();await tour(page).getByRole('button',{name:'Lanjut',exact:true}).click();
   for(const viewport of [{width:1440,height:1000},{width:320,height:900}]){
     await page.setViewportSize(viewport);await expect(page.locator('.guide-arrow')).toBeVisible();

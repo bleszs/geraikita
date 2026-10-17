@@ -18,7 +18,7 @@ const voice=createVoiceCapture({onChange(){ui.voice=voice.state;if(ui.kitchenHan
 ui.voice=voice.state;
 function clearVoice(){kitchenVoiceEpoch++;clearTimeout(kitchenVoiceTimer);ui.kitchenHandsfree=false;voice.reset();ui.voice=voice.state;}
 const route=()=>routes.some(r=>r[0]===location.hash.slice(1))?location.hash.slice(1):'dapur';
-const guide=createGuideController({getContext:()=>({scope:state?scopeOf(state):'guest',signedIn:!!state,route:route()}),navigate:page=>{location.hash=page;},notify,escape:e});
+const guide=createGuideController({getContext:()=>({scope:state?scopeOf(state):'guest',signedIn:!!state,route:route(),newAccount:Boolean(ui.guideAutoplayRequested||(state?.account?.createdAt&&Date.now()-new Date(state.account.createdAt).getTime()<120000))}),consumeNewAccount:()=>{ui.guideAutoplayRequested=false;},navigate:page=>{location.hash=page;},notify,escape:e});
 function notify(message){const box=document.querySelector('#toast');box.textContent=message;box.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>box.hidden=true,7000);}
 function showUpdatePrompt(){
   if(!registration?.waiting || document.querySelector('[data-action="update-app"]'))return;
@@ -119,7 +119,7 @@ document.addEventListener('submit',async event=>{
   const f=event.target.closest('[data-form]');if(!f)return;event.preventDefault();if(busy)return;const kind=f.dataset.form,b=Object.fromEntries(new FormData(f));let payload,error='';
   if(kind==='auth'){
     busy=true;f.querySelector('button[type=submit]').disabled=true;
-    try{const result=await request(ui.auth==='register'?'/auth/register':'/auth/login',b);values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
+    try{const registering=ui.auth==='register',result=await request(registering?'/auth/register':'/auth/login',b);ui.guideAutoplayRequested=registering;values={};ui.error='';await adopt(result);}catch(err){ui.error=err.message;}finally{busy=false;render();}return;
   }
   if(!state||!connected||pendingAction||(kind==='extract'&&voice.active))return;busy=true;lockControls();
   try{
@@ -161,7 +161,7 @@ document.addEventListener('click',async event=>{
   const b=event.target.closest('[data-action]');if(!b)return;event.preventDefault();const action=b.dataset.action;if(action==='kitchen-listen'&&ui.kitchenHandsfree){clearVoice();render();return;}if(busy)return;
   if(action==='show-login'||action==='show-register'){ui.auth=action==='show-login'?'login':'register';ui.error='';render();return;}
   if(action==='create-community'||action==='join-community'){ui.joining=action==='join-community';render();return;}
-  if(action==='theme'){const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('gerai-theme',theme);}catch{}return;}
+  if(action==='theme'){const theme=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;try{localStorage.setItem('gerai-theme',theme);}catch{}if(!state)render();return;}
   if(action==='display-copy'){try{await navigator.clipboard.writeText(ui.displayLink?.url||'');notify('Tautan layar disalin. Bagikan hanya untuk layar yang diizinkan.');}catch{notify('Salin tautan yang ditampilkan.');}return;}
   if(action==='display-hide-link'){ui.displayLink=null;render();document.querySelector('#display-management-title')?.focus();return;}
   if(action==='display-revoke'){ui.displayRevoke=b.dataset.id;render();document.querySelector('[data-action="display-confirm-revoke"]')?.focus();return;}

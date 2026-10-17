@@ -2,13 +2,13 @@ const clamp=(value,min,max)=>Math.max(min,Math.min(value,Math.max(min,max)));
 
 // Viewport geometry only: no DOM, navigation or application data.
 export function guideLayout(target,panel,viewport){
-  const {width,height}=viewport,margin=12,gap=38;
+  const {width,height}=viewport,margin=12,gap=38,padding=viewport.focusPadding??6;
   const top=viewport.topInset??12,bottom=height-(viewport.bottomInset??12);
   const panelWidth=Math.min(panel.width,width-2*margin);
   const center=()=>({x:(width-panelWidth)/2,y:top,width:panelWidth,maxHeight:Math.max(100,bottom-top),side:'none',focus:null,arrow:null});
   if(!target||target.right<=margin||target.left>=width-margin||target.bottom<=margin||target.top>=height-margin)return center();
-  const left=clamp(target.left-6,margin,width-margin),right=clamp(target.right+6,margin,width-margin);
-  const y1=clamp(target.top-6,margin,height-margin),y2=clamp(target.bottom+6,margin,height-margin);
+  const left=clamp(target.left-padding,margin,width-margin),right=clamp(target.right+padding,margin,width-margin);
+  const y1=clamp(target.top-padding,margin,height-margin),y2=clamp(target.bottom+padding,margin,height-margin);
   if(right<=left||y2<=y1)return center();
   const focus={left,top:y1,right,bottom:y2,width:right-left,height:y2-y1};
   const midX=(left+right)/2,midY=(y1+y2)/2;
