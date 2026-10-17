@@ -1,0 +1,175 @@
+{
+  "checkedAt": "2026-10-17T18:50:04.943540+00:00",
+  "scope": "Additional real local HTTP/model acceptance, not a new accuracy benchmark or cloud Qwen activation.",
+  "script": "scripts/verify-ai-runtime.mjs",
+  "scriptSha256": "308a1ddec91369afc352a0dfca29461ba1b33ff640d86f946c0873b7a60e13de",
+  "regressionSuiteUnchanged": {
+    "lastCompletedNodePassed": 270,
+    "lastCompletedBrowserPassed": 54,
+    "lastCompletedTotalPassed": 324,
+    "rerunForThisScriptOnlyChange": false
+  },
+  "cloudCapacityObserved": {
+    "requestedAccountMatched": true,
+    "isTrialing": true,
+    "maxMemoryGB": 1,
+    "qwenCloudAvailable": false
+  },
+  "attempts": {
+    "initialSetupAttempt": {
+      "report": "data/cloud-verification/ai-runtime-local-first.json",
+      "reportSha256": "6a775896c046e2f3bc395b1cb6113357e9fd8d1dbed4a997cf5866d18a67b280",
+      "exitCode": 1,
+      "result": {
+        "checkedAt": "2026-10-17T18:48:46.018Z",
+        "passed": false,
+        "database": ":memory:",
+        "scope": "Runtime acceptance on an already-seen permitted audio clip and ephemeral catalog; not an accuracy benchmark.",
+        "productionDatabaseOpened": false,
+        "productionBusinessDataSeeded": false,
+        "ephemeralCatalogOnly": true,
+        "model": "qwen2.5:1.5b",
+        "checks": [
+          {
+            "name": "setup",
+            "passed": false,
+            "reason": "Temporary ingredient setup failed.\n\n201 !== 200\n"
+          }
+        ]
+      }
+    },
+    "correctedLocalRun": {
+      "report": "data/cloud-verification/ai-runtime-local-corrected.json",
+      "reportSha256": "9ae2ec4476bc3e05f6a0778b8fb64c321fd867288ca8b636b5c03bb99786f4e6",
+      "exitCode": 0,
+      "result": {
+        "checkedAt": "2026-10-17T18:49:04.037Z",
+        "passed": true,
+        "database": ":memory:",
+        "scope": "Runtime acceptance on an already-seen permitted audio clip and ephemeral catalog; not an accuracy benchmark.",
+        "productionDatabaseOpened": false,
+        "productionBusinessDataSeeded": false,
+        "ephemeralCatalogOnly": true,
+        "model": "qwen2.5:1.5b",
+        "checks": [
+          {
+            "name": "installed-model-identity",
+            "passed": true,
+            "elapsedMs": 12,
+            "digest": "65ec06548149b04c096a120e4a6da9d4017ea809c91734ea5631e89f96ddc57b",
+            "bytes": 986061892
+          },
+          {
+            "name": "both-model-health",
+            "passed": true,
+            "elapsedMs": 1,
+            "qwenModel": "qwen2.5:1.5b",
+            "speechModel": "whisper-tiny"
+          },
+          {
+            "name": "authorization-and-origin",
+            "passed": true,
+            "elapsedMs": 9,
+            "unauthenticated": 401,
+            "missingCsrf": 403,
+            "foreignOrigin": 403,
+            "endpoints": 2
+          },
+          {
+            "name": "authenticated-qwen-extraction",
+            "passed": true,
+            "elapsedMs": 3986,
+            "httpStatus": 200,
+            "mode": "ollama",
+            "model": "qwen2.5:1.5b",
+            "itemsMatched": true
+          },
+          {
+            "name": "authenticated-speech-inference",
+            "passed": true,
+            "elapsedMs": 1683,
+            "httpStatus": 200,
+            "model": "whisper-tiny",
+            "durationSeconds": 9.06,
+            "audioSha256": "3b989177ddd898f816e9747472329a62609a212eaf7ecae7562660e37fe6aa26",
+            "transcriptSha256": "858c34d0639f64c326679f0b1c4b0763d510d7158a630a994c25a3ae6087c70e"
+          },
+          {
+            "name": "inference-preserves-all-tables",
+            "passed": true,
+            "elapsedMs": 6,
+            "tablesCompared": 30,
+            "unchanged": true
+          }
+        ]
+      }
+    },
+    "unavailableModelControl": {
+      "report": "data/cloud-verification/ai-runtime-unavailable-model.json",
+      "reportSha256": "4de421681852b7da00479ebc239f35011c54575ee1e14712298e7df799757ccc",
+      "exitCode": 1,
+      "result": {
+        "checkedAt": "2026-10-17T18:49:27.744Z",
+        "passed": false,
+        "database": ":memory:",
+        "scope": "Runtime acceptance on an already-seen permitted audio clip and ephemeral catalog; not an accuracy benchmark.",
+        "productionDatabaseOpened": false,
+        "productionBusinessDataSeeded": false,
+        "ephemeralCatalogOnly": true,
+        "model": "qwen2.5:1.5b",
+        "checks": [
+          {
+            "name": "installed-model-identity",
+            "passed": false,
+            "elapsedMs": 1,
+            "reason": "fetch failed"
+          },
+          {
+            "name": "both-model-health",
+            "passed": false,
+            "elapsedMs": 4,
+            "reason": "Qwen is unavailable.\n\nfalse !== true\n"
+          },
+          {
+            "name": "authorization-and-origin",
+            "passed": true,
+            "elapsedMs": 23,
+            "unauthenticated": 401,
+            "missingCsrf": 403,
+            "foreignOrigin": 403,
+            "endpoints": 2
+          },
+          {
+            "name": "authenticated-qwen-extraction",
+            "passed": false,
+            "elapsedMs": 9,
+            "reason": "Extraction fell back to the parser; this does not prove Qwen inference.\n+ actual - expected\n\n+ 'fallback'\n- 'ollama'\n"
+          },
+          {
+            "name": "authenticated-speech-inference",
+            "passed": true,
+            "elapsedMs": 1309,
+            "httpStatus": 200,
+            "model": "whisper-tiny",
+            "durationSeconds": 9.06,
+            "audioSha256": "3b989177ddd898f816e9747472329a62609a212eaf7ecae7562660e37fe6aa26",
+            "transcriptSha256": "858c34d0639f64c326679f0b1c4b0763d510d7158a630a994c25a3ae6087c70e"
+          },
+          {
+            "name": "inference-preserves-all-tables",
+            "passed": true,
+            "elapsedMs": 1,
+            "tablesCompared": 30,
+            "unchanged": true
+          }
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "In-memory catalog is technical test data, never production business data.",
+    "Already-seen permitted FLEURS clip retained from existing source; see datasets/public/fleurs/README.md for attribution.",
+    "Two model inferences do not establish field accuracy, stability, capacity or latency under concurrent load.",
+    "Qwen cloud deployment awaits paid plan activation; script not yet in deployed web image."
+  ]
+}

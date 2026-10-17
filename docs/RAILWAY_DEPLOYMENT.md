@@ -79,3 +79,11 @@ Setelah kuota berbayar benar-benar terlihat:
 3. Dari root workspace jalankan `railway up --service ollama --detach`. Dockerfile sudah diatur pada layanan. Image Qwen belum dibangun saat catatan ini dibuat; yang lulus saat persiapan hanya pemeriksaan sintaks shell.
 4. Tunggu model tersedia, baca `/api/tags` melalui jaringan privat, catat digest dan jalankan inferensi. Verifikasi ekstraksi melalui aplikasi pada database memori sebelum menyatakan Qwen aktif. Layanan model tetap tanpa domain publik.
 5. Periksa health web dengan kedua AI tersedia, ukur resource, lalu aktifkan backup terjadwal jika kuota baru mendukung. Backup unduhan manual yang sudah diperiksa tetap dipertahankan.
+
+## Pemeriksaan kedua AI yang dapat dijalankan ulang
+
+`npm run verify:ai-runtime -- --audio LOKASI_KLIP_PUBLIK.wav --report data/cloud-verification/NAMA_RUN_BARU.json` memakai runtime model yang dikonfigurasi melalui `OLLAMA_URL`, `OLLAMA_MODEL` dan opsi profil suara yang sama dengan aplikasi. Audio WAV harus berizin, maksimal 1 MiB/30 detik. File audio tidak dimasukkan ke laporan; hanya hash audio/transkrip, identitas model dan hasil pemeriksaan. Setiap laporan memakai nama baru agar percobaan gagal tetap tersimpan.
+
+Script membuat server loopback dengan database `:memory:` yang eksplisit, sehingga `DATABASE_PATH` produksi tidak dibuka meskipun perintah dijalankan di container Railway. Akun/katalog teknis dibuat hanya dalam memori dan hilang saat proses selesai. Ia memeriksa inventaris/digest model, health kedua model, penolakan tanpa sesi/CSRF dan origin asing, ekstraksi Qwen melalui API, transkripsi melalui API, serta kesamaan seluruh tabel setelah inferensi. Respons ekstraksi HTTP 200 yang memakai fallback parser tetap gagal. Exit 0 memerlukan semua pemeriksaan lulus.
+
+Run lokal awal mengoreksi ekspektasi status setup (endpoint pembuatan memakai 201); run setelah koreksi lulus enam pemeriksaan. Kontrol dengan endpoint Ollama yang tidak tersedia menghasilkan exit 1 dan menolak fallback sebagai bukti AI. Semua percobaan disimpan dalam [bukti penerimaan runtime](evaluation/ai-runtime-acceptance.json). Ini pemeriksaan integrasi, bukan benchmark akurasi atau pengukuran kapasitas cloud. Script baru tersedia pada repository; image web harus diperbarui sebelum menjalankannya langsung di container.

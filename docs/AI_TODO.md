@@ -8,6 +8,7 @@
 - [x] Database cloud 30 tabel, integritas/relasi OK; hash logis dan penanda volume bertahan setelah redeploy, tanpa fixture produksi atau unggahan database laptop.
 - [x] Backup SQLite konsisten, salinan restore terpisah dan unduhan backup ke laptop diverifikasi; kunci SSH diagnostik sementara dicabut.
 - [x] Siapkan Dockerfile Ollama resmi yang dipatok digest dan startup unduh ke volume; konfigurasi privat diterapkan pada layanan kosong. Sintaks shell lulus; image model belum dibangun/dijalankan.
+- [x] Siapkan `npm run verify:ai-runtime`: enam pemeriksaan API dengan Qwen/Whisper nyata pada SQLite memori, termasuk digest model, autentikasi/origin dan kesamaan seluruh tabel. Run lokal lulus; kontrol Qwen tidak tersedia gagal dengan benar, fallback tidak dianggap AI. Ini belum verifikasi Qwen cloud. [Bukti](evaluation/ai-runtime-acceptance.json).
 - [ ] **Qwen belum aktif**: pengguna memilih peningkatan kapasitas dengan model tetap 1.5B. Akun masih Trial tanpa metode pembayaran; tunggu aktivasi Hobby berbayar di dashboard, periksa ulang kuota, lalu atur 2 GB RAM/2 vCPU, volume model dan uji ekstraksi nyata. Batas yang teramati masih 1 GB RAM/500 MB volume.
 - [ ] Backup terjadwal dan penyimpanan terpisah berkelanjutan; kuota backup Railway yang teramati 0. Backup manual belum menggantikan jadwal.
 - [ ] Uji owner/kasir/dapur/pelanggan pada perangkat fisik berbeda; ukur CPU/RAM/antrean/latensi saat semua AI aktif.

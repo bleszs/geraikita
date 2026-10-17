@@ -6,6 +6,8 @@ Aplikasi online: **https://web-production-a3e13.up.railway.app**. Web berjalan d
 
 **324 tes lulus** (270 Node + 54 browser), npm test exit 0. [Deployment dan batas](docs/RAILWAY_DEPLOYMENT.md) | [TODO](docs/AI_TODO.md) | [bukti cloud](docs/evaluation/railway-runtime.json). Publikasi memakai CLI; push GitHub belum otomatis deploy. Lokal tetap `npm start` di http://localhost:4174; demo terpisah tetap port 4180. Catatan versi berikut adalah riwayat.
 
+Pemeriksaan AI nyata tambahan: `npm run verify:ai-runtime -- --audio KLIP_PUBLIK.wav --report data/cloud-verification/RUN_BARU.json`. Enam pemeriksaan lokal lulus dengan Qwen 1.5B/Whisper; fallback sengaja dibuat gagal. Script memakai SQLite memori dan tidak mengisi akun produksi. [Bukti dan batas](docs/evaluation/ai-runtime-acceptance.json). Hasil ini tidak menambah jumlah tes regresi 324 atau menyatakan Qwen cloud sudah aktif.
+
 # Gerai Kita - v0.42, kode masuk staf
 
 Pemilik kini dapat membuat staf cukup dengan nama/peran dan kode masuk sekali pakai 15 menit. Akun email/kata sandi lama tetap berlaku. Buka **Pengaturan akun > Akun kasir dan dapur**; staf memilih **Masuk sebagai staf**. [Cara memakai dan batas](docs/STAFF_PAIRING.md) | [TODO](docs/AI_TODO.md) | [bukti rilis](docs/evaluation/pairing-release.json).

@@ -6,6 +6,8 @@ Baca docs/RAILWAY_DEPLOYMENT.md, docs/AI_TODO.md, docs/evaluation/railway-prepar
 
 Branch tetap feat/kitchen-capacity-and-waste; main dipertahankan. Model/bobot dan protokol evaluasi tidak diubah. Catatan berikut adalah handoff historis sebelum deployment.
 
+Tambahan pemeriksaan runtime: `scripts/verify-ai-runtime.mjs` / `npm run verify:ai-runtime` menguji kedua AI nyata lewat server loopback SQLite memori. Jangan arahkan fixture ke situs produksi. Run lokal enam pemeriksaan lulus; kontrol Ollama tidak tersedia keluar 1 dan tidak menerima fallback sebagai bukti Qwen. Lihat `docs/evaluation/ai-runtime-acceptance.json`. Ini belum dijalankan sebagai penerimaan kedua AI di cloud; image web perlu diperbarui agar script tersedia di container.
+
 # Konteks untuk melanjutkan di Claude
 
 Gunakan workspace **D:\INFEST_FIX**, remote **https://github.com/bleszs/rahasiagelap.git**, branch **feat/kitchen-capacity-and-waste**. Periksa `git status` sebelum menyelaraskan perubahan. Jangan mengganti pekerjaan lokal yang belum disimpan atau berasumsi `main` sudah memuat branch ini.
