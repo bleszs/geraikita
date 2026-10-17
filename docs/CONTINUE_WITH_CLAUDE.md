@@ -8,6 +8,8 @@ Branch tetap feat/kitchen-capacity-and-waste; main dipertahankan. Model/bobot da
 
 Tambahan pemeriksaan runtime: `scripts/verify-ai-runtime.mjs` / `npm run verify:ai-runtime` menguji kedua AI nyata lewat server loopback SQLite memori. Jangan arahkan fixture ke situs produksi. Run lokal enam pemeriksaan lulus; kontrol Ollama tidak tersedia keluar 1 dan tidak menerima fallback sebagai bukti Qwen. Lihat `docs/evaluation/ai-runtime-acceptance.json`. Ini belum dijalankan sebagai penerimaan kedua AI di cloud; image web perlu diperbarui agar script tersedia di container.
 
+Backup: baca docs/RAILWAY_BACKUP.md. `scripts/railway-backup.mjs` berhasil mengekspor snapshot cloud ke laptop dan memverifikasi restore melalui store/kesamaan 30 tabel. Konfigurasi di data/railway-backup.local.json diabaikan Git; kunci operasional khusus gerai-kita-backup tetap terdaftar untuk penggunaan manual. Lima tes terarah lulus. Jadwal belum terpasang: Windows menolak pembacaan script pemasang dengan deteksi software tidak diinginkan; dua script persiapannya dihapus. Jangan mengklaim otomatis aktif atau mengubah keamanan Windows untuk melewati deteksi itu.
+
 # Konteks untuk melanjutkan di Claude
 
 Gunakan workspace **D:\INFEST_FIX**, remote **https://github.com/bleszs/rahasiagelap.git**, branch **feat/kitchen-capacity-and-waste**. Periksa `git status` sebelum menyelaraskan perubahan. Jangan mengganti pekerjaan lokal yang belum disimpan atau berasumsi `main` sudah memuat branch ini.

@@ -1,0 +1,11 @@
+{
+  "cli": "C:/path/to/railway.exe",
+  "node": "C:/Program Files/nodejs/node.exe",
+  "projectId": "REPLACE_WITH_PROJECT_ID",
+  "environmentId": "REPLACE_WITH_ENVIRONMENT_ID",
+  "serviceId": "REPLACE_WITH_WEB_SERVICE_ID",
+  "expectedAccount": "your-railway-email@example.com",
+  "identityFile": "C:/Users/YOUR_USER/.ssh/id_ed25519_gerai_kita_backup",
+  "remoteDatabase": "/data/gerai-kita.sqlite",
+  "directory": "D:/YOUR_WORKSPACE/data/backups/railway"
+}

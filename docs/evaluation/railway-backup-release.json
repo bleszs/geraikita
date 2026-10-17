@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-17T18:57:18.199604+00:00",
+  "status": "manual_backup_verified_scheduler_blocked_by_windows",
+  "script": "scripts/railway-backup.mjs",
+  "scriptSha256": "7ecc3880648466dedf148b3bc18afdf7be8f3bbbcbf373db5911d933c140f09b",
+  "cloudDownload": {
+    "checkedAt": "2026-10-17T18:53:47.541Z",
+    "filename": "D:\\INFEST_FIX\\data\\backups\\railway\\scheduled\\railway-2026-10-17T18-53-47-480Z-c62e58e3.sqlite",
+    "bytes": 356352,
+    "sha256": "4297ed2ce4afc5371ae6accc5a21938c585e6991d02e817e795eb980ba19045e",
+    "integrity": "ok",
+    "foreignKeys": "ok",
+    "restore": {
+      "applicationStoreOpened": true,
+      "tablesCompared": 30,
+      "allRowsEqual": true
+    },
+    "productionRestorePerformed": false,
+    "projectId": "2542adeb-bd1a-441e-b723-2d2b2c0c64b8",
+    "environmentId": "dfb785d0-3486-4dd0-8c02-a792da540db8",
+    "serviceId": "21af2dcb-de1d-4434-9ce1-8e7b91262063",
+    "deploymentId": "d357c7b7-5411-4dc0-ab97-67312fa45255"
+  },
+  "testResults": {
+    "command": "node --test tests/railway-backup.test.mjs tests/maintenance.test.mjs",
+    "passed": 5,
+    "failed": 0,
+    "exitCode": 0,
+    "log": "data/railway-backup-tests-final.log",
+    "logSha256": "1540d121890bf5abcfe8aaa22423ccad97622d2d4f59fc85d9c17e857063c451",
+    "firstAttempt": {
+      "passed": 4,
+      "failed": 1,
+      "reason": "The test reopened its final backup with a writable store before asserting file bytes. It now inspects the final file read-only; real restore/migrations still run on an isolated copy."
+    }
+  },
+  "wrongAccountControl": {
+    "exitCode": 1,
+    "rejectedBeforeBackup": true
+  },
+  "fullRegressionSuite": {
+    "previousCompletedTotal": 324,
+    "rerunThisChange": false,
+    "newTestsAddedToFullCommand": 3
+  },
+  "scheduler": {
+    "registered": false,
+    "windowsTimezone": "SE Asia Standard Time",
+    "plannedHourLocal": 11,
+    "blockedAt": "PowerShell file parsing before registration",
+    "reason": "Operation did not complete successfully because the file contains a virus or potentially unwanted software.",
+    "unusedPreparationScriptsRemoved": true,
+    "windowsSecurityChanged": false,
+    "providerScheduledBackupsAvailable": false
+  },
+  "ssh": {
+    "purpose": "Reusable manual backups",
+    "registeredName": "gerai-kita-backup",
+    "fingerprint": "SHA256:+tN8cpoh7kYj+lWgp/tPfHR+bEF5szKuv67pE2EI/3s",
+    "privateKeyCommitted": false,
+    "persistentForManualUse": true
+  },
+  "limitations": [
+    "Manual command does not establish an automatic backup schedule.",
+    "No production restore, fixture insertion, model or billing changes.",
+    "Transfer cap64MiB; no retention pruning; laptop and network required.",
+    "Qwen cloud is still unavailable while requested Railway workspace is Trial."
+  ]
+}

@@ -10,7 +10,8 @@
 - [x] Siapkan Dockerfile Ollama resmi yang dipatok digest dan startup unduh ke volume; konfigurasi privat diterapkan pada layanan kosong. Sintaks shell lulus; image model belum dibangun/dijalankan.
 - [x] Siapkan `npm run verify:ai-runtime`: enam pemeriksaan API dengan Qwen/Whisper nyata pada SQLite memori, termasuk digest model, autentikasi/origin dan kesamaan seluruh tabel. Run lokal lulus; kontrol Qwen tidak tersedia gagal dengan benar, fallback tidak dianggap AI. Ini belum verifikasi Qwen cloud. [Bukti](evaluation/ai-runtime-acceptance.json).
 - [ ] **Qwen belum aktif**: pengguna memilih peningkatan kapasitas dengan model tetap 1.5B. Akun masih Trial tanpa metode pembayaran; tunggu aktivasi Hobby berbayar di dashboard, periksa ulang kuota, lalu atur 2 GB RAM/2 vCPU, volume model dan uji ekstraksi nyata. Batas yang teramati masih 1 GB RAM/500 MB volume.
-- [ ] Backup terjadwal dan penyimpanan terpisah berkelanjutan; kuota backup Railway yang teramati 0. Backup manual belum menggantikan jadwal.
+- [x] Tool backup cloud ke laptop dapat dipakai ulang: `npm run backup:railway -- --config data/railway-backup.local.json`. Transfer checksum, integritas/relasi, restore melalui store aplikasi dan kesamaan 30 tabel berhasil; lima tes terarah lulus. [Petunjuk dan bukti](RAILWAY_BACKUP.md).
+- [ ] Backup terjadwal berkelanjutan: kuota backup Railway 0; Windows menolak pembacaan script pemasang jadwal karena deteksi software tidak diinginkan. Tugas belum terdaftar, script jadwal persiapan dihapus, keamanan Windows tidak diubah. Backup manual belum menggantikan jadwal.
 - [ ] Uji owner/kasir/dapur/pelanggan pada perangkat fisik berbeda; ukur CPU/RAM/antrean/latensi saat semua AI aktif.
 - [ ] Opsional berikutnya: hubungkan deployment otomatis GitHub; saat ini upload CLI dari branch fitur.
 - [ ] Aging bisa diatur, hari stok tersisa, alur suara kasir, fuzzy matching dan pilot nyata tetap terbuka.

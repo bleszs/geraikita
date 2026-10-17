@@ -80,6 +80,10 @@ Setelah kuota berbayar benar-benar terlihat:
 4. Tunggu model tersedia, baca `/api/tags` melalui jaringan privat, catat digest dan jalankan inferensi. Verifikasi ekstraksi melalui aplikasi pada database memori sebelum menyatakan Qwen aktif. Layanan model tetap tanpa domain publik.
 5. Periksa health web dengan kedua AI tersedia, ukur resource, lalu aktifkan backup terjadwal jika kuota baru mendukung. Backup unduhan manual yang sudah diperiksa tetap dipertahankan.
 
+## Backup cloud yang dapat dipakai ulang
+
+Backup cloud juga sudah mempunyai perintah yang dapat dipakai ulang: `npm run backup:railway -- --config data/railway-backup.local.json`. Pemeriksaan checksum dan pemulihan lewat store aplikasi berhasil pada seluruh 30 tabel. Jadwal lokal belum terpasang karena Windows memblokir script pemasang; kuota backup provider tetap 0. [Cara memakai dan batas](RAILWAY_BACKUP.md).
+
 ## Pemeriksaan kedua AI yang dapat dijalankan ulang
 
 `npm run verify:ai-runtime -- --audio LOKASI_KLIP_PUBLIK.wav --report data/cloud-verification/NAMA_RUN_BARU.json` memakai runtime model yang dikonfigurasi melalui `OLLAMA_URL`, `OLLAMA_MODEL` dan opsi profil suara yang sama dengan aplikasi. Audio WAV harus berizin, maksimal 1 MiB/30 detik. File audio tidak dimasukkan ke laporan; hanya hash audio/transkrip, identitas model dan hasil pemeriksaan. Setiap laporan memakai nama baru agar percobaan gagal tetap tersimpan.

@@ -51,13 +51,16 @@
       "status": "empty-service-not-deployed",
       "plannedVolumeMount": "/root/.ollama",
       "resourceDecision": "User approved increased capacity; preserve Qwen1.5B. Await paid Hobby activation in dashboard.",
-      "requestedLimits": {"memoryGB": 2, "vCPUs": 2},
+      "requestedLimits": {
+        "memoryGB": 2,
+        "vCPUs": 2
+      },
       "configurationApplied": true,
       "imageBuilt": false,
       "modelInstalled": false
     }
   ],
-  "backups": "Manual SQLite backup and isolated restore inspection verified; provider scheduled backups unavailable at observed maxBackupsCount 0. Same-volume backup is not offsite protection.",
+  "backups": "Reusable CLI export and off-volume download verified, SHA256/integrity/FK checked and isolated application store restore preserves all30tables. Provider backup quota0; local scheduler not registered because Windows blocked its preparation script.",
   "cloudAcceptancePending": [
     "Paid Hobby activation, model RAM and volume, then private Qwen deployment",
     "Real authenticated app extraction with Qwen",
@@ -74,5 +77,7 @@
     "observedDate": "2026-10-18",
     "isTrialing": true,
     "defaultPaymentMethodConfigured": false
-  }
+  },
+  "backupTool": "scripts/railway-backup.mjs",
+  "backupEvidence": "docs/evaluation/railway-backup-release.json"
 }
