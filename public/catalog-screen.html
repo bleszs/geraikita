@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Katalog pesanan · Gerai Kita</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/display-screen.css">
+  <link rel="stylesheet" href="/catalog-screen.css">
+  <script type="module" src="/catalog-screen.js"></script>
+</head>
+<body class="customer-screen catalog-screen">
+  <header class="customer-header"><div><p class="catalog-business" id="catalog-business"></p><h1>Pesan dari meja.</h1><p>Pilih menu lalu kirim permintaan. Petugas mengonfirmasi sebelum dapur mulai memasak.</p></div><button class="button secondary" id="screen-theme">Ubah tema</button></header>
+  <main id="customer-main" tabindex="-1">
+    <div class="catalog-layout" id="catalog-shop">
+      <section aria-labelledby="catalog-menu-title"><h2 id="catalog-menu-title">Menu</h2><div id="catalog-list"><p>Memuat katalog…</p></div></section>
+      <section class="catalog-order" aria-labelledby="catalog-order-title"><h2 id="catalog-order-title" tabindex="-1">Pesananmu</h2><div id="catalog-summary" aria-live="polite"><p class="customer-empty">Belum ada menu dipilih.</p></div>
+        <form id="catalog-form"><label>Nama atau nomor meja<input name="label" required maxlength="40" autocomplete="off" placeholder="Contoh: Meja 4"></label><label>Catatan untuk dapur (opsional)<textarea name="note" maxlength="200" rows="3"></textarea></label><p class="small muted">Harga dibayar ke petugas. Permintaan menunggu konfirmasi paling lama 30 menit.</p><button class="button" type="submit" id="catalog-submit" disabled>Kirim permintaan pesanan</button><div class="form-error" role="alert" id="catalog-error"></div></form>
+      </section>
+    </div>
+    <section class="catalog-request" id="catalog-request" hidden tabindex="-1" aria-live="polite"></section>
+  </main>
+  <footer class="customer-footer"><p id="screen-status" role="status" aria-live="polite">Menyiapkan koneksi.</p><button class="button secondary" id="screen-retry" hidden>Hubungkan kembali</button><span>gerai kita</span></footer>
+</body>
+</html>

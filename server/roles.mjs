@@ -12,10 +12,10 @@ export function migrateRoles(db){
 export const staffPrefix=s=>`${s.account_id}:${s.role_revision}:`;
 export function authorize(s,path,method,body){
   if(s.role==='owner')return;
-  const reading=method==='GET',actions=path.match(/^\/api\/kitchen\/orders\/[a-zA-Z0-9-]+\/actions$/);
+  const reading=method==='GET',actions=path.match(/^\/api\/kitchen\/orders\/[a-zA-Z0-9-]+\/actions$/),decision=/^\/api\/order-requests\/[a-zA-Z0-9-]+\/decision$/.test(path);
   let allowed=reading&&['/api/bootstrap','/api/kitchen','/api/kitchen/events'].includes(path);
   if(method==='POST'){
-    allowed=['/api/auth/logout','/api/account/password'].includes(path)||s.role==='cashier'&&path==='/api/kitchen/orders'||s.role==='kitchen'&&['/api/kitchen/commands','/api/transcriptions'].includes(path);
+    allowed=['/api/auth/logout','/api/account/password'].includes(path)||s.role==='cashier'&&(path==='/api/kitchen/orders'||decision)||s.role==='kitchen'&&['/api/kitchen/commands','/api/transcriptions'].includes(path);
     if(actions)allowed=(s.role==='cashier'?['complete','cancel']:['start','passive','resume','ready','void']).includes(body.action)&&body.wasted===undefined;
   }
   requireValue(allowed,'Peran akun ini tidak memiliki akses ke tindakan tersebut.',403,'role_forbidden');
@@ -29,5 +29,5 @@ export function staffBootstrap(store,service,s,account){
     tasks:o.tasks.map(t=>({id:t.id,name:t.name,qty:t.qty,note:t.note,station:t.station,minutes:t.minutes,passive_minutes:t.passive_minutes,status:t.status,phase_started_at:t.phase_started_at}))}));
   const row=store.get('SELECT id,name,letter FROM businesses WHERE workspace_id=? AND id=?',s.workspace_id,s.business_id),epoch=store.get('SELECT created_at FROM workspaces WHERE id=?',s.workspace_id).created_at;
   return {mode:'live',workspaceId:s.workspace_id,workspaceEpoch:epoch,business:row,account,csrf:s.csrf,menu:cashier?store.menus(s).map(m=>({id:m.id,name:m.name,price:m.price})):[],catalogRevision:store.get('SELECT catalog_revision FROM business_state WHERE workspace_id=? AND business_id=?',s.workspace_id,s.business_id).catalog_revision,
-    kitchen:{orders,next:source.next,stations:source.stations.map(({revision,...c})=>c),menus:cashier?source.menus:[],recentActions:source.recentActions.filter(k=>k.startsWith(prefix)),revision:source.revision},offlineRestricted:true};
+    kitchen:{orders,next:source.next,requests:cashier?source.requests:[],stations:source.stations.map(({revision,...c})=>c),menus:cashier?source.menus:[],recentActions:source.recentActions.filter(k=>k.startsWith(prefix)),revision:source.revision},offlineRestricted:true};
 }

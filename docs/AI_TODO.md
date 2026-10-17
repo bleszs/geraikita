@@ -1,3 +1,11 @@
+# Lanjutan v0.38 — katalog pesanan pelanggan (REQ-F05)
+
+- [x] Tautan berjenis `catalog` terpisah dari layar status; token hanya membuka jenisnya sendiri.
+- [x] Katalog publik: hanya menu berwaktu/stasiun, ketersediaan boolean dari stok dikurangi cadangan, pembaruan SSE; menu habis tidak dapat dipilih dan dikeluarkan dari pesanan yang sedang disusun.
+- [x] Permintaan pelanggan menunggu konfirmasi kasir/pemilik; terima membuat pesanan dapur `web` dengan cadangan bahan, tolak menyimpan alasan; kedaluwarsa 30 menit; batas laju per tautan; idempotensi.
+- [x] Perubahan harga atau bahan kurang saat penerimaan ditolak secara atomik (SAVEPOINT bersarang).
+- [x] Panduan kasir ditambah satu langkah (89 langkah). [Panduan](CUSTOMER_CATALOG.md).
+- [ ] Akses ponsel pelanggan lewat jaringan/HTTPS, pembayaran daring, integrasi otomatis ojol.
 # Lanjutan v0.37 — kapasitas dan bahan terbuang sebagian
 
 - [x] Kapasitas per stasiun: staf aktif 1–20 membuka beberapa giliran SJF+aging sekaligus; alat tahap pasif 1–50 atau tidak dibatasi. Revisi mencegah penimpaan dari perangkat lain; bawaan sama dengan v0.36.

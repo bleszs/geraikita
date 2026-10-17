@@ -8,30 +8,36 @@ export function migrateDisplayAccess(db){
     created_at TEXT NOT NULL,expires_at INTEGER NOT NULL,revoked_at TEXT,
     UNIQUE(workspace_id,business_id,idem),
     FOREIGN KEY(workspace_id,business_id) REFERENCES businesses(workspace_id,id));`);
+  // Additive: links created before v0.38 are status displays.
+  if(!db.prepare('PRAGMA table_info(display_access)').all().some(c=>c.name==='kind'))db.exec("ALTER TABLE display_access ADD COLUMN kind TEXT NOT NULL DEFAULT 'display'");
 }
 const digest=value=>createHash('sha256').update(value).digest('hex');
 const scope=s=>[s.workspace_id,s.business_id];
+const names={display:'layar',catalog:'katalog'};
 export function createDisplayAccess(store){
   const {get,all,run,atomic}=store;
-  const metadata=r=>({id:r.id,label:r.label,createdAt:r.created_at,expiresAt:new Date(r.expires_at).toISOString(),status:r.revoked_at?'revoked':r.expires_at<=Date.now()?'expired':'active'});
+  const metadata=r=>({id:r.id,label:r.label,kind:r.kind||'display',createdAt:r.created_at,expiresAt:new Date(r.expires_at).toISOString(),status:r.revoked_at?'revoked':r.expires_at<=Date.now()?'expired':'active'});
   function list(s){
-    return all('SELECT id,label,created_at,expires_at,revoked_at FROM display_access WHERE workspace_id=? AND business_id=? ORDER BY (revoked_at IS NULL AND expires_at>?) DESC,created_at DESC,rowid DESC LIMIT 50',...scope(s),Date.now()).map(metadata);
+    return all('SELECT id,label,kind,created_at,expires_at,revoked_at FROM display_access WHERE workspace_id=? AND business_id=? ORDER BY (revoked_at IS NULL AND expires_at>?) DESC,created_at DESC,rowid DESC LIMIT 50',...scope(s),Date.now()).map(metadata);
   }
   function create(s,b){
+    const kind=b.kind===undefined?'display':b.kind;
+    requireValue(['display','catalog'].includes(kind),'Pilih jenis tautan: layar status atau katalog pesanan.');
     requireValue(typeof b.label==='string'&&b.label.trim().length>=2&&b.label.trim().length<=60,'Isi nama layar dalam 2–60 karakter.');
     requireValue(Number.isInteger(b.durationHours)&&b.durationHours>=1&&b.durationHours<=168,'Masa aktif harus 1–168 jam.');
     requireValue(typeof b.token==='string'&&/^[a-f0-9]{64}$/.test(b.token),'Tautan akses belum valid. Buat ulang tautan.');
     requireValue(typeof b.idempotencyKey==='string'&&b.idempotencyKey.length>=8&&b.idempotencyKey.length<=100,'Kunci pembuatan layar tidak valid.');
-    requireValue(b.confirmed===true,'Setujui bahwa pemegang tautan dapat melihat kode dan status pesanan selama tautan aktif.');
-    const tokenHash=digest(b.token),fingerprint=digest(JSON.stringify([b.label.trim(),b.durationHours,tokenHash]));
+    requireValue(b.confirmed===true,kind==='catalog'?'Setujui bahwa pemegang tautan dapat melihat menu, harga dan ketersediaan, serta mengirim permintaan pesanan selama tautan aktif.':'Setujui bahwa pemegang tautan dapat melihat kode dan status pesanan selama tautan aktif.');
+    // Display fingerprints keep their v0.35 shape so retries of older keys still match.
+    const tokenHash=digest(b.token),fingerprint=digest(JSON.stringify([b.label.trim(),b.durationHours,tokenHash,...(kind==='catalog'?[kind]:[])]));
     return atomic(()=>{
       const previous=get('SELECT * FROM display_access WHERE workspace_id=? AND business_id=? AND idem=?',...scope(s),b.idempotencyKey);
       if(previous){requireValue(previous.fingerprint===fingerprint,'Kunci pembuatan sudah dipakai untuk layar berbeda.',409);return {...metadata(previous),duplicate:true};}
-      requireValue(get('SELECT COUNT(*) AS n FROM display_access WHERE workspace_id=? AND business_id=? AND revoked_at IS NULL AND expires_at>?',...scope(s),Date.now()).n<10,'Maksimal 10 tautan layar aktif. Cabut tautan yang tidak digunakan.',409);
+      requireValue(get('SELECT COUNT(*) AS n FROM display_access WHERE workspace_id=? AND business_id=? AND kind=? AND revoked_at IS NULL AND expires_at>?',...scope(s),kind,Date.now()).n<10,`Maksimal 10 tautan ${names[kind]} aktif. Cabut tautan yang tidak digunakan.`,409);
       requireValue(!get('SELECT id FROM display_access WHERE token_hash=?',tokenHash),'Tautan sudah digunakan. Buat ulang tautan.',409);
       const id=randomUUID(),now=new Date().toISOString(),expires=Date.now()+b.durationHours*3600000;
-      run('INSERT INTO display_access VALUES(?,?,?,?,?,?,?,?,?,NULL)',id,...scope(s),b.label.trim(),tokenHash,b.idempotencyKey,fingerprint,now,expires);
-      store.log(...scope(s),`Akses layar pelanggan dibuat: ${b.label.trim()}, berlaku ${b.durationHours} jam.`);
+      run('INSERT INTO display_access(id,workspace_id,business_id,label,token_hash,idem,fingerprint,created_at,expires_at,revoked_at,kind) VALUES(?,?,?,?,?,?,?,?,?,NULL,?)',id,...scope(s),b.label.trim(),tokenHash,b.idempotencyKey,fingerprint,now,expires,kind);
+      store.log(...scope(s),`Akses ${kind==='catalog'?'katalog pesanan':'layar pelanggan'} dibuat: ${b.label.trim()}, berlaku ${b.durationHours} jam.`);
       return {...metadata(get('SELECT * FROM display_access WHERE workspace_id=? AND business_id=? AND id=?',...scope(s),id)),duplicate:false};
     });
   }
@@ -41,14 +47,15 @@ export function createDisplayAccess(store){
       requireValue(row,'Akses layar tidak ditemukan.',404);
       if(row.revoked_at)return {revoked:true,duplicate:true};
       run('UPDATE display_access SET revoked_at=? WHERE workspace_id=? AND business_id=? AND id=?',new Date().toISOString(),...scope(s),id);
-      store.log(...scope(s),`Akses layar pelanggan dicabut: ${row.label}.`);return {revoked:true,duplicate:false};
+      store.log(...scope(s),`Akses ${row.kind==='catalog'?'katalog pesanan':'layar pelanggan'} dicabut: ${row.label}.`);return {revoked:true,duplicate:false};
     });
   }
-  function resolve(authorization){
+  // A token only opens the surface it was created for.
+  function resolve(authorization,kind='display'){
     const token=typeof authorization==='string'&&authorization.match(/^Bearer ([a-f0-9]{64})$/)?.[1];
-    requireValue(token,'Buka tautan layar pelanggan yang masih aktif.',401);
-    const row=get('SELECT workspace_id,business_id FROM display_access WHERE token_hash=? AND revoked_at IS NULL AND expires_at>?',digest(token),Date.now());
-    requireValue(row,'Akses layar berakhir atau sudah dicabut. Minta tautan baru kepada pemilik.',401);
+    requireValue(token,kind==='catalog'?'Buka tautan katalog pesanan yang masih aktif.':'Buka tautan layar pelanggan yang masih aktif.',401);
+    const row=get('SELECT id,workspace_id,business_id FROM display_access WHERE token_hash=? AND kind=? AND revoked_at IS NULL AND expires_at>?',digest(token),kind,Date.now());
+    requireValue(row,kind==='catalog'?'Katalog berakhir atau sudah dicabut. Tanyakan kepada petugas.':'Akses layar berakhir atau sudah dicabut. Minta tautan baru kepada pemilik.',401);
     return row;
   }
   function snapshot(s){

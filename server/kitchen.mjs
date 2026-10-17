@@ -1,6 +1,7 @@
 import {randomUUID,createHash} from 'node:crypto';
 import {requireValue,units,quantity,dayAt} from './common.mjs';
 import {usage} from '../public/catalog.js';
+import {pendingRequests} from './order-requests.mjs';
 
 export function migrateKitchen(db){
   db.exec(`CREATE TABLE IF NOT EXISTS kitchen_menus(workspace_id TEXT NOT NULL,business_id TEXT NOT NULL,menu_id TEXT NOT NULL,minutes INTEGER NOT NULL,station TEXT NOT NULL,passive_minutes INTEGER NOT NULL,PRIMARY KEY(workspace_id,business_id,menu_id));
@@ -59,7 +60,9 @@ export function createKitchen(store,{available,stockChanged}){
     const next=stations.filter(c=>open.some(t=>t.station===c.station)).map(c=>{const taskIds=waiting.filter(t=>t.station===c.station).slice(0,Math.max(0,c.cooks-c.active)).map(t=>t.id);return {station:c.station,taskId:taskIds[0]||null,taskIds};});
     const menus=store.menus(s).map(m=>({id:m.id,name:m.name,configured:settings.some(x=>x.menuId===m.id),portions:Math.max(0,Math.min(...Object.entries(m.recipe).map(([p,q])=>Math.floor(available(s,p)/units(q)))))}));
     const orders=rows.map(o=>({...o,items:JSON.parse(o.items),usage:JSON.parse(o.usage_json),tasks:tasks.filter(t=>t.order_id===o.id).map(t=>({...t,usage:taskUsage(o,t),waste:t.waste_json?JSON.parse(t.waste_json):null}))}));
-    return {settings,stations,orders,next,menus,recentActions:all('SELECT idem FROM kitchen_actions WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC',...scope(s)).map(x=>x.idem),revision:hash([rows.map(o=>[o.id,o.revision]),menus,settings,stations,next])};
+    // Pending web catalog requests share the kitchen revision so SSE clients see them immediately.
+    const requests=pendingRequests(store,s);
+    return {settings,stations,orders,next,menus,requests,recentActions:all('SELECT idem FROM kitchen_actions WHERE workspace_id=? AND business_id=? ORDER BY rowid DESC',...scope(s)).map(x=>x.idem),revision:hash([rows.map(o=>[o.id,o.revision]),menus,settings,stations,next,requests.map(r=>r.id)])};
   }
   function consume(s,used,reason,ref,date){
     for(const [p,q] of Object.entries(used)){

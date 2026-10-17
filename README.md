@@ -1,3 +1,10 @@
+# Gerai Kita — v0.38
+
+Validasi akhir: **284 tes lulus, `npm test` exit 0** (238 Node + 46 browser, satu worker, `PLAYWRIGHT_CHANNEL=chromium`).
+
+Baru: **katalog pesanan pelanggan** (SRS REQ-F05). Pemilik membuat tautan **Katalog pesanan** di **Pengaturan akun → Layar dan katalog pelanggan**. Pelanggan memilih menu tanpa akun; menu yang bahannya habis langsung tampil *Habis*. Permintaan masuk ke **Permintaan dari katalog web** di Operasional dapur dan baru masuk antrean setelah kasir/pemilik menerima. Pelanggan melihat kode pesanan atau alasan penolakan.
+
+[Cara memakai, aturan dan batas](docs/CUSTOMER_CATALOG.md). Migrasi aditif: kolom `kind` pada tautan dan tabel `order_requests`. Akses dari ponsel pelanggan tetap memerlukan jaringan/HTTPS/deployment yang belum selesai.
 # Gerai Kita — v0.37
 
 Validasi akhir: **278 tes lulus, `npm test` exit 0** (233 Node + 45 browser, satu worker, `PLAYWRIGHT_CHANNEL=chromium`).

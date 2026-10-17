@@ -1,4 +1,5 @@
 import {createKitchen} from './kitchen.mjs';
+import {createOrderRequests} from './order-requests.mjs';
 import { randomUUID, createHash } from 'node:crypto';
 import { total, usage } from '../public/catalog.js';
 import { createOperations } from './operations.mjs';
@@ -28,6 +29,7 @@ export function createService(store) {
   const configuration=createConfiguration(store,{cycles,bump});
   const surplus = createSurplus(store, {cycles,available:operations.available});
   const kitchen=createKitchen(store,{available:operations.available,stockChanged});
+  const requests=createOrderRequests(store,{kitchen});
   function receipts(s) {
     return all(`SELECT t.*,o.unit_price FROM transfers t JOIN offers o ON t.offer_id=o.id WHERE t.workspace_id=? AND t.receiver_id=? AND t.status='completed' AND t.cycle=?`, ...scope(s), cycles.context(s).id);
   }
@@ -195,5 +197,5 @@ export function createService(store) {
       return { duplicate: false };
     });
   }
-  return { kitchen, bootstrap, saveUsageReview:usageDecisions.save, transaction, cancelSale, demand, group, approval, requestTransfer, transferDecision, ...operations, ...configuration, createOffer:surplus.create, withdrawOffer:surplus.withdraw, finalizeCollective:cycles.finalize, receiveCollective:cycles.receive, cancelCollectiveReceipt:cycles.cancelReceipt, cancelCollective:cycles.cancel, nextCycle:cycles.next };
+  return { kitchen, requests, bootstrap, saveUsageReview:usageDecisions.save, transaction, cancelSale, demand, group, approval, requestTransfer, transferDecision, ...operations, ...configuration, createOffer:surplus.create, withdrawOffer:surplus.withdraw, finalizeCollective:cycles.finalize, receiveCollective:cycles.receive, cancelCollectiveReceipt:cycles.cancelReceipt, cancelCollective:cycles.cancel, nextCycle:cycles.next };
 }

@@ -52,6 +52,28 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         }catch{response.write('event: revoked\ndata: {}\n\n');response.end();}};
         const interval=setInterval(tick,1000);response.once('close',()=>{clearInterval(interval);kitchenStreams.delete(response);});tick();return;
       }
+      if(pathname==='/api/catalog/screen'&&request.method==='GET'){
+        const content=await readFile(path.join(root,'catalog-screen.html'));
+        response.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"});response.end(content);return;
+      }
+      const catalogRequest=pathname.match(/^\/api\/catalog\/requests(?:\/([a-zA-Z0-9-]+))?$/);
+      if(['/api/catalog/snapshot','/api/catalog/events'].includes(pathname)||catalogRequest){
+        // Public catalog links carry no session: only the bearer token scoped to kind 'catalog'.
+        const submitting=catalogRequest&&!catalogRequest[1];
+        requireValue(request.method===(submitting?'POST':'GET'),submitting?'Kirim permintaan dengan POST.':'Katalog hanya dapat dibaca.',405);
+        if(submitting)requireValue(!request.headers.origin||request.headers.origin===`http://${request.headers.host}`,'Asal permintaan tidak diizinkan.',403);
+        const body=submitting?await readBody(request,16384):null,access=displays.resolve(request.headers.authorization,'catalog');
+        if(submitting)return json(service.requests.submit(access,body),201);
+        if(catalogRequest)return json(service.requests.status(access,catalogRequest[1]));
+        if(pathname.endsWith('/snapshot'))return json(service.requests.catalog(access));
+        response.writeHead(200,{'Content-Type':'text/event-stream','Cache-Control':'no-store','Referrer-Policy':'no-referrer','Connection':'keep-alive','X-Accel-Buffering':'no'});
+        kitchenStreams.add(response);let fingerprint='',lastSent=0;
+        const tick=()=>{try{
+          const data=service.requests.catalog(displays.resolve(request.headers.authorization,'catalog')),next=JSON.stringify(data.menus);
+          if(next!==fingerprint||Date.now()-lastSent>=5000){fingerprint=next;lastSent=Date.now();response.write(`data: ${JSON.stringify(data)}\n\n`);}
+        }catch{response.write('event: revoked\ndata: {}\n\n');response.end();}};
+        const interval=setInterval(tick,1000);response.once('close',()=>{clearInterval(interval);kitchenStreams.delete(response);});tick();return;
+      }
       // API prefix intentionally bypasses every legacy shell worker, including
       // versions whose startup error has no working update control.
       if(request.method==='GET' && ['/api/recovery','/api/recovery.js'].includes(pathname)){
@@ -99,6 +121,8 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         }
         if(pathname==='/api/kitchen'&&request.method==='GET')return json(session.role==='owner'?service.kitchen.snapshot(session):staffBootstrap(store,service,session,identity.details(session)).kitchen);
         if(pathname==='/api/kitchen/orders'&&mutating)return json(service.kitchen.create(session,body),201);
+        const requestMatch=pathname.match(/^\/api\/order-requests\/([a-zA-Z0-9-]+)\/decision$/);
+        if(requestMatch&&mutating)return json(service.requests.decide(session,requestMatch[1],body));
         if(pathname==='/api/kitchen/stations'&&mutating)return json(service.kitchen.saveStation(session,body));
         if(pathname==='/api/kitchen/commands'&&mutating)return json(service.kitchen.command(session,body));
         const kitchenMatch=pathname.match(/^\/api\/kitchen\/orders\/([a-zA-Z0-9-]+)\/actions$/);

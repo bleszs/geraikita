@@ -1,3 +1,6 @@
+# Pembaruan v0.38
+
+REQ-F05 kini juga berlaku pada **katalog pesanan pelanggan (web)**: menu yang bahannya habis langsung nonaktif di katalog, dan permintaan pelanggan masuk antrean setelah dikonfirmasi. [Cara memakai dan batas](CUSTOMER_CATALOG.md). Kanal ojol tetap dicatat manual.
 # Pembaruan v0.37
 
 Kapasitas staf/alat per stasiun dan pencatatan bahan terbuang sebagian kini tersedia. Batas "satu tugas aktif per stasiun" dan "belum ada waste sebagian" pada bagian v0.34 di bawah sudah tidak berlaku. [Cara memakai dan batas](KITCHEN_CAPACITY.md).
