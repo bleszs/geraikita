@@ -28,17 +28,17 @@ async function setup(page,{permission='allow'}={}){
   await page.goto('/#pesanan');await page.reload();await expect(page.getByRole('button',{name:'Rekam pesanan',exact:true})).toBeEnabled();
 }
 async function snapshot(page){return (await page.request.get('/api/bootstrap')).json();}
-async function capture(page,name){if(!process.env.CAPTURE_REVIEW)return;await fs.mkdir('.impeccable/review',{recursive:true});await page.screenshot({path:'.impeccable/review/'+name+'.png',fullPage:false});}
+async function capture(page,name){if(!process.env.CAPTURE_REVIEW)return;await fs.mkdir('.impeccable/review',{recursive:true});await page.evaluate(async()=>{document.activeElement?.blur();scrollTo(0,0);await document.fonts.ready;});await page.mouse.move(0,0);await page.screenshot({path:'.impeccable/review/'+name+'.png',fullPage:true,animations:'disabled'});}
 
 test('voice transcript is editable and opt-in, preserves existing text and cannot book a sale',async({page})=>{
   await setup(page);let audioPosts=0;
   await page.route('**/api/transcriptions',async route=>{audioPosts++;expect(route.request().postDataJSON().mimeType).toBe('audio/webm;codecs=opus');await route.fulfill({json:{text:'dua roti uji',durationSeconds:2}});});
-  const before=await snapshot(page);await page.setViewportSize({width:1440,height:1000});await capture(page,'voice-idle-desktop');
+  const before=await snapshot(page);await page.setViewportSize({width:1440,height:1000});await capture(page,'voice-idle-desktop');await page.setViewportSize({width:320,height:900});await page.getByRole('button',{name:'Ubah tema',exact:true}).click();await capture(page,'voice-idle-mobile-dark');await page.getByRole('button',{name:'Ubah tema',exact:true}).click();await page.setViewportSize({width:1440,height:1000});
   await page.getByLabel('Chat atau catatan pelanggan',{exact:true}).fill('1 roti');
   await page.getByRole('button',{name:'Rekam pesanan',exact:true}).click();await expect(page.getByRole('button',{name:'Selesai merekam',exact:true})).toBeFocused();await expect(page.getByRole('button',{name:'Susun rincian pesanan',exact:true})).toBeDisabled();
   await page.getByRole('button',{name:'Selesai merekam',exact:true}).click();await expect(page.getByLabel('Periksa hasil ucapan',{exact:true})).toHaveValue('dua roti uji');
   await expect(page.getByLabel('Chat atau catatan pelanggan',{exact:true})).toHaveValue('1 roti');expect(audioPosts).toBe(1);expect((await snapshot(page)).transactions).toEqual([]);expect(await page.evaluate(()=>voiceTest.stops)).toBe(1);
-  await capture(page,'voice-review-desktop');await page.setViewportSize({width:320,height:900});await capture(page,'voice-review-mobile');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await capture(page,'voice-review-desktop');await page.setViewportSize({width:320,height:900});await page.getByRole('button',{name:'Ubah tema',exact:true}).click();await capture(page,'voice-review-mobile');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.getByLabel('Periksa hasil ucapan',{exact:true}).fill('2 roti');await page.getByRole('button',{name:'Gunakan teks',exact:true}).click();await expect(page.getByLabel('Chat atau catatan pelanggan',{exact:true})).toHaveValue('1 roti\n2 roti');
   await page.getByLabel('Chat atau catatan pelanggan',{exact:true}).fill('2 roti');await page.getByRole('button',{name:'Susun rincian pesanan',exact:true}).click();await expect(page.getByRole('button',{name:'Konfirmasi & catat',exact:true})).toBeVisible();
   const after=await snapshot(page);expect(after.transactions).toEqual([]);expect(after.stock).toEqual(before.stock);expect(after.audit).toEqual(before.audit);
@@ -52,8 +52,7 @@ test('cancel, navigation and late microphone permission release tracks without s
 });
 
 test('microphone permission errors keep manually typed text and remain usable on mobile',async({page})=>{
-  await setup(page,{permission:'deny'});await page.setViewportSize({width:320,height:900});await page.getByLabel('Chat atau catatan pelanggan',{exact:true}).fill('3 roti');await page.getByRole('button',{name:'Rekam pesanan',exact:true}).click();await expect(page.locator('.voice-entry')).toContainText('Izin mikrofon belum diberikan.');await expect(page.getByLabel('Chat atau catatan pelanggan',{exact:true})).toHaveValue('3 roti');await expect(page.getByRole('button',{name:'Susun rincian pesanan',exact:true})).toBeEnabled();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await capture(page,'voice-error-mobile');
-  await expect(page.getByRole('button',{name:'Rekam pesanan',exact:true})).toBeFocused();await expect(page.locator('.voice-entry [role="alert"]')).toContainText('Izin mikrofon belum diberikan.');
+  await setup(page,{permission:'deny'});await page.setViewportSize({width:320,height:900});await page.getByLabel('Chat atau catatan pelanggan',{exact:true}).fill('3 roti');await page.getByRole('button',{name:'Rekam pesanan',exact:true}).click();await expect(page.locator('.voice-entry')).toContainText('Izin mikrofon belum diberikan.');await expect(page.getByLabel('Chat atau catatan pelanggan',{exact:true})).toHaveValue('3 roti');await expect(page.getByRole('button',{name:'Susun rincian pesanan',exact:true})).toBeEnabled();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await expect(page.getByRole('button',{name:'Rekam pesanan',exact:true})).toBeFocused();await expect(page.locator('.voice-entry [role="alert"]')).toContainText('Izin mikrofon belum diberikan.');await capture(page,'voice-error-mobile');
   for(const theme of ['light','dark']){
     const audit=await page.evaluate(theme=>{
       document.documentElement.dataset.theme=theme;

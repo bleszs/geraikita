@@ -36,3 +36,5 @@ datasets/public/freshretailnet/processed/
 models/benchmarks/
 datasets/public/uci-online-retail/raw/
 datasets/public/uci-online-retail/processed/
+
+.railway/

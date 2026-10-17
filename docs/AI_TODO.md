@@ -1,3 +1,21 @@
+# Lanjutan v0.43 - Railway dan AI cloud
+
+- [x] Sambungkan akun Railway yang diminta; buat proyek, domain HTTPS dan volume SQLite `/data`, satu replika di Singapura.
+- [x] Kontrak origin/host/cookie Secure/HSTS, IP proxy eksplisit, penolakan startup database di luar volume; lokal tetap berfungsi.
+- [x] Build Docker Linux dengan Whisper Tiny sesuai sumber terkunci; verifikasi pemuatan, inferensi dan endpoint suara pada akun memori.
+- [x] Perbaiki penjelasan suara agar sesuai pemrosesan di layanan aplikasi; UI/panduan tetap memakai rekam, periksa teks dan konfirmasi terpisah. Review UI ship; canon desain tidak berubah.
+- [x] Regresi akhir **270 Node + 54 browser = 324 lulus**, npm test exit 0.
+- [x] Database cloud 30 tabel, integritas/relasi OK; hash logis dan penanda volume bertahan setelah redeploy, tanpa fixture produksi atau unggahan database laptop.
+- [x] Backup SQLite konsisten, salinan restore terpisah dan unduhan backup ke laptop diverifikasi; kunci SSH diagnostik sementara dicabut.
+- [x] Siapkan Dockerfile Ollama resmi yang dipatok digest dan startup unduh ke volume; konfigurasi privat diterapkan pada layanan kosong. Sintaks shell lulus; image model belum dibangun/dijalankan.
+- [ ] **Qwen belum aktif**: pengguna memilih peningkatan kapasitas dengan model tetap 1.5B. Akun masih Trial tanpa metode pembayaran; tunggu aktivasi Hobby berbayar di dashboard, periksa ulang kuota, lalu atur 2 GB RAM/2 vCPU, volume model dan uji ekstraksi nyata. Batas yang teramati masih 1 GB RAM/500 MB volume.
+- [ ] Backup terjadwal dan penyimpanan terpisah berkelanjutan; kuota backup Railway yang teramati 0. Backup manual belum menggantikan jadwal.
+- [ ] Uji owner/kasir/dapur/pelanggan pada perangkat fisik berbeda; ukur CPU/RAM/antrean/latensi saat semua AI aktif.
+- [ ] Opsional berikutnya: hubungkan deployment otomatis GitHub; saat ini upload CLI dari branch fitur.
+- [ ] Aging bisa diatur, hari stok tersisa, alur suara kasir, fuzzy matching dan pilot nyata tetap terbuka.
+
+[URL dan petunjuk](RAILWAY_DEPLOYMENT.md) | [bukti lokal](evaluation/railway-preparation.json) | [bukti cloud](evaluation/railway-runtime.json). Model/bobot/protokol evaluasi tidak diubah, model forecast publik tidak diaktifkan ke bahan akun baru. Checklist berikut adalah riwayat.
+
 # Lanjutan v0.42 - kode masuk staf
 
 - [x] Buat staf nama/peran tanpa email/password fiktif; kode 8 karakter, 15 menit, sekali pakai dan hash-only di server. Akun email lama tetap berfungsi.

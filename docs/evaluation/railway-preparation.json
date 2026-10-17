@@ -1,0 +1,113 @@
+{
+  "version": "0.43.0",
+  "stage": "partial-cloud-deployment",
+  "sourceBaseCommit": "fe0bc0cde0e95d27ef675186ef0a993373a4f201",
+  "publicDeploymentCompleted": false,
+  "requestedAccountAuthenticated": true,
+  "status": "web_live_qwen_waiting_paid_plan_activation",
+  "qwenDecision": {
+    "userApprovedIncreaseCapacity": true,
+    "model": "qwen2.5:1.5b",
+    "paidActivationPending": true,
+    "isTrialingObserved": true,
+    "paymentMethodConfiguredObserved": false,
+    "preparedDockerfile": "deploy/ollama/Dockerfile",
+    "shellSyntaxExitCode": 0,
+    "imageBuilt": false,
+    "modelInstalled": false
+  },
+  "tests": {
+    "command": "$env:PLAYWRIGHT_CHANNEL='chromium'; npm test",
+    "nodePassed": 270,
+    "browserPassed": 54,
+    "uniquePassed": 324,
+    "failed": 0,
+    "exitCode": 0,
+    "exitEvidence": "Unified exec session 2309 completed normally with exit_code 0; final log: 270 Node passed, 0 failed; 54 browser passed (5.2m).",
+    "log": "data/railway-npm-test-final.log",
+    "logSha256": "a792ee242d03e89adf429c56b9145ba74ef861ea36eb6779b049436a5ac5953b",
+    "initialFocusedAttempt": {
+      "passed": 24,
+      "failed": 2,
+      "reason": "fetch replaced the synthetic proxy Host header; HTTP contract helper changed to node:http so it sends a real proxy request."
+    },
+    "focusedFinal": {
+      "passed": 26,
+      "failed": 0,
+      "exitCode": 0,
+      "log": "data/railway-contract-final.log"
+    },
+    "copyConfirmationAttempt": {
+      "passed": 3,
+      "failed": 1,
+      "reason": "Passive screenshot helper blurred focused button before an existing assertion; assertions moved before capture, then final full suite passed."
+    }
+  },
+  "deployment": {
+    "provider": "Railway",
+    "cliVersionObserved": "5.70.0",
+    "plan": "deploy/railway-plan.json",
+    "webAI": "Whisper Tiny pinned, CPU int8, existing default profile",
+    "privateAI": "Ollama Qwen2.5 1.5B; no public model API",
+    "database": "SQLite on persistent volume, one web instance",
+    "newProjectCreated": true,
+    "earlierAttempt": {
+      "accountMatchedLatestUserRequest": false,
+      "result": "Railway refused project creation because the previously authenticated account trial had expired. This is not the billing status of the newly requested account."
+    },
+    "url": "https://web-production-a3e13.up.railway.app",
+    "runtimeEvidence": "docs/evaluation/railway-runtime.json",
+    "requestedAccountMatched": true,
+    "resourceDecisionPending": false,
+    "paidPlanActivationPending": true,
+    "pending": [
+      "Activate paid Hobby in dashboard; deploy and verify private Qwen1.5B as approved",
+      "Off-volume scheduled backup",
+      "Separate physical-device workflow checks",
+      "Resource and latency measurements with both AI active"
+    ],
+    "lastSuccessfulDeploymentId": "d357c7b7-5411-4dc0-ab97-67312fa45255",
+    "redeployPersistenceVerified": true,
+    "manualBackupDownloadAndRestoreVerified": true,
+    "automaticBackupsEnabled": false
+  },
+  "linuxDependencies": {
+    "pinnedPackagesChecked": 24,
+    "pypiMetadataAvailable": true,
+    "linuxPython313WheelCandidatesFound": true,
+    "report": "data/railway-linux-dependencies.json",
+    "reportSha256": "9e13d6273929ea0b903ad52467292e11e045a6fc6ac98ee28b6e2dfc3f0dd7c8",
+    "actualContainerBuildPassed": true,
+    "linuxInferenceVerified": true,
+    "limitation": "Wheel metadata check followed by actual Railway Linux Docker build and Whisper inference; does not establish accuracy or Qwen availability."
+  },
+  "designFilesUnchanged": {
+    "DESIGN.md": "769ec61803fcbc4bbaad840a21df02c1fceb8996f7894891dfd5637c04491c04",
+    ".impeccable/design.json": "c31fbfcb60ab61b3b4152b3a87e8b22ca5e1abf008039ea8dc469584c742b51f"
+  },
+  "data": {
+    "schemaChange": false,
+    "productionDataSeeded": false,
+    "localDatabasesUploaded": false,
+    "publicBenchmarkModelsActivated": false
+  },
+  "pending": [
+    "Activate paid Hobby in dashboard; deploy and verify private Qwen1.5B as approved",
+    "Off-volume scheduled backup",
+    "Separate physical-device workflow checks",
+    "Resource and latency measurements with both AI active"
+  ],
+  "sources": [
+    "https://docs.railway.com/infrastructure-as-code",
+    "https://docs.railway.com/deployments/healthchecks",
+    "https://docs.railway.com/volumes/reference",
+    "https://docs.railway.com/volumes/backups",
+    "https://docs.railway.com/networking/public-networking/specs-and-limits"
+  ],
+  "webDeploymentCompleted": true,
+  "ui": {
+    "review": "docs/evaluation/RAILWAY_VOICE_UI_REVIEW.md",
+    "designCheck": "docs/evaluation/RAILWAY_VOICE_DESIGN_CHECK.md",
+    "copyScope": "Voice sent to application service; recording not stored; consent/edit/confirm behavior preserved"
+  }
+}

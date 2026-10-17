@@ -1,8 +1,13 @@
-﻿import { createApp } from '../server/http.mjs';
+﻿import {deploymentConfig,validateRailwayStorage} from '../server/deployment.mjs';
+import {existsSync,statSync} from 'node:fs';
+import { createApp } from '../server/http.mjs';
 import {createRuntimeTranscriber} from '../server/runtime-speech.mjs';
 import {parseStartOptions} from './start-options.mjs';
 const options=parseStartOptions();
+const deployment=deploymentConfig();
+validateRailwayStorage();
+if(process.env.RAILWAY_ENVIRONMENT_ID&&(!existsSync(process.env.RAILWAY_VOLUME_MOUNT_PATH)||!statSync(process.env.RAILWAY_VOLUME_MOUNT_PATH).isDirectory()))throw Error('Volume Railway belum terpasang.');
 const transcriber=createRuntimeTranscriber({...(options.speechProfile===null?{}:{profile:options.speechProfile})});
-const app = createApp({transcriber});
-app.server.listen(options.port, '127.0.0.1', () => console.log('Gerai Kita: http://localhost:' + app.server.address().port+(options.speechProfile?' (profil suara: '+options.speechProfile+')':'')));
+const app = createApp({transcriber,deployment});
+app.server.listen(options.port, deployment.bindHost, () => console.log('Gerai Kita: '+(deployment.origin||'http://localhost:'+app.server.address().port)+(options.speechProfile?' (profil suara: '+options.speechProfile+')':'')));
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => { await app.close(); process.exit(0); });

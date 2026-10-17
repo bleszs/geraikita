@@ -1,3 +1,9 @@
+# Penambahan v0.43: Railway
+
+`server/deployment.mjs` menjadi otoritas canonical HTTPS origin, Host, cookie Secure, identitas klien dari X-Real-IP ketika proxy Railway dipercaya, serta path database di dalam volume. `scripts/serve.mjs` memvalidasi konfigurasi sebelum membuka store dan bind `0.0.0.0` di produksi. `server/http.mjs` memakai kontrak itu untuk HSTS, sesi, CSRF dan rate limit; header forwarded host/proto tidak menentukan origin.
+
+Dockerfile menggabungkan Node 24 dan Python 3.13 serta dependensi suara/sumber Whisper terkunci. SQLite tetap 30 tabel pada `/data`, satu replika Singapura. Web dan Whisper sudah diuji di cloud. Pengguna mempertahankan Qwen 1.5B; layanan privat masih kosong menunggu aktivasi Hobby berbayar. `deploy/ollama/Dockerfile` mematok image resmi dan `start.sh` mengunduh model ke volume tanpa mengganti model saat gagal. Tidak ada model forecast akun otomatis. `deploy/railway-plan.json` mendokumentasikan keadaan dan rencana, bukan konfigurasi otomatis Railway. Upload CLI belum terhubung ke deployment GitHub otomatis. [Kontrak dan bukti](RAILWAY_DEPLOYMENT.md). Bagian berikut adalah riwayat.
+
 # Penambahan v0.42: kode masuk staf
 
 `server/staff-invites.mjs` memusatkan migrasi kredensial nullable dan undangan sekali pakai. Schema 30 tabel menambah staff_invites; migrasi accounts menjaga nilai 29 tabel asal. Hash kode, revisi role, scope, status dan idempotensi menjadi otoritas server. Exchange kode memakai transaksi yang sama dengan pembuatan sesi; metadata pemilik tidak memuat rahasia. Rate limit per sumber koneksi ada di HTTP. Role/izin/proyeksi tetap memakai identitas yang sama. `public/staff-pairing.js` menyediakan formulir dan hasil sementara; app.js menjaga memori, retry dan penghapusan hasil. Cache shell v42 memuat modul baru. [Kontrak, batas dan bukti](STAFF_PAIRING.md). Bagian berikut adalah riwayat.

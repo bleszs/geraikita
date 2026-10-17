@@ -1,3 +1,11 @@
+# Status terbaru v0.43 - baca sebelum konteks lama
+
+Web sudah online di https://web-production-a3e13.up.railway.app, proyek Railway gerai-kita, satu replika Singapura dan SQLite pada volume `/data`. Akun Railway yang diminta sudah diverifikasi. Whisper Tiny di image Linux berhasil lewat API akun memori; 324 tes lokal lulus (270 Node + 54 browser), exit 0. Backup/unduhan/restore terpisah serta ketahanan database setelah redeploy berhasil; tidak ada fixture produksi atau database laptop yang diunggah. Kunci SSH diagnostik sudah dicabut.
+
+Baca docs/RAILWAY_DEPLOYMENT.md, docs/AI_TODO.md, docs/evaluation/railway-preparation.json dan docs/evaluation/railway-runtime.json terlebih dahulu. Qwen **belum aktif**: layanan ollama masih kosong, batas provider saat diperiksa 1 GB RAM dan volume 500 MB. Pengguna sudah memilih peningkatan kapasitas dengan model tetap 1.5B; akun masih Trial tanpa metode pembayaran, sehingga pengguna perlu menyelesaikan aktivasi Hobby berbayar di dashboard. Variabel privat dan Dockerfile deploy/ollama/Dockerfile sudah diatur; image belum dibangun. Periksa ulang kuota sebelum membuat volume model dan limit 2 GB RAM/2 vCPU. Kuota backup provider 0; backup terjadwal belum aktif. Uji fisik antarperangkat dan resource/latensi kedua AI masih terbuka. Upload source memakai CLI, bukan deployment GitHub otomatis. Jangan menganggap git push memperbarui cloud.
+
+Branch tetap feat/kitchen-capacity-and-waste; main dipertahankan. Model/bobot dan protokol evaluasi tidak diubah. Catatan berikut adalah handoff historis sebelum deployment.
+
 # Konteks untuk melanjutkan di Claude
 
 Gunakan workspace **D:\INFEST_FIX**, remote **https://github.com/bleszs/rahasiagelap.git**, branch **feat/kitchen-capacity-and-waste**. Periksa `git status` sebelum menyelaraskan perubahan. Jangan mengganti pekerjaan lokal yang belum disimpan atau berasumsi `main` sudah memuat branch ini.

@@ -1,3 +1,11 @@
+# Gerai Kita - v0.43, deployment Railway
+
+Aplikasi online: **https://web-production-a3e13.up.railway.app**. Web berjalan di Singapura dengan SQLite pada volume persisten. Whisper Tiny berhasil melalui API terautentikasi pada akun memori; data produksi tidak diberi contoh. Akun laptop/demo belum dipindahkan, sehingga pemilik perlu mendaftar pada situs cloud.
+
+**Qwen belum aktif.** Pengguna sudah memilih menaikkan kapasitas dan mempertahankan Qwen 1.5B. Akun masih Trial tanpa metode pembayaran, sehingga aktivasi Hobby berbayar di dashboard diperlukan untuk membuka kapasitas. Batas yang teramati masih 1 GB RAM per layanan/500 MB volume. Backup manual, unduhan, pemeriksaan salinan terpisah dan ketahanan data setelah redeploy berhasil; jadwal otomatis belum aktif.
+
+**324 tes lulus** (270 Node + 54 browser), npm test exit 0. [Deployment dan batas](docs/RAILWAY_DEPLOYMENT.md) | [TODO](docs/AI_TODO.md) | [bukti cloud](docs/evaluation/railway-runtime.json). Publikasi memakai CLI; push GitHub belum otomatis deploy. Lokal tetap `npm start` di http://localhost:4174; demo terpisah tetap port 4180. Catatan versi berikut adalah riwayat.
+
 # Gerai Kita - v0.42, kode masuk staf
 
 Pemilik kini dapat membuat staf cukup dengan nama/peran dan kode masuk sekali pakai 15 menit. Akun email/kata sandi lama tetap berlaku. Buka **Pengaturan akun > Akun kasir dan dapur**; staf memilih **Masuk sebagai staf**. [Cara memakai dan batas](docs/STAFF_PAIRING.md) | [TODO](docs/AI_TODO.md) | [bukti rilis](docs/evaluation/pairing-release.json).

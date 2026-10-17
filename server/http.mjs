@@ -1,4 +1,5 @@
 import http from 'node:http';
+import {deploymentConfig} from './deployment.mjs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,7 +20,7 @@ async function readBody(request, limit=65536) {
   for await (const chunk of request) { size += chunk.length; requireValue(size <= limit, 'Permintaan terlalu besar.', 413); chunks.push(chunk); }
   try { const body = JSON.parse(Buffer.concat(chunks).toString('utf8')); requireValue(body && typeof body === 'object' && !Array.isArray(body), 'JSON harus berupa objek.'); return body; } catch (error) { if (error instanceof ApiError) throw error; throw new ApiError(400, 'JSON tidak valid.'); }
 }
-export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-kita-live.sqlite', extractor = createExtractor(),transcriber=localTranscriber } = {}) {
+export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-kita-live.sqlite', extractor = createExtractor(),transcriber=localTranscriber, deployment=deploymentConfig() } = {}) {
   const store = createStore(filename); const service = createService(store),identity=createIdentity(store);
   const displays=createDisplayAccess(store);
   const failures=new Map();
@@ -29,7 +30,8 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
     const json = (value, status = 200) => { response.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); response.end(JSON.stringify(value)); };
     try {
       const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-      requireValue(['localhost', '127.0.0.1'].includes((request.headers.host || '').split(':')[0]), 'Host tidak diizinkan.', 403);
+      deployment.checkHost(request,pathname);
+      if(deployment.publicMode)response.setHeader('Strict-Transport-Security','max-age=31536000');
       const staffClient=pathname.match(/^\/api\/staff-client\/([a-z][a-z-]*\.js)$/);
       if(request.method==='GET'&&(pathname==='/api/staff/screen'||staffClient)){
         const file=staffClient?staffClient[1]:'index.html';let content=await readFile(path.join(root,file));
@@ -61,7 +63,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         // Public catalog links carry no session: only the bearer token scoped to kind 'catalog'.
         const submitting=catalogRequest&&!catalogRequest[1];
         requireValue(request.method===(submitting?'POST':'GET'),submitting?'Kirim permintaan dengan POST.':'Katalog hanya dapat dibaca.',405);
-        if(submitting)requireValue(!request.headers.origin||request.headers.origin===`http://${request.headers.host}`,'Asal permintaan tidak diizinkan.',403);
+        if(submitting)deployment.checkOrigin(request);
         const body=submitting?await readBody(request,16384):null,access=displays.resolve(request.headers.authorization,'catalog');
         if(submitting)return json(service.requests.submit(access,body),201);
         if(catalogRequest)return json(service.requests.status(access,catalogRequest[1]));
@@ -83,7 +85,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
       }
       if (pathname.startsWith('/api/')) {
         const mutating = !['GET', 'HEAD'].includes(request.method);
-        if (mutating) { requireValue(!request.headers.origin || request.headers.origin === `http://${request.headers.host}`, 'Asal permintaan tidak diizinkan.', 403); requireValue(request.method === 'POST', 'Metode tidak didukung.', 405); }
+        if (mutating) { deployment.checkOrigin(request); requireValue(request.method === 'POST', 'Metode tidak didukung.', 405); }
         const cookie = request.headers.cookie?.match(/(?:^|;\s*)gerai_session=([a-f0-9]{64})(?:;|$)/)?.[1];
         let session=identity.resolve(cookie);
         if(pathname==='/api/transcriptions')requireValue(session,'Masuk ke akun untuk memakai pencatatan suara.',401);
@@ -93,18 +95,18 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         if(pathname==='/api/health' && request.method==='GET')return json({storage:'sqlite',mode:'live',ai:await extractor.status(),speech:await transcriber.status()});
         if(['/api/auth/register','/api/auth/login'].includes(pathname) && mutating){
           requireValue(!session,'Keluar dari akun aktif sebelum masuk dengan akun lain.',409);
-          const key=request.socket.remoteAddress+':'+String(body.email || '').toLowerCase();const failed=failures.get(key);
+          const key=deployment.clientAddress(request)+':'+String(body.email || '').toLowerCase();const failed=failures.get(key);
           requireValue(!failed || failed.until<Date.now() || failed.count<8,'Terlalu banyak percobaan. Coba lagi dalam 10 menit.',429);
           try{session=pathname.endsWith('/register') ? identity.register(body) : identity.login(body);failures.delete(key);}catch(error){const old=failed && failed.until>Date.now() ? failed : {count:0,until:Date.now()+600000};failures.set(key,{...old,count:old.count+1});throw error;}
-          response.setHeader('Set-Cookie',`gerai_session=${session.id}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000`);
+          response.setHeader('Set-Cookie',deployment.sessionCookie(session.id));
           return json(await stateOf(session),pathname.endsWith('/register') ? 201 : 200);
         }
         if(pathname==='/api/auth/staff-code'&&mutating){
           requireValue(!session,'Keluar dari akun aktif sebelum masuk sebagai staf.',409);
-          const key='staff-code:'+request.socket.remoteAddress,failed=failures.get(key),current=failed&&failed.until>Date.now()?failed:{count:0,until:Date.now()+600000};
+          const key='staff-code:'+deployment.clientAddress(request),failed=failures.get(key),current=failed&&failed.until>Date.now()?failed:{count:0,until:Date.now()+600000};
           requireValue(current.count<8,'Terlalu banyak percobaan kode. Coba lagi dalam 10 menit.',429);
           try{session=identity.loginStaffCode(body);}catch(error){if(error.status===400||error.status===401)failures.set(key,{...current,count:current.count+1});throw error;}
-          response.setHeader('Set-Cookie',`gerai_session=${session.id}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000`);
+          response.setHeader('Set-Cookie',deployment.sessionCookie(session.id));
           return json(await stateOf(session));
         }
         requireValue(session, 'Masuk ke akun untuk membuka catatan usaha.', 401);
@@ -169,7 +171,7 @@ export function createApp({ filename = process.env.DATABASE_PATH || 'data/gerai-
         if (pathname === '/api/proposal/approval' && mutating) return json(service.approval(session, body));
         if (pathname === '/api/collective-orders' && mutating) return json(service.finalizeCollective(session,body),201);
         if (pathname === '/api/collective-cycles/next' && mutating) return json(service.nextCycle(session,body));
-        if(pathname==='/api/auth/logout' && mutating){store.run('DELETE FROM sessions WHERE id=?',session.id);response.setHeader('Set-Cookie','gerai_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return json({signedOut:true});}
+        if(pathname==='/api/auth/logout' && mutating){store.run('DELETE FROM sessions WHERE id=?',session.id);response.setHeader('Set-Cookie',deployment.sessionCookie(null,true));return json({signedOut:true});}
         if(pathname==='/api/community/quote' && mutating)return json(service.saveQuote(session,body));
         let match;
         if ((match=pathname.match(/^\/api\/collective-orders\/([a-zA-Z0-9-]+)\/receipts\/([a-zA-Z0-9-]+)\/cancel$/)) && mutating) return json(service.cancelCollectiveReceipt(session,match[1],match[2],body));

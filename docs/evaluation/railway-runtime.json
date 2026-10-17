@@ -1,0 +1,162 @@
+{
+  "version": "0.43.0",
+  "checkedAt": "2026-10-17T18:40:33.244657+00:00",
+  "status": "web_live_whisper_verified_qwen_waiting_paid_plan_activation",
+  "qwenDecision": {
+    "userApprovedIncreaseCapacity": true,
+    "model": "qwen2.5:1.5b",
+    "paidActivationPending": true,
+    "isTrialingObserved": true,
+    "paymentMethodConfiguredObserved": false,
+    "preparedDockerfile": "deploy/ollama/Dockerfile",
+    "shellSyntaxExitCode": 0,
+    "imageBuilt": false,
+    "modelInstalled": false
+  },
+  "requestedAccountMatched": true,
+  "projectId": "2542adeb-bd1a-441e-b723-2d2b2c0c64b8",
+  "url": "https://web-production-a3e13.up.railway.app",
+  "persistence": {
+    "markerSurvived": true,
+    "databaseLogicalHash": "afd7ba54b0a2c41ed1b81615fdbb3b64a9789cbb161c0b9375c7897523e55f6b",
+    "databaseRowsUnchanged": true
+  },
+  "offVolumeBackup": {
+    "downloaded": true,
+    "path": "data/backups/railway/verified-cloud-backup.sqlite",
+    "bytes": 356352,
+    "sha256": "4297ed2ce4afc5371ae6accc5a21938c585e6991d02e817e795eb980ba19045e",
+    "integrity": "ok",
+    "foreignKeys": "ok",
+    "scheduleEnabled": false
+  },
+  "deployment": {
+    "id": "d357c7b7-5411-4dc0-ab97-67312fa45255",
+    "status": "SUCCESS",
+    "instanceId": "128e3f02-af9b-44b7-8401-eda8b66ea65e",
+    "imageDigest": "sha256:e7bc7a193cafafa4bac21d7298830496d3c90e0ad3819c0dd85af939e1477ed1",
+    "regions": {
+      "asia-southeast1-eqsg3a": {
+        "numReplicas": 1
+      }
+    }
+  },
+  "publicProbes": [
+    {
+      "path": "/",
+      "status": 200,
+      "hsts": "max-age=31536000",
+      "edge": "sin1"
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "hsts": "max-age=31536000",
+      "edge": "sin1",
+      "health": {
+        "storage": "sqlite",
+        "mode": "live",
+        "ai": {
+          "provider": "ollama",
+          "model": "qwen2.5:1.5b",
+          "available": false
+        },
+        "speech": {
+          "available": true,
+          "model": "whisper-tiny",
+          "engine": "faster-whisper",
+          "compute": "cpu-int8",
+          "pretrained": true,
+          "language": "id",
+          "maxSeconds": 30,
+          "maxBytes": 1048576,
+          "reason": "Ucapan diproses oleh layanan suara aplikasi. Rekaman tidak disimpan."
+        }
+      }
+    },
+    {
+      "path": "/api/bootstrap",
+      "status": 401,
+      "hsts": "max-age=31536000",
+      "edge": "sin1"
+    },
+    {
+      "path": "/live-views.js",
+      "status": 200,
+      "hsts": "max-age=31536000",
+      "edge": "sin1",
+      "cloudVoiceDisclosurePresent": true
+    }
+  ],
+  "cloudSmoke": {
+    "returnCode": 0,
+    "wallSeconds": 4.544,
+    "result": {
+      "productionDatabase": {
+        "integrity": "ok",
+        "foreignKeys": "ok",
+        "tables": 30,
+        "logicalHash": "afd7ba54b0a2c41ed1b81615fdbb3b64a9789cbb161c0b9375c7897523e55f6b"
+      },
+      "backup": {
+        "filename": "/data/backups/gerai-kita-2026-10-17T18-40-09-036Z-f48ec782.sqlite",
+        "bytes": 356352,
+        "verification": {
+          "integrity": "ok",
+          "foreignKeys": "ok",
+          "namespaces": 0
+        },
+        "isolatedRestore": {
+          "integrity": "ok",
+          "foreignKeys": "ok",
+          "namespaces": 0
+        }
+      },
+      "ephemeralAuthenticatedSpeech": {
+        "httpStatus": 200,
+        "nonemptyTranscript": true,
+        "durationSeconds": 9.06,
+        "model": "whisper-tiny"
+      },
+      "productionFixturesCreated": false
+    }
+  },
+  "voiceSmoke": {
+    "scope": "public FLEURS runtime smoke only; two attempts retained, not an accuracy benchmark",
+    "attempts": [
+      {
+        "scope": "single public FLEURS clip runtime smoke; not an accuracy benchmark",
+        "returnCode": 2,
+        "audioSha256": "5f5938db57f082bcd524ab72eb6b37e7a37e888a8787f4891da11f273a3f24d3",
+        "wallSeconds": 4.678,
+        "nonemptyTranscript": false,
+        "output": {
+          "error": "no_speech"
+        }
+      },
+      {
+        "returnCode": 0,
+        "audioSha256": "3b989177ddd898f816e9747472329a62609a212eaf7ecae7562660e37fe6aa26",
+        "wallSeconds": 5.401,
+        "nonemptyTranscript": true,
+        "output": {
+          "durationSeconds": 9.06,
+          "language": "id",
+          "model": "whisper-tiny",
+          "pretrained": true
+        }
+      }
+    ]
+  },
+  "dataPolicy": {
+    "productionFixturesCreated": false,
+    "localDatabasesUploaded": false,
+    "publicForecastModelsActivated": false
+  },
+  "remaining": [
+    "User approved capacity increase; retain Qwen1.5B. Await paid Hobby activation (Trial; no payment method configured).",
+    "Automatic backup scheduling; provider observed maxBackupsCount=0",
+    "Physical cross-device workflows and resource/latency checks with all AI active"
+  ],
+  "temporaryDiagnosticSSHKey": "Removed after checks; private key not committed"
+}

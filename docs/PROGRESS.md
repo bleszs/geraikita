@@ -1,3 +1,11 @@
+# Perubahan terbaru v0.43
+
+Web sudah online di https://web-production-a3e13.up.railway.app pada Railway akun yang diminta, region Singapura. SQLite pada volume `/data`, satu replika; startup memvalidasi lokasi database, canonical origin, host, cookie Secure dan kepercayaan proxy eksplisit. Docker Linux membawa Whisper Tiny terkunci; inferensi nyata dan API akun memori berhasil, tanpa menambah data produksi.
+
+**324 tes lulus**, 270 Node + 54 browser, exit 0. Database 30 tabel tetap identik setelah redeploy. Backup manual, salinan restore terpisah dan unduhan backup berhasil. Kunci SSH sementara sudah dicabut. Penjelasan pemrosesan suara kini sesuai cloud; UI review ship dan canon desain tetap.
+
+Qwen belum dijalankan: pengguna memilih peningkatan kapasitas dengan model tetap 1.5B. Akun masih Trial tanpa metode pembayaran; aktivasi Hobby berbayar di dashboard diperlukan sebelum batas 1 GB RAM/500 MB volume dapat dinaikkan. Dockerfile model dan konfigurasi layanan privat sudah siap, image belum dibangun. Backup otomatis (kuota provider 0), uji perangkat fisik dan pengukuran kedua AI aktif masih tertunda. Deployment menggunakan CLI; belum otomatis dari GitHub. [Rincian](RAILWAY_DEPLOYMENT.md) | [bukti](evaluation/railway-runtime.json). Catatan berikut adalah riwayat.
+
 # Perubahan terbaru v0.42
 
 Kode masuk staf sudah tersedia: pemilik membuat nama/peran atau memilih staf yang sudah ada, kemudian membagikan kode sekali pakai 15 menit. Email/password lama tetap dapat digunakan. Kode tertunda bisa dicabut; Nonaktifkan mengakhiri sesi. Panduan berpanah menyesuaikan jenis akun dan mencakup 18 topik/93 langkah.

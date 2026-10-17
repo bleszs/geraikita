@@ -42,7 +42,7 @@ export function createTranscriber({runner=runSpeechProcess,verifyFiles,disabled=
   }
   async function status(){
     if(disabled)return {available:false,model:'whisper-tiny',reason:'Pencatatan suara dinonaktifkan pada server ini.'};
-    return statusPromise??=(async()=>{try{await (verifyFiles||verify)();await runner(null,{check:true,timeoutMs:30000});return {available:true,model:'whisper-tiny',engine:'faster-whisper',compute:'cpu-int8',pretrained:true,language:'id',maxSeconds:30,maxBytes:MAX_AUDIO_BYTES,reason:'Ucapan diproses di laptop. Rekaman tidak disimpan.'};}catch{return {available:false,model:'whisper-tiny',reason:'Model suara belum siap. Ketik pesanan; jalankan npm run voice:setup lalu muat ulang server.'};}})();
+    return statusPromise??=(async()=>{try{await (verifyFiles||verify)();await runner(null,{check:true,timeoutMs:30000});return {available:true,model:'whisper-tiny',engine:'faster-whisper',compute:'cpu-int8',pretrained:true,language:'id',maxSeconds:30,maxBytes:MAX_AUDIO_BYTES,reason:'Ucapan diproses oleh layanan suara aplikasi. Rekaman tidak disimpan.'};}catch{return {available:false,model:'whisper-tiny',reason:'Model suara belum siap. Ketik pesanan; jalankan npm run voice:setup lalu muat ulang server.'};}})();
   }
   return {status,async transcribe(body,{signal}={}){
     const audio=decodeAudioBody(body);
