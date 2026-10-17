@@ -87,7 +87,7 @@ export function createGuideController({getContext,navigate,notify,escape,consume
     if(!document.querySelector('[data-guide-open]')){
       const actions=document.querySelector('.topbar-actions');
       if(actions)actions.insertAdjacentHTML('afterbegin',`<button type="button" class="guide-access" data-guide-open aria-label="Buka panduan penggunaan">${icon('info')}<span>Panduan</span></button>`);
-      else main.insertAdjacentHTML('afterbegin',`<div class="guide-access-row"><button type="button" class="text-link" data-guide-open>${icon('info')} Panduan penggunaan</button></div>`);
+      else if(context.signedIn)main.insertAdjacentHTML('afterbegin',`<div class="guide-access-row"><button type="button" class="text-link" data-guide-open>${icon('info')} Panduan penggunaan</button></div>`);
     }
     const pageTopic=context.signedIn?PAGE_TOPICS[context.route]:'akun';
     main.querySelector('.guide-welcome')?.remove();
